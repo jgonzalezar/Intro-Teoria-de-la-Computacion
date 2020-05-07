@@ -1,2 +1,2 @@
 # Intro-Teoria-de-la-Computacion
-Acá van las tares xd
+Acá van las tareas xd
