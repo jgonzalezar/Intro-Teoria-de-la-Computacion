@@ -5,12 +5,14 @@
  */
 package TeoriaDeLaCompu;
 
+import AutomatasFinitos.AFD;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
+import Herramientas.Transition;
 /**
  *
  * @author fanat
@@ -31,7 +33,7 @@ public class Main {
                     AFNSET();
                 break;
                 case "0":
-                    AFNtoAFD();
+                    //AFNtoAFD();
                 break;
                 default:
                     AFDSET();
@@ -65,18 +67,28 @@ public class Main {
         }
     }
     static private void AFDSET() throws FileNotFoundException{
-        char[] E = {'a','b'};
-        int[] F = {0};
-        int[][] T = {{1,0},{1,0}};
+        String E = "ab";
+        ArrayList<Integer> F = new ArrayList<>();
+        ArrayList<Integer> F1 = new ArrayList<>();
+        ArrayList<Integer> F2 = new ArrayList<>();
+        F.add(0);
+        Transition T = new Transition();
+        F1.add(1);
+        F1.add(0);
+        T.Put("a", F1);
+        F2.add(1);
+        F2.add(0);
+        T.Put("b", F2);
         AFD set = new AFD(E, 3, 0, F, T);
         Scanner s = new Scanner(new File("src/CombinacionAlphabetos/E_ab10.txt"));
-        while(s.hasNext()){
+        set.procesarCadenaConDetalles("abba");
+        /*while(s.hasNext()){
             String as = s.next();
-            if(set.Delta(as))System.out.println(as);
-        }
+            if(set.Delta2(as))System.out.println(as);
+        }*/
     }
     
-    static private void AFNtoAFD() throws FileNotFoundException{
+    /*static private void AFNtoAFD() throws FileNotFoundException{
         char[] E = {'a','b'};
         int[] F = {1,2};
         int[][][] T = {{{1,2},{-1},{2}},{{-1},{1},{-1},}};
@@ -96,6 +108,6 @@ public class Main {
             String as = s.next();
             if(set.Delta(as))System.out.println(as);
         }
-    }
+    }*/
 }
 

@@ -5,6 +5,7 @@
  */
 package TeoriaDeLaCompu;
 
+import AutomatasFinitos.AFD;
 import java.util.Arrays;
 
 /**
@@ -194,7 +195,7 @@ public class AFN {
         qe = ExtrasOrden.RemoveInt(qe, (int)Math.pow(2, q0)-1);
         
         if(qe.length<1){
-            return new AFD(E, q, q0, f, t);
+            //return new AFD(E, q, q0, f, t);
         }
         
         return removeNoUse(f, t, q, qe, E, q0);

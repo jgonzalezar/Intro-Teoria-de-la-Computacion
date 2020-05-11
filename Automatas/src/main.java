@@ -1,7 +1,7 @@
 import java.util.ArrayList;
-import Determinista.AutomataDeterminista;
+import AutomatasFinitos.AFD;
 import Herramientas.Tuple;
-import NoDeterminista.AutomataNoDeterminista;
+import AutomatasFinitos.AFN;
 
 import java.util.Scanner;
 
@@ -13,7 +13,7 @@ public class main {
 		
 		//Automata Determinista----------------------------------------------------------------------
 		
-//		AutomataDeterminista automataDet = new AutomataDeterminista("ab");
+//		AFD automataDet = new AFD("ab");
 //		ArrayList<Tuple> connections = new ArrayList<Tuple>();
 //
 //		connections.add(new Tuple("a",0,1));
@@ -41,7 +41,7 @@ public class main {
 		
 		//Automata No Determinista-------------------------------------------------------------------
 		
-		AutomataNoDeterminista automataNoDet = new AutomataNoDeterminista("ab");
+		AFN automataNoDet = new AFN("ab");
 		ArrayList<Tuple> connections = new ArrayList<Tuple>();
 
 //		connections.add(new Tuple("0",0,1));
@@ -111,7 +111,7 @@ public class main {
 		automataNoDet.addConnections(connections);
 		automataNoDet.printAutomata();
 		
-		AutomataDeterminista automataDet = automataNoDet.toDeterministic();
+		AFD automataDet = automataNoDet.toDeterministic();
 		
 //		System.out.println("Ingrese la palabra a procesar:");
 //		String word=entrada.nextLine();
