@@ -35,6 +35,9 @@ public class Main {
                 case "0":
                     //AFNtoAFD();
                 break;
+                case "20":
+                    AFDSET2();
+                    break;
                 default:
                     AFDSET();
                 break;
@@ -81,11 +84,30 @@ public class Main {
         T.Put("b", F2);
         AFD set = new AFD(E, 3, 0, F, T);
         Scanner s = new Scanner(new File("src/CombinacionAlphabetos/E_ab10.txt"));
-        set.procesarCadenaConDetalles("abba");
-        /*while(s.hasNext()){
+        while(s.hasNext()){
             String as = s.next();
-            if(set.Delta2(as))System.out.println(as);
-        }*/
+            if(set.procesarCadena(as))System.out.println(as);
+        }
+    }
+    static private void AFDSET2() throws FileNotFoundException{
+        String E = "ab";
+        ArrayList<Integer> F = new ArrayList<>();
+        ArrayList<Integer> F1 = new ArrayList<>();
+        ArrayList<Integer> F2 = new ArrayList<>();
+        F.add(0);
+        Transition T = new Transition();
+        F1.add(1);
+        F1.add(0);
+        T.Put("a", F1);
+        F2.add(1);
+        F2.add(0);
+        T.Put("b", F2);
+        AFD set = new AFD(E, 3, 0, F, T);
+        Scanner s = new Scanner(new File("src/CombinacionAlphabetos/E_ab10.txt"));
+        String[] lis ={"a","aa","bbb"};
+
+        set.procesarListaCadenas(lis, "src/CombinacionAlphabetos/E", true);
+        
     }
     
     /*static private void AFNtoAFD() throws FileNotFoundException{

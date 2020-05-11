@@ -13,9 +13,10 @@ import java.util.ArrayList;
  */
 public class Respuesta {
     public boolean aceptado;
-    private ArrayList<Integer> pasos ;
+    public  ArrayList<Integer> pasos ;
 
     public Respuesta() {
+        aceptado = false;
         pasos = new ArrayList<>();
     }
 
@@ -27,7 +28,7 @@ public class Respuesta {
     public String pasos(){
         String s ="";
         for (int i = 0; i < pasos.size(); i++) {
-            s = pasos.get(i)+" ";
+            s += "q"+pasos.get(i)+" ";
         }
         return s+"\n";
     }
