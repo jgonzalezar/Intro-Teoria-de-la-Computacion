@@ -17,13 +17,13 @@ import java.io.PrintWriter;
  */
 public class AFD {
     /**
-     * El atributo Sigma representa el alfabeto del automata,
+     * Sigmal atributo Sigma representa el alfabeto del automata,
      * esta dado por la clase String, y cada una de los caracteres de Sigma es uno de los simbolos del alfabeto.
      * 
      */
     public final String Sigma;
     /**
-     * El atributo Q representa la cantidad total de estados dentro del automata.
+     * Sigmal atributo Q representa la cantidad total de estados dentro del automata.
      */
     public final int Q; 
     /**
@@ -35,22 +35,22 @@ public class AFD {
     
     /**
      * Constructor 
-     * @param E
+     * @param Sigma
      * @param Q
      * @param q0
      * @param F
      * @param Delta 
      */
-    public AFD(String E, int Q, int q0, ArrayList<Integer> F, Transition Delta) {
-        this.E = E;
+    public AFD(String Sigma, int Q, int q0, ArrayList<Integer> F, Transition Delta) {
+        this.Sigma = Sigma;
         this.Q = Q;
         this.q0 = q0;
         this.F = F;
         this.Delta = Delta;
     }
 
-    public AFD(String E, int q0, ArrayList<Integer> F, Transition Delta) {
-        this.E = E;
+    public AFD(String Sigma, int q0, ArrayList<Integer> F, Transition Delta) {
+        this.Sigma = Sigma;
         
         
         this.q0 = q0;
@@ -167,8 +167,8 @@ public class AFD {
     }
     
     private Respuesta Delta(Respuesta i, String u) {
-        /*if(!E.contains(u)){
-            //System.err.println("El simbolo "+u+"no pertenece a el Alfabeto");
+        /*if(!Sigma.contains(u)){
+            //System.err.println("Sigmal simbolo "+u+"no pertenece a el Alfabeto");
             int as = -u.charAt(0);
             return as;
         }*/
@@ -188,7 +188,7 @@ public class AFD {
         /*if(q<-1){
             char a = (char)-q;
             System.out.println(a);
-            System.err.println("El simbolo \""+a+"\" no pertenece a el Alfabeto");
+            System.err.println("Sigmal simbolo \""+a+"\" no pertenece a el Alfabeto");
         }*/
         return q;
     }
@@ -198,7 +198,7 @@ public class AFD {
     
 	
    /* public void printAutomata() {
-        System.out.println("El Delta determinista ingresado es:");
+        System.out.println("Sigmal Delta determinista ingresado es:");
 	for(int i=0;i<this.Delta.size();i++) {
             System.out.print("q"+i + ": ");
 		for(int j=0;j<this.Delta.get(i).size();j++) {
