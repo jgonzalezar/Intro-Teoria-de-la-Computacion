@@ -17,13 +17,13 @@ import java.io.PrintWriter;
  */
 public class AFD {
     /**
-     * Sigmal atributo Sigma representa el alfabeto del automata,
+     * El atributo Sigma representa el alfabeto del automata,
      * esta dado por la clase String, y cada una de los caracteres de Sigma es uno de los simbolos del alfabeto.
      * 
      */
     public final String Sigma;
     /**
-     * Sigmal atributo Q representa la cantidad total de estados dentro del automata.
+     * El atributo Q representa la cantidad total de estados dentro del automata.
      */
     public final int Q; 
     /**
@@ -81,21 +81,35 @@ public class AFD {
 		return;
 	}*/
 	
-	/**
-         * 
-         * @param word
-         * @return 
-         */
+    /**
+    * 
+    * @param word
+    * @return 
+     */
     public boolean procesarCadena(String word){
         if(word==null||word.length()==0){            
             return F.contains(q0);
         }
         return prosCaden(word).aceptado;
     }
+    /**
+     * Procesa una cadena para decir si pertenece al lenguaje
+     * @param word palabra a determinar
+     * @return booleano de pertenece o no
+     * @see procesarCadena
+     * 
+     */
+    
     
     public boolean procesarCadena(char[] word){
         return procesarCadena(Arrays.toString(word));
     }
+    
+    /**
+     * 
+     * @param word
+     * @return 
+     */
     public boolean procesarCadenaConDetalles(char[] word){
         return procesarCadenaConDetalles(Arrays.toString(word));
     }
