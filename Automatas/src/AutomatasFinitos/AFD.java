@@ -4,27 +4,37 @@ import Herramientas.Respuesta;
 import Herramientas.Transition;
 import java.util.ArrayList;
 import java.util.Arrays;
-import Herramientas.Tuple;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.Scanner;
 
 /**
  * esta clase es el automata finito determinista
- * @author equipo los Javas
+ * en este automata se pueden realizar procesamientos de palabras sobre si mismo, confirmando si pertenece o no al lenguaje, e incluso se puede recibir una respuesta con pasos incluidos
  * 
+ * @author equipo los Javas
+ * @version 1.2
  */
 public class AFD {
-    public final String E;
-    public final int Q;
+    /**
+     * El atributo Sigma representa el alfabeto del automata,
+     * esta dado por la clase String, y cada una de los caracteres de Sigma es uno de los simbolos del alfabeto.
+     * 
+     */
+    public final String Sigma;
+    /**
+     * El atributo Q representa la cantidad total de estados dentro del automata.
+     */
+    public final int Q; 
+    /**
+     * 
+     */
     public final int q0;
     public final ArrayList<Integer> F;
     public final Transition Delta;
     
     /**
-     * 
+     * Constructor 
      * @param E
      * @param Q
      * @param q0
@@ -41,10 +51,22 @@ public class AFD {
 
     public AFD(String E, int q0, ArrayList<Integer> F, Transition Delta) {
         this.E = E;
-        this.Q = Delta.size();
+        
+        
         this.q0 = q0;
         this.F = F;
         this.Delta = Delta;
+        int f= F.get(0);
+        for (int i = 0; i < F.size(); i++) {
+            if(f<F.get(i)){
+                f=F.get(i);
+            }
+        }
+        if(f>=this.Delta.size()){
+            this.Q =f;
+        }else{
+            this.Q = Delta.size();
+        }
     }
 
     /*
