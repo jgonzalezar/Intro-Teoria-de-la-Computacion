@@ -68,19 +68,24 @@ public class AFD {
         if(word==null||word.length()==0){            
             return F.contains(q0);
         }
-        return Finish(Delta(word),false).aceptado;
+        return prosCaden(word).aceptado;
     }
     
     public boolean procesarCadena(char[] word){
         return procesarCadena(Arrays.toString(word));
     }
-    public Respuesta procesarCadenaConDetalles(char[] word){
+    public boolean procesarCadenaConDetalles(char[] word){
         return procesarCadenaConDetalles(Arrays.toString(word));
     }
     
-    public Respuesta procesarCadenaConDetalles(String word){
-        
-        return Finish(Delta(word),true);
+    public Respuesta prosCaden(String word){
+        return Finish(Delta(word));
+    }
+    
+    public boolean procesarCadenaConDetalles(String word){
+        Respuesta fin =prosCaden(word);
+        System.out.println(fin.pasos());
+        return fin.aceptado;
     }
     
     public void procesarListaCadenas(String[] listaCadenas,String nombreArchivo,boolean imprimirPantalla){
@@ -93,7 +98,7 @@ public class AFD {
             fichero1 = new FileWriter(nombre);
             pw1 = new PrintWriter(fichero1);
             for (int i = 0; i < listaCadenas.length; i++){
-                Respuesta res = procesarCadenaConDetalles(listaCadenas[i]);
+                Respuesta res = prosCaden(listaCadenas[i]);
                 String pas =res.pasos();
                 String res2= listaCadenas[i]+"\t"+ pas.substring(0, pas.length()-1)+"\t"+res.aceptado;
                 pw1.println(res2);
@@ -153,8 +158,7 @@ public class AFD {
         return i;
     }
 
-    private Respuesta Finish(Respuesta q,boolean deta) {
-        if(deta)System.out.println(q.pasos());
+    private Respuesta Finish(Respuesta q) {
         if(F.contains(q.pasos.get(q.pasos.size()-1))){        
             q.aceptado=true;
             
