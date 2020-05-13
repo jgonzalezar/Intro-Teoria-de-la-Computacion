@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- *
+ *  clase 
  * @author fanat
  */
 public class Transition {
