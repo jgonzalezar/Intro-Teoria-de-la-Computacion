@@ -9,7 +9,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 
 /**
- * esta clase es el automata finito determinista
+ * Esta clase es el automata finito determinista
  * en este automata se pueden realizar procesamientos de palabras sobre si mismo, confirmando si pertenece o no al lenguaje, e incluso se puede recibir una respuesta con pasos incluidos
  * 
  * @author equipo los Javas
@@ -17,20 +17,25 @@ import java.io.PrintWriter;
  */
 public class AFD {
     /**
-     * Sigmal atributo Sigma representa el alfabeto del automata,
-     * esta dado por la clase String, y cada una de los caracteres de Sigma es uno de los simbolos del alfabeto.
-     * 
+     * El atributo Sigma representa el alfabeto del automata.
+     * Esta dado por la clase String, y cada una de los caracteres de Sigma es uno de los simbolos del alfabeto.     * 
      */
     public final String Sigma;
     /**
-     * Sigmal atributo Q representa la cantidad total de estados dentro del automata.
+     * El atributo Q representa la cantidad total de estados dentro del automata.
      */
     public final int Q; 
     /**
-     * 
+     * El atributo q0 representa el estado inicial del autómata.
      */
     public final int q0;
+    /**
+     * El atributo F representa los estados aceptados del autómata. 
+     */
     public final ArrayList<Integer> F;
+    /**
+     * El atributo Delta representa la función de transición del autómata.
+     */
     public final Transition Delta;
     
     /**
@@ -51,8 +56,6 @@ public class AFD {
 
     public AFD(String Sigma, int q0, ArrayList<Integer> F, Transition Delta) {
         this.Sigma = Sigma;
-        
-        
         this.q0 = q0;
         this.F = F;
         this.Delta = Delta;
@@ -68,19 +71,6 @@ public class AFD {
             this.Q = Delta.size();
         }
     }
-
-    /*
-
-	public void addConnections(ArrayList<Tuple> calledBy) {
-		for(int i=0;i<calledBy.size();i++) {
-			while(calledBy.get(i).getFinalState()>=this.Delta.size()) {
-				this.Delta.add(new ArrayList<Tuple>());
-			}
-			this.Delta.get(calledBy.get(i).getInitialState()).add(new Tuple(calledBy.get(i).getSymbol(),calledBy.get(i).getFinalState()));
-		}		
-		return;
-	}*/
-	
 	/**
          * 
          * @param word
@@ -192,31 +182,4 @@ public class AFD {
         }*/
         return q;
     }
-    
-    
-    
-    
-	
-   /* public void printAutomata() {
-        System.out.println("Sigmal Delta determinista ingresado es:");
-	for(int i=0;i<this.Delta.size();i++) {
-            System.out.print("q"+i + ": ");
-		for(int j=0;j<this.Delta.get(i).size();j++) {
-                    System.out.print(Delta.get(i).get(j).getSymbol()+",q" + Delta.get(i).get(j).getFinalState() + " ");
-		}
-            System.out.println();
-	}
-	System.out.println();
-        if(this.F.size()>0) {
-            System.out.println("Y sus estados de aceptaci�n son:");
-            for(int i=0;i<this.F.size();i++) {
-		System.out.print("q"+F.get(i) + " ");
-            }
-		}else {
-			System.out.println("A�n no tiene estados de aceptaci�n");
-		}
-		System.out.println();
-		System.out.println();
-	}
-	*/
 }
