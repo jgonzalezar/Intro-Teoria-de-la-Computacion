@@ -1,9 +1,13 @@
 package AutomatasFinitos;
 
 import Herramientas.NDRespuesta;
+import Herramientas.Respuesta;
 import java.util.ArrayList;
 import java.util.Arrays;
 import Herramientas.Tuple;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 public class AFN {
     public final String sigma; 
@@ -20,7 +24,14 @@ public class AFN {
     public AFN(String sigma, int Q, int q0, ArrayList<Integer> F, ArrayList<Tuple> Delta){
         this.sigma = sigma;
         this.Q = Q;
-        this.q0 = q0;
+        if(q0<=Q){
+            this.q0 = q0;
+        }else{
+            this.q0 = 0;
+            System.out.println("El estado inicial ingresado es mayor al numero de estados ingresado");
+        }
+        
+        
         this.F = F;
         this.Delta = new ArrayList<>();
         
@@ -39,7 +50,7 @@ public class AFN {
     
     public boolean procesarCadena(String cadena){
         if(cadena.length()==0) {
-            if(this.F.contains(0)) {
+            if(this.F.contains(q0)) {
 		return true;
             }
             return false;
@@ -53,7 +64,7 @@ public class AFN {
     
     public boolean procesarCadenaConDetalles(String cadena){
         if(cadena.length()==0) {
-            if(this.F.contains(0)) {
+            if(this.F.contains(q0)) {
 		return true;
             }
             return false;
@@ -74,20 +85,31 @@ public class AFN {
     
     public int computarTodosLosProcesamientos(String cadena){
         if(cadena.length()==0) {
-            if(this.F.contains(0)) {
+            if(this.F.contains(q0)) {
+                respuesta.addAceptado(q0);
 		return 1;
             }
-            return 0;
+            respuesta.addRechazado(q0);
+            return 1;
         }
         this.cadena=cadena;
         this.print = new Integer[cadena.length()];
         respuesta = new NDRespuesta(cadena);
         computarTodosLosProcesamientos(q0,0);
         
-        System.out.println("Aceptadas "+respuesta.getAccepted());
-        System.out.println("Rechazadas "+respuesta.getRejected());
-        System.out.println("Abortadas "+respuesta.getAborted());
-        return 0;
+        System.out.println("\nAceptadas:");
+        for(int i=0;i<respuesta.getAccepted().size();i++){
+            System.out.println(respuesta.getAccepted().get(i));
+        }
+        System.out.println("Rechazadas:");
+        for(int i=0;i<respuesta.getRejected().size();i++){
+            System.out.println(respuesta.getRejected().get(i));
+        }
+        System.out.println("Abortadas:");
+        for(int i=0;i<respuesta.getAborted().size();i++){
+            System.out.println(respuesta.getAborted().get(i));
+        }
+        return respuesta.getAccepted().size() + respuesta.getRejected().size() + respuesta.getAborted().size();
     }
     
     private int computarTodosLosProcesamientos(int state, int letter){
@@ -124,8 +146,53 @@ public class AFN {
     }
     
     public void procesarListaCadenas(String[] listaCadenas, String nombreArchivo, boolean imprimirPantalla){
-        this.cadena=cadena;
-        this.print = new Integer[cadena.length()];
+        FileWriter fichero1 = null;
+        PrintWriter pw1 = null;
+        try
+        {
+            File nombre = new File(nombreArchivo);
+            if(!nombre.exists())nombre.createNewFile();
+            fichero1 = new FileWriter(nombre);
+            pw1 = new PrintWriter(fichero1);
+            //pw1.println("C\tProc\tP\tAc\tAb\tR\tSi/no");
+            for (int i = 0; i < listaCadenas.length; i++){
+                this.cadena=listaCadenas[i];
+                this.print = new Integer[cadena.length()];
+                respuesta = new NDRespuesta(cadena);
+                computarTodosLosProcesamientos(q0,0);
+                
+                String res=cadena+"\t";
+                if(respuesta.isAccepted()){
+                    res+=respuesta.getAccepted().get(0)+"\t";
+                }else if(respuesta.getRejected().size()>0){
+                    res+=respuesta.getRejected().get(0)+"\t";
+                }else if(respuesta.getAborted().size()>0){
+                    res+="Cadena abortada \t";
+                }
+                res+=Integer.toString(respuesta.getAccepted().size()+respuesta.getRejected().size()+respuesta.getAborted().size())+"\t"+Integer.toString(respuesta.getAccepted().size())+"\t";
+                res+=Integer.toString(respuesta.getAborted().size())+"\t"+ Integer.toString(respuesta.getRejected().size())+"\t";
+                if(respuesta.isAccepted()){
+                    res+="Sí";
+                }else{
+                    res+="No";
+                }
+                pw1.println(res);
+                if(imprimirPantalla){
+                    System.out.println(res);
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+           try {
+           // Nuevamente aprovechamos el finally para 
+           // asegurarnos que se cierra el fichero.
+           if (null != fichero1)
+              fichero1.close();
+           } catch (Exception e2) {
+              e2.printStackTrace();
+           }
+        }
     }
     
     public void printAutomata() {

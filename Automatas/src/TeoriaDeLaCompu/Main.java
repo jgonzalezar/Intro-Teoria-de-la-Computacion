@@ -139,11 +139,10 @@ public class Main {
         System.out.println("");
         System.out.println("Computar todos los procesamientos");
         automataNoDet.computarTodosLosProcesamientos("baa");
-//        System.out.println("");
-//        System.out.println("Computar una lista de cadenas");
-//        String[] prueba = {"ab","ba"};
-//        automataNoDet.procesarListaCadenas(prueba,"prueba.txt", true);
-//        System.out.println(automataNoDet.procesarCadenaConDetalles(sigma));
+        System.out.println("");
+        System.out.println("Computar una lista de cadenas");
+        String[] prueba = {"bba","baa","bab"};
+        automataNoDet.procesarListaCadenas(prueba,"prueba.txt", true);
 //        automataNoDet.printAutomata();
     }
     

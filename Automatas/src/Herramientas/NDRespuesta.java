@@ -42,11 +42,10 @@ public class NDRespuesta {
         ArrayList<String> accepted = new ArrayList<>();
         String s;
         for(int i=0;i<aceptado.size()/cadena.length();i++){
-            s ="q0 ";
-            for(int j=0;j<cadena.length()-1;j++){
-                s += "q"+aceptado.get(j+i*cadena.length())+" ";
+             s="q0";
+            for(int j=0;j<cadena.length();j++){
+                s += " "+cadena.substring(j,j+1)+",q"+aceptado.get(j+i*cadena.length());
             }
-            s += "q"+aceptado.get(i*cadena.length()+(cadena.length()-1));
             accepted.add(s);
         }
         return accepted;
@@ -58,7 +57,7 @@ public class NDRespuesta {
         for(int i=0;i<rechazado.size()/cadena.length();i++){
             s ="q0";
             for(int j=0;j<cadena.length();j++){
-                s += " q"+rechazado.get(j+i*cadena.length());
+                s += " "+cadena.substring(j,j+1)+",q"+rechazado.get(j+i*cadena.length());
             }
             rejected.add(s);
         }
@@ -68,12 +67,15 @@ public class NDRespuesta {
     public ArrayList<String> getAborted(){
         ArrayList<String> aborted = new ArrayList<>();
         String s="q0";
+        int cont=0;
         for(int i=0;i<abortado.size();i++){
             if(abortado.get(i)==-1){
                 aborted.add(s);
                 s="q0";
+                cont=0;
             }else{
-                s +=" q"+abortado.get(i);
+                s +=" "+cadena.substring(cont,cont+1)+",q"+abortado.get(i);
+                cont++;
             }
         }
         return aborted;
