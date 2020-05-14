@@ -37,11 +37,11 @@ public abstract class AutomatasEstados {
         }
     }
     
-    public abstract AutoReturn AFDReci();
-    public abstract AutoReturn AFDCrear();
-    public abstract AutoReturn AFDMostrar();
-    public abstract AutoReturn AFDEvaluar();
-    public abstract AutoReturn AFDresult();
+    public abstract AutoReturn AutoReci();
+    public abstract AutoReturn AutoCrear();
+    public abstract AutoReturn AutoMostrar();
+    public abstract AutoReturn Autovaluar();
+    public abstract AutoReturn Autoresult();
     
     
 }
