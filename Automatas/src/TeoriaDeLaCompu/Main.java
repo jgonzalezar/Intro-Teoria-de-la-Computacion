@@ -6,6 +6,7 @@
 package TeoriaDeLaCompu;
 
 import AutomatasFinitos.AFD;
+import AutomatasFinitos.AFN;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -13,6 +14,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Herramientas.Transition;
+import Herramientas.Tuple;
 /**
  *
  * @author fanat
@@ -37,6 +39,9 @@ public class Main {
                 break;
                 case "20":
                     AFDSET2();
+                    break;
+                case "3":
+                    prueba();
                     break;
                 default:
                     AFDSET();
@@ -100,7 +105,7 @@ public class Main {
         F1.add(0);
         T.Put("a", F1);
         F2.add(1);
-        F2.add(0);
+        F2.add(null);
         T.Put("b", F2);
         AFD set = new AFD(E, 3, 0, F, T);
         Scanner s = new Scanner(new File("src/CombinacionAlphabetos/E_ab10.txt"));
@@ -108,6 +113,38 @@ public class Main {
 
         set.procesarListaCadenas(lis, "src/CombinacionAlphabetos/E", true);
         
+    }
+    
+    static private void prueba(){
+       
+	ArrayList<Tuple> Delta = new ArrayList<>();
+        Delta.add(new Tuple("b",0,1));
+	Delta.add(new Tuple("b",0,2));
+	Delta.add(new Tuple("a",1,0));
+	Delta.add(new Tuple("a",1,1));
+	Delta.add(new Tuple("a",2,3));
+	Delta.add(new Tuple("b",3,0));
+        
+        ArrayList<Integer> F = new ArrayList<>();
+        F.add(0);
+	F.add(3);
+        
+        AFN automataNoDet = new AFN("ab",3,0,F,Delta);
+        System.out.println("");
+        System.out.println("Procesar cadena");
+        System.out.println(automataNoDet.procesarCadena("baa"));
+        System.out.println("");
+        System.out.println("Procesar cadena con detalles");
+        System.out.println(automataNoDet.procesarCadenaConDetalles("baa"));
+        System.out.println("");
+        System.out.println("Computar todos los procesamientos");
+        automataNoDet.computarTodosLosProcesamientos("baa");
+//        System.out.println("");
+//        System.out.println("Computar una lista de cadenas");
+//        String[] prueba = {"ab","ba"};
+//        automataNoDet.procesarListaCadenas(prueba,"prueba.txt", true);
+//        System.out.println(automataNoDet.procesarCadenaConDetalles(sigma));
+//        automataNoDet.printAutomata();
     }
     
     /*static private void AFNtoAFD() throws FileNotFoundException{
