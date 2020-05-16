@@ -4,61 +4,73 @@ import Herramientas.Respuesta;
 import Herramientas.Transition;
 import java.util.ArrayList;
 import java.util.Arrays;
-import Herramientas.Tuple;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.Scanner;
 
 /**
- * esta clase es el automata finito determinista
- * @author equipo los Javas
+ * Esta clase es el automata finito determinista
+ * en este automata se pueden realizar procesamientos de palabras sobre si mismo, confirmando si pertenece o no al lenguaje, e incluso se puede recibir una respuesta con pasos incluidos
  * 
+ * @author equipo los Javas
+ * @version 1.2
  */
 public class AFD {
-    public final String E;
-    public final int Q;
+    /**
+     * El atributo Sigma representa el alfabeto del automata.
+     * Esta dado por la clase String, y cada una de los caracteres de Sigma es uno de los simbolos del alfabeto.     * 
+     */
+    public final String Sigma;
+    /**
+     * El atributo Q representa la cantidad total de estados dentro del automata.
+     */
+    public final int Q; 
+    /**
+     * El atributo q0 representa el estado inicial del autómata.
+     */
     public final int q0;
+    /**
+     * El atributo F representa los estados aceptados del autómata. 
+     */
     public final ArrayList<Integer> F;
+    /**
+     * El atributo Delta representa la función de transición del autómata.
+     */
     public final Transition Delta;
     
     /**
-     * 
-     * @param E
+     * Constructor 
+     * @param Sigma
      * @param Q
      * @param q0
      * @param F
      * @param Delta 
      */
-    public AFD(String E, int Q, int q0, ArrayList<Integer> F, Transition Delta) {
-        this.E = E;
+    public AFD(String Sigma, int Q, int q0, ArrayList<Integer> F, Transition Delta) {
+        this.Sigma = Sigma;
         this.Q = Q;
         this.q0 = q0;
         this.F = F;
         this.Delta = Delta;
     }
 
-    public AFD(String E, int q0, ArrayList<Integer> F, Transition Delta) {
-        this.E = E;
-        this.Q = Delta.size();
+    public AFD(String Sigma, int q0, ArrayList<Integer> F, Transition Delta) {
+        this.Sigma = Sigma;
         this.q0 = q0;
         this.F = F;
         this.Delta = Delta;
+        int f= F.get(0);
+        for (int i = 0; i < F.size(); i++) {
+            if(f<F.get(i)){
+                f=F.get(i);
+            }
+        }
+        if(f>=this.Delta.size()){
+            this.Q =f;
+        }else{
+            this.Q = Delta.size();
+        }
     }
-
-    /*
-
-	public void addConnections(ArrayList<Tuple> calledBy) {
-		for(int i=0;i<calledBy.size();i++) {
-			while(calledBy.get(i).getFinalState()>=this.Delta.size()) {
-				this.Delta.add(new ArrayList<Tuple>());
-			}
-			this.Delta.get(calledBy.get(i).getInitialState()).add(new Tuple(calledBy.get(i).getSymbol(),calledBy.get(i).getFinalState()));
-		}		
-		return;
-	}*/
-	
 	/**
          * 
          * @param word
@@ -68,19 +80,24 @@ public class AFD {
         if(word==null||word.length()==0){            
             return F.contains(q0);
         }
-        return Finish(Delta(word),false).aceptado;
+        return prosCaden(word).aceptado;
     }
     
     public boolean procesarCadena(char[] word){
         return procesarCadena(Arrays.toString(word));
     }
-    public Respuesta procesarCadenaConDetalles(char[] word){
+    public boolean procesarCadenaConDetalles(char[] word){
         return procesarCadenaConDetalles(Arrays.toString(word));
     }
     
-    public Respuesta procesarCadenaConDetalles(String word){
-        
-        return Finish(Delta(word),true);
+    public Respuesta prosCaden(String word){
+        return Finish(Delta(word));
+    }
+    
+    public boolean procesarCadenaConDetalles(String word){
+        Respuesta fin =prosCaden(word);
+        System.out.println(fin.pasos());
+        return fin.aceptado;
     }
     
     public void procesarListaCadenas(String[] listaCadenas,String nombreArchivo,boolean imprimirPantalla){
@@ -93,7 +110,7 @@ public class AFD {
             fichero1 = new FileWriter(nombre);
             pw1 = new PrintWriter(fichero1);
             for (int i = 0; i < listaCadenas.length; i++){
-                Respuesta res = procesarCadenaConDetalles(listaCadenas[i]);
+                Respuesta res = prosCaden(listaCadenas[i]);
                 String pas =res.pasos();
                 String res2= listaCadenas[i]+"\t"+ pas.substring(0, pas.length()-1)+"\t"+res.aceptado;
                 pw1.println(res2);
@@ -140,8 +157,8 @@ public class AFD {
     }
     
     private Respuesta Delta(Respuesta i, String u) {
-        /*if(!E.contains(u)){
-            //System.err.println("El simbolo "+u+"no pertenece a el Alfabeto");
+        /*if(!Sigma.contains(u)){
+            //System.err.println("Sigmal simbolo "+u+"no pertenece a el Alfabeto");
             int as = -u.charAt(0);
             return as;
         }*/
@@ -153,8 +170,7 @@ public class AFD {
         return i;
     }
 
-    private Respuesta Finish(Respuesta q,boolean deta) {
-        if(deta)System.out.println(q.pasos());
+    private Respuesta Finish(Respuesta q) {
         if(F.contains(q.pasos.get(q.pasos.size()-1))){        
             q.aceptado=true;
             
@@ -162,35 +178,8 @@ public class AFD {
         /*if(q<-1){
             char a = (char)-q;
             System.out.println(a);
-            System.err.println("El simbolo \""+a+"\" no pertenece a el Alfabeto");
+            System.err.println("Sigmal simbolo \""+a+"\" no pertenece a el Alfabeto");
         }*/
         return q;
     }
-    
-    
-    
-    
-	
-   /* public void printAutomata() {
-        System.out.println("El Delta determinista ingresado es:");
-	for(int i=0;i<this.Delta.size();i++) {
-            System.out.print("q"+i + ": ");
-		for(int j=0;j<this.Delta.get(i).size();j++) {
-                    System.out.print(Delta.get(i).get(j).getSymbol()+",q" + Delta.get(i).get(j).getFinalState() + " ");
-		}
-            System.out.println();
-	}
-	System.out.println();
-        if(this.F.size()>0) {
-            System.out.println("Y sus estados de aceptaci�n son:");
-            for(int i=0;i<this.F.size();i++) {
-		System.out.print("q"+F.get(i) + " ");
-            }
-		}else {
-			System.out.println("A�n no tiene estados de aceptaci�n");
-		}
-		System.out.println();
-		System.out.println();
-	}
-	*/
 }

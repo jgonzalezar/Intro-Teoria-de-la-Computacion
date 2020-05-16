@@ -1,3 +1,4 @@
+package AutomatasB;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -8,16 +9,22 @@ public class AFD {
 		
 		Scanner scan = new Scanner(System.in);
 		
-		//System.out.println("Do you want to use the default automata?");
-		//System.out.println("If not you'll have to enter your own one (y/n) ");
+		AFD evaluarCadenas = new AFD();
 		
-		//String automataDecision = scan.next();
-		//if ((automataDecision.toLowerCase()).equals("n"))
-		//{
+		String[] language = {"a","b"};
+		byte[][] transition = {{1,2},{3,5},{5,4},{3,5},{5,4},{6,6},{6,6}};;
+		byte[] acceptedStates = {1,2,5};;
+		System.out.println("Do you want to use the default automata?");
+		System.out.println("If not you'll have to enter your own one (y/n) ");
+		
+		
+		String automataDecision = scan.next();
+		if ((automataDecision.toLowerCase()).equals("n"))
+		{
 			System.out.println("Enter the symbols of the language without spaces between them");
 			System.out.print("(For example \"abcd\") ");
 			String dumbLanguage = scan.next();
-			String[] language = dumbLanguage.split(""); 
+			language = dumbLanguage.split(""); 
 			
 			System.out.print("How many states does the automata have ");
 			byte numberOfStates = scan.nextByte();
@@ -25,7 +32,7 @@ public class AFD {
 			for (int k = 0 ; k < numberOfStates ; k++)
 				states[k] = (byte)k;
 			
-			byte[][] transition = new byte[states.length][language.length];
+			transition = new byte[states.length][language.length];
 			System.out.println("Fill the transition table for the automata, row by row, leaving spaces between entries:");
 			System.out.println("  "+Arrays.toString(language));
 			for (int k = 0 ; k < states.length ; k++) {
@@ -37,17 +44,11 @@ public class AFD {
 			
 			System.out.print("How many acepted states are there?: ");
 			byte numberOfAcceptedStates = scan.nextByte();
-			byte[] acceptedStates = new byte[numberOfAcceptedStates];
+			acceptedStates = new byte[numberOfAcceptedStates];
 			System.out.print("Which states are acepted?: ");
 			for (int k = 0 ; k < acceptedStates.length ; k++)
 				acceptedStates[k] = scan.nextByte();
-		//}
-		//else
-		//{
-		//	String[] language = {"a","b"};
-		//	byte[][] transition = {{1,2},{3,5},{5,4},{3,5},{5,4},{6,6},{6,6}};
-		//	byte[] acceptedStates = {1,2,5};
-		//}
+		}
 
 		System.out.print("Enter the string to be evaluated: ");
 		//Loop the program to evaluate more than one string with the same automata.
@@ -61,7 +62,7 @@ public class AFD {
 			//Transforms the string in an array
 			String[] chain = dumbChain.split("");
 			
-			byte finalState = stringSolver(chain, language, transition);
+			byte finalState = evaluarCadenas.stringSolver(chain, language, transition);
 			int nonAccepted = 0;
 			
 			for (int i = 0; i < acceptedStates.length; i++)
@@ -83,7 +84,7 @@ public class AFD {
 	
 	//Use an array of indices to use easily the transition function.
 	//Arguments of the method are: 1. The string being evaluated. 2. The language array.
-	public static byte[] indexFinder(String x[], String y[])
+	public byte[] indexFinder(String x[], String y[])
 	{
 		byte[] indexFound = new byte[x.length];
 		byte i = 0;
@@ -102,7 +103,7 @@ public class AFD {
 	//1. String being evaluated.
 	//2. Language array.
 	//3. Transition matrix.
-	public static byte stringSolver(String x[], String y[], byte t[][])
+	public byte stringSolver(String x[], String y[], byte t[][])
 	{
 		byte decision = 0;
 		byte[] index = indexFinder(x, y);
