@@ -28,7 +28,7 @@ public class AFNL {
     private final int q0;
     private final int[] F;
     private final TransitionAFNL T;
-    private final String lambda;
+    private final char lambda;
     
 
     public AFNL(char[] E, int Q, int q0, int[] F, TransitionAFNL T) {
@@ -37,10 +37,10 @@ public class AFNL {
         this.q0 = q0;
         this.F = F;
         this.T = T;
-        this.lambda = "L";
+        this.lambda = 'L';
     }
     
-    public AFNL(char[] E, int Q, int q0, int[] F, TransitionAFNL T,String lambda) {
+    public AFNL(char[] E, int Q, int q0, int[] F, TransitionAFNL T,char lambda) {
         this.E = E;
         this.Q = Q;
         this.q0 = q0;
@@ -53,13 +53,13 @@ public class AFNL {
     public ArrayList<Integer>  lambdaClausura_unEstado(int estado,ArrayList<Integer> lClausura){
         
         TransitionAFNL Tra= this.T;
-        String lambdaTra=this.lambda;
+        char lambdaTra=this.lambda;
         
         
-       Map<String,ArrayList<Integer>> estadoInterior;
+       Map<Character,ArrayList<Integer>> estadoInterior;
         //estadoInterior = new HashMap<>();
        estadoInterior=Tra.getState(estado);
-       for (Map.Entry<String, ArrayList<Integer>> entry : estadoInterior.entrySet()) {
+       for (Map.Entry<Character, ArrayList<Integer>> entry : estadoInterior.entrySet()) {
            
 		    if(entry.getKey().equals(lambdaTra) && entry.getValue().isEmpty()==false){
                         lClausura.add(estado);
@@ -83,9 +83,9 @@ public class AFNL {
             
        
         System.out.printf("lambda clausura del estado q"+ estado);
-        for (Integer s : Clausura) {
+        Clausura.forEach((s) -> {
             System.out.println("q"+s);
-        }
+        });
 
         
     }
@@ -153,13 +153,14 @@ public class AFNL {
     
     public ArrayList<Integer> devolverEstadosIteracion(char letra,ArrayList<Integer> estados){
         TransitionAFNL T=this.T;
-        String lambdaT=this.lambda;
+        char lambdaT=this.lambda;
+        
         ArrayList<Integer> estadosFinales=new ArrayList<>();
         for(int i =0;i<estados.size();i++){
-            Map<String,ArrayList<Integer>> estadoInterior;
+            Map<Character,ArrayList<Integer>> estadoInterior;
         
             estadoInterior=T.getState(estados.get(i));
-            for (Map.Entry<String, ArrayList<Integer>> entry : estadoInterior.entrySet()) {           
+            for (Map.Entry<Character, ArrayList<Integer>> entry : estadoInterior.entrySet()) {           
 		    if( entry.getKey().equals(letra)&& entry.getValue().isEmpty()==false){
                       ArrayList<Integer> estadosFinalesPrev=entry.getValue(); 
                       for(int j=0;j<estadosFinalesPrev.size();j++){
@@ -190,6 +191,8 @@ public class AFNL {
     }
     
 }
+
+    
  
     
     
