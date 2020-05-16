@@ -14,7 +14,7 @@ import java.util.HashMap;
  * @author fanat
  */
 public class Transition {
-    HashMap<String,HashMap<String,Integer>> transicion;
+    HashMap<String,HashMap<String,String>> transicion;
 
     public Transition() {
         transicion = new HashMap<>();
@@ -26,7 +26,7 @@ public class Transition {
      * @param Alphabeto
      * @param estado
      */
-    public void add(String Alphabeto, String Estado,int estado){
+    public void add(String Alphabeto, String Estado,String estado){
         if(transicion.get(Alphabeto)==null){
             transicion.put(Alphabeto, new HashMap<>());
         }
@@ -38,7 +38,7 @@ public class Transition {
         return transicion.size();
     }
 
-    public int cambio(String Alphabeto, String Estado) {
+    public String cambio(String Alphabeto, String Estado) {
         return transicion.get(Alphabeto).get(Estado);
     }
     
