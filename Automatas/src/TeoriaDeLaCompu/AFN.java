@@ -6,6 +6,8 @@
 package TeoriaDeLaCompu;
 
 import AutomatasFinitos.AFD;
+import Herramientas.Transition;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -25,6 +27,10 @@ public class AFN {
         this.q0 = q0;
         this.F = F;
         this.T = T;
+    }
+
+    AFN(String E, int i, int i0, ArrayList<Integer> F, Transition T) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     public boolean Delta(String word){
