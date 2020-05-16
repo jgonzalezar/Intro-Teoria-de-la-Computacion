@@ -16,7 +16,7 @@ import java.util.HashMap;
  * @author ivonn
  */
 public class TransitionAFNL {
-    ArrayList<HashMap<String,ArrayList<Integer>>> transicionAFNL;
+    ArrayList<HashMap<Character ,ArrayList<Integer>>> transicionAFNL;
     
     public TransitionAFNL() {
         transicionAFNL = new ArrayList<>();
