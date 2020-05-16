@@ -17,6 +17,7 @@ import java.io.PrintWriter;
  */
 public class AFD {
     /**
+
      * El atributo Sigma representa el alfabeto del automata.
      * Esta dado por la clase String, y cada una de los caracteres de Sigma es uno de los simbolos del alfabeto.     * 
      */
@@ -71,21 +72,50 @@ public class AFD {
             this.Q = Delta.size();
         }
     }
+
+    /*
+
+	public void addConnections(ArrayList<Tuple> calledBy) {
+		for(int i=0;i<calledBy.size();i++) {
+			while(calledBy.get(i).getFinalState()>=this.Delta.size()) {
+				this.Delta.add(new ArrayList<Tuple>());
+			}
+			this.Delta.get(calledBy.get(i).getInitialState()).add(new Tuple(calledBy.get(i).getSymbol(),calledBy.get(i).getFinalState()));
+		}		
+		return;
+	}*/
+	
+
 	/**
          * 
          * @param word
          * @return 
          */
+
     public boolean procesarCadena(String word){
         if(word==null||word.length()==0){            
             return F.contains(q0);
         }
         return prosCaden(word).aceptado;
     }
+    /**
+     * Procesa una cadena para decir si pertenece al lenguaje
+     * @param word palabra a determinar
+     * @return booleano de pertenece o no
+     * @see procesarCadena
+     * 
+     */
+    
     
     public boolean procesarCadena(char[] word){
         return procesarCadena(Arrays.toString(word));
     }
+    
+    /**
+     * 
+     * @param word
+     * @return 
+     */
     public boolean procesarCadenaConDetalles(char[] word){
         return procesarCadenaConDetalles(Arrays.toString(word));
     }

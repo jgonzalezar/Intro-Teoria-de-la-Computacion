@@ -4,6 +4,7 @@ public class Tuple{
 	public final String x; 
 	public final Integer y; 
 	public final Integer z; 
+	
 	public Tuple(String symbol, Integer initialState, Integer finalState) { 
 		this.x=symbol;
 		this.y=initialState;

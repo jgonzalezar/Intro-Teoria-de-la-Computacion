@@ -26,7 +26,7 @@ public class AFNL {
         this.T = T;
     }
     
-    public boolean Delta(String word){
+    public boolean Delta(String word){ // inicial la que llama el usuario
         if(word==null||word.length()==0){            
             return ExtrasOrden.Exist(F,q0);
         }else if(word.length()==1){            
@@ -35,11 +35,16 @@ public class AFNL {
         return Finish(Delta(word.substring(0, word.length()-1),word.charAt(word.length()-1)));
     }
     
-    public boolean Delta(char[] word){
+    public boolean Delta(char[] word){ // inicial la que llama el usuario
         return Delta(Arrays.toString(word));
     }
 
-    private int[] Delta(String word, char u) {
+    private int[] Delta(String word, char u) { // recuersiva del ultimo
+        
+                //q8 a q9
+                //q3 l
+                //q1 o
+                //  h
         if(word.length()==0){
             int[] a = {q0};
             return Delta(a,u);
