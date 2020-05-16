@@ -129,11 +129,68 @@ public class AFNL {
     }
     
     public boolean  ProcesarCadena(String palabra){
+        int aceptacion=0;
+        TransitionAFNL T=this.T;
+        int[] EstadosAceptacion=this.F;
+        ArrayList<Integer> EstadosFinales= new ArrayList<>();
+        EstadosFinales.add(0);
+        for (int i=0;i<palabra.length();i++){
+            char letraEvaluada=palabra.charAt(i);
+            EstadosFinales=devolverEstadosIteracion(letraEvaluada,EstadosFinales);         
+            
+        }
+        for(int j=0; j<EstadosAceptacion.length;j++){
+            for(int k=0; k<EstadosFinales.size();k++){
+                if (EstadosFinales.get(k)==EstadosAceptacion[j]){
+                    aceptacion++;
+                }
+            }
+            
+        }
+        return aceptacion>0;
+        
+    }
+    
+    public ArrayList<Integer> devolverEstadosIteracion(char letra,ArrayList<Integer> estados){
+        TransitionAFNL T=this.T;
+        String lambdaT=this.lambda;
+        ArrayList<Integer> estadosFinales=new ArrayList<>();
+        for(int i =0;i<estados.size();i++){
+            Map<String,ArrayList<Integer>> estadoInterior;
+        
+            estadoInterior=T.getState(estados.get(i));
+            for (Map.Entry<String, ArrayList<Integer>> entry : estadoInterior.entrySet()) {           
+		    if( entry.getKey().equals(letra)&& entry.getValue().isEmpty()==false){
+                      ArrayList<Integer> estadosFinalesPrev=entry.getValue(); 
+                      for(int j=0;j<estadosFinalesPrev.size();j++){
+                          estadosFinales.add(estadosFinalesPrev.get(j));
+                          }
+                    }else if(entry.getKey().equals(lambdaT)&& entry.getValue().isEmpty()==false){
+                        ArrayList<Integer> estadosFinalesPrevLambda=entry.getValue();
+                        ArrayList<Integer> estadosFinalesPrev=devolverEstadosIteracion(letra,estadosFinalesPrevLambda);
+                      for(int j=0;j<estadosFinalesPrev.size();j++){
+                          estadosFinales.add(estadosFinalesPrev.get(j));
+                          }
+                        
+                    }  
+                        
+            }
+        }
+        Set<Integer> hashSet = new HashSet<>(estadosFinales);
+        estadosFinales.clear();
+        estadosFinales.addAll(hashSet);
+        
+        return estadosFinales;
+
         
         
     }
-}
     
+    public void ProcesarCadenaConDetalles(){
+    }
+    
+}
+ 
     
     
     
