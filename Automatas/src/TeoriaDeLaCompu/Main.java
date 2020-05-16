@@ -87,7 +87,7 @@ public class Main {
         F2.add(1);
         F2.add(0);
         T.Put("b", F2);
-        AFD set = new AFD(E, 3, 0, F, T);
+        AFD set = new AFD(E, 2, 0, F, T);
         Scanner s = new Scanner(new File("src/CombinacionAlphabetos/E_ab10.txt"));
         while(s.hasNext()){
             String as = s.next();

@@ -3,10 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/D:/Documents/Julian/Unal/2020-1/Introducción%20a%20la%20teoria%20de%20la%20computación/Codigos/Entrega%201/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFN.java</file>
-            <file>file:/D:/Documents/Julian/Unal/2020-1/Introducción%20a%20la%20teoria%20de%20la%20computación/Codigos/Entrega%201/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFD.java</file>
-            <file>file:/D:/Documents/Julian/Unal/2020-1/Introducción%20a%20la%20teoria%20de%20la%20computación/Codigos/Entrega%201/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/NDRespuesta.java</file>
-            <file>file:/D:/Documents/Julian/Unal/2020-1/Introducción%20a%20la%20teoria%20de%20la%20computación/Codigos/Entrega%201/Intro-Teoria-de-la-Computacion/Automatas/src/TeoriaDeLaCompu/Main.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFD.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/TeoriaDeLaCompu/AFN.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFN.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/TeoriaDeLaCompu/Main.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/Transition.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/NDRespuesta.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Automatas/AFD/CantidadParDeDigitos_AB</file>
         </group>
     </open-files>
 </project-private>
