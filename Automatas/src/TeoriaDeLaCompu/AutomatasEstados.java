@@ -15,7 +15,7 @@ public abstract class AutomatasEstados {
     * Estado en que se encuentra la maquina actualmente
     * @author fanat
     */
-    enum AutoMaqui{
+    public enum AutoMaqui{
       AutoReci,AutoCrear,AutoMostrar,AutoEvaluar,Autoresult,
     }
     
@@ -23,7 +23,7 @@ public abstract class AutomatasEstados {
     * Estado en que se encuentra la maquina cuando se pasa de un estado a otro
     * @author fanat
     */
-    enum AutoReturn{
+    public enum AutoReturn{
       Next, Prev,Salir
     }
     
@@ -40,21 +40,21 @@ public abstract class AutomatasEstados {
 
      * Método que representa el menú o la máquina de estados en la que se baja el menu
 
-     * 
-
+     *
+     * @return
      */
-    public void Estado(){
+    public AutoReturn Estado(){
         switch(estate){
             case AutoReci:
-                break;
+                return AutoReci();
             case AutoCrear:
-                break;
+                return AutoCrear();
             case AutoMostrar:
-                break;
+                return AutoMostrar();
             case AutoEvaluar:
-                break;
+                return Autovaluar();
             case Autoresult:
-                break;
+                return Autoresult();
             default:
                 throw new AssertionError(estate.name());
                         
@@ -64,14 +64,14 @@ public abstract class AutomatasEstados {
     /**
 
      * Método que representa el estado en el que se recibiran los datos del automata
-
+     * @return
      */
     public abstract AutoReturn AutoReci();
     
     /**
 
      * Método que representa el estado en el que se se crea el automata
-
+     * @return
      */
     public abstract AutoReturn AutoCrear();
     

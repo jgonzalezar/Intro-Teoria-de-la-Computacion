@@ -13,10 +13,10 @@ import java.util.HashMap;
  *  clase 
  * @author fanat
  */
-public class Transition {
-    HashMap<String,HashMap<String,String>> transicion;
+public class TransitionMult {
+    HashMap<String,HashMap<String,String[]>> transicion;
 
-    public Transition() {
+    public TransitionMult() {
         transicion = new HashMap<>();
     }
     
@@ -26,7 +26,7 @@ public class Transition {
      * @param Alphabeto
      * @param estado
      */
-    public void add(String Alphabeto, String Estado,String estado){
+    public void add(String Alphabeto, String Estado,String... estado){
         if(transicion.get(Alphabeto)==null){
             transicion.put(Alphabeto, new HashMap<>());
         }
@@ -38,7 +38,7 @@ public class Transition {
         return transicion.size();
     }
 
-    public String cambio(String Alphabeto, String Estado) {
+    public String[] cambio(String Alphabeto, String Estado) {
         return transicion.get(Alphabeto).get(Estado);
     }
     

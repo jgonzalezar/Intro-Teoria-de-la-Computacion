@@ -1,6 +1,8 @@
 
 package TeoriaDeLaCompu;
 
+import TeoriaDeLaCompu.AutomatasEstados.AutoReturn;
+
 
 
 
@@ -68,9 +70,8 @@ public class States {
                 
                 break;
             case Auto:
-                maquina.Estado();
-                if(maquina.estate){
-                    
+                if(maquina.Estado() == AutoReturn.Salir){
+                    stados = Maquina.Salir;
                 }
                 break;
             case Salir:

@@ -41,7 +41,7 @@ public class main {
 		
 		//Automata No Determinista-------------------------------------------------------------------
 		
-		AFN automataNoDet = new AFN("ab");
+		//AFN automataNoDet = new AFN("ab");
 		ArrayList<Tuple> connections = new ArrayList<Tuple>();
 
 //		connections.add(new Tuple("0",0,1));
@@ -106,12 +106,12 @@ public class main {
 		ArrayList<Integer> acceptance = new ArrayList<Integer>();
 		acceptance.add(0);
 		acceptance.add(3);
-		automataNoDet.addAcceptance(acceptance);
+		/*automataNoDet.addAcceptance(acceptance);
 		
 		automataNoDet.addConnections(connections);
 		automataNoDet.printAutomata();
 		
-		AFD automataDet = automataNoDet.toDeterministic();
+		AFD automataDet = automataNoDet.toDeterministic();*/
 		
 //		System.out.println("Ingrese la palabra a procesar:");
 //		String word=entrada.nextLine();
