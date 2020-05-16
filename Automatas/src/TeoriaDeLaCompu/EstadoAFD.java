@@ -60,18 +60,14 @@ public class EstadoAFD extends AutomatasEstados {
             }
             Finales.add(estado);   
         }
-        
-        for (int i = 0; i < Sigma.length(); i++) {
-            transicion.Put(Sigma.substring(i, i+1));
-        }
-        
+
         for (int i = 0; i < Estados; i++) {
             for (int j = 0; j < Sigma.length(); j++) {
                 int estado = ReadInt("Ingrese el estado al que viaja el estado q"+ i +" con la letra "+Sigma.substring(j, j+1)+":" );
                 while (estado > Estados){
                     estado = ReadInt("El estado ingresado debe ser menor a la cantidad de estados del automata");
                 }
-                transicion.Add(Sigma.substring(j, j+1), estado);
+                transicion.add(Sigma.substring(j, j+1),String.valueOf(i), estado);
             }
         }
         

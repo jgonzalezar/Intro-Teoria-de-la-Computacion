@@ -29,10 +29,10 @@ public class Main {
             Scanner s = new Scanner(System.in);
             switch(s.next()){
                 case "2":
-                    AFNLSET();
+                   // AFNLSET();
                 break;
                 case "1":
-                    AFNSET();
+                   // AFNSET();
                 break;
                 case "0":
                     //AFNtoAFD();
@@ -52,7 +52,7 @@ public class Main {
         }
     }
     //{{},{},{},{},{},{}}
-    static private void AFNLSET() throws FileNotFoundException{
+    /*static private void AFNLSET() throws FileNotFoundException{
         char[] E = {'a','b'};
         int[] F = {5,4};
         int[][][] T = {{{2,5},{-1},{3},{-1},{-1},{-1}},{{1},{-1},{-1},{3},{-1},{5}},{{-1},{2},{-1},{4},{4},{-1}}};
@@ -73,7 +73,7 @@ public class Main {
             String as = s.next();
             if(set.Delta(as))System.out.println(as);
         }
-    }
+    }*/
     static private void AFDSET() throws FileNotFoundException{
         String E = "ab";
         ArrayList<Integer> F = new ArrayList<>();
@@ -83,10 +83,8 @@ public class Main {
         Transition T = new Transition();
         F1.add(1);
         F1.add(0);
-        T.Put("a", F1);
         F2.add(1);
         F2.add(0);
-        T.Put("b", F2);
         AFD set = new AFD(E, 2, 0, F, T);
         Scanner s = new Scanner(new File("src/CombinacionAlphabetos/E_ab10.txt"));
         while(s.hasNext()){
@@ -103,10 +101,8 @@ public class Main {
         Transition T = new Transition();
         F1.add(1);
         F1.add(0);
-        T.Put("a", F1);
         F2.add(1);
         F2.add(null);
-        T.Put("b", F2);
         AFD set = new AFD(E, 3, 0, F, T);
         Scanner s = new Scanner(new File("src/CombinacionAlphabetos/E_ab10.txt"));
         String[] lis ={"a","aa","bbb"};
