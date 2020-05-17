@@ -25,15 +25,15 @@ public class AFD {
     /**
      * El atributo Q representa la cantidad total de estados dentro del automata.
      */
-    public final int Q; 
+    public final String[] Q; 
     /**
      * El atributo q0 representa el estado inicial del autómata.
      */
-    public final int q0;
+    public final String q0;
     /**
      * El atributo F representa los estados aceptados del autómata. 
      */
-    public final ArrayList<Integer> F;
+    public final ArrayList<String> F;
     /**
      * El atributo Delta representa la función de transición del autómata.
      */
@@ -47,30 +47,12 @@ public class AFD {
      * @param F
      * @param Delta 
      */
-    public AFD(String Sigma, int Q, int q0, ArrayList<Integer> F, Transition Delta) {
+    public AFD(String Sigma, String[] Q, String q0, ArrayList<String> F, Transition Delta) {
         this.Sigma = Sigma;
         this.Q = Q;
         this.q0 = q0;
         this.F = F;
         this.Delta = Delta;
-    }
-
-    public AFD(String Sigma, int q0, ArrayList<Integer> F, Transition Delta) {
-        this.Sigma = Sigma;
-        this.q0 = q0;
-        this.F = F;
-        this.Delta = Delta;
-        int f= F.get(0);
-        for (int i = 0; i < F.size(); i++) {
-            if(f<F.get(i)){
-                f=F.get(i);
-            }
-        }
-        if(f>=this.Delta.size()){
-            this.Q =f;
-        }else{
-            this.Q = Delta.size();
-        }
     }
 
     /*
@@ -180,20 +162,20 @@ public class AFD {
             return  f;
         }
         if(word.length()==1){
-            return Delta(f,word.substring(0,1));
+            return Delta(f,word.charAt(0));
         }
         Respuesta det = Delta(word.substring(0, word.length()-1));
-        return Delta(det,word.substring(word.length()-1, word.length()));
+        return Delta(det,word.charAt(word.length()-1));
     }
     
-    private Respuesta Delta(Respuesta i, String u) {
+    private Respuesta Delta(Respuesta i, char u) {
         /*if(!Sigma.contains(u)){
             //System.err.println("Sigmal simbolo "+u+"no pertenece a el Alfabeto");
             int as = -u.charAt(0);
             return as;
         }*/
-        if(i.pasos.get(i.pasos.size()-1)>=0){
-            int tas = Delta.cambio(i.pasos.get(i.pasos.size()-1),u);
+        if(!i.pasos.get(i.pasos.size()-1).equals("-1")){
+            String tas = Delta.cambio(u,i.pasos.get(i.pasos.size()-1));
             i.add(tas);
         }
         
