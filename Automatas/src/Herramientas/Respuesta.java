@@ -13,7 +13,7 @@ import java.util.ArrayList;
  */
 public class Respuesta {
     public boolean aceptado;
-    public  ArrayList<Integer> pasos ;
+    public  ArrayList<String> pasos ;
 
     public Respuesta() {
         aceptado = false;
@@ -21,7 +21,7 @@ public class Respuesta {
     }
 
     
-    public void add(int paso){
+    public void add(String paso){
         pasos.add(paso);
         
     }

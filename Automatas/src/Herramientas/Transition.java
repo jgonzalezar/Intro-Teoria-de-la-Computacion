@@ -38,7 +38,7 @@ public class Transition {
         return transicion.size();
     }
 
-    public String cambio(String Alphabeto, String Estado) {
+    public String cambio(Character Alphabeto, String Estado) {
         return transicion.get(Alphabeto).get(Estado);
     }
     
