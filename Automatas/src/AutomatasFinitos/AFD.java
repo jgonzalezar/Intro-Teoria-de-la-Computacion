@@ -25,7 +25,7 @@ public class AFD {
     /**
      * El atributo Q representa la cantidad total de estados dentro del automata.
      */
-    public final String[] Q; 
+    public final ArrayList<String> Q; 
     /**
      * El atributo q0 representa el estado inicial del autómata.
      */
@@ -47,7 +47,7 @@ public class AFD {
      * @param F
      * @param Delta 
      */
-    public AFD(String Sigma, String[] Q, String q0, ArrayList<String> F, Transition Delta) {
+    public AFD(String Sigma, ArrayList<String> Q, String q0, ArrayList<String> F, Transition Delta) {
         this.Sigma = Sigma;
         this.Q = Q;
         this.q0 = q0;

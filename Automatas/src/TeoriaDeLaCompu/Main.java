@@ -7,6 +7,7 @@ package TeoriaDeLaCompu;
 
 import AutomatasFinitos.AFD;
 import AutomatasFinitos.AFN;
+import Herramientas.CreadorAFD;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -85,14 +86,14 @@ public class Main {
         F1.add(0);
         F2.add(1);
         F2.add(0);
-        AFD set = new AFD(E, 2, 0, F, T);
+        AFD set = CreadorAFD.leerAFD("");
         Scanner s = new Scanner(new File("src/CombinacionAlphabetos/E_ab10.txt"));
         while(s.hasNext()){
             String as = s.next();
             if(set.procesarCadena(as))System.out.println(as);
         }
     }
-    static private void AFDSET2() throws FileNotFoundException{
+    /*static private void AFDSET2() throws FileNotFoundException{
         String E = "ab";
         ArrayList<Integer> F = new ArrayList<>();
         ArrayList<Integer> F1 = new ArrayList<>();
@@ -109,7 +110,7 @@ public class Main {
 
         set.procesarListaCadenas(lis, "src/CombinacionAlphabetos/E", true);
         
-    }
+    }*/
     
     static private void prueba(){
        
