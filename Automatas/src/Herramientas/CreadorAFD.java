@@ -45,10 +45,11 @@ public class CreadorAFD {
             Scanner sca = new Scanner(new File(afd));
             while(sca.hasNextLine()){
                 String lin = sca.nextLine();
+                System.out.println(lin);
                 switch(lin){
-                    case "#alpabet":
+                    case "#alphabet":
                         lec = Lecto.alfabeto;
-                        alpha = "";
+                        alpha="";
                         break;
                     case "#states":
                         if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
@@ -84,7 +85,7 @@ public class CreadorAFD {
                                     int a = lin.charAt(0);
                                     int b = lin.charAt(2);
                                     int c = b-a;
-                                    for (int i = 0; i < c; i++) {
+                                    for (int i = 0; i <=c; i++) {
                                         char d = (char) (a+i);
                                         alpha+= d;
                                         
