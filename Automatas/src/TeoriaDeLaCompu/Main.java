@@ -39,7 +39,7 @@ public class Main {
                     //AFNtoAFD();
                 break;
                 case "20":
-                    AFDSET2();
+                   // AFDSET2();
                     break;
                 case "3":
                     prueba();
@@ -76,17 +76,7 @@ public class Main {
         }
     }*/
     static private void AFDSET() throws FileNotFoundException{
-        String E = "ab";
-        ArrayList<Integer> F = new ArrayList<>();
-        ArrayList<Integer> F1 = new ArrayList<>();
-        ArrayList<Integer> F2 = new ArrayList<>();
-        F.add(0);
-        Transition T = new Transition();
-        F1.add(1);
-        F1.add(0);
-        F2.add(1);
-        F2.add(0);
-        AFD set = CreadorAFD.leerAFD("");
+        AFD set = CreadorAFD.leerAFD("src/Automatas/AFD/CantidadParDeDigitos_AB");
         Scanner s = new Scanner(new File("src/CombinacionAlphabetos/E_ab10.txt"));
         while(s.hasNext()){
             String as = s.next();
