@@ -187,7 +187,26 @@ public class AFNL {
         
     }
     
-    public void ProcesarCadenaConDetalles(){
+     public void ProcesarCadenaConDetalles(String palabra){
+        
+        TransitionAFNL T=this.T;
+        ArrayList<Integer> EstadosFinales= new ArrayList<>();
+        EstadosFinales.add(0);
+        boolean aceptacion=ProcesarCadena(palabra);
+        if(aceptacion== true){
+            for (int i=0;i<palabra.length();i++){
+                char letraEvaluada=palabra.charAt(i);
+                for(int j=0;j<EstadosFinales.size();j++){
+                    if(devolverEstadosIteracion(letraEvaluada,EstadosFinales).isEmpty() ==false){
+                        System.out.println("q"+EstadosFinales.get(j)+" "+letraEvaluada);
+                        EstadosFinales=devolverEstadosIteracion(letraEvaluada,EstadosFinales);
+                    }
+                }
+            
+            }
+          System.out.println("la cadena fue aceptada");  
+        }
+        
     }
     
 }
