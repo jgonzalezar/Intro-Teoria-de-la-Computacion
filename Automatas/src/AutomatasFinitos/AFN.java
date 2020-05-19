@@ -10,7 +10,7 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 
 public class AFN {
-    public final String sigma; 
+    public final char[] sigma; 
     public final int Q;
     public final int q0;
     public final ArrayList<Integer> F;
@@ -21,7 +21,7 @@ public class AFN {
     Integer[] print;
     NDRespuesta respuesta;
 
-    public AFN(String sigma, int Q, int q0, ArrayList<Integer> F, ArrayList<Tuple> Delta){
+    public AFN(char[] sigma, int Q, int q0, ArrayList<Integer> F, ArrayList<Tuple> Delta){
         this.sigma = sigma;
         this.Q = Q;
         if(q0<=Q){
@@ -30,8 +30,6 @@ public class AFN {
             this.q0 = 0;
             System.out.println("El estado inicial ingresado es mayor al numero de estados ingresado");
         }
-        
-        
         this.F = F;
         this.Delta = new ArrayList<>();
         
@@ -41,6 +39,10 @@ public class AFN {
         for(int i=0;i<Delta.size();i++) {
             if(Delta.get(i).getFinalState()>Q || Delta.get(i).getInitialState()>Q){
                 System.out.println("El número de estados ingresados no concuerda");
+                return;
+            }
+            if(!Arrays.asList(sigma).contains(Delta.get(i).getSymbol())){
+                System.out.println("El símbolo "+ Delta.get(i).getSymbol() + " no existe en el alfabeto");
                 return;
             }
             this.Delta.get(Delta.get(i).getInitialState()).add(new Tuple(Delta.get(i).getSymbol(),Delta.get(i).getFinalState()));
