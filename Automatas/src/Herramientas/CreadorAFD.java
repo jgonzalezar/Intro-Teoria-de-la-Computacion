@@ -35,7 +35,7 @@ public class CreadorAFD {
      */
     public static AFD leerAFD(String afd){
         Lecto lec = Lecto.inicio;
-        String alpha = null;
+        ArrayList<Character> alpha = null;
         ArrayList<String> Q = null;
         String q0 = null;
         ArrayList<String> F = null;
@@ -49,7 +49,7 @@ public class CreadorAFD {
                 switch(lin){
                     case "#alphabet":
                         lec = Lecto.alfabeto;
-                        alpha="";
+                        alpha = new ArrayList<>();
                         break;
                     case "#states":
                         if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
@@ -80,14 +80,14 @@ public class CreadorAFD {
                         switch(lec){
                             case alfabeto:
                                 if(lin.length()<2){
-                                    alpha +=lin.charAt(0);
+                                    alpha.add(lin.charAt(0));
                                 }else{
                                     int a = lin.charAt(0);
                                     int b = lin.charAt(2);
                                     int c = b-a;
                                     for (int i = 0; i <=c; i++) {
                                         char d = (char) (a+i);
-                                        alpha+= d;
+                                        alpha.add(d);
                                         
                                     }
                                 }
@@ -129,8 +129,11 @@ public class CreadorAFD {
             Logger.getLogger(CreadorAFD.class.getName()).log(Level.SEVERE, null, ex);
         }
         
-        
-        return new AFD(alpha, Q, q0, F, Delta);
+        char[] ad =new char[alpha.size()];
+        for (int i = 0; i < alpha.size(); i++) {
+            ad[i]=alpha.get(i);
+        }
+        return new AFD(ad, Q, q0, F, Delta);
     }
     
     
