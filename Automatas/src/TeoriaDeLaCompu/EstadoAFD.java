@@ -67,7 +67,7 @@ public class EstadoAFD extends AutomatasEstados {
                 while (estado > Estados){
                     estado = ReadInt("El estado ingresado debe ser menor a la cantidad de estados del automata");
                 }
-                transicion.add(Sigma.substring(j, j+1),String.valueOf(i), estado);
+                transicion.add(Sigma.charAt(j),String.valueOf(i), String.valueOf(estado));
             }
         }
         
