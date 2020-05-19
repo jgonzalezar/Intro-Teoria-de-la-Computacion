@@ -21,7 +21,7 @@ public class AFD {
      * El atributo Sigma representa el alfabeto del automata.
      * Esta dado por la clase String, y cada una de los caracteres de Sigma es uno de los simbolos del alfabeto.     * 
      */
-    public final String Sigma;
+    public final char[] Sigma;
     /**
      * El atributo Q representa la cantidad total de estados dentro del automata.
      */
@@ -47,7 +47,7 @@ public class AFD {
      * @param F
      * @param Delta 
      */
-    public AFD(String Sigma, ArrayList<String> Q, String q0, ArrayList<String> F, Transition Delta) {
+    public AFD(char[] Sigma, ArrayList<String> Q, String q0, ArrayList<String> F, Transition Delta) {
         this.Sigma = Sigma;
         this.Q = Q;
         this.q0 = q0;

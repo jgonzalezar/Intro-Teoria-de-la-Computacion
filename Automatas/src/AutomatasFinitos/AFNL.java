@@ -6,6 +6,7 @@
 package AutomatasFinitos;
 import Herramientas.TransitionAFNL;
 import Herramientas.Respuesta;
+import Herramientas.RespuestaMult;
 import Herramientas.Transition;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,7 +29,7 @@ public class AFNL {
     private final int q0;
     private final int[] F;
     private final TransitionAFNL T;
-    private final String lambda;
+    private final char lambda;
     
 
     public AFNL(char[] E, int Q, int q0, int[] F, TransitionAFNL T) {
@@ -37,10 +38,10 @@ public class AFNL {
         this.q0 = q0;
         this.F = F;
         this.T = T;
-        this.lambda = "L";
+        this.lambda = 'L';
     }
     
-    public AFNL(char[] E, int Q, int q0, int[] F, TransitionAFNL T,String lambda) {
+    public AFNL(char[] E, int Q, int q0, int[] F, TransitionAFNL T,char lambda) {
         this.E = E;
         this.Q = Q;
         this.q0 = q0;
@@ -53,13 +54,13 @@ public class AFNL {
     public ArrayList<Integer>  lambdaClausura_unEstado(int estado,ArrayList<Integer> lClausura){
         
         TransitionAFNL Tra= this.T;
-        String lambdaTra=this.lambda;
+        char lambdaTra=this.lambda;
         
         
-       Map<String,ArrayList<Integer>> estadoInterior;
+       Map<Character,ArrayList<Integer>> estadoInterior;
         //estadoInterior = new HashMap<>();
        estadoInterior=Tra.getState(estado);
-       for (Map.Entry<String, ArrayList<Integer>> entry : estadoInterior.entrySet()) {
+       for (Map.Entry<Character, ArrayList<Integer>> entry : estadoInterior.entrySet()) {
            
 		    if(entry.getKey().equals(lambdaTra) && entry.getValue().isEmpty()==false){
                         lClausura.add(estado);
@@ -83,9 +84,9 @@ public class AFNL {
             
        
         System.out.printf("lambda clausura del estado q"+ estado);
-        for (Integer s : Clausura) {
+        Clausura.forEach((s) -> {
             System.out.println("q"+s);
-        }
+        });
 
         
     }
@@ -139,11 +140,16 @@ public class AFNL {
             EstadosFinales=devolverEstadosIteracion(letraEvaluada,EstadosFinales);         
             
         }
+//        ArrayList<Integer> fin =EstadosFinales.getFinals();
         for(int j=0; j<EstadosAceptacion.length;j++){
-            for(int k=0; k<EstadosFinales.size();k++){
+            /*for(int k=0; k<EstadosFinales.size();k++){
                 if (EstadosFinales.get(k)==EstadosAceptacion[j]){
                     aceptacion++;
                 }
+            }*/
+           
+            if(EstadosFinales.contains(EstadosAceptacion[j])){
+                return true;
             }
             
         }
@@ -153,13 +159,14 @@ public class AFNL {
     
     public ArrayList<Integer> devolverEstadosIteracion(char letra,ArrayList<Integer> estados){
         TransitionAFNL T=this.T;
-        String lambdaT=this.lambda;
+        char lambdaT=this.lambda;
+        
         ArrayList<Integer> estadosFinales=new ArrayList<>();
         for(int i =0;i<estados.size();i++){
-            Map<String,ArrayList<Integer>> estadoInterior;
+            Map<Character,ArrayList<Integer>> estadoInterior;
         
             estadoInterior=T.getState(estados.get(i));
-            for (Map.Entry<String, ArrayList<Integer>> entry : estadoInterior.entrySet()) {           
+            for (Map.Entry<Character, ArrayList<Integer>> entry : estadoInterior.entrySet()) {           
 		    if( entry.getKey().equals(letra)&& entry.getValue().isEmpty()==false){
                       ArrayList<Integer> estadosFinalesPrev=entry.getValue(); 
                       for(int j=0;j<estadosFinalesPrev.size();j++){
@@ -186,10 +193,62 @@ public class AFNL {
         
     }
     
-    public void ProcesarCadenaConDetalles(){
+    public void ProcesarCadenaConDetalles(String palabra){
+        
+        TransitionAFNL T=this.T;
+        ArrayList<Integer> EstadosFinales= new ArrayList<>();
+        EstadosFinales.add(0);
+        boolean aceptacion=ProcesarCadena(palabra);
+        if(aceptacion== true){
+            for (int i=0;i<palabra.length();i++){
+                char letraEvaluada=palabra.charAt(i);
+                for(int j=0;j<EstadosFinales.size();j++){
+                    if(devolverEstadosIteracion(letraEvaluada,EstadosFinales).isEmpty() ==false){
+                        System.out.println("q"+EstadosFinales.get(j)+" "+letraEvaluada);
+                        EstadosFinales=devolverEstadosIteracion(letraEvaluada,EstadosFinales);
+                    }
+                }
+            
+            }
+          System.out.println("la cadena fue aceptada");  
+        }
+        
     }
+
+    /*private RespuestaMult devolverEstadosIteracion(char letra, RespuestaMult EstadosFinales) {
+        char lambdaT=this.lambda;
+        ArrayList<Integer> estados = EstadosFinales.getFinals();
+        for(int i =0;i<estados.size();i++){
+            Map<Character,ArrayList<Integer>> estadoInterior;
+        
+            estadoInterior=T.getState(estados.get(i));
+            for (Map.Entry<Character, ArrayList<Integer>> entry : estadoInterior.entrySet()) {           
+		    if( entry.getKey().equals(letra)&& entry.getValue().isEmpty()==false){
+                      ArrayList<Integer> estadosFinalesPrev=entry.getValue(); 
+                      for(int j=0;j<estadosFinalesPrev.size();j++){
+                          EstadosFinales.addRuta(estadosFinalesPrev.get(j),i,false);
+                          }
+                    }else if(entry.getKey().equals(lambdaT)&& entry.getValue().isEmpty()==false){
+                        ArrayList<Integer> estadosFinalesPrevLambda=entry.getValue();
+                        ArrayList<Integer> estadosFinalesPrev=devolverEstadosIteracion(letra,estadosFinalesPrevLambda);
+                      for(int j=0;j<estadosFinalesPrev.size();j++){
+                          estadosFinales.add(estadosFinalesPrev.get(j));
+                          }
+                        
+                    }  
+                        
+            }
+        }
+        /*Set<Integer> hashSet = new HashSet<>(EstadosFinales);
+        EstadosFinales.clear();
+        EstadosFinales.addAll(hashSet);
+        
+        return EstadosFinales;
+    }*/
     
 }
+
+    
  
     
     

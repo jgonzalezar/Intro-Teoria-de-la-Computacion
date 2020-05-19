@@ -16,7 +16,7 @@ import java.util.HashMap;
  * @author ivonn
  */
 public class TransitionAFNL {
-    ArrayList<HashMap<String,ArrayList<Integer>>> transicionAFNL;
+    ArrayList<HashMap<Character,ArrayList<Integer>>> transicionAFNL;
     
     public TransitionAFNL() {
         transicionAFNL = new ArrayList<>();
@@ -32,6 +32,10 @@ public class TransitionAFNL {
     
      public HashMap getState(int i) {
         return transicionAFNL.get(i);
+    }
+     
+    public ArrayList<Integer> getMove(int i,Character c){
+        return transicionAFNL.get(i).get(c);
     }
     
 }
