@@ -7,6 +7,7 @@ package TeoriaDeLaCompu;
 
 import AutomatasFinitos.AFD;
 import AutomatasFinitos.AFN;
+import AutomatasFinitos.AFNL;
 import Herramientas.CreadorAFD;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -30,7 +31,7 @@ public class Main {
             Scanner s = new Scanner(System.in);
             switch(s.next()){
                 case "2":
-                   // AFNLSET();
+                    AFNLSET();
                 break;
                 case "1":
                    // AFNSET();
@@ -53,17 +54,17 @@ public class Main {
         }
     }
     //{{},{},{},{},{},{}}
-    /*static private void AFNLSET() throws FileNotFoundException{
+    static private void AFNLSET() throws FileNotFoundException{
         char[] E = {'a','b'};
         int[] F = {5,4};
         int[][][] T = {{{2,5},{-1},{3},{-1},{-1},{-1}},{{1},{-1},{-1},{3},{-1},{5}},{{-1},{2},{-1},{4},{4},{-1}}};
-        AFNL set = new AFNL(E, 6, 0, F, T);
+        /*AFNL set = new AFNL(E, 0, 0, F, T, "$");
         Scanner s = new Scanner(new File("src/CombinacionAlphabetos/E_ab10.txt"));
         while(s.hasNext()){
             String as = s.next();
             if(set.Delta(as))System.out.println(as);
-        }
-    }
+        }*/
+    }/*
     static private void AFNSET() throws FileNotFoundException{
         char[] E = {'a','b'};
         int[] F = {1,2};
