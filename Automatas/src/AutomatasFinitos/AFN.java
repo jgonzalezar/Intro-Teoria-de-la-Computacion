@@ -41,10 +41,6 @@ public class AFN {
                 System.out.println("El número de estados ingresados no concuerda");
                 return;
             }
-            if(!Arrays.asList(sigma).contains(Delta.get(i).getSymbol())){
-                System.out.println("El símbolo "+ Delta.get(i).getSymbol() + " no existe en el alfabeto");
-                return;
-            }
             this.Delta.get(Delta.get(i).getInitialState()).add(new Tuple(Delta.get(i).getSymbol(),Delta.get(i).getFinalState()));
         }
         this.cont=0;
