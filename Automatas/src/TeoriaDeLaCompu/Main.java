@@ -116,7 +116,8 @@ public class Main {
         F.add(0);
 	F.add(3);
         
-        AFN automataNoDet = new AFN("ab",3,0,F,Delta);
+        char[] alfabeto = {'a','b'};
+        AFN automataNoDet = new AFN(alfabeto,3,0,F,Delta);
         System.out.println("");
         System.out.println("Procesar cadena");
         System.out.println(automataNoDet.procesarCadena("baa"));
