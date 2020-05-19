@@ -76,7 +76,7 @@ public class Main {
         }
     }*/
     static private void AFDSET() throws FileNotFoundException{
-        AFD set = CreadorAFD.leerAFD("src/Automatas/AFD/CantidadParDeDigitos_AB");
+        AFD set = CreadorAFD.leerAFD("src/Automatas/AFD/[(aUb)(aUb)]'.DFA");
         Scanner s = new Scanner(new File("src/CombinacionAlphabetos/E_ab10.txt"));
         while(s.hasNext()){
             String as = s.next();
