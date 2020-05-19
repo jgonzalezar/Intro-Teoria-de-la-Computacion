@@ -104,12 +104,13 @@ public class CreadorAFD {
                                 F.add(lin);
                                 break;
                             case transicion:
+                                
                                 String[] origin = lin.split(":");
                                 String estado1 = origin[0];
                                 if(!Q.contains(estado1))throw new Error("el estado del que se parte debe pertenecer a los estados del automata");
                                 String[] origin2 = origin[1].split(">");
                                 String alpfa = origin2[0];
-                                if(!alpha.contains(alpfa))throw new Error("el caracter de activacion debe pertenecer al alfabeto");
+                                if(!alpha.contains(alpfa.charAt(0)))throw new Error("el caracter de activacion debe pertenecer al alfabeto");
                                 String estado2 = origin2[1];
                                 if(!Q.contains(estado2))throw new Error("el estado de llegada debe pertenecer a los estados del automata");
                                 Delta.add(alpfa.charAt(0), estado1, estado2);
