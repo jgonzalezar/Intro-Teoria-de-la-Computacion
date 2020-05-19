@@ -29,7 +29,6 @@ public class AFN {
             this.q0 = 0;
             System.out.println("El estado inicial ingresado es mayor al numero de estados ingresado");
         }
-        
         this.F = F;
         this.Delta = new ArrayList<>();
         
