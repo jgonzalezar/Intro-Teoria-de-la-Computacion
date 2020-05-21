@@ -1,43 +1,73 @@
 package AutomatasFinitos;
 
 import Herramientas.NDRespuesta;
-import Herramientas.Respuesta;
+import Herramientas.Transition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import Herramientas.Tuple;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import static java.lang.Integer.parseInt;
+
+/**
+ * Esta clase es el automata finito no determinista
+ * en este automata se puede realizar el procesamiento de cadenas sobre el automata ingresado, para saber si esta pertenece o no al lenguaje
+ * mientras se muestran los pasos del procesamiento, si así se desea
+ * @author jdacostabe
+ */
 
 public class AFN {
+    
+     /**
+     * El atributo Sigma representa el alfabeto del automata.
+     */
     public final char[] sigma; 
-    public final int Q;
+     /**
+     * El atributo Q representa el conjunto de estados que pertenecen al automata.
+     */
+    public final ArrayList<String> Q;
+     /**
+     * El atributo q0 representa el estado inicial del automata.
+     */
     public final int q0;
+     /**
+     * El atributo F representa el conjunto de estados de aceptación del automata.
+     */
     public final ArrayList<Integer> F;
+     /**
+     * El atributo Delta representa las transiciones del automata.
+     */
     public final ArrayList<ArrayList<Tuple>> Delta;
     
-    int cont;
-    String cadena;
-    Integer[] print;
-    NDRespuesta respuesta;
+    private int cont;
+    private String cadena;
+    private Integer[] print;
+    private NDRespuesta respuesta;
 
-    public AFN(char[] sigma, int Q, int q0, ArrayList<Integer> F, ArrayList<Tuple> Delta){
+    
+    /**
+     * Constructor 
+     * @param sigma Alfabeto
+     * @param Q Conjunto de estados
+     * @param q0 Estado inicial
+     * @param F Estados de aceptación
+     * @param Delta Transiciones
+     */
+    public AFN(char[] sigma, ArrayList<String> Q, String q0, ArrayList<String> F, ArrayList<Tuple> Delta){
         this.sigma = sigma;
         this.Q = Q;
-        if(q0<=Q){
-            this.q0 = q0;
-        }else{
-            this.q0 = 0;
-            System.out.println("El estado inicial ingresado es mayor al numero de estados ingresado");
-        }
-        this.F = F;
-        this.Delta = new ArrayList<>();
+        this.q0 = parseInt(q0);
+        this.F = new ArrayList<>();
+        for(int i=0;i<F.size();i++)
+            this.F.add(parseInt(F.get(i)));
         
-        while(this.Delta.size()<=Q) {
+        this.Delta = new ArrayList<>();
+        while(this.Delta.size()<=Q.size()) {
             this.Delta.add(new ArrayList<>());
         }
         for(int i=0;i<Delta.size();i++) {
-            if(Delta.get(i).getFinalState()>Q || Delta.get(i).getInitialState()>Q){
+            if(Delta.get(i).getFinalState()>Q.size() || Delta.get(i).getInitialState()>Q.size()){
                 System.out.println("El número de estados ingresados no concuerda");
                 return;
             }
@@ -46,6 +76,11 @@ public class AFN {
         this.cont=0;
     }
     
+    /**
+     * Función que procesa una cadena en el automata
+     * @param cadena Cadena a procesar
+     * @return boolean - True si la cadena ingresada es aceptada, false de otra forma.
+     */
     public boolean procesarCadena(String cadena){
         if(cadena.length()==0) {
             if(this.F.contains(q0)) {
@@ -60,6 +95,11 @@ public class AFN {
         return respuesta.isAccepted();
     }
     
+     /**
+     * Función que procesa una cadena en el automata, e imprime los pasos para aceptar la cadena
+     * @param cadena Cadena a procesar
+     * @return boolean - True si la cadena ingresada es aceptada, false de otra forma.
+     */
     public boolean procesarCadenaConDetalles(String cadena){
         if(cadena.length()==0) {
             if(this.F.contains(q0)) {
@@ -81,6 +121,11 @@ public class AFN {
         return respuesta.isAccepted();
     }
     
+     /**
+     * Función que procesa una cadena en el automata, e imprime todos los posibles procesamientos
+     * @param cadena Cadena a procesar
+     * @return boolean - True si la cadena ingresada es aceptada, false de otra forma.
+     */
     public int computarTodosLosProcesamientos(String cadena){
         if(cadena.length()==0) {
             if(this.F.contains(q0)) {
@@ -143,6 +188,12 @@ public class AFN {
         return state;
     }
     
+     /**
+     * Función que procesa una lista de cadenas en el automata, e imprime un procesamiento, cuantos procesamientos hay de cada tipo, y si es aceptada o no cada una de las cadenas
+     * @param listaCadenas Lista de cadenas a procesar
+     * @param nombreArchivo Nombre del archivo donde se guardarán los resultados obtenidos
+     * @param imprimirPantalla Booleano que indica si se debe imprimir la respuesta en consola o no
+     */
     public void procesarListaCadenas(String[] listaCadenas, String nombreArchivo, boolean imprimirPantalla){
         FileWriter fichero1 = null;
         PrintWriter pw1 = null;
@@ -183,8 +234,6 @@ public class AFN {
             e.printStackTrace();
         } finally {
            try {
-           // Nuevamente aprovechamos el finally para 
-           // asegurarnos que se cierra el fichero.
            if (null != fichero1)
               fichero1.close();
            } catch (Exception e2) {
@@ -192,7 +241,10 @@ public class AFN {
            }
         }
     }
-    
+
+     /**
+     * Función que imprime el automata
+     */
     public void printAutomata() {
 	System.out.println("El automata no determinista ingresado es:");
 	for(int i=0;i<this.Delta.size();i++) {
