@@ -25,12 +25,12 @@ public class Respuesta {
         pasos.add(paso);
         
     }
-    public String pasos(){
+    public String pasos(String palabra){
         String s ="";
         for (int i = 0; i < pasos.size(); i++) {
-            s += "q"+pasos.get(i)+" ";
+            s += "["+pasos.get(i)+", "+palabra.substring(i)+"]"+(char) 124+(char)61+(char)62;
         }
-        return s+"\n";
+        return s;
     }
     
 }

@@ -108,7 +108,7 @@ public class AFD {
     
     public boolean procesarCadenaConDetalles(String word){
         Respuesta fin =prosCaden(word);
-        System.out.println(fin.pasos());
+        System.out.println(fin.pasos(word)+fin.aceptado);
         return fin.aceptado;
     }
     
@@ -123,8 +123,8 @@ public class AFD {
             pw1 = new PrintWriter(fichero1);
             for (int i = 0; i < listaCadenas.length; i++){
                 Respuesta res = prosCaden(listaCadenas[i]);
-                String pas =res.pasos();
-                String res2= listaCadenas[i]+"\t"+ pas.substring(0, pas.length()-1)+"\t"+res.aceptado;
+                String pas =res.pasos(listaCadenas[i]);
+                String res2= pas+"\t"+res.aceptado;
                 pw1.println(res2);
                 if(imprimirPantalla) System.out.println(res2);
             }
