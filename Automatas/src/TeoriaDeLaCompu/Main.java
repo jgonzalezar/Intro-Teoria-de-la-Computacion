@@ -104,34 +104,26 @@ public class Main {
     }*/
     
     static private void prueba(){
+        AFN set = CreadorAutomata.leerAFN("src/Automatas/AFN/a+Uab'.NFA");
+        /*Scanner s = new Scanner(new File("src/CombinacionAlphabetos/E_ab10.txt"));
+        while(s.hasNext()){
+            String as = s.next();
+            if(set.procesarCadenaConDetalles(as))System.out.println(as);
+        }*/
        
-	ArrayList<Tuple> Delta = new ArrayList<>();
-        Delta.add(new Tuple("b",0,1));
-	Delta.add(new Tuple("b",0,2));
-	Delta.add(new Tuple("a",1,0));
-	Delta.add(new Tuple("a",1,1));
-	Delta.add(new Tuple("a",2,3));
-	Delta.add(new Tuple("b",3,0));
-        
-        ArrayList<Integer> F = new ArrayList<>();
-        F.add(0);
-	F.add(3);
-        
-        char[] alfabeto = {'a','b'};
-        AFN automataNoDet = new AFN(alfabeto,3,0,F,Delta);
         System.out.println("");
         System.out.println("Procesar cadena");
-        System.out.println(automataNoDet.procesarCadena("baa"));
+        System.out.println(set.procesarCadena("baa"));
         System.out.println("");
         System.out.println("Procesar cadena con detalles");
-        System.out.println(automataNoDet.procesarCadenaConDetalles("baa"));
+        System.out.println(set.procesarCadenaConDetalles("baa"));
         System.out.println("");
         System.out.println("Computar todos los procesamientos");
-        automataNoDet.computarTodosLosProcesamientos("baa");
+        set.computarTodosLosProcesamientos("baa");
         System.out.println("");
         System.out.println("Computar una lista de cadenas");
         String[] prueba = {"bba","baa","bab"};
-        automataNoDet.procesarListaCadenas(prueba,"prueba.txt", true);
+        set.procesarListaCadenas(prueba,"prueba.txt", true);
 //        automataNoDet.printAutomata();
     }
     
