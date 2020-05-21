@@ -55,24 +55,11 @@ public class AFD {
         this.Delta = Delta;
     }
 
-    /*
-
-	public void addConnections(ArrayList<Tuple> calledBy) {
-		for(int i=0;i<calledBy.size();i++) {
-			while(calledBy.get(i).getFinalState()>=this.Delta.size()) {
-				this.Delta.add(new ArrayList<Tuple>());
-			}
-			this.Delta.get(calledBy.get(i).getInitialState()).add(new Tuple(calledBy.get(i).getSymbol(),calledBy.get(i).getFinalState()));
-		}		
-		return;
-	}*/
-	
-
-	/**
-         * 
-         * @param word
-         * @return 
-         */
+    /**
+     * 
+     * @param word
+     * @return 
+     */
 
     public boolean procesarCadena(String word){
         if(word==null||word.length()==0){            
@@ -131,17 +118,7 @@ public class AFD {
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
-            
-           try {
-           // Nuevamente aprovechamos el finally para 
-           // asegurarnos que se cierra el fichero.
-           if (null != fichero1)
-              fichero1.close();
-           } catch (Exception e2) {
-              e2.printStackTrace();
-           }
-          
+        } finally {          
            try {
            // Nuevamente aprovechamos el finally para 
            // asegurarnos que se cierra el fichero.
@@ -149,7 +126,6 @@ public class AFD {
               e2.printStackTrace();
            }
         }
-        
     }
 
     private Respuesta Delta(String word) {

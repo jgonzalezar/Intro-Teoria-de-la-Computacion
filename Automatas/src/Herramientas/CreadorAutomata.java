@@ -9,10 +9,12 @@ import AutomatasFinitos.AFD;
 import AutomatasFinitos.AFN;
 import java.io.File;
 import java.io.FileNotFoundException;
+import static java.lang.Integer.parseInt;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 /**
  *  clase que guarda la conversion estatica de un archivo de automata AFD a la Clase AFD
@@ -150,7 +152,7 @@ public class CreadorAutomata {
         ArrayList<String> Q = null;
         String q0 = null;
         ArrayList<String> F = null;
-        Transition Delta = null;
+        ArrayList<Tuple> Delta = null;
         
         try {
             Scanner sca = new Scanner(new File(afn));
@@ -185,7 +187,7 @@ public class CreadorAutomata {
                         if(q0==null) throw new Error("primero debe dar el estado inicial");
                         if(F==null) throw new Error("primero debe dar los estados finales");
                         lec = Lecto.transicion;
-                        Delta = new Transition();
+                        Delta = new ArrayList<>();
                         break;
                     default:
                         switch(lec){
@@ -222,9 +224,12 @@ public class CreadorAutomata {
                                 String[] origin2 = origin[1].split(">");
                                 String alpfa = origin2[0];
                                 if(!alpha.contains(alpfa.charAt(0)))throw new Error("el caracter de activacion debe pertenecer al alfabeto");
-                                String estado2 = origin2[1];
-                                if(!Q.contains(estado2))throw new Error("el estado de llegada debe pertenecer a los estados del automata");
-                                Delta.add(alpfa.charAt(0), estado1, estado2);
+                                String[] origin3 = origin2[1].split(",");
+                                for(int i=0;i<origin3.length;i++){
+                                    String estado2 = origin3[i];
+                                    if(!Q.contains(estado2))throw new Error("el estado de llegada debe pertenecer a los estados del automata");
+                                    Delta.add(new Tuple(alpfa.substring(0), parseInt(estado1), parseInt(estado2)));
+                                }
                                 break;
                             default:
                                 break;
@@ -245,7 +250,7 @@ public class CreadorAutomata {
         for (int i = 0; i < alpha.size(); i++) {
             ad[i]=alpha.get(i);
         }
-        return null;//new AFN(ad, Q, q0, F, Delta);
+        return new AFN(ad, Q, q0, F, Delta);
     }
     
 }
