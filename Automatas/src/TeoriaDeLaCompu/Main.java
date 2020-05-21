@@ -8,7 +8,7 @@ package TeoriaDeLaCompu;
 import AutomatasFinitos.AFD;
 import AutomatasFinitos.AFN;
 import AutomatasFinitos.AFNL;
-import Herramientas.CreadorAFD;
+import Herramientas.CreadorAutomata;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -31,10 +31,10 @@ public class Main {
             Scanner s = new Scanner(System.in);
             switch(s.next()){
                 case "2":
-                    AFNLSET();
+                    //AFNLSET();
                 break;
                 case "1":
-                   // AFNSET();
+                    AFNSET();
                 break;
                 case "0":
                     //AFNtoAFD();
@@ -64,24 +64,24 @@ public class Main {
             String as = s.next();
             if(set.Delta(as))System.out.println(as);
         }*/
-    }/*
+    }
     static private void AFNSET() throws FileNotFoundException{
         char[] E = {'a','b'};
         int[] F = {1,2};
         int[][][] T = {{{1,2},{-1},{2}},{{-1},{1},{-1},}};
-        AFN set = new AFN(E, 3, 0, F, T);
+        //AFN set = new AFN(E, 3, 0, F, T);
         Scanner s = new Scanner(new File("src/CombinacionAlphabetos/E_ab10.txt"));
         while(s.hasNext()){
             String as = s.next();
-            if(set.Delta(as))System.out.println(as);
+            //if(set.procesarCadena(as))System.out.println(as);
         }
-    }*/
+    }
     static private void AFDSET() throws FileNotFoundException{
-        AFD set = CreadorAFD.leerAFD("src/Automatas/AFD/[(aUb)(aUb)]'.DFA");
+        AFD set = CreadorAutomata.leerAFD("src/Automatas/AFD/[(aUb)(aUb)]'.DFA");
         Scanner s = new Scanner(new File("src/CombinacionAlphabetos/E_ab10.txt"));
         while(s.hasNext()){
             String as = s.next();
-            if(set.procesarCadena(as))System.out.println(as);
+            if(set.procesarCadenaConDetalles(as))System.out.println(as);
         }
     }
     /*static private void AFDSET2() throws FileNotFoundException{
