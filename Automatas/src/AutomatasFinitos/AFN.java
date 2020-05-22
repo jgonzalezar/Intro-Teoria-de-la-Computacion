@@ -1,14 +1,19 @@
 package AutomatasFinitos;
 
+import Herramientas.CreadorAutomata;
 import Herramientas.NDRespuesta;
 import Herramientas.Transition;
 import java.util.ArrayList;
 import java.util.Arrays;
 import Herramientas.Tuple;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import static java.lang.Integer.parseInt;
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Esta clase es el automata finito no determinista
@@ -75,6 +80,132 @@ public class AFN {
         }
         this.cont=0;
     }
+
+    public AFN(String nombreArchivo) {
+        CreadorAutomata.Lecto lec = CreadorAutomata.Lecto.inicio;
+        ArrayList<Character> alpha = null;
+        ArrayList<String> Q = null;
+        String q0 = null;
+        ArrayList<String> F = null;
+        ArrayList<Tuple> Delta = null;
+        
+        try {
+            Scanner sca = new Scanner(new File(nombreArchivo));
+            while(sca.hasNextLine()){
+                String lin = sca.nextLine();
+                System.out.println(lin);
+                switch(lin){
+                    case "#alphabet":
+                        lec = CreadorAutomata.Lecto.alfabeto;
+                        alpha = new ArrayList<>();
+                        break;
+                    case "#states":
+                        if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
+                        lec = CreadorAutomata.Lecto.estados;
+                        Q = new ArrayList<>();
+                        break;
+                    case "#initial":
+                        if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
+                        if(Q==null) throw new Error("primero debe iniciarse los estados");
+                        lec = CreadorAutomata.Lecto.estadoinicial;
+                        break;
+                    case "#accepting":
+                        if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
+                        if(Q==null) throw new Error("primero debe iniciarse los estados");
+                        if(q0==null) throw new Error("primero debe dar el estado inicial");
+                        lec = CreadorAutomata.Lecto.estadoFin;
+                        F = new ArrayList<>();
+                        break;
+                    case "#transitions":
+                        if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
+                        if(Q==null) throw new Error("primero debe iniciarse los estados");
+                        if(q0==null) throw new Error("primero debe dar el estado inicial");
+                        if(F==null) throw new Error("primero debe dar los estados finales");
+                        lec = CreadorAutomata.Lecto.transicion;
+                        Delta = new ArrayList<>();
+                        break;
+                    default:
+                        switch(lec){
+                            case alfabeto:
+                                if(lin.length()<2){
+                                    alpha.add(lin.charAt(0));
+                                }else{
+                                    int a = lin.charAt(0);
+                                    int b = lin.charAt(2);
+                                    int c = b-a;
+                                    for (int i = 0; i <=c; i++) {
+                                        char d = (char) (a+i);
+                                        alpha.add(d);
+                                        
+                                    }
+                                }
+                                break;
+                            case estados:
+                                Q.add(lin);
+                                break;
+                            case estadoinicial:
+                                if(!Q.contains(lin))throw new Error("el estado debe pertenecer a los estados del automata");
+                                q0=lin;
+                                break;
+                            case estadoFin:
+                                if(!Q.contains(lin))throw new Error("el estado debe pertenecer a los estados del automata");
+                                F.add(lin);
+                                break;
+                            case transicion:
+                                
+                                String[] origin = lin.split(":");
+                                String estado1 = origin[0];
+                                if(!Q.contains(estado1))throw new Error("el estado del que se parte debe pertenecer a los estados del automata");
+                                String[] origin2 = origin[1].split(">");
+                                String alpfa = origin2[0];
+                                if(!alpha.contains(alpfa.charAt(0)))throw new Error("el caracter de activacion debe pertenecer al alfabeto");
+                                String[] origin3 = origin2[1].split(",");
+                                for(int i=0;i<origin3.length;i++){
+                                    String estado2 = origin3[i];
+                                    if(!Q.contains(estado2))throw new Error("el estado de llegada debe pertenecer a los estados del automata");
+                                    Delta.add(new Tuple(alpfa.substring(0), parseInt(estado1), parseInt(estado2)));
+                                }
+                                break;
+                            default:
+                                break;
+                        }
+
+                }
+                
+                
+                if(lin.equals("#alpabet")){
+                    
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CreadorAutomata.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        char[] ad =new char[alpha.size()];
+        for (int i = 0; i < alpha.size(); i++) {
+            ad[i]=alpha.get(i);
+        }
+        this.sigma = ad;
+        this.Q = Q;
+        this.q0 = parseInt(q0);
+        this.F = new ArrayList<>();
+        for(int i=0;i<F.size();i++)
+            this.F.add(parseInt(F.get(i)));
+        
+        this.Delta = new ArrayList<>();
+        while(this.Delta.size()<=Q.size()) {
+            this.Delta.add(new ArrayList<>());
+        }
+        for(int i=0;i<Delta.size();i++) {
+            if(Delta.get(i).getFinalState()>Q.size() || Delta.get(i).getInitialState()>Q.size()){
+                System.out.println("El número de estados ingresados no concuerda");
+                return;
+            }
+            this.Delta.get(Delta.get(i).getInitialState()).add(new Tuple(Delta.get(i).getSymbol(),Delta.get(i).getFinalState()));
+        }
+        this.cont=0;
+    }
+    
     
     /**
      * Función que procesa una cadena en el automata
