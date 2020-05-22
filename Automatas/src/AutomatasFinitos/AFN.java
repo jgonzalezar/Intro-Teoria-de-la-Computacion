@@ -52,7 +52,7 @@ public class AFN {
 
     
     /**
-     * Constructor 
+     * Constructor, inicializa los atributos.
      * @param sigma Alfabeto
      * @param Q Conjunto de estados
      * @param q0 Estado inicial
@@ -81,6 +81,10 @@ public class AFN {
         this.cont=0;
     }
 
+    /**
+     * Inicializa los atributos a partir del archivo de texto.
+     * @param nombreArchivo 
+     */
     public AFN(String nombreArchivo) {
         CreadorAutomata.Lecto lec = CreadorAutomata.Lecto.inicio;
         ArrayList<Character> alpha = null;
