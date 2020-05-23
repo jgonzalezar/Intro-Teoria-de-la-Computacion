@@ -33,4 +33,12 @@ public class Respuesta {
         return s;
     }
     
+    public static String pasos(String palabra,ArrayList<String> pasos){
+        String s ="";
+        for (int i = 0; i < pasos.size(); i++) {
+            s += "["+pasos.get(i)+", "+palabra.substring(i)+"]"+(char) 124+(char)61+(char)62;
+        }
+        return s;
+    }
+    
 }

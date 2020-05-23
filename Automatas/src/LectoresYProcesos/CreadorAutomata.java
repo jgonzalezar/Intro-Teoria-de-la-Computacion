@@ -3,10 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Herramientas;
+package LectoresYProcesos;
 
 import AutomatasFinitos.AFD;
 import AutomatasFinitos.AFN;
+import Herramientas.Transition;
+import Herramientas.Tuple;
 import java.io.File;
 import java.io.FileNotFoundException;
 import static java.lang.Integer.parseInt;

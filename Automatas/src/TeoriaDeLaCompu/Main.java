@@ -8,7 +8,7 @@ package TeoriaDeLaCompu;
 import AutomatasFinitos.AFD;
 import AutomatasFinitos.AFN;
 import AutomatasFinitos.AFNL;
-import Herramientas.CreadorAutomata;
+import LectoresYProcesos.CreadorAutomata;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
