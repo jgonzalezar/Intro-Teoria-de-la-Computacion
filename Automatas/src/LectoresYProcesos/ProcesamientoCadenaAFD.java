@@ -7,6 +7,7 @@ package LectoresYProcesos;
 
 import AutomatasFinitos.AFD;
 import Herramientas.Respuesta;
+import Herramientas.Transition;
 import java.util.ArrayList;
 
 /**
@@ -67,20 +68,36 @@ public class ProcesamientoCadenaAFD  {
     }
     
     public void setAfd(String nombreDeArchivo) {
-        this.afd = new AFD;
+        this.afd = new AFD(nombreDeArchivo);
+        procesado = false;
+    }
+    public void setAfd(char[] Sigma, ArrayList<String> Q, String q0, ArrayList<String> F, Transition Delta) {
+        this.afd = new AFD(Sigma, Q, q0, F, Delta);
         procesado = false;
     }
     
     private void proces(){
-        procesarCadena();
+        procesarCadena(false);
     }
     
-    public void procesarCadena(){
+    public void procesarCadena(boolean printRuta){
         Respuesta  res = afd.prosCaden(cadena);
         listaEstadoSimboloDeProcesamiento=res.pasos;
         esAceptada = res.aceptado;
+        if(printRuta)print();
         procesado=true;
     }
     
+    public void procesarCadena(String cadena,boolean printRuta){
+        setCadena(cadena);
+        Respuesta  res = afd.prosCaden(cadena);
+        listaEstadoSimboloDeProcesamiento=res.pasos;
+        esAceptada = res.aceptado;
+        if(printRuta)print();
+        procesado=true;
+    }
     
+    public void print(){
+        Respuesta.pasos(cadena, listaEstadoSimboloDeProcesamiento);
+    }
 }
