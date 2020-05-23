@@ -1,6 +1,6 @@
 package AutomatasFinitos;
 
-import Herramientas.CreadorAutomata;
+import LectoresYProcesos.CreadorAutomata;
 import Herramientas.Respuesta;
 import Herramientas.Transition;
 import java.util.ArrayList;
