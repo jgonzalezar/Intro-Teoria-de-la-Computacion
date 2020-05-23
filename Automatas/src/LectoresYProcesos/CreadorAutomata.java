@@ -27,7 +27,7 @@ public class CreadorAutomata {
    /**
     * estados que ayudan a determinar la informacion actual que se esta recibiendo
     */ 
-    enum Lecto{
+    public enum Lecto{
         
             alfabeto,estados,estadoinicial,estadoFin,transicion,inicio
     }
