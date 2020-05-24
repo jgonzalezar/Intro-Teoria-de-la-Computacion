@@ -216,18 +216,20 @@ public class AFN {
      * @param cadena Cadena a procesar
      * @return boolean - True si la cadena ingresada es aceptada, false de otra forma.
      */
-    public boolean procesarCadena(String cadena){
+    public NDRespuesta procesarCadena(String cadena){
+        respuesta = new NDRespuesta(cadena,"q"+Integer.toString(q0));
         if(cadena.length()==0) {
             if(this.F.contains(q0)) {
-		return true;
+                respuesta.addAceptado(q0);
+		return respuesta;
             }
-            return false;
+            respuesta.addRechazado(q0);
+            return respuesta;
         }
         this.cadena=cadena;
         this.print = new Integer[cadena.length()];
-        respuesta = new NDRespuesta(cadena,"q"+Integer.toString(q0));
         computarTodosLosProcesamientos(q0,0);
-        return respuesta.isAccepted();
+        return respuesta;
     }
     
      /**
@@ -235,26 +237,28 @@ public class AFN {
      * @param cadena Cadena a procesar
      * @return boolean - True si la cadena ingresada es aceptada, false de otra forma.
      */
-    public boolean procesarCadenaConDetalles(String cadena){
+    public NDRespuesta procesarCadenaConDetalles(String cadena){
         respuesta = new NDRespuesta(cadena,"q"+Integer.toString(q0));
-        if(cadena.length()==0) {
-            System.out.print("[q"+q0+",$] ");
-            if(this.F.contains(q0)) {
-		return true;
-            }
-            return false;
-        }
         this.cadena=cadena;
         this.print = new Integer[cadena.length()];
-        computarTodosLosProcesamientos(q0,0);
-        if(respuesta.isAccepted()){
-            System.out.print(respuesta.getAccepted().get(0)+" ");
-        }else if(respuesta.getRejected().size()>0){
-            System.out.print(respuesta.getRejected().get(0)+" ");
-        }else if(respuesta.getAborted().size()>0){
-            System.out.print(respuesta.getAborted().get(0) + " Aborted ");
+        if(cadena.length()==0) {
+            //System.out.print("[q"+q0+",$] ");
+            if(this.F.contains(q0)) {
+		respuesta.addAceptado(q0);
+            }else{
+                respuesta.addRechazado(q0);
+            }
+        }else{
+            computarTodosLosProcesamientos(q0,0);
         }
-        return respuesta.isAccepted();
+        if(respuesta.isAccepted()){
+            System.out.print(respuesta.getAccepted().get(0)+"\tCadena aceptada");
+        }else if(respuesta.getRejected().size()>0){
+            System.out.print(respuesta.getRejected().get(0)+"\tCadena rechazada");
+        }else if(respuesta.getAborted().size()>0){
+            System.out.print(respuesta.getAborted().get(0) +"\tCadena abortada");
+        }
+        return respuesta;
     }
     
      /**
@@ -262,7 +266,7 @@ public class AFN {
      * @param cadena Cadena a procesar
      * @return boolean - True si la cadena ingresada es aceptada, false de otra forma.
      */
-    public int computarTodosLosProcesamientos(String cadena){        
+    public NDRespuesta computarTodosLosProcesamientos(String cadena){        
         FileWriter fichero1 = null;
         PrintWriter pw1 = null;
         try
@@ -285,23 +289,31 @@ public class AFN {
                 computarTodosLosProcesamientos(q0,0);
             }
                 
-            String res="Aceptadas:\n";
+            String res="Aceptadas:\n  ";
+            if(respuesta.getAccepted().isEmpty()){
+                res+="No hay procesamientos aceptados para esta cadena\n";
+            }
             for(int i=0;i<respuesta.getAccepted().size();i++){
                 res+=respuesta.getAccepted().get(i)+"\n";
             }
-            res+="Rechazadas:\n";
+            res+="Rechazadas:\n  ";
+            if(respuesta.getRejected().isEmpty()){
+                res+="No hay procesamientos rechazados para esta cadena\n";
+            }
             for(int i=0;i<respuesta.getRejected().size();i++){
                 res+=respuesta.getRejected().get(i)+"\n";
             }
-            res+="Abortadas:\n";
+            res+="Abortadas:\n  ";
+            if(respuesta.getAborted().isEmpty()){
+                res+="No hay procesamientos abortados para esta cadena\n";
+            }
             for(int i=0;i<respuesta.getAborted().size();i++){
                 res+=respuesta.getAborted().get(i)+"\n";
             }
             pw1.println(res);
-            System.out.println("\n"+res);
+            System.out.println(res);
             
         } catch (Exception e) {
-            e.printStackTrace();
         } finally {
            try {
            if (null != fichero1)
@@ -310,9 +322,9 @@ public class AFN {
               e2.printStackTrace();
            }
         }
-        return respuesta.getAccepted().size() + respuesta.getRejected().size() + respuesta.getAborted().size();
+        return respuesta;
     }
-    
+
     private int computarTodosLosProcesamientos(int state, int letter){
 	boolean pass=true;
 	ArrayList<Tuple> automataState = this.Delta.get(state);
