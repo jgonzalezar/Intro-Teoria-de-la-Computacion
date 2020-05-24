@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  * @author fanat
  */
 public class CreadorAutomata {
-
+    
    /**
     * estados que ayudan a determinar la informacion actual que se esta recibiendo
     */ 
@@ -253,6 +253,30 @@ public class CreadorAutomata {
             ad[i]=alpha.get(i);
         }
         return new AFN(ad, Q, q0, F, Delta);
+    }
+    
+    public enum Type{
+        AFD,AFN,AFNL
+    }
+    public static Type CheckType(String url){
+        if(url.endsWith("DFA")||url.endsWith("dfa"))return Type.AFD;
+        if(url.endsWith("NFA")||url.endsWith("nfa"))return Type.AFN;
+        if(url.endsWith("NFE")||url.endsWith("NFe")||url.endsWith("nfe"))return Type.AFNL;
+        return lineCheck(url);
+    }
+    
+    private static Type lineCheck(String url) {
+        try {
+            Scanner sca = new Scanner(new File(url));
+            String s =sca.next();
+            if(s.equals("#!dfa"))return Type.AFD;
+            if(s.equals("#!nfa"))return Type.AFN;
+            if(s.equals("#!nfae"))return Type.AFNL;
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(CreadorAutomata.class.getName()).log(Level.SEVERE, null, ex);
+        }    
+        return null;
+        
     }
     
 }

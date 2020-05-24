@@ -100,4 +100,16 @@ public class ProcesamientoCadenaAFD  {
     public void print(){
         Respuesta.pasos(cadena, listaEstadoSimboloDeProcesamiento);
     }
+    
+    public boolean ponerCadena(String cadena){
+        char[] E = afd.Sigma;
+        for (int i = 0; i < cadena.length(); i++) {
+            boolean d = false;
+            for (char c : E) {
+                if(c==cadena.charAt(i)) d=true;
+            }
+            if(d) return false;
+        }
+        return true;
+    }
 }
