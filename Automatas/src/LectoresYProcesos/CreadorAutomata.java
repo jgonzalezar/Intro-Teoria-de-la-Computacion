@@ -36,7 +36,7 @@ public class CreadorAutomata {
      * funcion estatica que crea un AFD usando la informacion de un archivo indicado
      * @param afd direccion del archivo a usar para el AFD
      * @return un AFD con la informacion del archivo dado
-     * @throws Error por indicar datos en el onder incorrecto dado que no se inicio un dato que se requiere o si algun estado dado no pertenece a la lista de estados o si algun caracter no pertenece al alfabeto
+     * @throws Error por indicar datos en el orden incorrecto dado que no se inicio un dato que se requiere o si algun estado dado no pertenece a la lista de estados o si algun caracter no pertenece al alfabeto
      */
     public static AFD leerAFD(String afd){
         Lecto lec = Lecto.inicio;
@@ -146,7 +146,7 @@ public class CreadorAutomata {
      * funcion estatica que crea un AFN usando la informacion de un archivo indicado
      * @param afn direccion del archivo a usar para el AFN
      * @return un AFD con la informacion del archivo dado
-     * @throws Error por indicar datos en el onder incorrecto dado que no se inicio un dato que se requiere o si algun estado dado no pertenece a la lista de estados o si algun caracter no pertenece al alfabeto
+     * @throws Error por indicar datos en el orden incorrecto dado que no se inicio un dato que se requiere o si algun estado dado no pertenece a la lista de estados o si algun caracter no pertenece al alfabeto
      */
     public static AFN leerAFN(String afn){
         Lecto lec = Lecto.inicio;

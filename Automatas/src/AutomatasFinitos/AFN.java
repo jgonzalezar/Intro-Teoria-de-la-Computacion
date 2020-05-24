@@ -225,7 +225,7 @@ public class AFN {
         }
         this.cadena=cadena;
         this.print = new Integer[cadena.length()];
-        respuesta = new NDRespuesta(cadena);
+        respuesta = new NDRespuesta(cadena,"q"+Integer.toString(q0));
         computarTodosLosProcesamientos(q0,0);
         return respuesta.isAccepted();
     }
@@ -236,7 +236,9 @@ public class AFN {
      * @return boolean - True si la cadena ingresada es aceptada, false de otra forma.
      */
     public boolean procesarCadenaConDetalles(String cadena){
+        respuesta = new NDRespuesta(cadena,"q"+Integer.toString(q0));
         if(cadena.length()==0) {
+            System.out.print("[q"+q0+",$] ");
             if(this.F.contains(q0)) {
 		return true;
             }
@@ -244,7 +246,6 @@ public class AFN {
         }
         this.cadena=cadena;
         this.print = new Integer[cadena.length()];
-        respuesta = new NDRespuesta(cadena);
         computarTodosLosProcesamientos(q0,0);
         if(respuesta.isAccepted()){
             System.out.print(respuesta.getAccepted().get(0)+" ");
@@ -261,31 +262,53 @@ public class AFN {
      * @param cadena Cadena a procesar
      * @return boolean - True si la cadena ingresada es aceptada, false de otra forma.
      */
-    public int computarTodosLosProcesamientos(String cadena){
-        if(cadena.length()==0) {
-            if(this.F.contains(q0)) {
-                respuesta.addAceptado(q0);
-		return 1;
+    public int computarTodosLosProcesamientos(String cadena){        
+        FileWriter fichero1 = null;
+        PrintWriter pw1 = null;
+        try
+        {
+            File nombre = new File("ProcesamientosAFN.txt");
+            if(!nombre.exists())nombre.createNewFile();
+            fichero1 = new FileWriter(nombre);
+            pw1 = new PrintWriter(fichero1);
+            //pw1.println("C\tProc\tP\tAc\tAb\tR\tSi/no");            
+            this.cadena=cadena;
+            this.print = new Integer[cadena.length()];
+            respuesta = new NDRespuesta(cadena,"q"+Integer.toString(q0));
+            if(cadena.length()==0){
+                if(this.F.contains(q0)){
+                    respuesta.addAceptado(q0);
+                }else{
+                    respuesta.addRechazado(q0);
+                }
+            }else{
+                computarTodosLosProcesamientos(q0,0);
             }
-            respuesta.addRechazado(q0);
-            return 1;
-        }
-        this.cadena=cadena;
-        this.print = new Integer[cadena.length()];
-        respuesta = new NDRespuesta(cadena);
-        computarTodosLosProcesamientos(q0,0);
-        
-        System.out.println("\nAceptadas:");
-        for(int i=0;i<respuesta.getAccepted().size();i++){
-            System.out.println(respuesta.getAccepted().get(i));
-        }
-        System.out.println("Rechazadas:");
-        for(int i=0;i<respuesta.getRejected().size();i++){
-            System.out.println(respuesta.getRejected().get(i));
-        }
-        System.out.println("Abortadas:");
-        for(int i=0;i<respuesta.getAborted().size();i++){
-            System.out.println(respuesta.getAborted().get(i));
+                
+            String res="Aceptadas:\n";
+            for(int i=0;i<respuesta.getAccepted().size();i++){
+                res+=respuesta.getAccepted().get(i)+"\n";
+            }
+            res+="Rechazadas:\n";
+            for(int i=0;i<respuesta.getRejected().size();i++){
+                res+=respuesta.getRejected().get(i)+"\n";
+            }
+            res+="Abortadas:\n";
+            for(int i=0;i<respuesta.getAborted().size();i++){
+                res+=respuesta.getAborted().get(i)+"\n";
+            }
+            pw1.println(res);
+            System.out.println("\n"+res);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+           try {
+           if (null != fichero1)
+              fichero1.close();
+           } catch (Exception e2) {
+              e2.printStackTrace();
+           }
         }
         return respuesta.getAccepted().size() + respuesta.getRejected().size() + respuesta.getAborted().size();
     }
@@ -342,8 +365,16 @@ public class AFN {
             for (int i = 0; i < listaCadenas.length; i++){
                 this.cadena=listaCadenas[i];
                 this.print = new Integer[cadena.length()];
-                respuesta = new NDRespuesta(cadena);
-                computarTodosLosProcesamientos(q0,0);
+                respuesta = new NDRespuesta(cadena,"q"+Integer.toString(q0));
+                if(listaCadenas[i].length()==0){
+                    if(this.F.contains(q0)){
+                        respuesta.addAceptado(q0);
+                    }else{
+                        respuesta.addRechazado(q0);
+                    }
+                }else{
+                    computarTodosLosProcesamientos(q0,0);
+                }
                 
                 String res=cadena+"\t";
                 if(respuesta.isAccepted()){

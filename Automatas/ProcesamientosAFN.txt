@@ -1,0 +1,5 @@
+Aceptadas:
+[q0,$]
+Rechazadas:
+Abortadas:
+
