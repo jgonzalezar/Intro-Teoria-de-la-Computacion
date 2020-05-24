@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import Herramientas.Transition;
 import Herramientas.Tuple;
+import ProcesamientoCadenas.ProcesamientoCadenaAFN;
 /**
  *
  * @author fanat
@@ -104,26 +105,23 @@ public class Main {
     }*/
     
     static private void prueba(){
-        AFN set = CreadorAutomata.leerAFN("src/Automatas/AFN/a+Uab'.NFA");
-        /*Scanner s = new Scanner(new File("src/CombinacionAlphabetos/E_ab10.txt"));
-        while(s.hasNext()){
-            String as = s.next();
-            if(set.procesarCadenaConDetalles(as))System.out.println(as);
-        }*/
+//        AFN set = CreadorAutomata.leerAFN("src/Automatas/AFN/a+Uab'.NFA");
+//        AFN set = new AFN("src/Automatas/AFN/a+Uab'.NFA");
+        AFN set = new AFN("src/Automatas/AFN/a'bUb'a.NFA");
        
-        System.out.println("");
-        System.out.println("Procesar cadena");
-        System.out.println(set.procesarCadena("baa"));
-        System.out.println("");
-        System.out.println("Procesar cadena con detalles");
-        System.out.println(set.procesarCadenaConDetalles("baa"));
-        System.out.println("");
-        System.out.println("Computar todos los procesamientos");
-        set.computarTodosLosProcesamientos("baa");
-        System.out.println("");
-        System.out.println("Computar una lista de cadenas");
-        String[] prueba = {"bba","baa","bab"};
-        set.procesarListaCadenas(prueba,"prueba.txt", true);
+        System.out.println("\n-------- Impresión del procesamiento desde el automata --------");
+        System.out.println("Cadena: bbba");
+        System.out.println("\nProcesar cadena:\n"+ set.procesarCadena("bbba").isAccepted()+"\n\nProcesar cadena con detalles:");
+        set.procesarCadenaConDetalles("bbba");
+        System.out.println("\n\nComputar todos los procesamientos:");
+        set.computarTodosLosProcesamientos("bbba");
+        //System.out.println("Computar una lista de cadenas:");
+        String[] prueba = {"bbba","ba","bab"};
+        set.procesarListaCadenas(prueba,"prueba.txt", false);
+        
+        ProcesamientoCadenaAFN proc = new ProcesamientoCadenaAFN("bbba",set.procesarCadena("bbba"));    
+        System.out.println("\n-------- Impresión del procesamiento desde la clase PrcesamientoCadenaAFN --------");
+        proc.imprimirRespuestas();
 //        automataNoDet.printAutomata();
     }
     

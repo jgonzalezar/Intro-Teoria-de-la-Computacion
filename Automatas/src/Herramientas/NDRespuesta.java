@@ -13,12 +13,14 @@ import java.util.ArrayList;
  */
 public class NDRespuesta {
     public String cadena;
+    public String q0;
     public ArrayList<Integer> aceptado;
     public ArrayList<Integer> rechazado;
     public ArrayList<Integer> abortado;
 
-    public NDRespuesta(String cadena) {
+    public NDRespuesta(String cadena, String q0) {
         this.cadena = cadena;
+        this.q0=q0;
         aceptado = new ArrayList<>();
         rechazado = new ArrayList<>();
         abortado = new ArrayList<>();
@@ -41,11 +43,19 @@ public class NDRespuesta {
     public ArrayList<String> getAccepted(){
         ArrayList<String> accepted = new ArrayList<>();
         String s;
-        for(int i=0;i<aceptado.size()/cadena.length();i++){
-             s="q0";
-            for(int j=0;j<cadena.length();j++){
-                s += " "+cadena.substring(j,j+1)+",q"+aceptado.get(j+i*cadena.length());
+        if(cadena.length()==0){
+            if(aceptado.size()==0){
+                return accepted;
             }
+            accepted.add("["+q0+",$]");
+            return accepted;
+        }
+        for(int i=0;i<aceptado.size()/cadena.length();i++){
+            s="["+q0+","+cadena+"]";
+            for(int j=0;j<cadena.length()-1;j++){
+                s += " [q"+aceptado.get(j+i*cadena.length())+","+cadena.substring(j+1)+"]";
+            }
+            s += " [q"+aceptado.get(cadena.length()-1+i*cadena.length())+",$]";
             accepted.add(s);
         }
         return accepted;
@@ -54,8 +64,15 @@ public class NDRespuesta {
     public ArrayList<String> getRejected(){
         ArrayList<String> rejected = new ArrayList<>();
         String s;
+        if(cadena.length()==0){
+            if(rechazado.size()==0){
+                return rejected;
+            }
+            rejected.add("[q0,$]");
+            return rejected;
+        }
         for(int i=0;i<rechazado.size()/cadena.length();i++){
-            s ="q0";
+            s="["+q0+","+cadena+"]";
             for(int j=0;j<cadena.length();j++){
                 s += " "+cadena.substring(j,j+1)+",q"+rechazado.get(j+i*cadena.length());
             }
@@ -66,12 +83,12 @@ public class NDRespuesta {
     
     public ArrayList<String> getAborted(){
         ArrayList<String> aborted = new ArrayList<>();
-        String s="q0";
+        String s="["+q0+","+cadena+"]";
         int cont=0;
         for(int i=0;i<abortado.size();i++){
             if(abortado.get(i)==-1){
                 aborted.add(s);
-                s="q0";
+                s="["+q0+","+cadena+"]";
                 cont=0;
             }else{
                 s +=" "+cadena.substring(cont,cont+1)+",q"+abortado.get(i);
