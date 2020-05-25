@@ -1,8 +1,8 @@
 package AutomatasFinitos;
 
 import LectoresYProcesos.CreadorAutomata;
-import Herramientas.Respuesta;
 import Herramientas.Transition;
+import ProcesamientoCadenas.ProcesamientoCadenaAFD;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.File;
@@ -25,23 +25,23 @@ public class AFD {
      * El atributo Sigma representa el alfabeto del automata.
      * Esta dado por la clase String, y cada una de los caracteres de Sigma es uno de los simbolos del alfabeto.     * 
      */
-    public final char[] Sigma;
+    private final char[] Sigma;
     /**
      * El atributo Q representa la cantidad total de estados dentro del automata.
      */
-    public final ArrayList<String> Q; 
+    private final ArrayList<String> Q; 
     /**
      * El atributo q0 representa el estado inicial del autómata.
      */
-    public final String q0;
+    private final String q0;
     /**
      * El atributo F representa los estados aceptados del autómata. 
      */
-    public final ArrayList<String> F;
+    private final ArrayList<String> F;
     /**
      * El atributo Delta representa la función de transición del autómata.
      */
-    public final Transition Delta;
+    private final Transition Delta;
     
     /**
      * Constructor, inicializa los atributos.
@@ -182,7 +182,7 @@ public class AFD {
         if(word==null||word.length()==0){            
             return F.contains(q0);
         }
-        return prosCaden(word).aceptado;
+        return prosCaden(word).EsAceptada();
     }
     /**
      * Procesa una cadena para decir si pertenece al lenguaje
@@ -209,7 +209,7 @@ public class AFD {
      * @param word
      * @return 
      */
-    public Respuesta prosCaden(String word){
+    public ProcesamientoCadenaAFD prosCaden(String word){
         return Finish(Delta(word));
     }
     /**
@@ -218,9 +218,9 @@ public class AFD {
      * @return 
      */
     public boolean procesarCadenaConDetalles(String word){
-        Respuesta fin =prosCaden(word);
-        System.out.println(fin.pasos(word)+fin.aceptado);
-        return fin.aceptado;
+        ProcesamientoCadenaAFD fin =prosCaden(word);
+        System.out.println(fin.pasos()+fin.EsAceptada());
+        return fin.EsAceptada();
     }
     
     public void procesarListaCadenas(String[] listaCadenas,String nombreArchivo,boolean imprimirPantalla){
@@ -233,9 +233,9 @@ public class AFD {
             fichero1 = new FileWriter(nombre);
             pw1 = new PrintWriter(fichero1);
             for (int i = 0; i < listaCadenas.length; i++){
-                Respuesta res = prosCaden(listaCadenas[i]);
-                String pas =res.pasos(listaCadenas[i]);
-                String res2= pas+"\t"+res.aceptado;
+                ProcesamientoCadenaAFD res = prosCaden(listaCadenas[i]);
+                String pas =res.pasos();
+                String res2= pas+"\t"+res.EsAceptada();
                 pw1.println(res2);
                 if(imprimirPantalla) System.out.println(res2);
             }
@@ -252,46 +252,43 @@ public class AFD {
         }
     }
 
-    private Respuesta Delta(String word) {
-        Respuesta f = new Respuesta();
+    private ProcesamientoCadenaAFD Delta(String word) {
+        ProcesamientoCadenaAFD f = new ProcesamientoCadenaAFD(word);
         f.add(q0);
         if(word==null||word.length()==0){   
-            
-            f.aceptado =F.contains(q0);
-            
+            f.setEsAceptada(F.contains(q0));
             return  f;
         }
         if(word.length()==1){
             return Delta(f,word.charAt(0));
         }
-        Respuesta det = Delta(word.substring(0, word.length()-1));
+        ProcesamientoCadenaAFD det = Delta(word.substring(0, word.length()-1));
         return Delta(det,word.charAt(word.length()-1));
     }
     
-    private Respuesta Delta(Respuesta i, char u) {
-        /*if(!Sigma.contains(u)){
-            //System.err.println("Sigmal simbolo "+u+"no pertenece a el Alfabeto");
-            int as = -u.charAt(0);
-            return as;
-        }*/
-        if(!i.pasos.get(i.pasos.size()-1).equals("-1")){
-            String tas = Delta.cambio(u,i.pasos.get(i.pasos.size()-1));
-            i.add(tas);
-        }
-        
+    private ProcesamientoCadenaAFD Delta(ProcesamientoCadenaAFD i, char u) {
+        String tas = Delta.cambio(u,i.getlastPaso());
+        i.add(tas);
         return i;
     }
 
-    private Respuesta Finish(Respuesta q) {
-        if(F.contains(q.pasos.get(q.pasos.size()-1))){        
-            q.aceptado=true;
+    private ProcesamientoCadenaAFD Finish(ProcesamientoCadenaAFD q) {
+        if(F.contains(q.getlastPaso())){        
+            q.setEsAceptada(true);
             
         }
-        /*if(q<-1){
-            char a = (char)-q;
-            System.out.println(a);
-            System.err.println("Sigmal simbolo \""+a+"\" no pertenece a el Alfabeto");
-        }*/
         return q;
+    }
+    
+    public ArrayList<Character> ponerCadena(String cadena){
+        ArrayList<Character> asd = new ArrayList<>();
+        for (int i = 0; i < cadena.length(); i++) {
+            boolean d = false;
+            for (char c : Sigma) {
+                if(c==cadena.charAt(i)) d=true;
+            }
+            if(!d) asd.add(cadena.charAt(i));
+        }
+        return asd;
     }
 }

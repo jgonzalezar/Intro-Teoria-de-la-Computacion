@@ -1,13 +1,7 @@
 package Herramientas;
 
 
-import Herramientas.Respuesta;
-import Herramientas.Transition;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
 import java.util.HashMap;
 
 

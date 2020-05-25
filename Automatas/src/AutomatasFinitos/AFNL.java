@@ -5,19 +5,9 @@
  */
 package AutomatasFinitos;
 import Herramientas.TransitionAFNL;
-import Herramientas.Respuesta;
-import Herramientas.RespuestaMult;
-import Herramientas.Transition;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.PrintWriter;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 /**
  *

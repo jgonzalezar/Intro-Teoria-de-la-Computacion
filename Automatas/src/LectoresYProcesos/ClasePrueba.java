@@ -14,11 +14,11 @@ import javax.swing.JFileChooser;
  */
 public class ClasePrueba {
     static boolean salir;
-    enum Lectura{
-        CrearAutomata,LeerCadena,
+    static CreadorAutomata.Type tp;
+    public enum Lectura{
+        CrearAutomata,LeerCadena,salir
     }
     public static void main(String[] args) {
-        salir = false;
         String url = "";
         
         Lectura lec = Lectura.CrearAutomata;
@@ -27,7 +27,7 @@ public class ClasePrueba {
         JFileChooser fileChooser = new JFileChooser();
         while(!salir){
             String scad = scan.next();
-            if(scad.equals("$$EXIT$$"))salir=true;
+            if(scad.equals("$$EXIT$$"))lec=Lectura.salir;
             switch(lec){
                 case CrearAutomata:
                     System.out.println("seleccione el automata que desea importar");
@@ -35,12 +35,21 @@ public class ClasePrueba {
                     fileChooser.showOpenDialog(fileChooser);
                     url = fileChooser.getSelectedFile().getAbsolutePath();
                     CreadorAutomata.Type dis = CreadorAutomata.CheckType(url);
-                    System.out.println(dis);
+                    switch(dis){
+                        case AFD:
+                            break;
+                        case AFN:
+                            break;
+                        case AFNL:
+                            break;
+                        default:
+                            break;
+                    }
                     break;
                 case LeerCadena:
                     break;
                 default:
-                    throw new AssertionError(lec.name());
+                    break;
                 
             }
         }
