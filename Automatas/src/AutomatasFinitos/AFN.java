@@ -175,11 +175,6 @@ public class AFN {
                         }
 
                 }
-                
-                
-                if(lin.equals("#alpabet")){
-                    
-                }
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(CreadorAutomata.class.getName()).log(Level.SEVERE, null, ex);

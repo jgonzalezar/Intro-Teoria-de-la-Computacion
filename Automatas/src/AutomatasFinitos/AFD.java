@@ -149,11 +149,6 @@ public class AFD {
                         }
 
                 }
-                
-                
-                if(lin.equals("#alpabet")){
-                    
-                }
             }
         } catch (FileNotFoundException ex) {
             Logger.getLogger(CreadorAutomata.class.getName()).log(Level.SEVERE, null, ex);
@@ -263,6 +258,7 @@ public class AFD {
             return Delta(f,word.charAt(0));
         }
         ProcesamientoCadenaAFD det = Delta(word.substring(0, word.length()-1));
+        det.setCadena(word);
         return Delta(det,word.charAt(word.length()-1));
     }
     

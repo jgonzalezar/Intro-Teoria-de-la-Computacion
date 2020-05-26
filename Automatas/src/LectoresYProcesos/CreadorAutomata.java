@@ -273,8 +273,10 @@ public class CreadorAutomata {
             if(s.equals("#!nfa"))return Type.AFN;
             if(s.equals("#!nfae"))return Type.AFNL;
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(CreadorAutomata.class.getName()).log(Level.SEVERE, null, ex);
-        }    
+            System.err.print("El archivo dado no existe");
+        } catch(Exception e){
+            System.err.print("El archivo dado no contiene un automata, o no cumple con las indicaciones para identificar su tipo");
+        }
         return null;
         
     }

@@ -1,7 +1,5 @@
 package ProcesamientoCadenas;
 
-import AutomatasFinitos.AFD;
-import Herramientas.Transition;
 import java.util.ArrayList;
 
 /**
@@ -22,6 +20,8 @@ public class ProcesamientoCadenaAFD  {
     public String getCadena(){
         return cadena;
     }
+    
+    
 
     public boolean EsAceptada() {
         return esAceptada;
@@ -44,6 +44,7 @@ public class ProcesamientoCadenaAFD  {
     }
     public String pasos(){
         String s ="";
+        System.out.println(listaEstadoSimboloDeProcesamiento.size()+" "+cadena+" "+cadena.length());
         for (int i = 0; i < listaEstadoSimboloDeProcesamiento.size(); i++) {
             s += "["+listaEstadoSimboloDeProcesamiento.get(i)+", "+cadena.substring(i)+"]"+(char) 124+(char)61+(char)62;
         }
@@ -53,7 +54,7 @@ public class ProcesamientoCadenaAFD  {
     public static String pasos(String Cadena, ArrayList<String> estados){
         String s ="";
         for (int i = 0; i < estados.size(); i++) {
-            s += "["+estados.get(i)+", "+Cadena.substring(i)+"]"+(char) 124+(char)61+(char)62;
+            s += "["+estados.get(i)+", "+Cadena.substring(i)+"]-> ";
         }
         return s;
     }
