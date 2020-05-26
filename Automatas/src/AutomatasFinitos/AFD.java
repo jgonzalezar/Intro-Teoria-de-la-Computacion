@@ -10,8 +10,9 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.HashSet;
+import java.util.Set;
+
 
 /**
  * Esta clase es el automata finito determinista
@@ -27,7 +28,7 @@ public class AFD {
      */
     private final char[] Sigma;
     /**
-     * El atributo Q representa la cantidad total de estados dentro del automata.
+     * El atributo Q representa la lista de estados (representado con su nombre) que contiene el automata;
      */
     private final ArrayList<String> Q; 
     /**
@@ -40,16 +41,17 @@ public class AFD {
     private final ArrayList<String> F;
     /**
      * El atributo Delta representa la función de transición del autómata.
+     * @see Transition
      */
     private final Transition Delta;
     
     /**
      * Constructor, inicializa los atributos.
-     * @param Sigma
-     * @param Q
-     * @param q0
-     * @param F
-     * @param Delta 
+     * @param Sigma cadena de caracteres que componen el alfabeto
+     * @param Q cadena de nombres de los estados del automata
+     * @param q0 estado inicial del automata
+     * @param F estados aceptados del automata
+     * @param Delta funcion transicion usada en el automata
      */
     public AFD(char[] Sigma, ArrayList<String> Q, String q0, ArrayList<String> F, Transition Delta) {
         this.Sigma = Sigma;
@@ -60,98 +62,95 @@ public class AFD {
     }
     /**
      * Constructor. Inicializa los atributos a partir del archivo de texto.
-     * @param nombreArchivo 
+     * @param nombreArchivo url del archivo donde se encuentra el automata
+     * @throws Error error generado a la hora de leer el automata, 
      */
-    public AFD(String nombreArchivo) {
+    public AFD(String nombreArchivo) throws Error, FileNotFoundException{
         CreadorAutomata.Lecto lec = CreadorAutomata.Lecto.inicio;
         ArrayList<Character> alpha = null;
-        ArrayList<String> Q = null;
-        String q0 = null;
-        ArrayList<String> F = null;
-        Transition Delta = null;
+        ArrayList<String> W = null;
+        String W0 = null;
+        ArrayList<String> G = null;
+        Transition Deltos = null;
         
-        try {
-            Scanner sca = new Scanner(new File(nombreArchivo));
-            while(sca.hasNextLine()){
-                String lin = sca.nextLine();
-                System.out.println(lin);
-                switch(lin){
-                    case "#alphabet":
-                        lec = CreadorAutomata.Lecto.alfabeto;
-                        alpha = new ArrayList<>();
-                        break;
-                    case "#states":
-                        if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
-                        lec = CreadorAutomata.Lecto.estados;
-                        Q = new ArrayList<>();
-                        break;
-                    case "#initial":
-                        if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
-                        if(Q==null) throw new Error("primero debe iniciarse los estados");
-                        lec = CreadorAutomata.Lecto.estadoinicial;
-                        break;
-                    case "#accepting":
-                        if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
-                        if(Q==null) throw new Error("primero debe iniciarse los estados");
-                        if(q0==null) throw new Error("primero debe dar el estado inicial");
-                        lec = CreadorAutomata.Lecto.estadoFin;
-                        F = new ArrayList<>();
-                        break;
-                    case "#transitions":
-                        if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
-                        if(Q==null) throw new Error("primero debe iniciarse los estados");
-                        if(q0==null) throw new Error("primero debe dar el estado inicial");
-                        if(F==null) throw new Error("primero debe dar los estados finales");
-                        lec = CreadorAutomata.Lecto.transicion;
-                        Delta = new Transition();
-                        break;
-                    default:
-                        switch(lec){
-                            case alfabeto:
-                                if(lin.length()<2){
-                                    alpha.add(lin.charAt(0));
-                                }else{
-                                    int a = lin.charAt(0);
-                                    int b = lin.charAt(2);
-                                    int c = b-a;
-                                    for (int i = 0; i <=c; i++) {
-                                        char d = (char) (a+i);
-                                        alpha.add(d);
-                                        
-                                    }
-                                }
-                                break;
-                            case estados:
-                                Q.add(lin);
-                                break;
-                            case estadoinicial:
-                                if(!Q.contains(lin))throw new Error("el estado debe pertenecer a los estados del automata");
-                                q0=lin;
-                                break;
-                            case estadoFin:
-                                if(!Q.contains(lin))throw new Error("el estado debe pertenecer a los estados del automata");
-                                F.add(lin);
-                                break;
-                            case transicion:
-                                
-                                String[] origin = lin.split(":");
-                                String estado1 = origin[0];
-                                if(!Q.contains(estado1))throw new Error("el estado del que se parte debe pertenecer a los estados del automata");
-                                String[] origin2 = origin[1].split(">");
-                                String alpfa = origin2[0];
-                                if(!alpha.contains(alpfa.charAt(0)))throw new Error("el caracter de activacion debe pertenecer al alfabeto");
-                                String estado2 = origin2[1];
-                                if(!Q.contains(estado2))throw new Error("el estado de llegada debe pertenecer a los estados del automata");
-                                Delta.add(alpfa.charAt(0), estado1, estado2);
-                                break;
-                            default:
-                                break;
-                        }
+        Scanner sca = new Scanner(new File(nombreArchivo));
+        while(sca.hasNextLine()){
+            String lin = sca.nextLine();
+            System.out.println(lin);
+            switch(lin){
+                case "#alphabet":
+                    lec = CreadorAutomata.Lecto.alfabeto;
+                    alpha = new ArrayList<>();
+                    break;
+                case "#states":
+                    if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
+                    lec = CreadorAutomata.Lecto.estados;
+                    W = new ArrayList<>();
+                    break;
+                case "#initial":
+                    if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
+                    if(W==null) throw new Error("primero debe iniciarse los estados");
+                    lec = CreadorAutomata.Lecto.estadoinicial;
+                    break;
+                case "#accepting":
+                    if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
+                    if(W==null) throw new Error("primero debe iniciarse los estados");
+                    if(W0==null) throw new Error("primero debe dar el estado inicial");
+                    lec = CreadorAutomata.Lecto.estadoFin;
+                    G = new ArrayList<>();
+                    break;
+                case "#transitions":
+                    if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
+                    if(W==null) throw new Error("primero debe iniciarse los estados");
+                    if(W0==null) throw new Error("primero debe dar el estado inicial");
+                    if(G==null) throw new Error("primero debe dar los estados finales");
+                    lec = CreadorAutomata.Lecto.transicion;
+                    Deltos = new Transition();
+                    break;
+                default:
+                    switch(lec){
+                        case alfabeto:
+                            if(lin.length()<2){
+                                alpha.add(lin.charAt(0));
+                            }else{
+                                int a = lin.charAt(0);
+                                int b = lin.charAt(2);
+                                int c = b-a;
+                                for (int i = 0; i <=c; i++) {
+                                    char d = (char) (a+i);
+                                    alpha.add(d);
 
-                }
+                                }
+                            }
+                            break;
+                        case estados:
+                            W.add(lin);
+                            break;
+                        case estadoinicial:
+                            if(!W.contains(lin))throw new Error("el estado debe pertenecer a los estados del automata");
+                            W0=lin;
+                            break;
+                        case estadoFin:
+                            if(!W.contains(lin))throw new Error("el estado debe pertenecer a los estados del automata");
+                            G.add(lin);
+                            break;
+                        case transicion:
+
+                            String[] origin = lin.split(":");
+                            String estado1 = origin[0];
+                            if(!W.contains(estado1))throw new Error("el estado del que se parte debe pertenecer a los estados del automata");
+                            String[] origin2 = origin[1].split(">");
+                            String alpfa = origin2[0];
+                            if(!alpha.contains(alpfa.charAt(0)))throw new Error("el caracter de activacion debe pertenecer al alfabeto");
+                            String estado2 = origin2[1];
+                            if(!W.contains(estado2))throw new Error("el estado de llegada debe pertenecer a los estados del automata");
+                            Deltos.add(alpfa.charAt(0), estado1, estado2);
+                            break;
+                        default:
+                            break;
+                    }
+
             }
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(CreadorAutomata.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         char[] ad =new char[alpha.size()];
@@ -159,24 +158,17 @@ public class AFD {
             ad[i]=alpha.get(i);
         }
         this.Sigma = ad;
-        this.Q = Q;
-        this.q0 = q0;
-        this.F = F;
-        this.Delta = Delta;
+        this.Q = W;
+        this.q0 = W0;
+        this.F = G;
+        this.Delta = Deltos;
     }
     
     
 
-    /**
-     * Verifica que la cadena no genere conflictos al ser evaluada.
-     * @param word
-     * @return "Verdadero" en caso de no poseer ningún conflicto.
-     */
+    
 
     public boolean procesarCadena(String word){
-        if(word==null||word.length()==0){            
-            return F.contains(q0);
-        }
         return prosCaden(word).EsAceptada();
     }
     /**
@@ -252,6 +244,7 @@ public class AFD {
         f.add(q0);
         if(word==null||word.length()==0){   
             f.setEsAceptada(F.contains(q0));
+            f.setCadena(word);
             return  f;
         }
         if(word.length()==1){
@@ -262,19 +255,36 @@ public class AFD {
         return Delta(det,word.charAt(word.length()-1));
     }
     
+    /**
+     * 
+     * @param i
+     * @param u
+     * @return un procesamiento
+     * @see ProcesamientoCadenaAFD
+     */
+    
     private ProcesamientoCadenaAFD Delta(ProcesamientoCadenaAFD i, char u) {
         String tas = Delta.cambio(u,i.getlastPaso());
         i.add(tas);
         return i;
     }
+    
+    /**
+     * La funcion Finish Realiza la comprobacion de un ProcesamientodeCadenaAFD para comprobar su ultimo estado y retornar el procesamiento con la variable de aceptacion segun la pertenencia del estado final dentro de los aceptados
+     * @param q procesamiento previo de alguna cadena
+     * @return Procesamiento modificado
+     */
 
     private ProcesamientoCadenaAFD Finish(ProcesamientoCadenaAFD q) {
-        if(F.contains(q.getlastPaso())){        
-            q.setEsAceptada(true);
-            
-        }
+        q.setEsAceptada(F.contains(q.getlastPaso()));
         return q;
     }
+    
+    /**
+     * Verifica que la cadena dada pertenezca al alfabeto del automata.
+     * @param cadena para palabra a evaluar
+     * @return lista de caracteres que no pertenecen .
+     */
     
     public ArrayList<Character> ponerCadena(String cadena){
         ArrayList<Character> asd = new ArrayList<>();
@@ -285,6 +295,10 @@ public class AFD {
             }
             if(!d) asd.add(cadena.charAt(i));
         }
+        
+        Set<Character> hashSet = new HashSet<>(asd);
+        asd.clear();
+        asd.addAll(hashSet);
         return asd;
     }
 }

@@ -12,6 +12,7 @@ public class ProcesamientoCadenaAFD  {
     private ArrayList<String> listaEstadoSimboloDeProcesamiento;
 
     public ProcesamientoCadenaAFD(String cadena) {
+        esAceptada = false;
         this.cadena = cadena;
         listaEstadoSimboloDeProcesamiento = new ArrayList<>();
     }
