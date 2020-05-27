@@ -176,11 +176,11 @@ public class ClasePrueba {
     }
     
     private static Lectura probarAFN(){
-        return null;
+        return  Lectura.CrearAutomata;
     }
     
     private static Lectura probarAFNLambda(){
-        return null;
+        return Lectura.CrearAutomata;
     }
     /*
     Debe hacer una clase ClasePrueba para ejecutar todos los métodos realizados,
