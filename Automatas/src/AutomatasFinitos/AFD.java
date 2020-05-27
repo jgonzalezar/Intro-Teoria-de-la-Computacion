@@ -163,6 +163,7 @@ public class AFD {
         this.q0 = W0;
         this.F = G;
         this.Delta = Deltos;
+        this();
     }
     /**
      * Procesa una palabra para decir si pertenece al lenguaje

@@ -22,6 +22,7 @@ public class TransitionMult {
     
     public TransitionMult() {
         transicion = new HashMap<>();
+        
     }
     
     /**
