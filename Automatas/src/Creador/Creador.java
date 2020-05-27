@@ -11,12 +11,13 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
- *
+ *  clase Main que realiza la creacion del archivo Sigma*
  * @author fanat
  */
 public class Creador {
 
     /**
+     * Main que realiza el pedido de datos y llamado a creacion de el arhcivo Sigma*
      * @param args the command line arguments
      */
     public static void main(String[] args) {
@@ -40,14 +41,29 @@ public class Creador {
         }
     }
     
-    static private boolean Exist(char[] universe, int b){
+    /**
+     * confirma si dentro un lista de caracteres se encuentra ya un caracter dado
+     * @param universe lista de caracteres buscada
+     * @param b caracter a confirmar presencia
+     * @return existe o no en el universo de caracteres
+     */
+    
+    static private boolean Exist(char[] universe, char b){
         for(int i = 0;i< universe.length;i++){
             if(universe[i]==b)return true;
         }
         return false;
     }
     
-    static public char NewInTheUniverse(char[] universe,char a) throws IOException{
+    /**
+     * 
+     * @param universe
+     * @param a
+     * @return
+     * @throws IOException 
+     */
+    
+    static private char NewInTheUniverse(char[] universe,char a) throws IOException{
         Scanner s = new Scanner(System.in);
         if(Exist(universe, a)){
             System.out.println("El simbolo: "+a+" ya pertenece al universo intente de nuevo");    
