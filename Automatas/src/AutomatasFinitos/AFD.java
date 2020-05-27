@@ -64,6 +64,7 @@ public class AFD {
      * Constructor. Inicializa los atributos a partir del archivo de texto.
      * @param nombreArchivo url del archivo donde se encuentra el automata
      * @throws Error error generado a la hora de leer el automata, 
+     * @throws java.io.FileNotFoundException 
      */
     public AFD(String nombreArchivo) throws Error, FileNotFoundException{
         CreadorAutomata.Lecto lec = CreadorAutomata.Lecto.inicio;
@@ -239,6 +240,12 @@ public class AFD {
         }
     }
 
+    /**
+     * 
+     * @param word
+     * @return 
+     */
+    
     private ProcesamientoCadenaAFD Delta(String word) {
         ProcesamientoCadenaAFD f = new ProcesamientoCadenaAFD(word);
         f.add(q0);
@@ -256,10 +263,10 @@ public class AFD {
     }
     
     /**
-     * 
-     * @param i
-     * @param u
-     * @return un procesamiento
+     * La Funcion delta realiza el movimiento de cambio de estado segun un caracter del arfabeto por medio de la funcion de transicion y el ultimo paso procesado
+     * @param i Procesamiento de Cadena que marca el camino llevado actualmente
+     * @param u caracter que fue leido e indica el cambio
+     * @return un procesamiento con el cambio por la cadena añadido
      * @see ProcesamientoCadenaAFD
      */
     

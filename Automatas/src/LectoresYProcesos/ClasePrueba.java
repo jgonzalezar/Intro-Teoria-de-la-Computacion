@@ -9,6 +9,7 @@ import AutomatasFinitos.AFD;
 import AutomatasFinitos.AFN;
 import AutomatasFinitos.AFNL;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
@@ -157,6 +158,9 @@ public class ClasePrueba {
 
             }catch(Error e){
                 System.err.print(e.getMessage());
+                return Lectura.CrearAutomata;
+            }catch(FileNotFoundException e){
+                
                 return Lectura.CrearAutomata;
             }
             String[] options = {"Evaluar otra cadena","Cambiar De Automata","Salir"};
