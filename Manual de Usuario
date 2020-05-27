@@ -1,0 +1,11 @@
+--%%--Link Manual de Usuario--%%--
+
+En este link pueden editar el manual de usuario. Si no saben nada
+de LaTeX pueden escribir al final del documento
+(antes de "\end{document}") y yo me encargo de formatear el texto.
+Cuando agreguen el texto recuerden presionar Ctrl+Enter, así recompila
+y lo guarda.
+
+(No estoy seguro si necesitan una cuenta de Overleaf)
+
+https://www.overleaf.com/6736876281ycntdtsntgcx
