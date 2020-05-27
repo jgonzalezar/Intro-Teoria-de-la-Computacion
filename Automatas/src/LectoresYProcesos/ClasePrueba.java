@@ -12,7 +12,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Scanner;
 import java.util.Set;
 import javax.swing.JFileChooser;
@@ -26,6 +25,8 @@ public class ClasePrueba {
     static boolean salir;
     static CreadorAutomata.Type tp;
     static String url;
+
+    
 
     public enum Lectura{
         CrearAutomata,LeerCadena,salir
@@ -118,26 +119,48 @@ public class ClasePrueba {
                         boolean dos = true;
                         do{
                             try{
-                                int de = JOptionPane.YES_OPTION;
                                 ArrayList<String> cadenas = new ArrayList<>();
-                                do{
-                                    try{
-                                        String  cadena = JOptionPane.showInputDialog(null, "Dar La Cadena A ser Evaluada", "");
-                                        ArrayList<Character> error = afd.ponerCadena(cadena);
-                                        if(error.size()>0){
-                                            String errors ="";
-                                            for (Character character : error) {
-                                                errors += character+" ";
-                                            }
-                                            JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n"+errors,"Error en Cadena",JOptionPane.ERROR_MESSAGE);
-                                        }else{
-                                            cadenas.add(cadena);
-                                            de = JOptionPane.showConfirmDialog(null, "desea agregar otra cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                                int k = JOptionPane.showConfirmDialog(null, "Desea Dar un Archivo con las cadenas", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                                switch (k) {
+                                    case JOptionPane.YES_OPTION:
+                                        JFileChooser file = new JFileChooser(new File ("."));
+                                        file.setDialogTitle("Seleccione el archivo con las cadenas");
+                                        if(file.showOpenDialog(file)==JFileChooser.CANCEL_OPTION){
+                                            throw new NullPointerException();
                                         }
-                                    }catch(NullPointerException e){
-                                        de = JOptionPane.CANCEL_OPTION;
-                                    }
-                                }while(de==JOptionPane.YES_OPTION);
+                                        String asd = file.getSelectedFile().getAbsolutePath();
+                                        
+                                        Scanner s = new Scanner(new File(asd));
+                                        while(s.hasNext()){
+                                            String as = s.next();
+                                            if(!(afd.ponerCadena(as).size()>0))cadenas.add(as);
+                                        }
+                                        break;
+                                    case JOptionPane.NO_OPTION:
+                                        int de = JOptionPane.YES_OPTION;
+                                        do{
+                                            try{
+                                                String  cadena = JOptionPane.showInputDialog(null, "Dar La Cadena A ser Evaluada", "");
+                                                ArrayList<Character> error = afd.ponerCadena(cadena);
+                                                if(error.size()>0){
+                                                    String errors ="";
+                                                    for (Character character : error) {
+                                                        errors += character+" ";
+                                                    }
+                                                    JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n"+errors,"Error en Cadena",JOptionPane.ERROR_MESSAGE);
+                                                }else{
+                                                    cadenas.add(cadena);
+                                                    de = JOptionPane.showConfirmDialog(null, "desea agregar otra cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                                                }
+                                            }catch(NullPointerException e){
+                                                de = JOptionPane.CANCEL_OPTION;
+                                            }
+                                        }while(de==JOptionPane.YES_OPTION);
+                                        break;
+                                }       
+                                
+                                
+                                
                                 
                                 Set<String> hashSet = new HashSet<>(cadenas);
                                 cadenas.clear();
@@ -153,8 +176,8 @@ public class ClasePrueba {
                                 }
                                 String asd = file.getSelectedFile().getAbsolutePath();
                                 String[] listaCadenas = new String[cadenas.size()];
-                                for (int k = 0;k<cadenas.size();k++) {
-                                    listaCadenas[k] = cadenas.get(k);
+                                for (int j = 0;j<cadenas.size();j++) {
+                                    listaCadenas[j] = cadenas.get(j);
                                 }
                                 afd.procesarListaCadenas(listaCadenas, asd, JOptionPane.showConfirmDialog(null, "Desea imprimir en consola tambien?", "detalles", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)==JOptionPane.YES_OPTION);
                                 dos = false;
