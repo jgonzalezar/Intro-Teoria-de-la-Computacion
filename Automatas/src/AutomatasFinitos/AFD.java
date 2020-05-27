@@ -61,10 +61,10 @@ public class AFD {
         this.Delta = Delta;
     }
     /**
-     * Constructor. Inicializa los atributos a partir del archivo de texto.
+     * Constructor Inicializa los atributos a partir del archivo de texto.
      * @param nombreArchivo url del archivo donde se encuentra el automata
      * @throws Error error generado a la hora de leer el automata, 
-     * @throws java.io.FileNotFoundException 
+     * @throws java.io.FileNotFoundException en caso de que el archivo no sea encontrado por el scanner
      */
     public AFD(String nombreArchivo) throws Error, FileNotFoundException{
         CreadorAutomata.Lecto lec = CreadorAutomata.Lecto.inicio;
@@ -164,19 +164,19 @@ public class AFD {
         this.F = G;
         this.Delta = Deltos;
     }
-    
-    
-
-    
+    /**
+     * Procesa una palabra para decir si pertenece al lenguaje
+     * @param word palabra a determinar
+     * @return la aceptacion del lenguaje
+     */
 
     public boolean procesarCadena(String word){
         return prosCaden(word).EsAceptada();
     }
     /**
      * Procesa una cadena para decir si pertenece al lenguaje
-     * @param word palabra a determinar
-     * @return "Verdadero" en caso de ser aceptada
-     * @see procesarCadena
+     * @param word cadena a determinar
+     * @return la aceptacion del lenguaje
      */
     
     
@@ -185,31 +185,41 @@ public class AFD {
     }
     
     /**
-     * Procesa la cadena e imprime los estados que va tomando al procesar cada símbolo.
-     * @param word
-     * @return 
+     * Procesa la cadena e imprime los estados en consola los caminos que va tomando al procesar cada símbolo.
+     * @param word cadena de caracteres a evaluar
+     * @return la aceptacion del lenguaje
      */
     public boolean procesarCadenaConDetalles(char[] word){
         return procesarCadenaConDetalles(Arrays.toString(word));
     }
+    
     /**
-     * Evalúa el último caracter de la cadena
-     * @param word
-     * @return 
-     */
-    public ProcesamientoCadenaAFD prosCaden(String word){
-        return Finish(Delta(word));
-    }
-    /**
-     * Procesa la cadena e imprime los estados que va tomando al procesar cada símbolo.
-     * @param word
-     * @return 
+     * Procesa la palabra e imprime los estados en consola los caminos que va tomando al procesar cada símbolo.
+     * @param word palabra a evaluar
+     * @return la cadena es o no aceptada
      */
     public boolean procesarCadenaConDetalles(String word){
         ProcesamientoCadenaAFD fin =prosCaden(word);
         System.out.println(fin.pasos()+fin.EsAceptada());
         return fin.EsAceptada();
     }
+    
+    /**
+     * evalua una palabra y retorna su procesamiento en cadena
+     * @param word 
+     * @return procesamiento dado a la cadena de su camino y su resultado de aceptacion
+     * @see ProcesamientoCadenaAFD
+     */
+    private ProcesamientoCadenaAFD prosCaden(String word){
+        return Finish(Delta(word));
+    }
+    
+    /**
+     * La funcion procesarListaCadenas procesa cada una de una list de cadenas dada y la guarda dentro de un archivo con el nombre dado, y imprimirla en consola o no
+     * @param listaCadenas lista de cadenas a evaluar 
+     * @param nombreArchivo nombre del archivo donde se guardara 
+     * @param imprimirPantalla booleano que decide si se imprimira o no en consola
+     */
     
     public void procesarListaCadenas(String[] listaCadenas,String nombreArchivo,boolean imprimirPantalla){
         FileWriter fichero1 = null;
@@ -241,9 +251,10 @@ public class AFD {
     }
 
     /**
-     * 
-     * @param word
-     * @return 
+     * La Funcion delta recibe una palabra y crea su recurcion mas pequeña para luego desde la misma crear un camino y empezar a recorrerlo segun el ultimo caracter de la recursion hasta generar todo el camino de la palabra
+     * @param word palabra a ser evaluada
+     * @return procesamiento recursivo de la palabra dada
+     * @see ProcesamientoCadenaAFD
      */
     
     private ProcesamientoCadenaAFD Delta(String word) {
@@ -280,6 +291,7 @@ public class AFD {
      * La funcion Finish Realiza la comprobacion de un ProcesamientodeCadenaAFD para comprobar su ultimo estado y retornar el procesamiento con la variable de aceptacion segun la pertenencia del estado final dentro de los aceptados
      * @param q procesamiento previo de alguna cadena
      * @return Procesamiento modificado
+     * @see ProcesamientoCadenaAFD
      */
 
     private ProcesamientoCadenaAFD Finish(ProcesamientoCadenaAFD q) {
