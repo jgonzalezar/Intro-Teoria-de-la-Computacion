@@ -163,12 +163,11 @@ public class AFD {
         this.q0 = W0;
         this.F = G;
         this.Delta = Deltos;
-        this();
     }
     /**
      * Procesa una palabra para decir si pertenece al lenguaje
      * @param word palabra a determinar
-     * @return la aceptacion del lenguaje
+     * @return la aceptacion del lenguaje 
      */
 
     public boolean procesarCadena(String word){

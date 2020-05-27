@@ -60,11 +60,12 @@ public class ProcesamientoCadenaAFD  {
         for (int i = 0; i < listaEstadoSimboloDeProcesamiento.size(); i++) {
             s += "["+listaEstadoSimboloDeProcesamiento.get(i)+", "+cadena.substring(i)+"]"+(char) 124+(char)61+(char)62;
         }
-        return s;
+        return pasos(cadena,listaEstadoSimboloDeProcesamiento,0);
     }
     
-    public static String pasos(String Cadena, ArrayList<String> estados){
+    public static String pasos(String Cadena, ArrayList<String> estados,int i){
         String s ="";
+        // += pasos(Cadena, estados,i+1);
         for (int i = 0; i < estados.size(); i++) {
             s += "["+estados.get(i)+", "+Cadena.substring(i)+"]-> ";
         }
