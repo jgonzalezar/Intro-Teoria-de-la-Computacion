@@ -236,7 +236,7 @@ public class ClasePrueba {
                 return Lectura.CrearAutomata;
             }
             String[] options = {"Evaluar otra cadena","Cambiar De Automata","Salir"};
-            int f = JOptionPane.showOptionDialog (null,"indique la proxima accion a realizar", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
+            int f = JOptionPane.showOptionDialog (null,"Indique la proxima accion a realizar", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
             if(f==2||f==JOptionPane.CLOSED_OPTION){
                 return Lectura.salir;
             }else if(f==1){
