@@ -17,21 +17,12 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 /**
- * Esta clase es el automata finito no determinista con transiciones lambda
- * en este automata se puede realizar el procesamiento de cadenas sobre el automata ingresado, para saber si esta pertenece o no al lenguaje
- * mientras se muestran los pasos del procesamiento, si así se desea.
- * @author Nathalia
+ *
+ * @author ivonn
  */
 public class AFNL {
-     /**
-     * El atributo E representa el alfabeto del automata.
-     */
     private final char[] E;
-     /**
-     * El atributo Q representa el conjunto de 
-     */
     private final ArrayList<String> Q;
     private final int q0;
     private final ArrayList<Integer> F;
@@ -178,27 +169,26 @@ public class AFNL {
     }
     
     //@SuppressWarnings("empty-statement")
-    public ArrayList<Integer>  lambdaClausura_unEstado(int estado,ArrayList<Integer> lClausura){
-        
+    public ArrayList<Integer>  lambdaClausura_unEstado(int estado){
+        ArrayList<Integer> lClausura;
         TransitionAFNL Tra= this.T;
-        char lambdaTra=this.lambda;
-        
-        
-       Map<Character,ArrayList<Integer>> estadoInterior;
-        //estadoInterior = new HashMap<>();
-       estadoInterior=Tra.getState(estado);
-       for (Map.Entry<Character, ArrayList<Integer>> entry : estadoInterior.entrySet()) {
-           
-		    if(entry.getKey().equals(lambdaTra) && entry.getValue().isEmpty()==false){
-                        lClausura.add(estado);
-                        for(int i=0;i<entry.getValue().size();i++){
-                            lClausura.add(entry.getValue().get(i));
-                            
-                            lambdaClausura_unEstado(i,lClausura);
-                        }
-                        
+        lClausura=Tra.getState(estado).get(this.lambda);
+        lClausura.add(estado);
+        if(lClausura.isEmpty()){
+            lClausura.add(estado);           
+        }else{
+            lClausura.add(estado);
+            for(int i=0;i<lClausura.size();i++){
+            ArrayList<Integer> sublClausura=lambdaClausura_unEstado(lClausura.get(i));
+                for(int j=0;j<sublClausura.size();j++){
+                    lClausura.add(j);
                     }
-		}
+                }
+               
+            }
+                        
+        
+		
        Set<Integer> hashSet = new HashSet<>(lClausura);
         lClausura.clear();
         lClausura.addAll(hashSet);
@@ -219,10 +209,9 @@ public class AFNL {
     }
     
     public ArrayList<Integer>  lambdaClausura_variosEstado(ArrayList<Integer> estados){
-        ArrayList<Integer> lClausura= new ArrayList<>(); // arraylist vacio que toca poner para la lambda clausura de un solo estado 
         ArrayList<Integer> lClausura_estados= new ArrayList<>();
         for (int i=0;i<estados.size();i++) {
-           ArrayList<Integer> Clauestado=lambdaClausura_unEstado(i, lClausura);
+           ArrayList<Integer> Clauestado=lambdaClausura_unEstado(i);
            for(int j =0; j<Clauestado.size();j++){
                lClausura_estados.add(Clauestado.get(j));
            }
@@ -292,15 +281,22 @@ public class AFNL {
         for(int i =0;i<estados.size();i++){
             Map<Character,ArrayList<Integer>> estadoInterior;
         
-            estadoInterior = T.getState(estados.get(i));
-            ArrayList<Integer> estadosFinalesPrev=estadoInterior.get(letra); 
-            for(int j=0;j<estadosFinalesPrev.size();j++){
-                    estadosFinales.add(estadosFinalesPrev.get(j));
-                }
-            ArrayList<Integer> estadosFinalesPrevLambda = estadoInterior.get(lambdaT);
-            estadosFinalesPrev=devolverEstadosIteracion(letra,estadosFinalesPrevLambda);
-            for(int j=0;j<estadosFinalesPrev.size();j++){
-                estadosFinales.add(estadosFinalesPrev.get(j));
+            estadoInterior=T.getState(estados.get(i));
+            for (Map.Entry<Character, ArrayList<Integer>> entry : estadoInterior.entrySet()) {           
+		    if( entry.getKey().equals(letra)&& entry.getValue().isEmpty()==false){
+                      ArrayList<Integer> estadosFinalesPrev=entry.getValue(); 
+                      for(int j=0;j<estadosFinalesPrev.size();j++){
+                          estadosFinales.add(estadosFinalesPrev.get(j));
+                          }
+                    }else if(entry.getKey().equals(lambdaT)&& entry.getValue().isEmpty()==false){
+                        ArrayList<Integer> estadosFinalesPrevLambda=entry.getValue();
+                        ArrayList<Integer> estadosFinalesPrev=devolverEstadosIteracion(letra,estadosFinalesPrevLambda);
+                      for(int j=0;j<estadosFinalesPrev.size();j++){
+                          estadosFinales.add(estadosFinalesPrev.get(j));
+                          }
+                        
+                    }  
+                        
             }
         }
         Set<Integer> hashSet = new HashSet<>(estadosFinales);
@@ -308,6 +304,9 @@ public class AFNL {
         estadosFinales.addAll(hashSet);
         
         return estadosFinales;
+
+        
+        
     }
     
     public void ProcesarCadenaConDetalles(String palabra){
@@ -364,7 +363,6 @@ public class AFNL {
     }*/
     
 }
-
     
  
     
