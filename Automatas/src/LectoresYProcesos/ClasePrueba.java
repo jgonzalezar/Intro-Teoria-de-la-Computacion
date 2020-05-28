@@ -296,10 +296,7 @@ public class ClasePrueba {
                                             }
                                         }while(de==JOptionPane.YES_OPTION);
                                         break;
-                                }       
-                                
-                                
-                                
+                                }
                                 
                                 Set<String> hashSet = new HashSet<>(cadenas);
                                 cadenas.clear();
@@ -324,7 +321,6 @@ public class ClasePrueba {
                             }catch(NullPointerException e){
                                 dos=false;
                             }
-                            
                         }while(dos);
                         break;
 
@@ -343,7 +339,19 @@ public class ClasePrueba {
                                 }else{
                                     boolean set;
                                     if(JOptionPane.showConfirmDialog(null, "Desea mostrar el camino recorrido a la hora de evaluar la cadena?", "detalles", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)==JOptionPane.YES_OPTION){
-                                        set =afn.procesarCadenaConDetalles(cadena);
+                                        if(JOptionPane.showConfirmDialog(null, "Desea mostrar el camino de todos los procesamientos de la cadena?", "detalles", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE)==JOptionPane.YES_OPTION){
+                                            JFileChooser file = new JFileChooser(new File ("."));
+                                            file.setDialogTitle("Seleccione la ubicación del archivo que contendrá la respuesta");
+                                            if(file.showOpenDialog(file)==JFileChooser.CANCEL_OPTION){
+                                                throw new NullPointerException();
+                                            }
+                                            String asd = file.getSelectedFile().getAbsolutePath();
+                                            afn.computarTodosLosProcesamientos(cadena,asd);
+                                            tres = false;
+                                            break;
+                                        }else{
+                                            set =afn.procesarCadenaConDetalles(cadena);
+                                        }
                                     }else{
                                         set =afn.procesarCadena(cadena);
                                     }
@@ -356,17 +364,11 @@ public class ClasePrueba {
                             }
                             
                         }while(tres);
-                        
                         break;
-
                     default:
                         //una
                         break;
                 }
-
-
-                
-
             }catch(Error e){
                 System.err.print(e.getMessage());
                 return Lectura.CrearAutomata;
@@ -375,7 +377,7 @@ public class ClasePrueba {
                 return Lectura.CrearAutomata;
             }
             String[] options = {"Evaluar otra cadena","Cambiar De Automata","Salir"};
-            int f = JOptionPane.showOptionDialog (null,"Indique la proxima accion a realizar", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
+            int f = JOptionPane.showOptionDialog (null,"Indique la proxima accion a realizar", "", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
             if(f==2||f==JOptionPane.CLOSED_OPTION){
                 return Lectura.salir;
             }else if(f==1){

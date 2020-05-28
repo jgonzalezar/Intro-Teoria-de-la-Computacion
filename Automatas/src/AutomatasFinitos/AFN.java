@@ -203,7 +203,6 @@ public class AFN {
         this.cont=0;
     }
     
-    
     /**
      * Función que procesa una cadena en el automata
      * @param cadena Cadena a procesar
@@ -245,11 +244,11 @@ public class AFN {
             computarTodosLosProcesamientos(q0,0);
         }
         if(respuesta.isAccepted()){
-            System.out.print(respuesta.getAccepted().get(0)+"-> true");
+            System.out.println(respuesta.getAccepted().get(0)+"-> true");
         }else if(respuesta.getRejected().size()>0){
-            System.out.print(respuesta.getRejected().get(0)+"-> false");
+            System.out.println(respuesta.getRejected().get(0)+"-> false");
         }else if(respuesta.getAborted().size()>0){
-            System.out.print(respuesta.getAborted().get(0) +"-> false");
+            System.out.println(respuesta.getAborted().get(0) +"-> false");
         }
         return respuesta.isAccepted();
     }
@@ -257,14 +256,15 @@ public class AFN {
      /**
      * Función que procesa una cadena en el automata, e imprime todos los posibles procesamientos
      * @param cadena Cadena a procesar
+     * @param nombreArchivo Nombre del archivo en el que se hará la impresión de los procesamientos
      * @return boolean - True si la cadena ingresada es aceptada, false de otra forma.
      */
-    public int computarTodosLosProcesamientos(String cadena){        
+    public int computarTodosLosProcesamientos(String cadena, String nombreArchivo){        
         FileWriter fichero1 = null;
         PrintWriter pw1 = null;
         try
         {
-            File nombre = new File("ProcesamientosAFN.txt");
+            File nombre = new File(nombreArchivo);
             if(!nombre.exists())nombre.createNewFile();
             fichero1 = new FileWriter(nombre);
             pw1 = new PrintWriter(fichero1);
@@ -282,26 +282,26 @@ public class AFN {
                 computarTodosLosProcesamientos(q0,0);
             }
                 
-            String res="Aceptadas:\n  ";
+            String res="Para la cadena:"+cadena+"\nAceptadas:\n  ";
             if(respuesta.getAccepted().isEmpty()){
                 res+="No hay procesamientos aceptados para esta cadena\n";
             }
             for(int i=0;i<respuesta.getAccepted().size();i++){
                 res+=respuesta.getAccepted().get(i)+"\n";
             }
-            res+="Rechazadas:\n  ";
+            res+="Rechazadas:\n";
             if(respuesta.getRejected().isEmpty()){
-                res+="No hay procesamientos rechazados para esta cadena\n";
+                res+="  No hay procesamientos rechazados para esta cadena\n";
             }
             for(int i=0;i<respuesta.getRejected().size();i++){
                 res+=respuesta.getRejected().get(i)+"\n";
             }
-            res+="Abortadas:\n  ";
+            res+="Abortadas:\n";
             if(respuesta.getAborted().isEmpty()){
-                res+="No hay procesamientos abortados para esta cadena\n";
+                res+="  No hay procesamientos abortados para esta cadena\n";
             }
             for(int i=0;i<respuesta.getAborted().size();i++){
-                res+=respuesta.getAborted().get(i)+"\n";
+                res+="  "+respuesta.getAborted().get(i)+"\n";
             }
             pw1.println(res);
             System.out.println(res);
