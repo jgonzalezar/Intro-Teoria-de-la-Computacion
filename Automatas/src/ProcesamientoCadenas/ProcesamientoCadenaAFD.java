@@ -65,10 +65,10 @@ public class ProcesamientoCadenaAFD  {
     
     public static String pasos(String Cadena, ArrayList<String> estados,int i){
         String s ="";
-        // += pasos(Cadena, estados,i+1);
-        for (int i = 0; i < estados.size(); i++) {
-            s += "["+estados.get(i)+", "+Cadena.substring(i)+"]-> ";
+        if(i!=Cadena.length()){
+            s += "["+estados.get(i)+", "+Cadena.substring(i)+"]-> "+ pasos(Cadena, estados,i+1);
         }
+        
         return s;
     }
 
