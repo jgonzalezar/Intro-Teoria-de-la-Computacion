@@ -36,7 +36,7 @@ public class TransitionAFNL {
         return transicionAFNL.size();
     }
     
-     public HashMap getState(int i) {
+     public HashMap<Character,ArrayList<Integer>> getState(int i) {
         return transicionAFNL.get(i);
     }
      
