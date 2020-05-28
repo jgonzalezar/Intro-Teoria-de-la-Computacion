@@ -62,7 +62,7 @@ public class RespuestaMult {
             rutaNueva.add(paso.get(i));
             pasos.add(rutaNueva);
         }
-        pasos.get(ruta).add(paso.get(paso.size()));
+        pasos.get(ruta).add(paso.get(paso.size()-1));
     }
     /**
      * añade una ruta nueva totalmente 
