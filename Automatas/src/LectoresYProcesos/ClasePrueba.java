@@ -45,7 +45,7 @@ public class ClasePrueba {
             if(scad.equals("$$EXIT$$"))lec=Lectura.salir;
             switch(lec){
                 case CrearAutomata:
-                    System.out.println("seleccione el automata que desea importar");
+                    System.out.println("Seleccione el automata que desea importar");
                     try{
                         if(fileChooser.showOpenDialog(fileChooser)==JFileChooser.CANCEL_OPTION){
                             throw new NullPointerException();
@@ -124,7 +124,7 @@ public class ClasePrueba {
                                 switch (k) {
                                     case JOptionPane.YES_OPTION:
                                         JFileChooser file = new JFileChooser(new File ("."));
-                                        file.setDialogTitle("Seleccione el archivo con las cadenas");
+                                        file.setDialogTitle("Seleccione el archivo que contiene la lista de cadenas");
                                         if(file.showOpenDialog(file)==JFileChooser.CANCEL_OPTION){
                                             throw new NullPointerException();
                                         }
@@ -169,7 +169,7 @@ public class ClasePrueba {
                                 for (String cadena : cadenas) {
                                     cadenasd += cadena +"\n";
                                 }
-                                JOptionPane.showMessageDialog(null, "las cadenas dadas son: \n"+cadenasd,"Cadenas Dadas",JOptionPane.INFORMATION_MESSAGE);
+                                JOptionPane.showMessageDialog(null, "Las cadenas dadas son: \n"+cadenasd,"Cadenas Dadas",JOptionPane.INFORMATION_MESSAGE);
                                 JFileChooser file = new JFileChooser(new File ("."));
                                 if(file.showOpenDialog(file)==JFileChooser.CANCEL_OPTION){
                                     throw new NullPointerException();
