@@ -66,19 +66,19 @@ public class ClasePrueba {
                         String message="";
                         switch(tp){
                             case AFD:
-                                message = "a seleccionado un Automata finito determinista que representa la expresion "+ expresion;
+                                message = "Ha seleccionado un Automata finito determinista que representa la expresion "+ expresion;
                                 break;
                             case AFN:
-                                message = "a seleccionado un Automata finito no determinista que representa la expresion "+ expresion;
+                                message = "Ha seleccionado un Automata finito no determinista que representa la expresion "+ expresion;
                                 break;
                             case AFNL:
-                                message ="a seleccionado un Automata finito no determinista con transiciones lambda que representa la expresion "+ expresion;
+                                message ="Ha seleccionado un Automata finito no determinista con transiciones lambda que representa la expresion "+ expresion;
                                 break;
                         }
                         System.out.println(message);
                         lec = Lectura.LeerCadena;
                     }catch(NullPointerException e){
-                        if(JOptionPane.showConfirmDialog(null, "no a dado un automata, desea salir? Y/N", "No automata", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)==0){
+                        if(JOptionPane.showConfirmDialog(null, "No ha ingresado ningún automata. ¿Desea salir? Y/N", "No automata", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)==0){
                             lec = Lectura.salir;
                         }
                     }
@@ -112,15 +112,15 @@ public class ClasePrueba {
         while(d==0){
             try{
                 AFD afd = new AFD(url);
-                System.out.println("El automata a sido creado correctamente");
-                int i = JOptionPane.showConfirmDialog(null, "desea dar varias cadenas?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                System.out.println("El automata ha sido creado correctamente");
+                int i = JOptionPane.showConfirmDialog(null, "Desea ingresar más de una cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                 switch (i) {
                     case JOptionPane.YES_OPTION:
                         boolean dos = true;
                         do{
                             try{
                                 ArrayList<String> cadenas = new ArrayList<>();
-                                int k = JOptionPane.showConfirmDialog(null, "Desea Dar un Archivo con las cadenas", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                                int k = JOptionPane.showConfirmDialog(null, "Desea ingresar un archivo con las cadenas", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                                 switch (k) {
                                     case JOptionPane.YES_OPTION:
                                         JFileChooser file = new JFileChooser(new File ("."));
