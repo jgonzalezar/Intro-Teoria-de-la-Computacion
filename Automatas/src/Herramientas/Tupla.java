@@ -10,10 +10,10 @@ package Herramientas;
  * @author fanat
  */
 public class Tupla {
-    public Character caracter;
+    public String caracter;
     public Integer estado;
 
-    public Tupla(Character caracter, Integer estado) {
+    public Tupla(String caracter, Integer estado) {
         this.caracter = caracter;
         this.estado = estado;
     }
