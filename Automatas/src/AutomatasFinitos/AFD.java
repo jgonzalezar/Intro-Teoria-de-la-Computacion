@@ -234,6 +234,7 @@ public class AFD {
                 ProcesamientoCadenaAFD res = prosCaden(listaCadenas[i]);
                 String pas =res.pasos();
                 String res2= pas+"\t"+res.EsAceptada();
+                pw1.print(listaCadenas[i]);
                 pw1.println(res2);
                 if(imprimirPantalla) System.out.println(res2);
             }
