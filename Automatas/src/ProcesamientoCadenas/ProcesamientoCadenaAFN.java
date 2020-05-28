@@ -1,6 +1,5 @@
 package ProcesamientoCadenas;
 
-import Herramientas.NDRespuesta;
 import java.util.ArrayList;
 
 /**
@@ -11,88 +10,137 @@ public class ProcesamientoCadenaAFN {
     /**
      * El atributo cadena se utiliza para guardar la cadena a la cual pertenecen los procesamientos que se imprimirán.
      */
-    String cadena;
+    public String cadena;
     /**
-     * El atributo isAccepted se utiliza para indicar si la cadena es aceptada o no.
+     * El atributo q0 se utiliza para saber cual es el estado inicial del procesamiento.
      */
-    boolean isAccepted;
+    public String q0;
     /**
-     * El atributo procesamientos es un tipo de dato que guarda todos los procesamientos de una cadena (Aceptados, rechazados o abortados).
+     * El atributo aceptado es un tipo de dato que guarda todos los procesamientos aceptados de una cadena.
      */
-    NDRespuesta procesamientos;
+    public ArrayList<Integer> aceptado;
+    /**
+     * El atributo rechazado es un tipo de dato que guarda todos los procesamientos rechazados de una cadena.
+     */
+    public ArrayList<Integer> rechazado;
+    /**
+     * El atributo abortado es un tipo de dato que guarda todos los procesamientos rechazados de una cadena.
+     */    
+    public ArrayList<Integer> abortado;
     
     /**
      * Constructor, inicializa los atributos.
-     * @param cadena Cadena a la cual se le realizó el procesamiento en el automata
-     * @param procesamientos Lista de procesamientos aceptados, rechazados y abortados
+     * @param cadena Cadena a la cual se le realizará el procesamiento en el automata
+     * @param q0 Estado desde el cual se incial el procesamiento de la cadena
      */
-    public ProcesamientoCadenaAFN(String cadena, NDRespuesta procesamientos){
+    public ProcesamientoCadenaAFN(String cadena, String q0) {
         this.cadena = cadena;
-        this.isAccepted = procesamientos.isAccepted();
-        this.procesamientos = procesamientos;
+        this.q0=q0;
+        aceptado = new ArrayList<>();
+        rechazado = new ArrayList<>();
+        abortado = new ArrayList<>();
     }
     
     /**
-     * Imprime si la cadena es aceptada o no.
+     * Función que añade un paso de un procesamiento aceptado.
+     * @param paso Estado en el cual se encuentra el paso del procesamiento
      */
-    public void procesarCadena(){
-        System.out.println("Procesar cadena: "+ isAccepted+"\n");
+    public void addAceptado(Integer paso){
+        aceptado.add(paso);       
     }
     
     /**
-     * Imprime un solo procesamiento de la cadena dependiendo de si es aceptado, rechazado o no tiene procesamientos terminados
+     * Función que añade un paso de un procesamiento rechazado.
+     * @param paso Estado en el cual se encuentra el paso del procesamiento
      */
-    public void procesarCadenaConDetalles(){
-        System.out.println("Procesar cadena con detalles:");
-        if(procesamientos.isAccepted()){
-            System.out.print(procesamientos.getAccepted().get(0)+"\tCadena aceptada");
-        }else if(procesamientos.getRejected().size()>0){
-            System.out.print(procesamientos.getRejected().get(0)+"\tCadena rechazada");
-        }else if(procesamientos.getAborted().size()>0){
-            System.out.print(procesamientos.getAborted().get(0) + "\tCadena abortada");
-        }
-        System.out.println("\n");
+    public void addRechazado(Integer paso){
+        rechazado.add(paso);       
     }
     
     /**
-     * Imprime todos los procesamiento de la cadena (Aceptados, rechazados y abortados)
+     * Función que añade un paso de un procesamiento abortado.
+     * @param paso Estado en el cual se encuentra el paso del procesamiento
      */
-    public void computarTodosLosProcesamientos(){
-        System.out.println("Computar todos los procesamientos:");
-        String res="Aceptadas:\n  ";
-        if(procesamientos.getAccepted().isEmpty()){
-            res+="No hay procesamientos aceptados para esta cadena\n";
-        }
-        for(int i=0;i<procesamientos.getAccepted().size();i++){
-            res+=procesamientos.getAccepted().get(i)+"\n";
-        }
-        res+="Rechazadas:\n  ";
-        if(procesamientos.getRejected().isEmpty()){
-            res+="No hay procesamientos rechazados para esta cadena\n";
-        }
-        for(int i=0;i<procesamientos.getRejected().size();i++){
-            res+=procesamientos.getRejected().get(i)+"\n";
-        }
-        res+="Abortadas:\n  ";
-        if(procesamientos.getAborted().isEmpty()){
-            res+="No hay procesamientos abortados para esta cadena\n";
-        }
-        for(int i=0;i<procesamientos.getAborted().size();i++){
-            res+=procesamientos.getAborted().get(i)+"\n";
-        }
-        System.out.println(res);
+    public void addAbortado(Integer paso){
+        abortado.add(paso);       
     }
     
     /**
-     * Realiza todos los tipos de impresiones de los procesamientos de la cadena.
+     * Función que retorna un arreglo con todos los procesamientos aceptados.
+     * @return ArrayList de procesamientos aceptados
      */
-    public void imprimirRespuestas(){
-        System.out.println("Cadena: "+this.cadena+"\n");
-        procesarCadena();
-        procesarCadenaConDetalles();
-        computarTodosLosProcesamientos();
+    public ArrayList<String> getAccepted(){
+        ArrayList<String> accepted = new ArrayList<>();
+        String s;
+        if(cadena.length()==0){
+            if(aceptado.size()==0){
+                return accepted;
+            }
+            accepted.add("["+q0+", ]");
+            return accepted;
+        }
+        for(int i=0;i<aceptado.size()/cadena.length();i++){
+            s="["+q0+","+cadena+"]";
+            for(int j=0;j<cadena.length()-1;j++){
+                s += "-> [Q"+aceptado.get(j+i*cadena.length())+","+cadena.substring(j+1)+"]";
+            }
+            s += "-> [Q"+aceptado.get(cadena.length()-1+i*cadena.length())+", ]";
+            accepted.add(s);
+        }
+        return accepted;
     }
     
+    /**
+     * Función que retorna un arreglo con todos los procesamientos rechazados.
+     * @return ArrayList de procesamientos rechazados
+     */
+    public ArrayList<String> getRejected(){
+        ArrayList<String> rejected = new ArrayList<>();
+        String s;
+        if(cadena.length()==0){
+            if(rechazado.size()==0){
+                return rejected;
+            }
+            rejected.add("[Q0, ]");
+            return rejected;
+        }
+        for(int i=0;i<rechazado.size()/cadena.length();i++){
+            s="["+q0+","+cadena+"]";
+            for(int j=0;j<cadena.length()-1;j++){
+                s += "-> [Q"+rechazado.get(j+i*cadena.length())+","+cadena.substring(j+1)+"]";
+            }
+            s += "-> [Q"+aceptado.get(cadena.length()-1+i*cadena.length())+", ]";
+            rejected.add(s);
+        }
+        return rejected;
+    }
     
+    /**
+     * Función que retorna un arreglo con todos los procesamientos abortados.
+     * @return ArrayList de procesamientos abortados
+     */
+    public ArrayList<String> getAborted(){
+        ArrayList<String> aborted = new ArrayList<>();
+        String s="["+q0+","+cadena+"]";
+        int cont=0;
+        for(int i=0;i<abortado.size();i++){
+            if(abortado.get(i)==-1){
+                aborted.add(s);
+                s="["+q0+","+cadena+"]";
+                cont=0;
+            }else{
+                s += "-> [Q"+abortado.get(i)+","+cadena.substring(cont,cont+1)+"]";
+                cont++;
+            }
+        }
+        return aborted;
+    }
     
+    /**
+     * Función que retorna si la cadena es aceptada o no.
+     * @return boolean que indica si la cadena es aceptada en el automata
+     */
+    public boolean isAccepted(){
+        return aceptado.size()>0;      
+    }
 }
