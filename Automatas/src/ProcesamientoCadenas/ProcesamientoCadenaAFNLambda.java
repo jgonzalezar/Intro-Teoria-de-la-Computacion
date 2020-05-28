@@ -38,6 +38,18 @@ public class ProcesamientoCadenaAFNLambda {
         
         esAceptada = !listaProcesamientosAceptacion.isEmpty();
     }
+    
+    public String imprimirCamino (){
+        String camino;
+        if(esAceptada){
+            camino = listaProcesamientosAceptacion.get(0);  
+        }else if (!listaProcesamientosRechazados.isEmpty()){
+            camino = listaProcesamientosRechazados.get(0);
+        }else{
+            camino = listaProcesamientosAbortados.get(0);
+        }
+        return camino;
+    }
 
     public String getCadena() {
         return cadena;
