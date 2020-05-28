@@ -65,10 +65,12 @@ public class ProcesamientoCadenaAFD  {
     
     public static String pasos(String Cadena, ArrayList<String> estados,int i){
         String s ="";
-        if(i!=Cadena.length()){
+        try{
             s += "["+estados.get(i)+", "+Cadena.substring(i)+"]-> "+ pasos(Cadena, estados,i+1);
+        }catch(NullPointerException | IndexOutOfBoundsException e){
+            return s;
         }
-        
+        //IndexOutOfBoundsException
         return s;
     }
 
