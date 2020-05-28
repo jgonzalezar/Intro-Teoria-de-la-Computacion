@@ -53,6 +53,17 @@ public class RespuestaMult {
         }
         pasos.get(ruta).add(paso[paso.length-1]);
     }
+    
+    public void addRutas(int ruta,ArrayList<Integer> paso){
+        ArrayList<Integer> rutas = getCamino(ruta);
+        for (int i = 0; i <paso.size()-1;i++) {
+            ArrayList<Integer> rutaNueva = new ArrayList<>();
+            rutaNueva.addAll(rutas);
+            rutaNueva.add(paso.get(i));
+            pasos.add(rutaNueva);
+        }
+        pasos.get(ruta).add(paso.get(paso.size()));
+    }
     /**
      * añade una ruta nueva totalmente 
      * @param ruta ruta nueva a agregar
