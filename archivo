@@ -1,1 +1,1 @@
-[0, aaaabbbb]|=>[1, aaabbbb]|=>[0, aabbbb]|=>[1, abbbb]|=>[0, bbbb]|=>[1, bbb]|=>[0, bb]|=>[1, b]|=>[0, ]|=>	true
+[0, aaaaaaaaa]-> [1, aaaaaaaa]-> [0, aaaaaaa]-> [1, aaaaaa]-> [0, aaaaa]-> [1, aaaa]-> [0, aaa]-> [1, aa]-> [0, a]-> [1, ]-> 	false

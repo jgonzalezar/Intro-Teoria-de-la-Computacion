@@ -1,6 +1,7 @@
 package ProcesamientoCadenas;
 
 import Herramientas.RespuestaMult;
+import Herramientas.Tupla;
 import java.util.ArrayList;
 
 /**
@@ -14,31 +15,24 @@ public class ProcesamientoCadenaAFNLambda {
     private ArrayList<String> listaProcesamientosAceptacion;
     private ArrayList<String> listaProcesamientosRechazados;
 
-    public ProcesamientoCadenaAFNLambda(String cadena, ArrayList<String> estados, ArrayList<Integer> aceptados , RespuestaMult respuesta) {
+    public ProcesamientoCadenaAFNLambda(String cadena, ArrayList<Tupla> tupla) {
         this.cadena = cadena;
         listaProcesamientosAbortados = new ArrayList<>();
         listaProcesamientosAceptacion = new ArrayList<>();
         listaProcesamientosRechazados = new ArrayList<>();
         
-        ArrayList<Integer> resFinals = respuesta.getFinals();
-        
-        for (int i = 0; i < resFinals.size(); i++) {
-            ArrayList<String> ruta = new ArrayList<>();
-            for (int j = 0; j < respuesta.getCamino(i).size(); j++) {
-                ruta.add(estados.get(respuesta.getCamino(i).get(j)));
-            }
-            String camino = ProcesamientoCadenaAFD.pasos(cadena, ruta, 0);
-            try{
-                if(resFinals.get(i) == null){
-                    throw new NullPointerException();
-                }
-                if(aceptados.contains(resFinals.get(i))){
-                    listaProcesamientosAceptacion.add(camino + " Aceptado");
-                }else{
-                    listaProcesamientosRechazados.add(camino + " Rechazado");
-                }
-            }catch(NullPointerException e){
-                listaProcesamientosAbortados.add(camino + " Abortado");
+        for (Tupla tupla1 : tupla) {
+            switch(tupla1.estado){
+                case Tupla.Case_Aceptado:
+                    listaProcesamientosAceptacion.add(tupla1.caracter);
+                    break;
+                case Tupla.Case_Rechazado:
+                    listaProcesamientosRechazados.add(tupla1.caracter);
+                    break;
+                case Tupla.Case_Abortado:
+                    listaProcesamientosAbortados.add(tupla1.caracter);
+                    break;
+                    
             }
         }
         
