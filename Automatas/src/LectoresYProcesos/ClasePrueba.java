@@ -140,7 +140,7 @@ public class ClasePrueba {
                                         int de = JOptionPane.YES_OPTION;
                                         do{
                                             try{
-                                                String  cadena = JOptionPane.showInputDialog(null, "Dar La Cadena A ser Evaluada", "");
+                                                String  cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
                                                 ArrayList<Character> error = afd.ponerCadena(cadena);
                                                 if(error.size()>0){
                                                     String errors ="";
@@ -150,7 +150,7 @@ public class ClasePrueba {
                                                     JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n"+errors,"Error en Cadena",JOptionPane.ERROR_MESSAGE);
                                                 }else{
                                                     cadenas.add(cadena);
-                                                    de = JOptionPane.showConfirmDialog(null, "desea agregar otra cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                                                    de = JOptionPane.showConfirmDialog(null, "¿Desea agregar otra cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                                                 }
                                             }catch(NullPointerException e){
                                                 de = JOptionPane.CANCEL_OPTION;
@@ -171,6 +171,7 @@ public class ClasePrueba {
                                 }
                                 JOptionPane.showMessageDialog(null, "Las cadenas dadas son: \n"+cadenasd,"Cadenas Dadas",JOptionPane.INFORMATION_MESSAGE);
                                 JFileChooser file = new JFileChooser(new File ("."));
+                                file.setDialogTitle("Seleccione la ubicación del archivo que contendrá la respuesta");
                                 if(file.showOpenDialog(file)==JFileChooser.CANCEL_OPTION){
                                     throw new NullPointerException();
                                 }
@@ -192,7 +193,7 @@ public class ClasePrueba {
                         boolean tres = true;
                         do{
                             try{
-                                String  cadena = JOptionPane.showInputDialog(null, "Dar La Cadena A ser Evaluada", "");
+                                String  cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
                                 ArrayList<Character> error = afd.ponerCadena(cadena);
                                 if(error.size()>0){
                                     String errors ="";
