@@ -1,7 +1,0 @@
-Aceptadas:
-  [q0,bbba] [q3,bba] [q3,ba] [q3,a] [q1,$]
-Rechazadas:
-  No hay procesamientos rechazados para esta cadena
-Abortadas:
-  [q0,bbba] b,q1
-

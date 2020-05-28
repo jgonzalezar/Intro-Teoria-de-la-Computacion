@@ -123,10 +123,7 @@ public class CreadorAutomata {
                             default:
                                 break;
                         }
-
                 }
-                
-                
                 if(lin.equals("#alpabet")){
                     
                 }
@@ -203,7 +200,6 @@ public class CreadorAutomata {
                                     for (int i = 0; i <=c; i++) {
                                         char d = (char) (a+i);
                                         alpha.add(d);
-                                        
                                     }
                                 }
                                 break;
@@ -236,10 +232,7 @@ public class CreadorAutomata {
                             default:
                                 break;
                         }
-
                 }
-                
-                
                 if(lin.equals("#alpabet")){
                     
                 }

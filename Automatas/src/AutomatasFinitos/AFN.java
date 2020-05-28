@@ -1,17 +1,17 @@
 package AutomatasFinitos;
 
 import LectoresYProcesos.CreadorAutomata;
-import Herramientas.NDRespuesta;
-import Herramientas.Transition;
 import java.util.ArrayList;
-import java.util.Arrays;
 import Herramientas.Tuple;
+import ProcesamientoCadenas.ProcesamientoCadenaAFN;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.PrintWriter;
 import static java.lang.Integer.parseInt;
+import java.util.HashSet;
 import java.util.Scanner;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -27,7 +27,7 @@ public class AFN {
      /**
      * El atributo Sigma representa el alfabeto del automata.
      */
-    public final char[] sigma; 
+    public final char[] Sigma; 
      /**
      * El atributo Q representa el conjunto de estados que pertenecen al automata.
      */
@@ -48,7 +48,7 @@ public class AFN {
     private int cont;
     private String cadena;
     private Integer[] print;
-    private NDRespuesta respuesta;
+    private ProcesamientoCadenaAFN respuesta;
 
     
     /**
@@ -59,13 +59,13 @@ public class AFN {
      * @param F Estados de aceptación
      * @param Delta Transiciones
      */
-    public AFN(char[] sigma, ArrayList<String> Q, String q0, ArrayList<String> F, ArrayList<Tuple> Delta){
-        this.sigma = sigma;
+    public AFN(char[] Sigma, ArrayList<String> Q, String q0, ArrayList<String> F, ArrayList<Tuple> Delta){
+        this.Sigma = Sigma;
         this.Q = Q;
         this.q0 = parseInt(q0);
         this.F = new ArrayList<>();
         for(int i=0;i<F.size();i++)
-            this.F.add(parseInt(F.get(i)));
+            this.F.add(parseInt(F.get(i).substring(1)));
         
         this.Delta = new ArrayList<>();
         while(this.Delta.size()<=Q.size()) {
@@ -140,7 +140,6 @@ public class AFN {
                                     for (int i = 0; i <=c; i++) {
                                         char d = (char) (a+i);
                                         alpha.add(d);
-                                        
                                     }
                                 }
                                 break;
@@ -167,13 +166,12 @@ public class AFN {
                                 for(int i=0;i<origin3.length;i++){
                                     String estado2 = origin3[i];
                                     if(!Q.contains(estado2))throw new Error("el estado de llegada debe pertenecer a los estados del automata");
-                                    Delta.add(new Tuple(alpfa.substring(0), parseInt(estado1), parseInt(estado2)));
+                                    Delta.add(new Tuple(alpfa.substring(0), parseInt(estado1.substring(1)), parseInt(estado2.substring(1))));
                                 }
                                 break;
                             default:
                                 break;
                         }
-
                 }
             }
         } catch (FileNotFoundException ex) {
@@ -184,12 +182,12 @@ public class AFN {
         for (int i = 0; i < alpha.size(); i++) {
             ad[i]=alpha.get(i);
         }
-        this.sigma = ad;
+        this.Sigma = ad;
         this.Q = Q;
-        this.q0 = parseInt(q0);
+        this.q0 = parseInt(q0.substring(1));
         this.F = new ArrayList<>();
         for(int i=0;i<F.size();i++)
-            this.F.add(parseInt(F.get(i)));
+            this.F.add(parseInt(F.get(i).substring(1)));
         
         this.Delta = new ArrayList<>();
         while(this.Delta.size()<=Q.size()) {
@@ -205,26 +203,25 @@ public class AFN {
         this.cont=0;
     }
     
-    
     /**
      * Función que procesa una cadena en el automata
      * @param cadena Cadena a procesar
      * @return boolean - True si la cadena ingresada es aceptada, false de otra forma.
      */
-    public NDRespuesta procesarCadena(String cadena){
-        respuesta = new NDRespuesta(cadena,"q"+Integer.toString(q0));
+    public boolean procesarCadena(String cadena){
+        respuesta = new ProcesamientoCadenaAFN(cadena,"Q"+Integer.toString(q0));
         if(cadena.length()==0) {
             if(this.F.contains(q0)) {
                 respuesta.addAceptado(q0);
-		return respuesta;
+		return true;
             }
             respuesta.addRechazado(q0);
-            return respuesta;
+            return false;
         }
         this.cadena=cadena;
         this.print = new Integer[cadena.length()];
         computarTodosLosProcesamientos(q0,0);
-        return respuesta;
+        return respuesta.isAccepted();
     }
     
      /**
@@ -232,8 +229,8 @@ public class AFN {
      * @param cadena Cadena a procesar
      * @return boolean - True si la cadena ingresada es aceptada, false de otra forma.
      */
-    public NDRespuesta procesarCadenaConDetalles(String cadena){
-        respuesta = new NDRespuesta(cadena,"q"+Integer.toString(q0));
+    public boolean procesarCadenaConDetalles(String cadena){
+        respuesta = new ProcesamientoCadenaAFN(cadena,"Q"+Integer.toString(q0));
         this.cadena=cadena;
         this.print = new Integer[cadena.length()];
         if(cadena.length()==0) {
@@ -247,33 +244,34 @@ public class AFN {
             computarTodosLosProcesamientos(q0,0);
         }
         if(respuesta.isAccepted()){
-            System.out.print(respuesta.getAccepted().get(0)+"\tCadena aceptada");
+            System.out.println(respuesta.getAccepted().get(0)+"-> true");
         }else if(respuesta.getRejected().size()>0){
-            System.out.print(respuesta.getRejected().get(0)+"\tCadena rechazada");
+            System.out.println(respuesta.getRejected().get(0)+"-> false");
         }else if(respuesta.getAborted().size()>0){
-            System.out.print(respuesta.getAborted().get(0) +"\tCadena abortada");
+            System.out.println(respuesta.getAborted().get(0) +"-> false");
         }
-        return respuesta;
+        return respuesta.isAccepted();
     }
     
      /**
      * Función que procesa una cadena en el automata, e imprime todos los posibles procesamientos
      * @param cadena Cadena a procesar
+     * @param nombreArchivo Nombre del archivo en el que se hará la impresión de los procesamientos
      * @return boolean - True si la cadena ingresada es aceptada, false de otra forma.
      */
-    public NDRespuesta computarTodosLosProcesamientos(String cadena){        
+    public int computarTodosLosProcesamientos(String cadena, String nombreArchivo){        
         FileWriter fichero1 = null;
         PrintWriter pw1 = null;
         try
         {
-            File nombre = new File("ProcesamientosAFN.txt");
+            File nombre = new File(nombreArchivo);
             if(!nombre.exists())nombre.createNewFile();
             fichero1 = new FileWriter(nombre);
             pw1 = new PrintWriter(fichero1);
             //pw1.println("C\tProc\tP\tAc\tAb\tR\tSi/no");            
             this.cadena=cadena;
             this.print = new Integer[cadena.length()];
-            respuesta = new NDRespuesta(cadena,"q"+Integer.toString(q0));
+            respuesta = new ProcesamientoCadenaAFN(cadena,"Q"+Integer.toString(q0));
             if(cadena.length()==0){
                 if(this.F.contains(q0)){
                     respuesta.addAceptado(q0);
@@ -284,26 +282,26 @@ public class AFN {
                 computarTodosLosProcesamientos(q0,0);
             }
                 
-            String res="Aceptadas:\n  ";
+            String res="Para la cadena:"+cadena+"\nAceptadas:\n  ";
             if(respuesta.getAccepted().isEmpty()){
                 res+="No hay procesamientos aceptados para esta cadena\n";
             }
             for(int i=0;i<respuesta.getAccepted().size();i++){
                 res+=respuesta.getAccepted().get(i)+"\n";
             }
-            res+="Rechazadas:\n  ";
+            res+="Rechazadas:\n";
             if(respuesta.getRejected().isEmpty()){
-                res+="No hay procesamientos rechazados para esta cadena\n";
+                res+="  No hay procesamientos rechazados para esta cadena\n";
             }
             for(int i=0;i<respuesta.getRejected().size();i++){
                 res+=respuesta.getRejected().get(i)+"\n";
             }
-            res+="Abortadas:\n  ";
+            res+="Abortadas:\n";
             if(respuesta.getAborted().isEmpty()){
-                res+="No hay procesamientos abortados para esta cadena\n";
+                res+="  No hay procesamientos abortados para esta cadena\n";
             }
             for(int i=0;i<respuesta.getAborted().size();i++){
-                res+=respuesta.getAborted().get(i)+"\n";
+                res+="  "+respuesta.getAborted().get(i)+"\n";
             }
             pw1.println(res);
             System.out.println(res);
@@ -317,7 +315,7 @@ public class AFN {
               e2.printStackTrace();
            }
         }
-        return respuesta;
+        return respuesta.getAborted().size()+respuesta.getAccepted().size()+respuesta.getRejected().size();
     }
 
     private int computarTodosLosProcesamientos(int state, int letter){
@@ -372,7 +370,7 @@ public class AFN {
             for (int i = 0; i < listaCadenas.length; i++){
                 this.cadena=listaCadenas[i];
                 this.print = new Integer[cadena.length()];
-                respuesta = new NDRespuesta(cadena,"q"+Integer.toString(q0));
+                respuesta = new ProcesamientoCadenaAFN(cadena,"Q"+Integer.toString(q0));
                 if(listaCadenas[i].length()==0){
                     if(this.F.contains(q0)){
                         respuesta.addAceptado(q0);
@@ -413,6 +411,22 @@ public class AFN {
               e2.printStackTrace();
            }
         }
+    }
+    
+    public ArrayList<Character> ponerCadena(String cadena){
+        ArrayList<Character> asd = new ArrayList<>();
+        for (int i = 0; i < cadena.length(); i++) {
+            boolean d = false;
+            for (char c : Sigma) {
+                if(c==cadena.charAt(i)) d=true;
+            }
+            if(!d) asd.add(cadena.charAt(i));
+        }
+        
+        Set<Character> hashSet = new HashSet<>(asd);
+        asd.clear();
+        asd.addAll(hashSet);
+        return asd;
     }
 
      /**

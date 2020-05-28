@@ -249,78 +249,32 @@ public class AFNL {
         
     }
     
-    
-    
-    
-    
-    public boolean  ProcesarCadena(String palabra){
-        int aceptacion=0;
-        TransitionAFNL T=this.T;
-        int[] EstadosAceptacion=this.F;
-        ArrayList<Integer> EstadosFinales= new ArrayList<>();
-        EstadosFinales.add(0);
-        for (int i=0;i<palabra.length();i++){
-            char letraEvaluada=palabra.charAt(i);
-            EstadosFinales=devolverEstadosIteracion(letraEvaluada,EstadosFinales);         
+    private RespuestaMult caminosPosibles(String cadena) {
+        if(cadena == null || cadena.length() == 0){
+            RespuestaMult respuesta = new RespuestaMult();
+            respuesta.add(q0);
+            return respuesta;
+        }else{
             
+            return Iteracion(cadena.charAt(cadena.length()-1), caminosPosibles(cadena.substring(cadena.length()-1)));
         }
-//        ArrayList<Integer> fin =EstadosFinales.getFinals();
-        for(int j=0; j<EstadosAceptacion.length;j++){
-            /*for(int k=0; k<EstadosFinales.size();k++){
-                if (EstadosFinales.get(k)==EstadosAceptacion[j]){
-                    aceptacion++;
-                }
-            }*/
-           
-            if(EstadosFinales.contains(EstadosAceptacion[j])){
-                return true;
-            }
-            
-        }
-        return aceptacion>0;
-        
     }
     
+    private ProcesamientoCadenaAFNLambda procesarCadena(String cadena){
+        return procesamiento(cadena, caminosPosibles(cadena));
+    }
     
+    public boolean  ProcesarCadena(String palabra){
+        return procesarCadena(palabra).isEsAceptada();
+    }
     
-    /*public ArrayList<Integer> devolverEstadosIteracion(char letra,ArrayList<Integer> estados){
-        TransitionAFNL T=this.T;
-        char lambdaT=this.lambda;
-        
-        ArrayList<Integer> estadosFinales=new ArrayList<>();
-        for(int i =0;i<estados.size();i++){
-            Map<Character,ArrayList<Integer>> estadoInterior;
-        
-            estadoInterior=T.getState(estados.get(i));
-            for (Map.Entry<Character, ArrayList<Integer>> entry : estadoInterior.entrySet()) {           
-		    if( entry.getKey().equals(letra)&& entry.getValue().isEmpty()==false){
-                      ArrayList<Integer> estadosFinalesPrev=entry.getValue(); 
-                      for(int j=0;j<estadosFinalesPrev.size();j++){
-                          estadosFinales.add(estadosFinalesPrev.get(j));
-                          }
-                    }else if(entry.getKey().equals(lambdaT)&& entry.getValue().isEmpty()==false){
-                        ArrayList<Integer> estadosFinalesPrevLambda=entry.getValue();
-                        ArrayList<Integer> estadosFinalesPrev=devolverEstadosIteracion(letra,estadosFinalesPrevLambda);
-                      for(int j=0;j<estadosFinalesPrev.size();j++){
-                          estadosFinales.add(estadosFinalesPrev.get(j));
-                          }
-                        
-                    }  
-                        
-            }
-        }
-        Set<Integer> hashSet = new HashSet<>(estadosFinales);
-        estadosFinales.clear();
-        estadosFinales.addAll(hashSet);
-        
-        return estadosFinales;
-
-        
-        
-    }*/
+    public boolean procesarCadenaConDetalles(String word){
+        ProcesamientoCadenaAFNLambda fin = procesarCadena(word);
+        System.out.println(fin.imprimirCamino());
+        return fin.isEsAceptada();
+    }
     
-    public RespuestaMult Iteracion(char letra,RespuestaMult caminos){
-        
+    public RespuestaMult Iteracion(char letra, RespuestaMult caminos){
         TransitionAFNL T=this.T;
         ArrayList<Integer> finals=caminos.getFinals();
         for(int i=0; i>finals.size();i++){
@@ -342,8 +296,6 @@ public class AFNL {
                 }
             }
             caminos.addRutas(i,StepsToAdd);
-           
-        
         }
         return caminos;
     }
@@ -380,38 +332,6 @@ public class AFNL {
         
         return new ProcesamientoCadenaAFNLambda(cadena, tupla);
     }
-
-    /*private RespuestaMult devolverEstadosIteracion(char letra, RespuestaMult EstadosFinales) {
-        char lambdaT=this.lambda;
-        ArrayList<Integer> estados = EstadosFinales.getFinals();
-        for(int i =0;i<estados.size();i++){
-            Map<Character,ArrayList<Integer>> estadoInterior;
-        
-            estadoInterior=T.getState(estados.get(i));
-            for (Map.Entry<Character, ArrayList<Integer>> entry : estadoInterior.entrySet()) {           
-		    if( entry.getKey().equals(letra)&& entry.getValue().isEmpty()==false){
-                      ArrayList<Integer> estadosFinalesPrev=entry.getValue(); 
-                      for(int j=0;j<estadosFinalesPrev.size();j++){
-                          EstadosFinales.addRuta(estadosFinalesPrev.get(j),i,false);
-                          }
-                    }else if(entry.getKey().equals(lambdaT)&& entry.getValue().isEmpty()==false){
-                        ArrayList<Integer> estadosFinalesPrevLambda=entry.getValue();
-                        ArrayList<Integer> estadosFinalesPrev=devolverEstadosIteracion(letra,estadosFinalesPrevLambda);
-                      for(int j=0;j<estadosFinalesPrev.size();j++){
-                          estadosFinales.add(estadosFinalesPrev.get(j));
-                          }
-                        
-                    }  
-                        
-            }
-        }
-        /*Set<Integer> hashSet = new HashSet<>(EstadosFinales);
-        EstadosFinales.clear();
-        EstadosFinales.addAll(hashSet);
-        
-        return EstadosFinales;
-    }*/
-    
 }
     
  
