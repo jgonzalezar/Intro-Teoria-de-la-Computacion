@@ -45,7 +45,7 @@ public class ClasePrueba {
             if(scad.equals("$$EXIT$$"))lec=Lectura.salir;
             switch(lec){
                 case CrearAutomata:
-                    System.out.println("seleccione el automata que desea importar");
+                    System.out.println("Seleccione el automata que desea importar");
                     try{
                         if(fileChooser.showOpenDialog(fileChooser)==JFileChooser.CANCEL_OPTION){
                             throw new NullPointerException();
@@ -66,19 +66,19 @@ public class ClasePrueba {
                         String message="";
                         switch(tp){
                             case AFD:
-                                message = "a seleccionado un Automata finito determinista que representa la expresion "+ expresion;
+                                message = "Ha seleccionado un Automata finito determinista que representa la expresion "+ expresion;
                                 break;
                             case AFN:
-                                message = "a seleccionado un Automata finito no determinista que representa la expresion "+ expresion;
+                                message = "Ha seleccionado un Automata finito no determinista que representa la expresion "+ expresion;
                                 break;
                             case AFNL:
-                                message ="a seleccionado un Automata finito no determinista con transiciones lambda que representa la expresion "+ expresion;
+                                message ="Ha seleccionado un Automata finito no determinista con transiciones lambda que representa la expresion "+ expresion;
                                 break;
                         }
                         System.out.println(message);
                         lec = Lectura.LeerCadena;
                     }catch(NullPointerException e){
-                        if(JOptionPane.showConfirmDialog(null, "no a dado un automata, desea salir? Y/N", "No automata", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)==0){
+                        if(JOptionPane.showConfirmDialog(null, "No ha ingresado ningún automata. ¿Desea salir? Y/N", "No automata", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE)==0){
                             lec = Lectura.salir;
                         }
                     }
@@ -112,19 +112,19 @@ public class ClasePrueba {
         while(d==0){
             try{
                 AFD afd = new AFD(url);
-                System.out.println("El automata a sido creado correctamente");
-                int i = JOptionPane.showConfirmDialog(null, "desea dar varias cadenas?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                System.out.println("El automata ha sido creado correctamente");
+                int i = JOptionPane.showConfirmDialog(null, "Desea ingresar más de una cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                 switch (i) {
                     case JOptionPane.YES_OPTION:
                         boolean dos = true;
                         do{
                             try{
                                 ArrayList<String> cadenas = new ArrayList<>();
-                                int k = JOptionPane.showConfirmDialog(null, "Desea Dar un Archivo con las cadenas", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                                int k = JOptionPane.showConfirmDialog(null, "Desea ingresar un archivo con las cadenas", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                                 switch (k) {
                                     case JOptionPane.YES_OPTION:
                                         JFileChooser file = new JFileChooser(new File ("."));
-                                        file.setDialogTitle("Seleccione el archivo con las cadenas");
+                                        file.setDialogTitle("Seleccione el archivo que contiene la lista de cadenas");
                                         if(file.showOpenDialog(file)==JFileChooser.CANCEL_OPTION){
                                             throw new NullPointerException();
                                         }
@@ -140,7 +140,7 @@ public class ClasePrueba {
                                         int de = JOptionPane.YES_OPTION;
                                         do{
                                             try{
-                                                String  cadena = JOptionPane.showInputDialog(null, "Dar La Cadena A ser Evaluada", "");
+                                                String  cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
                                                 ArrayList<Character> error = afd.ponerCadena(cadena);
                                                 if(error.size()>0){
                                                     String errors ="";
@@ -150,7 +150,7 @@ public class ClasePrueba {
                                                     JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n"+errors,"Error en Cadena",JOptionPane.ERROR_MESSAGE);
                                                 }else{
                                                     cadenas.add(cadena);
-                                                    de = JOptionPane.showConfirmDialog(null, "desea agregar otra cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                                                    de = JOptionPane.showConfirmDialog(null, "¿Desea agregar otra cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                                                 }
                                             }catch(NullPointerException e){
                                                 de = JOptionPane.CANCEL_OPTION;
@@ -169,8 +169,9 @@ public class ClasePrueba {
                                 for (String cadena : cadenas) {
                                     cadenasd += cadena +"\n";
                                 }
-                                JOptionPane.showMessageDialog(null, "las cadenas dadas son: \n"+cadenasd,"Cadenas Dadas",JOptionPane.INFORMATION_MESSAGE);
+                                JOptionPane.showMessageDialog(null, "Las cadenas dadas son: \n"+cadenasd,"Cadenas Dadas",JOptionPane.INFORMATION_MESSAGE);
                                 JFileChooser file = new JFileChooser(new File ("."));
+                                file.setDialogTitle("Seleccione la ubicación del archivo que contendrá la respuesta");
                                 if(file.showOpenDialog(file)==JFileChooser.CANCEL_OPTION){
                                     throw new NullPointerException();
                                 }
@@ -192,7 +193,7 @@ public class ClasePrueba {
                         boolean tres = true;
                         do{
                             try{
-                                String  cadena = JOptionPane.showInputDialog(null, "Dar La Cadena A ser Evaluada", "");
+                                String  cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
                                 ArrayList<Character> error = afd.ponerCadena(cadena);
                                 if(error.size()>0){
                                     String errors ="";
@@ -235,8 +236,8 @@ public class ClasePrueba {
                 return Lectura.CrearAutomata;
             }
             String[] options = {"Evaluar otra cadena","Cambiar De Automata","Salir"};
-            int f = JOptionPane.showOptionDialog(null,"indique la proxima accion a realizar", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
-            if(f==2){
+            int f = JOptionPane.showOptionDialog (null,"Indique la proxima accion a realizar", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
+            if(f==2||f==JOptionPane.CLOSED_OPTION){
                 return Lectura.salir;
             }else if(f==1){
                 return Lectura.CrearAutomata;

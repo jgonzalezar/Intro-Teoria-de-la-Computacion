@@ -44,13 +44,14 @@ public class RespuestaMult {
     }
     
     public void addRutas(int ruta,Integer... paso){
-        ArrayList<Integer> rutas = removeCamino(ruta);
-        for (Integer paso1 : paso) {
+        ArrayList<Integer> rutas = getCamino(ruta);
+        for (int i = 0; i <paso.length-1;i++) {
             ArrayList<Integer> rutaNueva = new ArrayList<>();
             rutaNueva.addAll(rutas);
-            rutaNueva.add(paso1);
+            rutaNueva.add(paso[i]);
             pasos.add(rutaNueva);
         }
+        pasos.get(ruta).add(paso[paso.length-1]);
     }
     /**
      * añade una ruta nueva totalmente 
