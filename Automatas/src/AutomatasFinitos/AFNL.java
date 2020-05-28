@@ -18,6 +18,9 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Herramientas.RespuestaMult;
+import Herramientas.Tupla;
+import ProcesamientoCadenas.ProcesamientoCadenaAFD;
+import ProcesamientoCadenas.ProcesamientoCadenaAFNLambda;
 /**
  *
  * @author ivonn
@@ -334,6 +337,39 @@ public class AFNL {
           System.out.println("la cadena fue aceptada");  
         }
         
+    }
+    
+    public ProcesamientoCadenaAFNLambda procesamiento (String cadena, RespuestaMult respuesta){
+        ArrayList<Tupla> tupla = new ArrayList<>();
+        
+        ArrayList<Integer> resFinals = respuesta.getFinals();
+        
+        for (int i = 0; i < resFinals.size(); i++) {
+            ArrayList<Integer> caminoespecifico = respuesta.getCamino(i);
+            String camino =  "";
+            for (int j = 0; j < caminoespecifico.size(); j++) {
+                ArrayList<Integer> rutaIndex = lambdaClausura_unEstado(caminoespecifico.get(i));
+                camino+="[{";
+                for (int k = 0; k < rutaIndex.size(); k++) {
+                    camino += Q.get(rutaIndex.get(k)) + ",";
+                }
+                camino = camino.substring(0,camino.length()-1) + "}, " + cadena.substring(j) + "] -> ";
+            }
+            try{
+                if(resFinals.get(i) == null){
+                    throw new NullPointerException();
+                }
+                if(F.contains(resFinals.get(i))){
+                    tupla.add(new Tupla(camino + " Aceptado", Tupla.Case_Aceptado));
+                }else{
+                    tupla.add(new Tupla(camino + " Rechazado", Tupla.Case_Rechazado));
+                }
+            }catch(NullPointerException e){
+                tupla.add(new Tupla(camino + " Abortado", Tupla.Case_Abortado));
+            }
+        }
+        
+        return new ProcesamientoCadenaAFNLambda(cadena, tupla);
     }
 
     /*private RespuestaMult devolverEstadosIteracion(char letra, RespuestaMult EstadosFinales) {
