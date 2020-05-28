@@ -8,12 +8,10 @@ import java.util.ArrayList;
  * @author fanat
  */
 public class RespuestaMult {
-    public boolean aceptado;
     public  ArrayList<ArrayList<Integer>> pasos ;
 
     
     public RespuestaMult() {
-        aceptado = false;
         pasos = new ArrayList<>();
     }
 
