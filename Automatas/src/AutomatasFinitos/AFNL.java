@@ -17,6 +17,7 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import Herramientas.RespuestaMult;
 /**
  *
  * @author ivonn
@@ -197,9 +198,9 @@ public class AFNL {
         return lClausura;
     }
     
-    public void  ImprimirlambdaClausura_unEstado(int estado,ArrayList<Integer> Clausura){
+    public void  ImprimirlambdaClausura_unEstado(int estado){
             
-       
+        ArrayList<Integer> Clausura=lambdaClausura_unEstado(estado);
         System.out.printf("lambda clausura del estado q"+ estado);
         Clausura.forEach((s) -> {
             System.out.println("q"+s);
@@ -226,17 +227,17 @@ public class AFNL {
        
     }
     
-    public void  ImprimirlambdaClausura_variosEstado(ArrayList<Integer> estados,ArrayList<Integer> Clausura){
+    public void  ImprimirlambdaClausura_variosEstado(ArrayList<Integer> estados){
             
-       
+        ArrayList<Integer> Clausura=lambdaClausura_variosEstado(estados);
         System.out.print("lambda clausura de los estados {");
         
         for (Integer s : estados) {
             System.out.print("q"+estados.get(s)+" ");
         }
-        System.out.println("} es :");
+        System.out.print("} es : ");
         
-        System.out.print(" }");
+        System.out.print(" {");
         for (Integer s : Clausura) {
             System.out.print("q"+estados.get(s)+" ");
         }
@@ -244,6 +245,10 @@ public class AFNL {
 
         
     }
+    
+    
+    
+    
     
     public boolean  ProcesarCadena(String palabra){
         int aceptacion=0;
