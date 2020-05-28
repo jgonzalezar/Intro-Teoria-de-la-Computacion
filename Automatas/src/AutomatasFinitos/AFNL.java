@@ -62,7 +62,6 @@ public class AFNL {
             Scanner sca = new Scanner(new File(nombreArchivo));
             while (sca.hasNextLine()) {
                 String lin = sca.nextLine();
-                System.out.println(lin);
                 switch (lin) {
                     case "#alphabet":
                         lec = CreadorAutomata.Lecto.alfabeto;
@@ -202,10 +201,11 @@ public class AFNL {
             lClausura.add(estado);
             return lClausura;
         } else {
-            for (int i = 0; i < lClausura.size(); i++) {
-                if(lClausura.get(i) == estado){
-                    
-                }
+            Set<Integer> hashSet = new HashSet<>(lClausura);
+            lClausura.clear();
+            lClausura.addAll(hashSet);
+            int lclauSize = lClausura.size();
+            for (int i = 0; i < lclauSize; i++) {
                 lClausura.addAll(lambdaClausura_unEstado(lClausura.get(i)));
             }
             lClausura.add(estado);
@@ -214,7 +214,6 @@ public class AFNL {
         lClausura.clear();
         lClausura.addAll(hashSet);
 
-        System.out.println("en lambda clausura 1 estado");
         return lClausura;
     }
 
@@ -362,13 +361,15 @@ public class AFNL {
                 try {
                     int estadoActual = caminoespecifico.get(i);
                     char charActual = cadena.charAt(j);
-
-                    int siguiente = caminoespecifico.get(i + 1);
-                    camino += saltoDeEtados(cadena.substring(j), charActual, estadoActual, siguiente);
+                    System.out.print(estadoActual);   
+                    //int siguiente = caminoespecifico.get(i + 1);
+                    
+                    
+                    //camino += saltoDeEtados(cadena.substring(j), charActual, estadoActual, siguiente);
                 } catch (Exception e) {
                     break;
                 }
-            }
+            }System.out.println("");
             try {
                 if (resFinals.get(i) == null) {
                     throw new NullPointerException();
