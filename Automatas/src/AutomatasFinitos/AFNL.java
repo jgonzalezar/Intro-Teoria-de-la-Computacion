@@ -278,7 +278,9 @@ public class AFNL {
         
     }
     
-    public ArrayList<Integer> devolverEstadosIteracion(char letra,ArrayList<Integer> estados){
+    
+    
+    /*public ArrayList<Integer> devolverEstadosIteracion(char letra,ArrayList<Integer> estados){
         TransitionAFNL T=this.T;
         char lambdaT=this.lambda;
         
@@ -312,28 +314,35 @@ public class AFNL {
 
         
         
-    }
+    }*/
     
-    public void ProcesarCadenaConDetalles(String palabra){
+    public RespuestaMult Iteracion(char letra,RespuestaMult caminos){
         
         TransitionAFNL T=this.T;
-        ArrayList<Integer> EstadosFinales= new ArrayList<>();
-        EstadosFinales.add(0);
-        boolean aceptacion=ProcesarCadena(palabra);
-        if(aceptacion== true){
-            for (int i=0;i<palabra.length();i++){
-                char letraEvaluada=palabra.charAt(i);
-                for(int j=0;j<EstadosFinales.size();j++){
-                    if(devolverEstadosIteracion(letraEvaluada,EstadosFinales).isEmpty() ==false){
-                        System.out.println("q"+EstadosFinales.get(j)+" "+letraEvaluada);
-                        EstadosFinales=devolverEstadosIteracion(letraEvaluada,EstadosFinales);
-                    }
+        ArrayList<Integer> finals=caminos.getFinals();
+        for(int i=0; i>finals.size();i++){
+            ArrayList<Integer> StepsToAdd=new ArrayList();
+            ArrayList<Integer> CaminosLetra=T.getState(finals.get(i)).get(letra);
+            ArrayList<Integer> CaminosLambda=T.getState(finals.get(i)).get(this.lambda);
+            if(CaminosLetra==null || CaminosLetra.isEmpty() ){
+                StepsToAdd.add(null);
+            }else{
+                for(int j=0;j<CaminosLetra.size();j++){
+                    StepsToAdd.add(CaminosLetra.get(i));
                 }
-            
             }
-          System.out.println("la cadena fue aceptada");  
-        }
+            if(CaminosLambda==null || CaminosLambda.isEmpty()){
+                StepsToAdd.add(null);
+            }else{
+                for(int j=0;j<CaminosLetra.size();j++){
+                    StepsToAdd.add(CaminosLambda.get(i));
+                }
+            }
+            caminos.addRutas(i,StepsToAdd);
+           
         
+        }
+        return caminos;
     }
 
     /*private RespuestaMult devolverEstadosIteracion(char letra, RespuestaMult EstadosFinales) {
