@@ -17,12 +17,21 @@ import java.util.Scanner;
 import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 /**
- *
- * @author ivonn
+ * Esta clase es el automata finito no determinista con transiciones lambda
+ * en este automata se puede realizar el procesamiento de cadenas sobre el automata ingresado, para saber si esta pertenece o no al lenguaje
+ * mientras se muestran los pasos del procesamiento, si así se desea.
+ * @author Nathalia
  */
 public class AFNL {
+     /**
+     * El atributo E representa el alfabeto del automata.
+     */
     private final char[] E;
+     /**
+     * El atributo Q representa el conjunto de 
+     */
     private final ArrayList<String> Q;
     private final int q0;
     private final ArrayList<Integer> F;
@@ -283,22 +292,15 @@ public class AFNL {
         for(int i =0;i<estados.size();i++){
             Map<Character,ArrayList<Integer>> estadoInterior;
         
-            estadoInterior=T.getState(estados.get(i));
-            for (Map.Entry<Character, ArrayList<Integer>> entry : estadoInterior.entrySet()) {           
-		    if( entry.getKey().equals(letra)&& entry.getValue().isEmpty()==false){
-                      ArrayList<Integer> estadosFinalesPrev=entry.getValue(); 
-                      for(int j=0;j<estadosFinalesPrev.size();j++){
-                          estadosFinales.add(estadosFinalesPrev.get(j));
-                          }
-                    }else if(entry.getKey().equals(lambdaT)&& entry.getValue().isEmpty()==false){
-                        ArrayList<Integer> estadosFinalesPrevLambda=entry.getValue();
-                        ArrayList<Integer> estadosFinalesPrev=devolverEstadosIteracion(letra,estadosFinalesPrevLambda);
-                      for(int j=0;j<estadosFinalesPrev.size();j++){
-                          estadosFinales.add(estadosFinalesPrev.get(j));
-                          }
-                        
-                    }  
-                        
+            estadoInterior = T.getState(estados.get(i));
+            ArrayList<Integer> estadosFinalesPrev=estadoInterior.get(letra); 
+            for(int j=0;j<estadosFinalesPrev.size();j++){
+                    estadosFinales.add(estadosFinalesPrev.get(j));
+                }
+            ArrayList<Integer> estadosFinalesPrevLambda = estadoInterior.get(lambdaT);
+            estadosFinalesPrev=devolverEstadosIteracion(letra,estadosFinalesPrevLambda);
+            for(int j=0;j<estadosFinalesPrev.size();j++){
+                estadosFinales.add(estadosFinalesPrev.get(j));
             }
         }
         Set<Integer> hashSet = new HashSet<>(estadosFinales);
@@ -306,9 +308,6 @@ public class AFNL {
         estadosFinales.addAll(hashSet);
         
         return estadosFinales;
-
-        
-        
     }
     
     public void ProcesarCadenaConDetalles(String palabra){
