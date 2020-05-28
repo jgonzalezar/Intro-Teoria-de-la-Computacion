@@ -120,7 +120,7 @@ public class ClasePrueba {
                         do{
                             try{
                                 ArrayList<String> cadenas = new ArrayList<>();
-                                int k = JOptionPane.showConfirmDialog(null, "Desea Dar un Archivo con las cadenas", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                                int k = JOptionPane.showConfirmDialog(null, "Desea ingresar un archivo con las cadenas", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                                 switch (k) {
                                     case JOptionPane.YES_OPTION:
                                         JFileChooser file = new JFileChooser(new File ("."));
