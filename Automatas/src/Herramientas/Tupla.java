@@ -12,9 +12,9 @@ package Herramientas;
 public class Tupla {
     public String caracter;
     public Integer estado;
-    public static int Case_Aceptado = 1;
-    public static int Case_Rechazado= 0;
-    public static int Case_Abortado= -1;
+    public static final int Case_Aceptado =1;
+    public static final int Case_Rechazado= 0;
+    public static final int Case_Abortado= -1;
 
     public Tupla(String caracter, Integer estado) {
         this.caracter = caracter;
