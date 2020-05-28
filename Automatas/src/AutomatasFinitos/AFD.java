@@ -233,7 +233,7 @@ public class AFD {
             for (int i = 0; i < listaCadenas.length; i++){
                 ProcesamientoCadenaAFD res = prosCaden(listaCadenas[i]);
                 String pas =res.pasos();
-                String res2= pas+"\t"+res.EsAceptada();
+                String res2= listaCadenas[i]+"\t"+pas+"\t"+res.EsAceptada();
                 pw1.println(res2);
                 if(imprimirPantalla) System.out.println(res2);
             }
