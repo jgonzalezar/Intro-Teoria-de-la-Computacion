@@ -8,7 +8,7 @@ import java.util.ArrayList;
  * @author fanat
  */
 public class RespuestaMult {
-    public  ArrayList<ArrayList<Integer>> pasos ;
+    public  ArrayList<ArrayList<Tupla>> pasos ;
 
     
     public RespuestaMult() {
@@ -18,19 +18,20 @@ public class RespuestaMult {
     /**
      * añade un nuevo comienzo de camino, es decir que es el inicio 
      * @param paso inicio de camino
+     * @param pas caracter del camino
      */
     
-    public void add(int paso){
+    public void add(Integer paso,Character pas ){
         pasos.add(new ArrayList<>());
-        pasos.get(pasos.size()-1).add(paso);
+        pasos.get(pasos.size()-1).add(new Tupla(pas, paso));
     }
     
-    /**
+    /*/**
      * añade un paso a una ruta, ya sea sobre la misma o creando una ruta nueva con los pasos de la ruta dada
      * @param paso paso a avanzar en la ruta
      * @param ruta ruta a tomar para seguir (lista de estados por los que paso previamente, dados en un indice del array de estados)
      * @param add crear una copia de ruta o modificar la misma ruta dada
-     */
+     *//*
     public void addRuta(Integer paso,int ruta,boolean add){
         if(add){
             pasos.add(new ArrayList<>());
@@ -41,14 +42,14 @@ public class RespuestaMult {
         }else{
             pasos.get(ruta).add(paso);
         }
-    }
+    }*/
     
-    public void addRutas(int ruta,Integer... paso){
-        ArrayList<Integer> rutas = removeCamino(ruta);
+    public void addRutas(int ruta,Character car,Integer... paso){
+        ArrayList<Tupla> rutas = removeCamino(ruta);
         for (Integer paso1 : paso) {
-            ArrayList<Integer> rutaNueva = new ArrayList<>();
+            ArrayList<Tupla> rutaNueva = new ArrayList<>();
             rutaNueva.addAll(rutas);
-            rutaNueva.add(paso1);
+            rutaNueva.add(new Tupla(car, paso1));
             pasos.add(rutaNueva);
         }
     }
@@ -57,7 +58,7 @@ public class RespuestaMult {
      * @param ruta ruta nueva a agregar
      */
     
-    public void addRuta(ArrayList<Integer> ruta){
+    public void addRuta(ArrayList<Tupla> ruta){
         pasos.add(ruta);
     }
     
@@ -69,7 +70,7 @@ public class RespuestaMult {
     public ArrayList<Integer> getFinals(){
         ArrayList<Integer> set = new ArrayList<>();
         pasos.forEach((paso) -> {
-            set.add(paso.get(paso.size()-1));
+            set.add(paso.get(paso.size()-1).estado);
         });
         
         return set;
@@ -80,7 +81,7 @@ public class RespuestaMult {
      * @return lista de pasos
      */
     
-    public ArrayList<Integer> getCamino(int ruta){
+    public ArrayList<Tupla> getCamino(int ruta){
         return pasos.get(ruta);
     }
     
@@ -90,8 +91,8 @@ public class RespuestaMult {
      * @return camino eliminado 
      */
     
-    public ArrayList<Integer> removeCamino(int ruta){
-        ArrayList<Integer> a = getCamino(ruta);
+    public ArrayList<Tupla> removeCamino(int ruta){
+        ArrayList<Tupla> a = getCamino(ruta);
         pasos.remove(ruta);
         return a;
     }
