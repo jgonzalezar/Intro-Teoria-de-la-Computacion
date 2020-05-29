@@ -266,6 +266,7 @@ public class ClasePrueba {
                                         Scanner s = new Scanner(new File(asd));
                                         while (s.hasNext()) {
                                             String as = s.next();
+                                            System.out.println(as);
                                             if (!(afn.ponerCadena(as).size() > 0)) {
                                                 cadenas.add(as);
                                             }
