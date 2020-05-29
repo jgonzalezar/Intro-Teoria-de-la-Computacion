@@ -556,5 +556,59 @@ public class AFNL {
         }
         return TotaldeProcesamientos;
     }
-
+    
+    
+    void procesarListaCadenas(ArrayList<String> listaCadenas,String nombreArchivo, boolean imprimirPantalla){
+        for(int i=0;i<listaCadenas.size();i++){
+            ProcesamientoCadenaAFNLambda procesamiento = procesarCadena(listaCadenas.get(i));
+            ArrayList<String> Aceptados = procesamiento.getListaProcesamientosAceptacion();
+            ArrayList<String> Rechazados = procesamiento.getListaProcesamientosRechazados();
+            ArrayList<String> Abortados = procesamiento.getListaProcesamientosAbortados();
+            int TotaldeProcesamientos = Aceptados.size() + Rechazados.size() + Abortados.size();
+        
+            String Aceptada = (procesamiento.isEsAceptada())?"si":"no";
+        
+            String nombreArchivoCadena;
+            if (nombreArchivo.contains(".")) {
+                int index = nombreArchivo.lastIndexOf(".");
+                String[] parts = nombreArchivo.split(String.valueOf(nombreArchivo.charAt(index)));
+                String part1 = parts[0];
+                String part2 = parts[1];
+                nombreArchivoCadena= part1+"cadena" + i +"."+part2;
+            }else{
+                nombreArchivoCadena= nombreArchivo+"cadena" + i ;
+            }
+            
+            
+            FileWriter fichero = null;
+            PrintWriter pw = null;
+            try {
+                File nombre = new File(nombreArchivoCadena);
+                if (!nombre.exists()) {
+                    nombre.createNewFile();
+                }
+                nombre.createNewFile();
+                fichero = new FileWriter(nombre);
+                pw = new PrintWriter(fichero);
+                pw.println(listaCadenas.get(i)+"  "+procesamiento.imprimirCamino()+"    "+TotaldeProcesamientos+"    "
+                +Aceptados.size()+"   "+Rechazados.size()+"   "+Abortados.size()+"   "+Aceptada);
+                if(imprimirPantalla==true){
+                    System.out.println(listaCadenas.get(i)+"  "+procesamiento.imprimirCamino()+"    "+TotaldeProcesamientos+"    "
+                    +Aceptados.size()+"   "+Rechazados.size()+"   "+Abortados.size()+"   "+Aceptada);
+                }    
+            } catch (Exception e) {
+            e.printStackTrace();
+            } finally {
+                try {
+                    if (null != fichero) {
+                        fichero.close();
+                    }
+                } catch (Exception e2) {
+                    e2.printStackTrace();
+                }
+            }
+            
+            
+        }
+    }
 }
