@@ -22,6 +22,8 @@ import Herramientas.RespuestaMult;
 import Herramientas.Tupla;
 import ProcesamientoCadenas.ProcesamientoCadenaAFD;
 import ProcesamientoCadenas.ProcesamientoCadenaAFNLambda;
+import java.io.FileWriter;
+import java.io.PrintWriter;
 
 /**
  *
@@ -205,10 +207,10 @@ public class AFNL {
             lClausura.addAll(hashSet);
             int lclauSize = lClausura.size();
             for (int i = 0; i < lclauSize; i++) {
-                if(estado == lClausura.get(i)){
-                    
-                }else{
-                    lClausura.addAll(lambdaClausura_unEstado(lClausura.get(i)));                    
+                if (estado == lClausura.get(i)) {
+
+                } else {
+                    lClausura.addAll(lambdaClausura_unEstado(lClausura.get(i)));
                 }
             }
             lClausura.add(estado);
@@ -252,15 +254,37 @@ public class AFNL {
         System.out.print("lambda clausura de los estados {");
 
         for (Integer s : estados) {
-            System.out.print("q" + Q.get(estados.get(s)) + " ");
+            System.out.print(" " + Q.get(s) + " ");
         }
         System.out.print("} es : ");
 
         System.out.print(" {");
         for (Integer s : Clausura) {
-            System.out.print("q" + Q.get(estados.get(s)) + " ");
+            System.out.print(" " + Q.get(s) + " ");
         }
         System.out.print("}");
+
+    }
+
+    public void imprimirComputaciones(String cadena, int computacion) {
+        ProcesamientoCadenaAFNLambda procesada = procesarCadena(cadena);
+        ArrayList<String> lista;
+
+        switch (computacion) {
+            case 0:
+                lista = procesada.getListaProcesamientosAceptacion();
+
+                break;
+            case 1:
+                lista = procesada.getListaProcesamientosRechazados();
+                break;
+            default:
+                lista = procesada.getListaProcesamientosAbortados();
+                break;
+        }
+        for (int i = 0; i < lista.size(); i++) {
+            System.out.println(lista.get(i));
+        }
 
     }
 
@@ -270,7 +294,7 @@ public class AFNL {
             respuesta.add(q0);
             return respuesta;
         } else {
-            
+
             RespuestaMult caminos = caminosPosibles(cadena.substring(0, cadena.length() - 1));
             return Iteracion(cadena.charAt(cadena.length() - 1), caminos);
         }
@@ -324,22 +348,22 @@ public class AFNL {
     public String saltoDeEstados(String cadena, char caracter, int estadoActual, Integer estadoSiguiente) {
         ArrayList<Integer> alQueVa = this.Delta.getMove(estadoActual, caracter);
         String camino = "[" + Q.get(estadoActual) + ", " + cadena + "] -> ";
-        
-        if(alQueVa == null){
-            if(estadoSiguiente == null){
+
+        if (alQueVa == null) {
+            if (estadoSiguiente == null) {
                 return camino;
-            }else{
+            } else {
                 return "";
             }
         }
-        
+
         if (!alQueVa.contains(estadoSiguiente)) {
             try {
                 ArrayList<Integer> conLambda = this.Delta.getMove(estadoActual, '$');
                 for (int i = 0; i < conLambda.size(); i++) {
-                    if(conLambda.get(i) == estadoActual){
-                        
-                    }else{
+                    if (conLambda.get(i) == estadoActual) {
+
+                    } else {
                         String estadosLambda = saltoDeEstados(cadena, caracter, conLambda.get(i), estadoSiguiente);
                         if (!estadosLambda.isEmpty()) {
                             return camino + estadosLambda;
@@ -347,7 +371,7 @@ public class AFNL {
                     }
                 }
             } catch (Exception e) {
-                
+
             }
             camino = "";
         }
@@ -366,8 +390,8 @@ public class AFNL {
                     Integer estadoActual = caminoespecifico.get(j);
                     char charActual = cadena.charAt(j);
                     Integer siguiente = caminoespecifico.get(j + 1);
-                    
-                    if(estadoActual == null){
+
+                    if (estadoActual == null) {
                         throw new NullPointerException();
                     }
                     camino += saltoDeEstados(cadena.substring(j), charActual, estadoActual, siguiente);
@@ -376,12 +400,12 @@ public class AFNL {
                 }
             }
             Integer estadoactual = resFinals.get(i);
-            if(estadoactual == null){
-                
-            }else{
+            if (estadoactual == null) {
+
+            } else {
                 camino += "[" + Q.get(estadoactual) + ", " + cadena.substring(cadena.length()) + "] -> ";
             }
-            
+
             try {
                 if (resFinals.get(i) == null) {
                     throw new NullPointerException();
@@ -418,4 +442,119 @@ public class AFNL {
         asd.addAll(hashSet);
         return asd;
     }
+
+    public ArrayList<String> getQ() {
+        return Q;
+    }
+
+    public String[] GetQ() {
+        String[] estados = new String[this.Q.size()];
+
+        for (int i = 0; i < estados.length; i++) {
+            estados[i] = this.Q.get(i);
+        }
+        return estados;
+    }
+
+    public int computarTodosLosProcesamientos(String cadena, String nombreArchivo) {
+        String nombreArchivoAceptados;
+        String nombreArchivoRechazados;
+        String nombreArchivoAbortados;
+        if (nombreArchivo.contains(".")) {
+            int index = nombreArchivo.lastIndexOf(".");
+            String[] parts = nombreArchivo.split(String.valueOf(nombreArchivo.charAt(index)));
+            String part1 = parts[0];
+            String part2 = parts[1];
+            nombreArchivoAceptados = part1 + "Aceptados." + part2;
+            nombreArchivoRechazados = part1 + "Rechazados." + part2;
+            nombreArchivoAbortados = part1 + "Abortados." + part2;
+        } else {
+            nombreArchivoAceptados = nombreArchivo + "Aceptados";
+            nombreArchivoRechazados = nombreArchivo + "Rechazados";
+            nombreArchivoAbortados = nombreArchivo + "Abortados";
+        }
+        ProcesamientoCadenaAFNLambda procesamiento = procesarCadena(cadena);
+        ArrayList<String> Aceptados = procesamiento.getListaProcesamientosAceptacion();
+        ArrayList<String> Rechazados = procesamiento.getListaProcesamientosRechazados();
+        ArrayList<String> Abortados = procesamiento.getListaProcesamientosAbortados();
+        int TotaldeProcesamientos = Aceptados.size() + Rechazados.size() + Abortados.size();
+        FileWriter fichero1 = null;
+        PrintWriter pw1 = null;
+        try {
+            File nombreAc = new File(nombreArchivoAceptados);
+            if (!nombreAc.exists()) {
+                nombreAc.createNewFile();
+            }
+            nombreAc.createNewFile();
+            fichero1 = new FileWriter(nombreAc);
+            pw1 = new PrintWriter(fichero1);
+            for (int i = 0; i < Aceptados.size(); i++) {
+                System.out.print(Aceptados.get(i));
+                pw1.println(Aceptados.get(i));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (null != fichero1) {
+                    fichero1.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+        FileWriter fichero2 = null;
+        PrintWriter pw2 = null;
+        try {
+            File nombreRe = new File(nombreArchivoRechazados);
+            if (!nombreRe.exists()) {
+                nombreRe.createNewFile();
+            }
+            nombreRe.createNewFile();
+            fichero2 = new FileWriter(nombreRe);
+            pw2 = new PrintWriter(fichero2);
+            for (int i = 0; i < Rechazados.size(); i++) {
+                System.out.print(Rechazados.get(i));
+                pw2.println(Rechazados.get(i));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (null != fichero2) {
+                    fichero1.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+        FileWriter fichero3 = null;
+        PrintWriter pw3 = null;
+        try {
+            File nombreAb = new File(nombreArchivoAbortados);
+            if (!nombreAb.exists()) {
+                nombreAb.createNewFile();
+            }
+            nombreAb.createNewFile();
+            fichero3 = new FileWriter(nombreAb);
+            pw3 = new PrintWriter(fichero3);
+            for (int i = 0; i < Aceptados.size(); i++) {
+                System.out.print(Aceptados.get(i));
+                pw3.println(Aceptados.get(i));
+
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (null != fichero3) {
+                    fichero1.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
+        }
+        return TotaldeProcesamientos;
+    }
+
 }
