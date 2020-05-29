@@ -393,7 +393,6 @@ public class ClasePrueba {
     private static Lectura probarAFNLambda() {
         int d = 0;
         while (d == 0) {
-            //System.out.println("ALGO A VER");
             try {
                 AFNL afnl = new AFNL(url);
                 System.out.println("El automata ha sido creado correctamente");

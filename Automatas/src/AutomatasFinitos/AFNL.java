@@ -55,7 +55,6 @@ public class AFNL {
         ArrayList<String> Estados = null;
         String q0 = null;
         ArrayList<String> F = null;
-        //ArrayList<Tuple> Delta = null;
         TransitionAFNL transition = null;
 
         try {
@@ -206,7 +205,11 @@ public class AFNL {
             lClausura.addAll(hashSet);
             int lclauSize = lClausura.size();
             for (int i = 0; i < lclauSize; i++) {
-                lClausura.addAll(lambdaClausura_unEstado(lClausura.get(i)));
+                if(estado == lClausura.get(i)){
+                    
+                }else{
+                    lClausura.addAll(lambdaClausura_unEstado(lClausura.get(i)));                    
+                }
             }
             lClausura.add(estado);
         }
@@ -222,7 +225,7 @@ public class AFNL {
         ArrayList<Integer> Clausura = lambdaClausura_unEstado(estado);
         System.out.printf("lambda clausura del estado " + Q.get(estado));
         Clausura.forEach((s) -> {
-            System.out.println("q" + Q.get(s));
+            System.out.println(" " + Q.get(s));
         });
 
     }
@@ -262,18 +265,20 @@ public class AFNL {
     }
 
     private RespuestaMult caminosPosibles(String cadena) {
-        //if (cadena == null || cadena.length() == 0) {
-        RespuestaMult respuesta = new RespuestaMult();
-        respuesta.add(q0);
-        //return respuesta;
-        //} else {
-        //return Iteracion(cadena.charAt(cadena.length() - 1), caminosPosibles(cadena.substring(0, cadena.length() - 1)));
-        return Iteracion(cadena.charAt(cadena.length() - 1), respuesta);
-        //}
+        if (cadena == null || cadena.length() == 0) {
+            RespuestaMult respuesta = new RespuestaMult();
+            respuesta.add(q0);
+            return respuesta;
+        } else {
+            
+            RespuestaMult caminos = caminosPosibles(cadena.substring(0, cadena.length() - 1));
+            return Iteracion(cadena.charAt(cadena.length() - 1), caminos);
+        }
     }
 
     private ProcesamientoCadenaAFNLambda procesarCadena(String cadena) {
-        return procesamiento(cadena, caminosPosibles(cadena));
+        RespuestaMult rta = caminosPosibles(cadena);
+        return procesamiento(cadena, rta);
     }
 
     public boolean ProcesarCadena(String palabra) {
@@ -282,8 +287,6 @@ public class AFNL {
 
     public boolean procesarCadenaConDetalles(String word) {
         ProcesamientoCadenaAFNLambda fin = procesarCadena(word);
-        System.out.println(fin.getListaProcesamientosAceptacion().size() + " "
-                + fin.getListaProcesamientosRechazados().size() + " " + fin.getListaProcesamientosAbortados().size());
         System.out.println(fin.imprimirCamino());
         return fin.isEsAceptada();
     }
@@ -294,17 +297,11 @@ public class AFNL {
         for (int i = 0; i < finals.size(); i++) {
             ArrayList<Integer> StepsToAdd = new ArrayList<>();
             try {
-                System.out.println(finals.get(i));
-                System.out.println("lambda clusura antes");
                 ArrayList<Integer> CaminosLambda = lambdaClausura_unEstado(finals.get(i));
-                System.out.println("lambda clusura despues");
                 if (CaminosLambda == null || CaminosLambda.isEmpty()) {
-                    System.out.println("camnio lambda vacio");
                     StepsToAdd.add(null);
                 } else {
-                    System.out.println("camnio lambda NO vacio " + CaminosLambda.size());
                     for (int j = 0; j < CaminosLambda.size(); j++) {
-                        System.out.print(CaminosLambda.get(j));
                         ArrayList<Integer> trans = T.getMove(CaminosLambda.get(j), letra);
                         if (trans == null || trans.isEmpty()) {
                             StepsToAdd.add(null);
@@ -312,10 +309,8 @@ public class AFNL {
                             StepsToAdd.addAll(trans);
                         }
                     }
-                    System.out.println("");
                 }
             } catch (Exception e) {
-                System.out.println(e.getMessage() + " algo mas");
                 StepsToAdd.add(null);
             }
             Set<Integer> hashSet = new HashSet<>(StepsToAdd);
@@ -326,23 +321,33 @@ public class AFNL {
         return caminos;
     }
 
-    public String saltoDeEtados(String cadena, char caracter, int estadoActual, int estadoSiguiente) {
+    public String saltoDeEstados(String cadena, char caracter, int estadoActual, Integer estadoSiguiente) {
         ArrayList<Integer> alQueVa = this.Delta.getMove(estadoActual, caracter);
-        System.out.println(cadena + " " + caracter + " " + estadoActual + " " + estadoSiguiente);
-
-        String camino = "[{" + Q.get(estadoActual) + "}, " + cadena + "] -> ";
-
+        String camino = "[" + Q.get(estadoActual) + ", " + cadena + "] -> ";
+        
+        if(alQueVa == null){
+            if(estadoSiguiente == null){
+                return camino;
+            }else{
+                return "";
+            }
+        }
+        
         if (!alQueVa.contains(estadoSiguiente)) {
             try {
-                ArrayList<Integer> conLambda = this.Delta.getMove(estadoActual, this.lambda);
+                ArrayList<Integer> conLambda = this.Delta.getMove(estadoActual, '$');
                 for (int i = 0; i < conLambda.size(); i++) {
-                    String estadosLambda = saltoDeEtados(cadena, caracter, conLambda.get(i), estadoSiguiente);
-                    if (!estadosLambda.isEmpty()) {
-                        return camino + estadosLambda;
+                    if(conLambda.get(i) == estadoActual){
+                        
+                    }else{
+                        String estadosLambda = saltoDeEstados(cadena, caracter, conLambda.get(i), estadoSiguiente);
+                        if (!estadosLambda.isEmpty()) {
+                            return camino + estadosLambda;
+                        }
                     }
                 }
             } catch (Exception e) {
-
+                
             }
             camino = "";
         }
@@ -353,23 +358,30 @@ public class AFNL {
         ArrayList<Tupla> tupla = new ArrayList<>();
 
         ArrayList<Integer> resFinals = respuesta.getFinals();
-        System.out.println(resFinals.size());
         for (int i = 0; i < resFinals.size(); i++) {
             ArrayList<Integer> caminoespecifico = respuesta.getCamino(i);
             String camino = "";
             for (int j = 0; j < caminoespecifico.size(); j++) {
                 try {
-                    int estadoActual = caminoespecifico.get(i);
+                    Integer estadoActual = caminoespecifico.get(j);
                     char charActual = cadena.charAt(j);
-                    System.out.print(estadoActual);   
-                    //int siguiente = caminoespecifico.get(i + 1);
+                    Integer siguiente = caminoespecifico.get(j + 1);
                     
-                    
-                    //camino += saltoDeEtados(cadena.substring(j), charActual, estadoActual, siguiente);
+                    if(estadoActual == null){
+                        throw new NullPointerException();
+                    }
+                    camino += saltoDeEstados(cadena.substring(j), charActual, estadoActual, siguiente);
                 } catch (Exception e) {
                     break;
                 }
-            }System.out.println("");
+            }
+            Integer estadoactual = resFinals.get(i);
+            if(estadoactual == null){
+                
+            }else{
+                camino += "[" + Q.get(estadoactual) + ", " + cadena.substring(cadena.length()) + "] -> ";
+            }
+            
             try {
                 if (resFinals.get(i) == null) {
                     throw new NullPointerException();

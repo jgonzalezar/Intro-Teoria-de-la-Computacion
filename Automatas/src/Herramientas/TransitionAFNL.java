@@ -16,7 +16,6 @@ public class TransitionAFNL {
         for(int i = 0; i < indice; i++){
             transicionAFNL. add(new HashMap<>());
         }
-        System.out.println(transicionAFNL.size());
     }
 
     public void add(Character Alphabeto, int Estado, int... estado) {
