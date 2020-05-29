@@ -42,11 +42,32 @@ public class ProcesamientoCadenaAFNLambda {
     public String imprimirCamino (){
         String camino;
         if(esAceptada){
-            camino = listaProcesamientosAceptacion.get(0);  
+            int indice = 0;
+            
+            for (int i = 1; i < listaProcesamientosAceptacion.size(); i++) {
+                if(listaProcesamientosAceptacion.get(indice).length() > listaProcesamientosAceptacion.get(i).length()){
+                    indice = i;
+                }
+            }
+            camino = listaProcesamientosAceptacion.get(indice);  
         }else if (!listaProcesamientosRechazados.isEmpty()){
-            camino = listaProcesamientosRechazados.get(0);
+            int indice = 0;
+            
+            for (int i = 1; i < listaProcesamientosRechazados.size(); i++) {
+                if(listaProcesamientosRechazados.get(indice).length() > listaProcesamientosRechazados.get(i).length()){
+                    indice = i;
+                }
+            }
+            camino = listaProcesamientosRechazados.get(indice);
         }else{
-            camino = listaProcesamientosAbortados.get(0);
+            int indice = 0;
+            
+            for (int i = 1; i < listaProcesamientosAbortados.size(); i++) {
+                if(listaProcesamientosAbortados.get(indice).length() > listaProcesamientosAbortados.get(i).length()){
+                    indice = i;
+                }
+            }
+            camino = listaProcesamientosAbortados.get(indice);
         }
         return camino;
     }
