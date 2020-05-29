@@ -106,11 +106,10 @@ public class ClasePrueba {
     }
 
     private static Lectura probarAFD() {
-        int d = 0;
-        while (d == 0) {
-            try {
-                AFD afd = new AFD(url);
-                System.out.println("El automata ha sido creado correctamente");
+        try {
+            AFD afd = new AFD(url);
+            System.out.println("El automata ha sido creado correctamente");
+            while (true) {
                 int i = JOptionPane.showConfirmDialog(null, "Desea ingresar más de una cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                 switch (i) {
                     case JOptionPane.YES_OPTION:
@@ -224,24 +223,21 @@ public class ClasePrueba {
                         //una
                         break;
                 }
-
-            } catch (Error e) {
-                System.err.print(e.getMessage());
-                return Lectura.CrearAutomata;
-            } catch (FileNotFoundException e) {
-
-                return Lectura.CrearAutomata;
+                String[] options = {"Evaluar otra cadena", "Cambiar De Automata", "Salir"};
+                int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
+                if (f == 2 || f == JOptionPane.CLOSED_OPTION) {
+                    return Lectura.salir;
+                } else if (f == 1) {
+                    return Lectura.CrearAutomata;
+                }
             }
-            String[] options = {"Evaluar otra cadena", "Cambiar De Automata", "Salir"};
-            int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
-            if (f == 2 || f == JOptionPane.CLOSED_OPTION) {
-                return Lectura.salir;
-            } else if (f == 1) {
-                return Lectura.CrearAutomata;
-            }
+        } catch (Error e) {
+            System.err.print(e.getMessage());
+            return Lectura.CrearAutomata;
+        } catch (FileNotFoundException e) {
+
+            return Lectura.CrearAutomata;
         }
-
-        return Lectura.LeerCadena;
     }
 
     private static Lectura probarAFN() {
@@ -391,11 +387,10 @@ public class ClasePrueba {
     }
 
     private static Lectura probarAFNLambda() {
-        int d = 0;
-        while (d == 0) {
-            try {
-                AFNL afnl = new AFNL(url);
-                System.out.println("El automata ha sido creado correctamente");
+        try {
+            AFNL afnl = new AFNL(url);
+            System.out.println("El automata ha sido creado correctamente");
+            while (true) {
                 int i = JOptionPane.showConfirmDialog(null, "Desea ingresar más de una cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                 switch (i) {
                     case JOptionPane.YES_OPTION:
@@ -489,7 +484,7 @@ public class ClasePrueba {
                                         set = afnl.procesarCadenaConDetalles(cadena);
                                     } else {
                                         set = afnl.ProcesarCadena(cadena);
-                                        
+
                                     }
                                     if (set) {
                                         System.out.println("La cadena: " + cadena + " es aceptada");
@@ -507,27 +502,23 @@ public class ClasePrueba {
                         break;
 
                     default:
-                        //una
                         break;
                 }
-
-            } catch (Error e) {
-                System.err.print(e.getMessage());
-                return Lectura.CrearAutomata;
-            } catch (FileNotFoundException e) {
-
-                return Lectura.CrearAutomata;
+                String[] options = {"Evaluar otra cadena", "Cambiar De Automata", "Salir"};
+                int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
+                if (f == 2 || f == JOptionPane.CLOSED_OPTION) {
+                    return Lectura.salir;
+                } else if (f == 1) {
+                    return Lectura.CrearAutomata;
+                }
             }
-            String[] options = {"Evaluar otra cadena", "Cambiar De Automata", "Salir"};
-            int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
-            if (f == 2 || f == JOptionPane.CLOSED_OPTION) {
-                return Lectura.salir;
-            } else if (f == 1) {
-                return Lectura.CrearAutomata;
-            }
+        } catch (Error e) {
+            System.err.print(e.getMessage());
+            return Lectura.CrearAutomata;
+        } catch (FileNotFoundException e) {
+
+            return Lectura.CrearAutomata;
         }
-
-        return Lectura.LeerCadena;
     }
 
     /*

@@ -162,7 +162,7 @@ public class AFN {
                                 String[] origin2 = origin[1].split(">");
                                 String alpfa = origin2[0];
                                 if(!alpha.contains(alpfa.charAt(0)))throw new Error("el caracter de activacion debe pertenecer al alfabeto");
-                                String[] origin3 = origin2[1].split(",");
+                                String[] origin3 = origin2[1].split(";");
                                 for(int i=0;i<origin3.length;i++){
                                     String estado2 = origin3[i];
                                     if(!Q.contains(estado2))throw new Error("el estado de llegada debe pertenecer a los estados del automata");
