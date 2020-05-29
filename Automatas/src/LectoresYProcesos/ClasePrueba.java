@@ -464,7 +464,7 @@ public class ClasePrueba {
                                     for (int j = 0; j < cadenas.size(); j++) {
                                         listaCadenas[j] = cadenas.get(j);
                                     }
-                                    //afd.procesarListaCadenas(listaCadenas, asd, JOptionPane.showConfirmDialog(null, "Desea imprimir en consola tambien?", "detalles", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION);
+                                    afnl.procesarListaCadenas(listaCadenas, asd, JOptionPane.showConfirmDialog(null, "Desea imprimir en consola tambien?", "detalles", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION);
                                     dos = false;
                                 } catch (NullPointerException e) {
                                     dos = false;
@@ -479,7 +479,9 @@ public class ClasePrueba {
                                 try{       
                                     String[] options2 = {"Procesar cadena", "Procesar y mostrar todas las computaciones" ,"Imprimir alguna de las computaciones" ,"Salir"};
                                     int j = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options2, "Salir");
-                                    if (j == 4 || j == JOptionPane.CLOSED_OPTION) {
+                                    if (j == 3){
+                                        cuatro = false;
+                                    } else if (j == JOptionPane.CLOSED_OPTION) {
                                         return Lectura.salir;
                                     } else if (j == 0) {
                                         boolean tres = true;
@@ -579,7 +581,7 @@ public class ClasePrueba {
                         default:
                             break;
                     }
-                    return Lectura.CrearAutomata;
+                    //return Lectura.CrearAutomata;
                 }else if(f == 1){
                     String[] options4 = {"Lambda clausura un estado", "Lambda clausura varios estados", "Salir"};
                     int e = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options4, "Salir");
@@ -588,7 +590,7 @@ public class ClasePrueba {
                     } else if (e == 0) {
                         String[] estados = afnl.GetQ();
                         int estado = JOptionPane.showOptionDialog(null, "Escoja un estado", "Lambda clausura un estado", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, estados, estados[0]);
-                        System.out.println("La lambda clausura del estado " + estado + " es:");
+                        System.out.println("La lambda clausura del estado " + estado + " es: \n");
                         afnl.ImprimirlambdaClausura_unEstado(estado);
                     } else if (e == 1){
                         ArrayList<Integer> escogidos = new ArrayList<>();
@@ -599,7 +601,7 @@ public class ClasePrueba {
                                     int estado = JOptionPane.showOptionDialog(null, "Escoja un estado", "Lambda clausura un estado", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, estados, estados[0]);
                                     escogidos.add(estado);
                                     
-                                    if (JOptionPane.showConfirmDialog(null, "Listo", "Escoger otro estado", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.NO_OPTION) {
+                                    if (JOptionPane.showConfirmDialog(null, "¿Desea escoger otro estado?", "Lambda clausura varios estados", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.NO_OPTION) {
                                         Set<Integer> hashSet = new HashSet<>(escogidos);
                                         escogidos.clear();
                                         escogidos.addAll(hashSet);
@@ -613,7 +615,7 @@ public class ClasePrueba {
                     }
                 }
 
-                String[] options = {"Evaluar otra cadena", "Cambiar De Automata", "Salir"};
+                String[] options = {"Escoger otra opción", "Cambiar De Automata", "Salir"};
                 int a = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
                 if (a == 2 || a == JOptionPane.CLOSED_OPTION) {
                     return Lectura.salir;
