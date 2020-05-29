@@ -225,7 +225,7 @@ public class AFNL {
     public void ImprimirlambdaClausura_unEstado(int estado) {
 
         ArrayList<Integer> Clausura = lambdaClausura_unEstado(estado);
-        System.out.printf("lambda clausura del estado " + Q.get(estado));
+        System.out.println("lambda clausura del estado " + Q.get(estado) + " es:");
         Clausura.forEach((s) -> {
             System.out.println(" " + Q.get(s));
         });
@@ -235,7 +235,7 @@ public class AFNL {
     public ArrayList<Integer> lambdaClausura_variosEstado(ArrayList<Integer> estados) {
         ArrayList<Integer> lClausura_estados = new ArrayList<>();
         for (int i = 0; i < estados.size(); i++) {
-            ArrayList<Integer> Clauestado = lambdaClausura_unEstado(i);
+            ArrayList<Integer> Clauestado = lambdaClausura_unEstado(estados.get(i));
             for (int j = 0; j < Clauestado.size(); j++) {
                 lClausura_estados.add(Clauestado.get(j));
             }
@@ -262,7 +262,7 @@ public class AFNL {
         for (Integer s : Clausura) {
             System.out.print(" " + Q.get(s) + " ");
         }
-        System.out.print("}");
+        System.out.println("}");
 
     }
 
@@ -489,7 +489,7 @@ public class AFNL {
             fichero1 = new FileWriter(nombreAc);
             pw1 = new PrintWriter(fichero1);
             for (int i = 0; i < Aceptados.size(); i++) {
-                System.out.print(Aceptados.get(i));
+                System.out.println(Aceptados.get(i));
                 pw1.println(Aceptados.get(i));
             }
         } catch (Exception e) {
@@ -514,7 +514,7 @@ public class AFNL {
             fichero2 = new FileWriter(nombreRe);
             pw2 = new PrintWriter(fichero2);
             for (int i = 0; i < Rechazados.size(); i++) {
-                System.out.print(Rechazados.get(i));
+                System.out.println(Rechazados.get(i));
                 pw2.println(Rechazados.get(i));
             }
         } catch (Exception e) {
@@ -522,7 +522,7 @@ public class AFNL {
         } finally {
             try {
                 if (null != fichero2) {
-                    fichero1.close();
+                    fichero2.close();
                 }
             } catch (Exception e2) {
                 e2.printStackTrace();
@@ -538,9 +538,9 @@ public class AFNL {
             nombreAb.createNewFile();
             fichero3 = new FileWriter(nombreAb);
             pw3 = new PrintWriter(fichero3);
-            for (int i = 0; i < Aceptados.size(); i++) {
-                System.out.print(Aceptados.get(i));
-                pw3.println(Aceptados.get(i));
+            for (int i = 0; i < Abortados.size(); i++) {
+                System.out.println(Abortados.get(i));
+                pw3.println(Abortados.get(i));
 
             }
         } catch (Exception e) {
@@ -548,7 +548,7 @@ public class AFNL {
         } finally {
             try {
                 if (null != fichero3) {
-                    fichero1.close();
+                    fichero3.close();
                 }
             } catch (Exception e2) {
                 e2.printStackTrace();
