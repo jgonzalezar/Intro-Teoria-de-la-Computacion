@@ -6,7 +6,7 @@ import java.util.ArrayList;
 
 /**
  *
- * @author jdacostabe
+ * @author jgonzalezar, ivonn, fnat
  */
 public class ProcesamientoCadenaAFNLambda {
     private String cadena;

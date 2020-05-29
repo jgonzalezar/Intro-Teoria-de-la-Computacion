@@ -77,7 +77,6 @@ public class AFD {
         Scanner sca = new Scanner(new File(nombreArchivo));
         while(sca.hasNextLine()){
             String lin = sca.nextLine();
-            System.out.println(lin);
             switch(lin){
                 case "#alphabet":
                     lec = CreadorAutomata.Lecto.alfabeto;
