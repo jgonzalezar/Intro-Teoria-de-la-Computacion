@@ -477,7 +477,7 @@ public class ClasePrueba {
                             boolean cuatro = true;
                             do {
                                 try{       
-                                    String[] options2 = {"Procesar cadena", "Procesar y mostrar todas las computaciones" ,"Imprimir alguna de las computaciones" ,"Salir"};
+                                    String[] options2 = {"Procesar cadena", "Procesar y mostrar todas las computaciones" ,"Imprimir alguna de las computaciones" ,"Volver"};
                                     int j = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options2, "Salir");
                                     if (j == 3){
                                         cuatro = false;
