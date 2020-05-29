@@ -558,7 +558,7 @@ public class AFNL {
     }
     
     
-    void procesarListaCadenas(ArrayList<String> listaCadenas,String nombreArchivo, boolean imprimirPantalla){
+    public void procesarListaCadenas(ArrayList<String> listaCadenas,String nombreArchivo, boolean imprimirPantalla){
         for(int i=0;i<listaCadenas.size();i++){
             ProcesamientoCadenaAFNLambda procesamiento = procesarCadena(listaCadenas.get(i));
             ArrayList<String> Aceptados = procesamiento.getListaProcesamientosAceptacion();

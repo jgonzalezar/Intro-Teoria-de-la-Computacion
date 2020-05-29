@@ -461,9 +461,9 @@ public class ClasePrueba {
                                         throw new NullPointerException();
                                     }
                                     String asd = file.getSelectedFile().getAbsolutePath();
-                                    String[] listaCadenas = new String[cadenas.size()];
+                                    ArrayList<String> listaCadenas = new ArrayList<>();
                                     for (int j = 0; j < cadenas.size(); j++) {
-                                        listaCadenas[j] = cadenas.get(j);
+                                        listaCadenas.add(cadenas.get(j));
                                     }
                                     afnl.procesarListaCadenas(listaCadenas, asd, JOptionPane.showConfirmDialog(null, "Desea imprimir en consola tambien?", "detalles", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION);
                                     dos = false;
