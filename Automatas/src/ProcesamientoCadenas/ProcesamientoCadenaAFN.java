@@ -129,7 +129,7 @@ public class ProcesamientoCadenaAFN {
                 s="["+q0+","+cadena+"]";
                 cont=0;
             }else{
-                s += "-> [Q"+abortado.get(i)+","+cadena.substring(cont,cont+1)+"]";
+                s += "-> [Q"+abortado.get(i)+","+cadena.substring(cont+1)+"]";
                 cont++;
             }
         }

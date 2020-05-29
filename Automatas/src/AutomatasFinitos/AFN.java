@@ -284,7 +284,7 @@ public class AFN {
             for(int i=0;i<respuesta.getAccepted().size();i++){
                 res+="  "+respuesta.getAccepted().get(i)+"\n";
             }
-            File nombre = new File(archivo[0]+"Aceptado."+archivo[1]);
+            File nombre = new File(archivo[0]+"Aceptadas."+archivo[1]);
             if(!nombre.exists())nombre.createNewFile();
             fichero1 = new FileWriter(nombre);
             pw1 = new PrintWriter(fichero1);
@@ -299,7 +299,7 @@ public class AFN {
             for(int i=0;i<respuesta.getRejected().size();i++){
                 res+="  "+respuesta.getRejected().get(i)+"\n";
             }
-            nombre = new File(archivo[0]+"Rechazado."+archivo[1]);
+            nombre = new File(archivo[0]+"Rechazadas."+archivo[1]);
             if(!nombre.exists())nombre.createNewFile();
             fichero1 = new FileWriter(nombre);
             pw1 = new PrintWriter(fichero1);
@@ -314,7 +314,7 @@ public class AFN {
             for(int i=0;i<respuesta.getAborted().size();i++){
                 res+="  "+respuesta.getAborted().get(i)+"\n";
             }
-            nombre = new File(archivo[0]+"Abortado."+archivo[1]);
+            nombre = new File(archivo[0]+"Abortadas."+archivo[1]);
             if(!nombre.exists())nombre.createNewFile();
             fichero1 = new FileWriter(nombre);
             pw1 = new PrintWriter(fichero1);
@@ -396,13 +396,13 @@ public class AFN {
                     computarTodosLosProcesamientos(q0,0);
                 }
                 
-                String res=cadena+"\t";
+                String res=cadena;
                 if(respuesta.isAccepted()){
-                    res+=respuesta.getAccepted().get(0)+"\t";
+                    res+="\t"+respuesta.getAccepted().get(0)+"\t";
                 }else if(respuesta.getRejected().size()>0){
-                    res+=respuesta.getRejected().get(0)+"\t";
+                    res+="\t"+respuesta.getRejected().get(0)+"\t";
                 }else if(respuesta.getAborted().size()>0){
-                    res+="Cadena abortada \t";
+                    res+="\tCadena abortada \t";
                 }
                 res+=Integer.toString(respuesta.getAccepted().size()+respuesta.getRejected().size()+respuesta.getAborted().size())+"\t"+Integer.toString(respuesta.getAccepted().size())+"\t";
                 res+=Integer.toString(respuesta.getAborted().size())+"\t"+ Integer.toString(respuesta.getRejected().size())+"\t";
