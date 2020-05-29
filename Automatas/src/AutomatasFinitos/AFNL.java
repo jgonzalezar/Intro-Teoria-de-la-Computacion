@@ -154,7 +154,7 @@ public class AFNL {
                                 if (!alpha.contains(alpfa.charAt(0)) && !alpfa.equals("$")) {
                                     throw new Error("el caracter de activacion debe pertenecer al alfabeto");
                                 }
-                                String[] origin3 = origin2[1].split(",");
+                                String[] origin3 = origin2[1].split(";");
                                 int[] destino = new int[origin3.length];
                                 for (int i = 0; i < origin3.length; i++) {
                                     String estado2 = origin3[i];
