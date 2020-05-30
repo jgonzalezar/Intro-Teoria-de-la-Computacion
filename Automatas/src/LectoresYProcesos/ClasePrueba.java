@@ -169,7 +169,7 @@ public class ClasePrueba {
                                 JFileChooser file = new JFileChooser(new File("."));
                                 file.setDialogTitle("Elija nombre y ubicación para el archivo con la respuesta");
                                 file.setSelectedFile(new File("Respuesta.txt"));
-                                if (file.showOpenDialog(file) == JFileChooser.CANCEL_OPTION) {
+                                if (file.showSaveDialog(file) == JFileChooser.CANCEL_OPTION) {
                                     throw new NullPointerException();
                                 }
                                 String asd = file.getSelectedFile().getAbsolutePath();
@@ -307,7 +307,7 @@ public class ClasePrueba {
                                 JFileChooser file = new JFileChooser(new File("."));
                                 file.setDialogTitle("Elija nombre y ubicación para el archivo con la respuesta");
                                 file.setSelectedFile(new File("Respuesta.txt"));
-                                if (file.showOpenDialog(file) == JFileChooser.CANCEL_OPTION) {
+                                if (file.showSaveDialog(file) == JFileChooser.CANCEL_OPTION) {
                                     throw new NullPointerException();
                                 }
                                 String asd = file.getSelectedFile().getAbsolutePath();
@@ -342,7 +342,7 @@ public class ClasePrueba {
                                             JFileChooser file = new JFileChooser(new File("."));
                                             file.setDialogTitle("Elija nombre y ubicación para el archivo con la respuesta");
                                             file.setSelectedFile(new File("Respuesta.txt"));
-                                            if (file.showOpenDialog(file) == JFileChooser.CANCEL_OPTION) {
+                                            if (file.showSaveDialog(file) == JFileChooser.CANCEL_OPTION) {
                                                 throw new NullPointerException();
                                             }
                                             String asd = file.getSelectedFile().getAbsolutePath();
@@ -461,7 +461,7 @@ public class ClasePrueba {
                                     JFileChooser file = new JFileChooser(new File("."));
                                     file.setDialogTitle("Elija nombre y ubicación para el archivo con la respuesta");
                                     file.setSelectedFile(new File("Respuesta.txt"));
-                                    if (file.showOpenDialog(file) == JFileChooser.CANCEL_OPTION) {
+                                    if (file.showSaveDialog(file) == JFileChooser.CANCEL_OPTION) {
                                         throw new NullPointerException();
                                     }
                                     String asd = file.getSelectedFile().getAbsolutePath();
@@ -535,7 +535,7 @@ public class ClasePrueba {
                                                     JFileChooser fileComputaciones = new JFileChooser(new File("."));
                                                     fileComputaciones.setDialogTitle("Elija nombre y ubicación para el archivo con la respuesta");
                                                     fileComputaciones.setSelectedFile(new File("Respuesta.txt"));
-                                                    if (fileComputaciones.showOpenDialog(fileComputaciones) == JFileChooser.CANCEL_OPTION) {
+                                                    if (fileComputaciones.showSaveDialog(fileComputaciones) == JFileChooser.CANCEL_OPTION) {
                                                         throw new NullPointerException();
                                                     }
                                                     String dirArch = fileComputaciones.getSelectedFile().getAbsolutePath();
