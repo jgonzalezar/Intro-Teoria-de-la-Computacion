@@ -167,7 +167,8 @@ public class ClasePrueba {
                                 }
                                 JOptionPane.showMessageDialog(null, "Las cadenas dadas son: \n" + cadenasd, "Cadenas Dadas", JOptionPane.INFORMATION_MESSAGE);
                                 JFileChooser file = new JFileChooser(new File("."));
-                                file.setDialogTitle("Seleccione la ubicación del archivo que contendrá la respuesta");
+                                file.setDialogTitle("Elija nombre y ubicación para el archivo con la respuesta");
+                                file.setSelectedFile(new File("Respuesta.txt"));
                                 if (file.showOpenDialog(file) == JFileChooser.CANCEL_OPTION) {
                                     throw new NullPointerException();
                                 }
@@ -304,7 +305,8 @@ public class ClasePrueba {
                                 }
                                 JOptionPane.showMessageDialog(null, "Las cadenas dadas son: \n" + cadenasd, "Cadenas Dadas", JOptionPane.INFORMATION_MESSAGE);
                                 JFileChooser file = new JFileChooser(new File("."));
-                                file.setDialogTitle("Seleccione la ubicación del archivo que contendrá la respuesta");
+                                file.setDialogTitle("Elija nombre y ubicación para el archivo con la respuesta");
+                                file.setSelectedFile(new File("Respuesta.txt"));
                                 if (file.showOpenDialog(file) == JFileChooser.CANCEL_OPTION) {
                                     throw new NullPointerException();
                                 }
@@ -338,7 +340,8 @@ public class ClasePrueba {
                                     if (JOptionPane.showConfirmDialog(null, "Desea mostrar el camino recorrido a la hora de evaluar la cadena?", "Seleccione una opción", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
                                         if (JOptionPane.showConfirmDialog(null, "Desea mostrar el camino de todos los procesamientos de la cadena?", "Seleccione una opción", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
                                             JFileChooser file = new JFileChooser(new File("."));
-                                            file.setDialogTitle("Seleccione la ubicación del archivo que contendrá la respuesta");
+                                            file.setDialogTitle("Elija nombre y ubicación para el archivo con la respuesta");
+                                            file.setSelectedFile(new File("Respuesta.txt"));
                                             if (file.showOpenDialog(file) == JFileChooser.CANCEL_OPTION) {
                                                 throw new NullPointerException();
                                             }
@@ -456,7 +459,8 @@ public class ClasePrueba {
                                     }
                                     JOptionPane.showMessageDialog(null, "Las cadenas dadas son: \n" + cadenasd, "Cadenas Dadas", JOptionPane.INFORMATION_MESSAGE);
                                     JFileChooser file = new JFileChooser(new File("."));
-                                    file.setDialogTitle("Seleccione la ubicación del archivo que contendrá la respuesta");
+                                    file.setDialogTitle("Elija nombre y ubicación para el archivo con la respuesta");
+                                    file.setSelectedFile(new File("Respuesta.txt"));
                                     if (file.showOpenDialog(file) == JFileChooser.CANCEL_OPTION) {
                                         throw new NullPointerException();
                                     }
@@ -529,7 +533,8 @@ public class ClasePrueba {
                                                     JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
                                                 } else {
                                                     JFileChooser fileComputaciones = new JFileChooser(new File("."));
-                                                    fileComputaciones.setDialogTitle("Seleccione la ubicación del archivo que contendrá la respuesta");
+                                                    fileComputaciones.setDialogTitle("Elija nombre y ubicación para el archivo con la respuesta");
+                                                    fileComputaciones.setSelectedFile(new File("Respuesta.txt"));
                                                     if (fileComputaciones.showOpenDialog(fileComputaciones) == JFileChooser.CANCEL_OPTION) {
                                                         throw new NullPointerException();
                                                     }
