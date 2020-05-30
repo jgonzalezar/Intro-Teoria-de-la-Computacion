@@ -558,8 +558,7 @@ public class AFNL {
             nombreArchivoRechazados = nombreArchivo + "Rechazados.txt";
             nombreArchivoAbortados = nombreArchivo + "Abortados.txt";
         }else {
-            int index = nombreArchivo.lastIndexOf(".");
-            String[] parts = nombreArchivo.split(String.valueOf(nombreArchivo.charAt(index)));
+            String[] parts = nombreArchivo.split("\\.");
             String part1 = parts[0];
             String part2 = parts[1];
             nombreArchivoAceptados = part1 + "Aceptados." + part2;
