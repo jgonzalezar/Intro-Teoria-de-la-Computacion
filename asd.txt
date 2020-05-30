@@ -1,0 +1,1 @@
+aaaaaa	[Q0, aaaaaa]-> [Q1, aaaaa]-> [Q0, aaaa]-> [Q1, aaa]-> [Q0, aa]-> [Q1, a]-> [Q0, ]-> 	true
