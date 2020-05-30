@@ -6,12 +6,9 @@
 package AutomatasFinitos;
 
 import Herramientas.TransitionAFNL;
-import Herramientas.Tuple;
 import LectoresYProcesos.CreadorAutomata;
 import java.io.File;
 import java.io.FileNotFoundException;
-import static java.lang.Integer.parseInt;
-import java.util.Map;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
@@ -20,7 +17,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import Herramientas.RespuestaMult;
 import Herramientas.Tupla;
-import ProcesamientoCadenas.ProcesamientoCadenaAFD;
 import ProcesamientoCadenas.ProcesamientoCadenaAFNLambda;
 import java.io.FileWriter;
 import java.io.PrintWriter;

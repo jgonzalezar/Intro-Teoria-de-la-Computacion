@@ -5,17 +5,9 @@
  */
 package LectoresYProcesos;
 
-import AutomatasFinitos.AFD;
-import AutomatasFinitos.AFN;
-import Herramientas.Transition;
-import Herramientas.Tuple;
 import java.io.File;
 import java.io.FileNotFoundException;
-import static java.lang.Integer.parseInt;
-import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 /**
@@ -28,15 +20,48 @@ public class CreadorAutomata {
     * estados que ayudan a determinar la informacion actual que se esta recibiendo
     */ 
     public enum Lecto{
-        
-            alfabeto,estados,estadoinicial,estadoFin,transicion,inicio
+        /**
+         * estado inicial
+         */
+        inicio,
+        /**
+         * se esta leyendo el afabeto
+         */
+        alfabeto,
+        /**
+         * se esta leyendo los estados        
+         */
+        estados,
+        /**
+         * se esta leyendo el estado inicial
+         */
+        estadoinicial,
+        /**
+         * se esta leyendo los estados de aceptacion
+         */
+        estadoFin,
+        /**
+         * se esta leyendo la trancision del automata
+         */
+        transicion
     }
     /**
      * enum diseñado para escoger alguno de los tipos de los automatas
      */
     
     public enum Type{
-        AFD,AFN,AFNL
+        /**
+         * automata finito determinista
+         */
+        AFD,
+        /**
+         * automata finito no determinista
+         */
+        AFN,
+        /**
+         * automatafinito no determinista con transiciones lambda
+         */
+        AFNL
     }
     
     /**
