@@ -1,35 +1,22 @@
-<<<<<<< Updated upstream
 <?xml version="1.0" encoding="UTF-8"?>
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/ivonn/Documents/automatas/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/Tupla.java</file>
-            <file>file:/C:/Users/ivonn/Documents/automatas/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/TransitionAFNL.java</file>
-            <file>file:/C:/Users/ivonn/Documents/automatas/Intro-Teoria-de-la-Computacion/Automatas/src/ProcesamientoCadenas/ProcesamientoCadenaAFN.java</file>
-            <file>file:/C:/Users/ivonn/Documents/automatas/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFNL.java</file>
-            <file>file:/C:/Users/ivonn/Documents/automatas/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFD.java</file>
-            <file>file:/C:/Users/ivonn/Documents/automatas/Intro-Teoria-de-la-Computacion/Automatas/src/ProcesamientoCadenas/ProcesamientoCadenaAFNLambda.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/TransitionMult.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasPredefinidos/procesamientoCadenasA</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFN.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/TransitionAFNL.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFNL.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Creador/Creador.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasPredefinidos/a'(abUba)'b+.NFe</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasPredefinidos/%5B(aUb)(aUb)%5D'.DFA</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/LectoresYProcesos/ClasePrueba.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFD.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/Tupla.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/ProcesamientoCadenas/ProcesamientoCadenaAFD.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/ProcesamientoCadenas/ProcesamientoCadenaAFNLambda.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/RespuestaMult.java</file>
         </group>
     </open-files>
 </project-private>
-=======
-<?xml version="1.0" encoding="UTF-8"?>
-<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
-    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
-    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
-        <group>
-            <file>file:/C:/Users/Juan%20Andres%20Gonzalez/Documents/La%20Nacho/Intro%20T%20Computacion/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFD.java</file>
-            <file>file:/C:/Users/Juan%20Andres%20Gonzalez/Documents/La%20Nacho/Intro%20T%20Computacion/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/RespuestaMult.java</file>
-            <file>file:/C:/Users/Juan%20Andres%20Gonzalez/Documents/La%20Nacho/Intro%20T%20Computacion/Intro-Teoria-de-la-Computacion/Automatas/src/ProcesamientoCadenas/ProcesamientoCadenaAFD.java</file>
-            <file>file:/C:/Users/Juan%20Andres%20Gonzalez/Documents/La%20Nacho/Intro%20T%20Computacion/Intro-Teoria-de-la-Computacion/Automatas/src/ProcesamientoCadenas/ProcesamientoCadenaAFN.java</file>
-            <file>file:/C:/Users/Juan%20Andres%20Gonzalez/Documents/La%20Nacho/Intro%20T%20Computacion/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/Transition.java</file>
-            <file>file:/C:/Users/Juan%20Andres%20Gonzalez/Documents/La%20Nacho/Intro%20T%20Computacion/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasPredefinidos/a'(abUba)'b+.NFe</file>
-            <file>file:/C:/Users/Juan%20Andres%20Gonzalez/Documents/La%20Nacho/Intro%20T%20Computacion/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasPredefinidos/a'bUb'a.NFA</file>
-            <file>file:/C:/Users/Juan%20Andres%20Gonzalez/Documents/La%20Nacho/Intro%20T%20Computacion/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/TransitionAFNL.java</file>
-            <file>file:/C:/Users/Juan%20Andres%20Gonzalez/Documents/La%20Nacho/Intro%20T%20Computacion/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/Tuple.java</file>
-            <file>file:/C:/Users/Juan%20Andres%20Gonzalez/Documents/La%20Nacho/Intro%20T%20Computacion/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/Tupla.java</file>
-        </group>
-    </open-files>
-</project-private>
->>>>>>> Stashed changes
