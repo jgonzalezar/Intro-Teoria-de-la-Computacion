@@ -259,11 +259,12 @@ public class AFN {
      * @param nombreArchivo Nombre del archivo en el que se hará la impresión de los procesamientos
      * @return boolean - True si la cadena ingresada es aceptada, false de otra forma.
      */
-        public int computarTodosLosProcesamientos(String cadena, String nombreArchivo){        
+        public int computarTodosLosProcesamientos(String cadena, String nombreArchivo){
         FileWriter fichero1 = null;
         PrintWriter pw1 = null;
+        String archivo[]=nombreArchivo.split("\\.");
         try
-        {      
+        {
             this.cadena=cadena;
             this.print = new Integer[cadena.length()];
             respuesta = new ProcesamientoCadenaAFN(cadena,"Q"+Integer.toString(q0));
@@ -278,12 +279,17 @@ public class AFN {
             }
             String res="Aceptadas:\n";
             if(respuesta.getAccepted().isEmpty()){
-                res+="  No hay procesamientos aceptados para esta cadena\n";
+                res+="\n";
             }
             for(int i=0;i<respuesta.getAccepted().size();i++){
                 res+="  "+respuesta.getAccepted().get(i)+"\n";
             }
-            File nombre = new File(nombreArchivo+"Aceptadas.txt");
+            File nombre;
+            if(archivo.length==1){
+                nombre = new File(nombreArchivo+"Aceptadas");
+            }else{
+                nombre = new File(archivo[0]+"Aceptadas."+archivo[1]);
+            }
             if(!nombre.exists())nombre.createNewFile();
             fichero1 = new FileWriter(nombre);
             pw1 = new PrintWriter(fichero1);
@@ -293,12 +299,17 @@ public class AFN {
             
             res="Rechazadas:\n";
             if(respuesta.getRejected().isEmpty()){
-                res+="  No hay procesamientos rechazados para esta cadena\n";
+                res+="\n";
             }
             for(int i=0;i<respuesta.getRejected().size();i++){
                 res+="  "+respuesta.getRejected().get(i)+"\n";
             }
-            nombre = new File(nombreArchivo+"Rechazadas.txt");
+            
+            if(archivo.length==1){
+                nombre = new File(nombreArchivo+"Rechazadas");
+            }else{
+                nombre = new File(archivo[0]+"Rechazadas."+archivo[1]);
+            }
             if(!nombre.exists())nombre.createNewFile();
             fichero1 = new FileWriter(nombre);
             pw1 = new PrintWriter(fichero1);
@@ -308,12 +319,16 @@ public class AFN {
             
             res="Abortadas:\n";
             if(respuesta.getAborted().isEmpty()){
-                res+="  No hay procesamientos abortados para esta cadena\n";
+                res+="\n";
             }
             for(int i=0;i<respuesta.getAborted().size();i++){
                 res+="  "+respuesta.getAborted().get(i)+"\n";
             }
-            nombre = new File(nombreArchivo+"Abortadas.txt");
+            if(archivo.length==1){
+                nombre = new File(nombreArchivo+"Abortadas");
+            }else{
+                nombre = new File(archivo[0]+"Abortadas."+archivo[1]);
+            }
             if(!nombre.exists())nombre.createNewFile();
             fichero1 = new FileWriter(nombre);
             pw1 = new PrintWriter(fichero1);
