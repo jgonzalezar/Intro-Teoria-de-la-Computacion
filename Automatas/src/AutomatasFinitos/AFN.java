@@ -412,18 +412,18 @@ public class AFN {
                 
                 String res=cadena;
                 if(respuesta.isAccepted()){
-                    res+="\t"+respuesta.getAccepted().get(0)+"\t";
+                    res+="   "+respuesta.getAccepted().get(0)+"   ";
                 }else if(respuesta.getRejected().size()>0){
-                    res+="\t"+respuesta.getRejected().get(0)+"\t";
+                    res+="   "+respuesta.getRejected().get(0)+"   ";
                 }else if(respuesta.getAborted().size()>0){
-                    res+="\tCadena abortada \t";
+                    res+="   Cadena abortada    ";
                 }
-                res+= "Número de procesamientos: ["+ Integer.toString(respuesta.getAccepted().size()+respuesta.getRejected().size()+respuesta.getAborted().size()) +"]\t Procesamientos aceptados: ["+Integer.toString(respuesta.getAccepted().size())+"]\t";
-                res+= "Procesamientos rechazados: ["+ Integer.toString(respuesta.getRejected().size())+"]\tProcesamientos abortados["+Integer.toString(respuesta.getAborted().size())+"]\t";
+                res+= "Número de procesamientos: ["+ Integer.toString(respuesta.getAccepted().size()+respuesta.getRejected().size()+respuesta.getAborted().size()) +"]   Procesamientos aceptados: ["+Integer.toString(respuesta.getAccepted().size())+"]   ";
+                res+= "Procesamientos rechazados: ["+ Integer.toString(respuesta.getRejected().size())+"]   Procesamientos abortados["+Integer.toString(respuesta.getAborted().size())+"]   ";
                 if(respuesta.isAccepted()){
-                    res+="Sí";
+                    res+="La cadena si fue aceptada";
                 }else{
-                    res+="No";
+                    res+="La cadena no fue aceptada";
                 }
                 pw1.println(res);
                 if(imprimirPantalla){
