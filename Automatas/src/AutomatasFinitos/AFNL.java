@@ -58,14 +58,13 @@ public class AFNL {
     
     /**
      * Constructor, inicializa los atributos.
-     * @param sigma Alfabeto
+     * @param E Alfabeto
      * @param Q Conjunto de estados
      * @param q0 Estado inicial
      * @param F Estados de aceptación
-     * @param Delta Transiciones
-     * @param lambda caracter lambda
+     * @param delta Transiciones
+     * @see TransitionAFNL
      */
-
     public AFNL(char[] E, ArrayList<String> Q, int q0, ArrayList<String> F, TransitionAFNL delta) {
         this.Sigma = E;
         this.Q = Q;
@@ -224,9 +223,8 @@ public class AFNL {
     /**
      * Encuentra el lambda clausura de un solo estado.
      * @param estado estado del que se desea hallar la lambda clausura. 
+     * @return  Lista de enteros representando los índices de los estados pertenecientes a la lambda clausura del estado dado.
      */
-
-    //@SuppressWarnings("empty-statement")
     public ArrayList<Integer> lambdaClausura_unEstado(int estado) {
         ArrayList<Integer> lClausura;
         TransitionAFNL Tra = this.Delta;
@@ -271,6 +269,7 @@ public class AFNL {
     /**
      * Encuentra el lambda clausura de varios estados , devuelve las lambdaclausuras de los estados juntas, como una sola.
      * @param estados lista de estados de los cuales quiere hallar la lambda clausura.
+     * @return Lista de enteros representando los índices de los estados pertenecientes a la lambda clausura de los estados dados.
      */
     public ArrayList<Integer> lambdaClausura_variosEstado(ArrayList<Integer> estados) {
         ArrayList<Integer> lClausura_estados = new ArrayList<>();
@@ -291,7 +290,6 @@ public class AFNL {
      * Imprime el lambda clausura de varios estados , devuelve las lambdaclausuras de los estados juntas, como una sola.
      * @param estados lista de estados de los cuales quiere Imprimir la lambda clausura.
      */
-
     public void ImprimirlambdaClausura_variosEstado(ArrayList<Integer> estados) {
 
         ArrayList<Integer> Clausura = lambdaClausura_variosEstado(estados);
@@ -314,8 +312,6 @@ public class AFNL {
      * @param cadena cadena a evaluar.
      * @param computacion numero dado que define la opcion escogida.
      */
-    
-
     public void imprimirComputaciones(String cadena, int computacion) {
         ProcesamientoCadenaAFNLambda procesada = procesarCadena(cadena);
         ArrayList<String> lista;
@@ -362,7 +358,8 @@ public class AFNL {
     }
     /**
      *Guarda el valor booleano que indica si la cadena es o no aceptada 
-     * @param cadena cadena a evaluar.
+     * @param palabra cadena a evaluar.
+     * @return verdadero si la palabra es aceptada, falso en otro caso.
      */
     public boolean ProcesarCadena(String palabra) {
         return procesarCadena(palabra).isEsAceptada();
@@ -370,6 +367,7 @@ public class AFNL {
     /**
      *Guarda el valor booleano que indica si la cadena es o no aceptada , ademas de esto imprime el camino mas corto de aceptacion de la cadena, si la cadena es aceptada , de lo contrario imprime el caino mas corto de Rechazo de la cadena.
      * @param word cadena a evaluar.
+     * @return verdadero si la palabra es aceptada, falso en otro caso.
      */
     public boolean procesarCadenaConDetalles(String word) {
         ProcesamientoCadenaAFNLambda fin = procesarCadena(word);
@@ -379,7 +377,9 @@ public class AFNL {
     /**
      *Procesa y guarda una iteracion de la evaluacion de la cadena ,  solo procesa la evaluacion de uno de los caracteres de la cadena y guarda como quedarian los posibles caminos despues de la evaluacion de ese caracter.
      * @param letra letra a evaluar.
-     * @param caminos caminos recorridos y guardados hasta el momento .
+     * @param caminos caminos recorridos y guardados hasta el momento.
+     * @return Lista de caminos recorridos.
+     * @see RespuestaMult
      */
     public RespuestaMult Iteracion(char letra, RespuestaMult caminos) {
         TransitionAFNL T = this.Delta;
@@ -416,6 +416,7 @@ public class AFNL {
      * @param caracter caracter que evalua.
      * @param estadoActual caminos recorridos y guardados hasta el momento .
      * @param estadoSiguiente caminos recorridos y guardados hasta el momento .
+     * @return String de una sola iteracion (cambio de estado con un caracer) de un camino especifico del procesamiento de la cadena
      */
     public String saltoDeEstados(String cadena, char caracter, int estadoActual, Integer estadoSiguiente) {
         ArrayList<Integer> alQueVa = this.Delta.getMove(estadoActual, caracter);
@@ -452,7 +453,9 @@ public class AFNL {
     /**
      *Crea y guarda los String de todos los caminos posibles del procesamiento de la cadena segun los parametros del profesor, adeas de esto retorna el procesamiento completo de la cadena AFNL.
      * @param cadena cadena a evaluar.
-     * @param respuesta lista de caminos recorridos  .
+     * @param respuesta lista de caminos recorridos.
+     * @return Lista de los procesamientos de la cadena.
+     * @see RespuestaMult
      */
     public ProcesamientoCadenaAFNLambda procesamiento(String cadena, RespuestaMult respuesta) {
         ArrayList<Tupla> tupla = new ArrayList<>();
@@ -502,6 +505,7 @@ public class AFNL {
      *Devuelve la cadena como una lista de caracteres ,verifica si los caracteres ingresados por el usuario
      * para procesar una cadena pertenecen al alfabeto.
      * @param cadena cadena a evaluar.
+     * @return Lista de caracteres que no corresponden al alfabeto. 
      */
     public ArrayList<Character> ponerCadena(String cadena) {
         ArrayList<Character> asd = new ArrayList<>();
@@ -524,12 +528,14 @@ public class AFNL {
     }
     /**
      *Devuelve la lista de estados totales del automata.
+     * @return Lista de los estados del automata.
      */
     public ArrayList<String> getQ() {
         return Q;
     }
     /**
      *Devuelve la lista de estados totales del automata como un arreglo.
+     * @return Arreglo de los estados del automata.
      */
     public String[] GetQ() {
         String[] estados = new String[this.Q.size()];
@@ -540,12 +546,12 @@ public class AFNL {
         return estados;
     }
     /**
-     * Imprime cada uno de los posibles procesamientos de la cadena indicando de qué estado a qué estado pasa al procesar cada símbolo e indicanda si al final de cada procesamiento se llega a aceptación o rechazo.
-     Llena una lista de todos procesamientos de aceptación, una lista de todos los procesamientos abortados y una lista de todos los procesamientos de rechazo.
+     * Imprime cada uno de los posibles procesamientos de la cadena indicando de qué estado a qué estado pasa al procesar cada símbolo e indicanda si al final de cada procesamiento se llega a aceptación o rechazo.Llena una lista de todos procesamientos de aceptación, una lista de todos los procesamientos abortados y una lista de todos los procesamientos de rechazo.
      Guardar los contenidos de estas listas cada una en un archivo .txt (uno diferente para cada tipo de camino)y las imprime en pantalla.
      Retorna el numero total de procesamientos
      * @param cadena cadena a evaluar.
      * @param nombreArchivo nombre que se le quiere dar a los archivos.
+     * @return Procesamientos.
      */
     public int computarTodosLosProcesamientos(String cadena, String nombreArchivo) {
         String nombreArchivoAceptados;
@@ -651,7 +657,7 @@ public class AFNL {
     /**
      * procesa cada cadena con y los resultados son impresos en un archivo cuyo nombre es nombreArchivo; si este es inválido se asigna
      un nombre por defecto. Además todo esto es impreso en pantalla de acuerdo al valor del Booleano imprimirPantalla.
-     * @param listaCadena lista de cadenas a evaluar.
+     * @param listaCadenas lista de cadenas a evaluar.
      * @param nombreArchivo nombre que se le quiere dar a el archivo.
      * @param imprimirPantalla valor boolean que deterina si se imprimen o no los resultads en pantalla.
      */
