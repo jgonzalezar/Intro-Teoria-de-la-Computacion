@@ -161,6 +161,20 @@ public class AFD {
         this.Q = W;
         this.q0 = W0;
         this.F = G;
+        try{
+            for (int i = 0; i < Sigma.length; i++) {
+                for (int j = 0; j < Q.size(); j++) {
+                    String get = Deltos.cambio(Sigma[i], Q.get(j));
+                }
+            }
+        }catch(Error | Exception e){
+            System.err.println("Faltan transiciones a posibles estados limbos");
+        }
+        
+{
+            
+        }
+        
         this.Delta = Deltos;
     }
     /**

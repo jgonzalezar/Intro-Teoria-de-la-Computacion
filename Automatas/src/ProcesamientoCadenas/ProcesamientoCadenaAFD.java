@@ -27,34 +27,63 @@ public class ProcesamientoCadenaAFD  {
     
     /**
      * get de la cadena que es procesada
-     * @return 
+     *  @return cadena 
      */
 
     public String getCadena(){
         return cadena;
     }
     
-    
+    /**
+     * si la cadena es aceptada o no
+     * @return esAceptada
+     */
 
     public boolean EsAceptada() {
         return esAceptada;
     }
+    
+    /**
+     * Lista de simbolos estados por los que paso el procesamiento
+     * @return lista de estados de procesamiento
+     */
 
     public ArrayList<String> getListaEstadoSimboloDeProcesamiento() {
         return listaEstadoSimboloDeProcesamiento;
     }
 
+    /**
+     * cambio de cadena procesada
+     * @param cadena nueva cadena
+     */
+    
     public void setCadena(String cadena) {
         this.cadena = cadena;
     }
+    
+    /**
+     * cambio del booleano de acpetacion
+     * @param esAceptada nuevo esAceptada
+     */
 
     public void setEsAceptada(boolean esAceptada) {
         this.esAceptada = esAceptada;
     }
+    
+    /**
+     * añade un estado a la lista de estados procesados
+     * @param paso nuevo estado agregado
+     */
     public void add(String paso){
         listaEstadoSimboloDeProcesamiento.add(paso);
         
     }
+    
+    /**
+     * devuelve una cadena de todos los estados procesados de a pares con la parte de la cadena faltante por procesar
+     * @return camino nuevo
+     */
+    
     public String pasos(){
         String s ="";
         for (int i = 0; i < listaEstadoSimboloDeProcesamiento.size(); i++) {
