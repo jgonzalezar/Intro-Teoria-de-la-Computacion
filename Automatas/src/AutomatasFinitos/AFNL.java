@@ -26,18 +26,45 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 
 /**
- *
- * @author ivonn
+ * Esta clase es el automata finito no determinista con transiciones lambda en este automata se puede realizar el procesamiento de cadenas sobre el automata ingresado.
+ * @author jgonzalezar, ivonn, fnat
  */
 public class AFNL {
-
+    /**
+     * El atributo Sigma representa el alfabeto del automata.
+     */
     private final char[] Sigma;
+    /**
+     * El atributo Q representa el conjunto de estados que pertenecen al automata.
+     */
     private final ArrayList<String> Q;
+    /**
+     * El atributo q0 representa el estado inicial del automata.
+     */
     private final int q0;
+    /**
+     * El atributo F representa el conjunto de estados de aceptación del automata.
+     */
     private final ArrayList<Integer> F;
+    /**
+     * El atributo Delta representa las transiciones del automata.
+     */
     //public final ArrayList<ArrayList<Tuple>> Delta;
     private final TransitionAFNL Delta;
+    /**
+     * El atributo lambda representa el caracter que actua para hacer la transiciòn lambda del automata.
+     */
     private final char lambda = '$';
+    
+    /**
+     * Constructor, inicializa los atributos.
+     * @param sigma Alfabeto
+     * @param Q Conjunto de estados
+     * @param q0 Estado inicial
+     * @param F Estados de aceptación
+     * @param Delta Transiciones
+     * @param lambda caracter lambda
+     */
 
     public AFNL(char[] E, ArrayList<String> Q, int q0, ArrayList<String> F, TransitionAFNL delta) {
         this.Sigma = E;
@@ -50,7 +77,10 @@ public class AFNL {
         this.Delta = delta;
 
     }
-
+    /**
+     * Inicializa los atributos a partir del archivo de texto.
+     * @param nombreArchivo nombre que se le quiere dar al archivo
+     */
     public AFNL(String nombreArchivo) {
         CreadorAutomata.Lecto lec = CreadorAutomata.Lecto.inicio;
         ArrayList<Character> alpha = null;
@@ -191,6 +221,10 @@ public class AFNL {
         this.Delta = transition;
 
     }
+    /**
+     * Encuentra el lambda clausura de un solo estado.
+     * @param estado estado del que se desea hallar la lambda clausura. 
+     */
 
     //@SuppressWarnings("empty-statement")
     public ArrayList<Integer> lambdaClausura_unEstado(int estado) {
@@ -221,7 +255,10 @@ public class AFNL {
 
         return lClausura;
     }
-
+    /**
+     * Imprime en cosola la lambdaclausura de un solo estado.
+     * @param estado estado del que se desea imprimir la lambda clausura.
+     */
     public void ImprimirlambdaClausura_unEstado(int estado) {
 
         ArrayList<Integer> Clausura = lambdaClausura_unEstado(estado);
@@ -231,7 +268,10 @@ public class AFNL {
         });
 
     }
-
+    /**
+     * Encuentra el lambda clausura de varios estados , devuelve las lambdaclausuras de los estados juntas, como una sola.
+     * @param estados lista de estados de los cuales quiere hallar la lambda clausura.
+     */
     public ArrayList<Integer> lambdaClausura_variosEstado(ArrayList<Integer> estados) {
         ArrayList<Integer> lClausura_estados = new ArrayList<>();
         for (int i = 0; i < estados.size(); i++) {
@@ -247,6 +287,10 @@ public class AFNL {
         return lClausura_estados;
 
     }
+    /**
+     * Imprime el lambda clausura de varios estados , devuelve las lambdaclausuras de los estados juntas, como una sola.
+     * @param estados lista de estados de los cuales quiere Imprimir la lambda clausura.
+     */
 
     public void ImprimirlambdaClausura_variosEstado(ArrayList<Integer> estados) {
 
@@ -265,6 +309,12 @@ public class AFNL {
         System.out.println("}");
 
     }
+    /**
+     * imprime los caminos que son aceptados o rechazados o abortados del procesaiento de la cadena dada segun la opcion que se escoja.
+     * @param cadena cadena a evaluar.
+     * @param computacion numero dado que define la opcion escogida.
+     */
+    
 
     public void imprimirComputaciones(String cadena, int computacion) {
         ProcesamientoCadenaAFNLambda procesada = procesarCadena(cadena);
@@ -287,7 +337,10 @@ public class AFNL {
         }
 
     }
-
+    /**
+     * Guarda todos los caminos posibles en los cuales la cadena se puede evaluar sin importar si son de aceptacion , rechazo o aborto.     * 
+     * @param cadena cadena a evaluar.
+     */
     private RespuestaMult caminosPosibles(String cadena) {
         if (cadena == null || cadena.length() == 0) {
             RespuestaMult respuesta = new RespuestaMult();
@@ -299,22 +352,35 @@ public class AFNL {
             return Iteracion(cadena.charAt(cadena.length() - 1), caminos);
         }
     }
-
+    /**
+     * Evalua la cadena dada y guarda una lista de los procesamientos Aceptados, Abortados y Rechazados junto con un conjunto de metodos que nos periten acceder a esta informacion.
+     * @param cadena cadena a evaluar.
+     */
     private ProcesamientoCadenaAFNLambda procesarCadena(String cadena) {
         RespuestaMult rta = caminosPosibles(cadena);
         return procesamiento(cadena, rta);
     }
-
+    /**
+     *Guarda el valor booleano que indica si la cadena es o no aceptada 
+     * @param cadena cadena a evaluar.
+     */
     public boolean ProcesarCadena(String palabra) {
         return procesarCadena(palabra).isEsAceptada();
     }
-
+    /**
+     *Guarda el valor booleano que indica si la cadena es o no aceptada , ademas de esto imprime el camino mas corto de aceptacion de la cadena, si la cadena es aceptada , de lo contrario imprime el caino mas corto de Rechazo de la cadena.
+     * @param word cadena a evaluar.
+     */
     public boolean procesarCadenaConDetalles(String word) {
         ProcesamientoCadenaAFNLambda fin = procesarCadena(word);
         System.out.println(fin.imprimirCamino());
         return fin.isEsAceptada();
     }
-
+    /**
+     *Procesa y guarda una iteracion de la evaluacion de la cadena ,  solo procesa la evaluacion de uno de los caracteres de la cadena y guarda como quedarian los posibles caminos despues de la evaluacion de ese caracter.
+     * @param letra letra a evaluar.
+     * @param caminos caminos recorridos y guardados hasta el momento .
+     */
     public RespuestaMult Iteracion(char letra, RespuestaMult caminos) {
         TransitionAFNL T = this.Delta;
         ArrayList<Integer> finals = caminos.getFinals();
@@ -344,7 +410,13 @@ public class AFNL {
         }
         return caminos;
     }
-
+    /**
+     *Crea y retorna el String de una sola iteracion (cambio de estado con un caracer) de un camino especifico del procesamiento de la cadena. 
+     * @param cadena cadena evaluada.
+     * @param caracter caracter que evalua.
+     * @param estadoActual caminos recorridos y guardados hasta el momento .
+     * @param estadoSiguiente caminos recorridos y guardados hasta el momento .
+     */
     public String saltoDeEstados(String cadena, char caracter, int estadoActual, Integer estadoSiguiente) {
         ArrayList<Integer> alQueVa = this.Delta.getMove(estadoActual, caracter);
         String camino = "[" + Q.get(estadoActual) + ", " + cadena + "] -> ";
@@ -377,7 +449,11 @@ public class AFNL {
         }
         return camino;
     }
-
+    /**
+     *Crea y guarda los String de todos los caminos posibles del procesamiento de la cadena segun los parametros del profesor, adeas de esto retorna el procesamiento completo de la cadena AFNL.
+     * @param cadena cadena a evaluar.
+     * @param respuesta lista de caminos recorridos  .
+     */
     public ProcesamientoCadenaAFNLambda procesamiento(String cadena, RespuestaMult respuesta) {
         ArrayList<Tupla> tupla = new ArrayList<>();
 
@@ -422,7 +498,10 @@ public class AFNL {
 
         return new ProcesamientoCadenaAFNLambda(cadena, tupla);
     }
-
+    /**
+     *Devuelve la cadena como una lista de caracteres ,verifica si los caracteres pertenecen al alfabeto.
+     * @param cadena cadena a evaluar.
+     */
     public ArrayList<Character> ponerCadena(String cadena) {
         ArrayList<Character> asd = new ArrayList<>();
         for (int i = 0; i < cadena.length(); i++) {
@@ -442,11 +521,15 @@ public class AFNL {
         asd.addAll(hashSet);
         return asd;
     }
-
+    /**
+     *Devuelve la lista de estados totales del automata.
+     */
     public ArrayList<String> getQ() {
         return Q;
     }
-
+    /**
+     *Devuelve la lista de estados totales del automata como un arreglo.
+     */
     public String[] GetQ() {
         String[] estados = new String[this.Q.size()];
 
@@ -455,12 +538,23 @@ public class AFNL {
         }
         return estados;
     }
-
+    /**
+     * Imprime cada uno de los posibles procesamientos de la cadena indicando de qué estado a qué estado pasa al procesar cada símbolo e indicanda si al final de cada procesamiento se llega a aceptación o rechazo.
+     Llena una lista de todos procesamientos de aceptación, una lista de todos los procesamientos abortados y una lista de todos los procesamientos de rechazo.
+     Guardar los contenidos de estas listas cada una en un archivo .txt (uno diferente para cada tipo de camino)y las imprime en pantalla.
+     Retorna el numero total de procesamientos
+     * @param cadena cadena a evaluar.
+     * @param nombreArchivo nombre que se le quiere dar a los archivos.
+     */
     public int computarTodosLosProcesamientos(String cadena, String nombreArchivo) {
         String nombreArchivoAceptados;
         String nombreArchivoRechazados;
         String nombreArchivoAbortados;
-        if (nombreArchivo.contains(".")) {
+        if((nombreArchivo.contains(".txt")&&(!nombreArchivo.substring(nombreArchivo.length()-4).equals(".txt")))|| !nombreArchivo.contains(".txt")){
+            nombreArchivoAceptados = nombreArchivo + "Aceptados.txt";
+            nombreArchivoRechazados = nombreArchivo + "Rechazados.txt";
+            nombreArchivoAbortados = nombreArchivo + "Abortados.txt";
+        }else {
             int index = nombreArchivo.lastIndexOf(".");
             String[] parts = nombreArchivo.split(String.valueOf(nombreArchivo.charAt(index)));
             String part1 = parts[0];
@@ -468,10 +562,6 @@ public class AFNL {
             nombreArchivoAceptados = part1 + "Aceptados." + part2;
             nombreArchivoRechazados = part1 + "Rechazados." + part2;
             nombreArchivoAbortados = part1 + "Abortados." + part2;
-        } else {
-            nombreArchivoAceptados = nombreArchivo + "Aceptados";
-            nombreArchivoRechazados = nombreArchivo + "Rechazados";
-            nombreArchivoAbortados = nombreArchivo + "Abortados";
         }
         ProcesamientoCadenaAFNLambda procesamiento = procesarCadena(cadena);
         ArrayList<String> Aceptados = procesamiento.getListaProcesamientosAceptacion();
@@ -557,58 +647,52 @@ public class AFNL {
         return TotaldeProcesamientos;
     }
     
-    
+    /**
+     * procesa cada cadena con y los resultados son impresos en un archivo cuyo nombre es nombreArchivo; si este es inválido se asigna
+     un nombre por defecto. Además todo esto es impreso en pantalla de acuerdo al valor del Booleano imprimirPantalla.
+     * @param listaCadena lista de cadenas a evaluar.
+     * @param nombreArchivo nombre que se le quiere dar a el archivo.
+     * @param imprimirPantalla valor boolean que deterina si se imprimen o no los resultads en pantalla.
+     */
     public void procesarListaCadenas(ArrayList<String> listaCadenas,String nombreArchivo, boolean imprimirPantalla){
+    if (!nombreArchivo.contains(".txt")||(!nombreArchivo.substring(nombreArchivo.length()-4).equals(".txt"))) {
+        nombreArchivo= nombreArchivo+".txt" ;
+    }
+    FileWriter fichero = null;
+    PrintWriter pw = null;
+    try {
+        File nombre = new File(nombreArchivo);
+        if (!nombre.exists()) {
+            nombre.createNewFile();
+        }
+        nombre.createNewFile();
+        fichero = new FileWriter(nombre);
+        pw = new PrintWriter(fichero);
         for(int i=0;i<listaCadenas.size();i++){
             ProcesamientoCadenaAFNLambda procesamiento = procesarCadena(listaCadenas.get(i));
             ArrayList<String> Aceptados = procesamiento.getListaProcesamientosAceptacion();
             ArrayList<String> Rechazados = procesamiento.getListaProcesamientosRechazados();
             ArrayList<String> Abortados = procesamiento.getListaProcesamientosAbortados();
             int TotaldeProcesamientos = Aceptados.size() + Rechazados.size() + Abortados.size();
-        
             String Aceptada = (procesamiento.isEsAceptada())?"si":"no";
-        
-            String nombreArchivoCadena;
-            if (nombreArchivo.contains(".")) {
-                int index = nombreArchivo.lastIndexOf(".");
-                String[] parts = nombreArchivo.split(String.valueOf(nombreArchivo.charAt(index)));
-                String part1 = parts[0];
-                String part2 = parts[1];
-                nombreArchivoCadena= part1+"cadena" + i +"."+part2;
-            }else{
-                nombreArchivoCadena= nombreArchivo+"cadena" + i ;
-            }
-            
-            
-            FileWriter fichero = null;
-            PrintWriter pw = null;
-            try {
-                File nombre = new File(nombreArchivoCadena);
-                if (!nombre.exists()) {
-                    nombre.createNewFile();
-                }
-                nombre.createNewFile();
-                fichero = new FileWriter(nombre);
-                pw = new PrintWriter(fichero);
-                pw.println(listaCadenas.get(i)+"  "+procesamiento.imprimirCamino()+"    "+TotaldeProcesamientos+"    "
+            pw.println(listaCadenas.get(i)+"  "+procesamiento.imprimirCamino()+"    "+TotaldeProcesamientos+"    "
+            +Aceptados.size()+"   "+Rechazados.size()+"   "+Abortados.size()+"   "+Aceptada);
+            if(imprimirPantalla==true){
+                System.out.println(listaCadenas.get(i)+"  "+procesamiento.imprimirCamino()+"    "+TotaldeProcesamientos+"    "
                 +Aceptados.size()+"   "+Rechazados.size()+"   "+Abortados.size()+"   "+Aceptada);
-                if(imprimirPantalla==true){
-                    System.out.println(listaCadenas.get(i)+"  "+procesamiento.imprimirCamino()+"    "+TotaldeProcesamientos+"    "
-                    +Aceptados.size()+"   "+Rechazados.size()+"   "+Abortados.size()+"   "+Aceptada);
-                }    
-            } catch (Exception e) {
-            e.printStackTrace();
-            } finally {
-                try {
-                    if (null != fichero) {
-                        fichero.close();
-                    }
-                } catch (Exception e2) {
+            }    
+        }
+    } catch (Exception e) {
+        e.printStackTrace();
+    } finally {
+        try {
+            if (null != fichero) {
+                fichero.close();
+            }
+        } catch (Exception e2) {
                     e2.printStackTrace();
                 }
-            }
-            
-            
         }
     }
 }
+
