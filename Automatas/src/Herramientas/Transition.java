@@ -38,7 +38,7 @@ public class Transition {
     
     /**
      * cantidad de caracteres en el alfabeto
-     * @return 
+     * @return tamaño de las transiciones
      */
     
 
