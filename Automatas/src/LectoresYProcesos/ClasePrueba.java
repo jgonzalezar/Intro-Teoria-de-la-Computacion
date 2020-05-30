@@ -27,10 +27,17 @@ public class ClasePrueba {
     static CreadorAutomata.Type tp;
     static String url;
 
+    /**
+     * enum lectura del main para saber si esta creando un automata o realizando otras acciones
+     */
+    
     public enum Lectura {
         CrearAutomata, LeerCadena, salir
     }
-
+    /**
+     * main que realiza el proyecto 
+     * @param args 
+     */
     public static void main(String[] args) {
         Lectura lec = Lectura.CrearAutomata;
         Scanner scan = new Scanner(System.in);

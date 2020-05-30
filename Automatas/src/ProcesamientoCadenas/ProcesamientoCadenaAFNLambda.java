@@ -1,6 +1,5 @@
 package ProcesamientoCadenas;
 
-import Herramientas.RespuestaMult;
 import Herramientas.Tupla;
 import java.util.ArrayList;
 

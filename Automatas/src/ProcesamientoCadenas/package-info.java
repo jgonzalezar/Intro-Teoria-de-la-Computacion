@@ -1,5 +1,4 @@
 /**
- * El paquete creador contiene un mini proyecto capaz de crear un archivo que contenga todos el Sigma*
- * de un alphabeto hasta cierta cantidad de digitos dados por el usuario
+ * El paquete ProcesamientoCadenas posee las clases e procesamiento de una cadena para cada tipo de automata
  */
-package Creador;
+package ProcesamientoCadenas;
