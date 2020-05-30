@@ -53,7 +53,7 @@ public class AFN {
     
     /**
      * Constructor, inicializa los atributos.
-     * @param sigma Alfabeto
+     * @param Sigma Alfabeto
      * @param Q Conjunto de estados
      * @param q0 Estado inicial
      * @param F Estados de aceptación
@@ -83,7 +83,7 @@ public class AFN {
 
     /**
      * Inicializa los atributos a partir del archivo de texto.
-     * @param nombreArchivo 
+     * @param nombreArchivo Nombre del archivo donde está el automata a leer
      */
     public AFN(String nombreArchivo) {
         CreadorAutomata.Lecto lec = CreadorAutomata.Lecto.inicio;
