@@ -77,7 +77,7 @@ public class ClasePrueba {
                         System.out.println(message);
                         lec = Lectura.LeerCadena;
                     } catch (NullPointerException e) {
-                        if (JOptionPane.showConfirmDialog(null, "No ha ingresado ningún automata. ¿Desea salir? Y/N", "No automata", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0) {
+                        if (JOptionPane.showConfirmDialog(null, "No ha ingresado ningún automata. ¿Desea salir? Y/N", "Error", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0) {
                             lec = Lectura.salir;
                         }
                     }
@@ -176,7 +176,7 @@ public class ClasePrueba {
                                 for (int j = 0; j < cadenas.size(); j++) {
                                     listaCadenas[j] = cadenas.get(j);
                                 }
-                                afd.procesarListaCadenas(listaCadenas, asd, JOptionPane.showConfirmDialog(null, "Desea imprimir en consola tambien?", "detalles", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION);
+                                afd.procesarListaCadenas(listaCadenas, asd, JOptionPane.showConfirmDialog(null, "Desea imprimir en consola tambien?", "Seleccione una opción", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION);
                                 dos = false;
                             } catch (NullPointerException e) {
                                 dos = false;
@@ -199,7 +199,7 @@ public class ClasePrueba {
                                     JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
                                 } else {
                                     boolean set;
-                                    if (JOptionPane.showConfirmDialog(null, "Desea mostrar el camino recorrido a la hora de evaluar la cadena?", "detalles", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                                    if (JOptionPane.showConfirmDialog(null, "Desea mostrar el camino recorrido a la hora de evaluar la cadena?", "Seleccione una opción", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
                                         set = afd.procesarCadenaConDetalles(cadena);
                                     } else {
                                         set = afd.procesarCadena(cadena);
@@ -224,7 +224,7 @@ public class ClasePrueba {
                         break;
                 }
                 String[] options = {"Evaluar otra cadena", "Cambiar De Automata", "Salir"};
-                int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
+                int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Seleccione", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
                 if (f == 2 || f == JOptionPane.CLOSED_OPTION) {
                     return Lectura.salir;
                 } else if (f == 1) {
@@ -313,7 +313,7 @@ public class ClasePrueba {
                                 for (int j = 0; j < cadenas.size(); j++) {
                                     listaCadenas[j] = cadenas.get(j);
                                 }
-                                afn.procesarListaCadenas(listaCadenas, asd, JOptionPane.showConfirmDialog(null, "Desea imprimir en consola tambien?", "detalles", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION);
+                                afn.procesarListaCadenas(listaCadenas, asd, JOptionPane.showConfirmDialog(null, "Desea imprimir en consola tambien?", "Seleccione una opción", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION);
                                 dos = false;
                             } catch (NullPointerException e) {
                                 dos = false;
@@ -325,7 +325,7 @@ public class ClasePrueba {
                         boolean tres = true;
                         do {
                             try {
-                                String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
+                                String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "Recepción de cadena");
                                 ArrayList<Character> error = afn.ponerCadena(cadena);
                                 if (error.size() > 0) {
                                     String errors = "";
@@ -335,8 +335,8 @@ public class ClasePrueba {
                                     JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
                                 } else {
                                     boolean set;
-                                    if (JOptionPane.showConfirmDialog(null, "Desea mostrar el camino recorrido a la hora de evaluar la cadena?", "detalles", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                                        if (JOptionPane.showConfirmDialog(null, "Desea mostrar el camino de todos los procesamientos de la cadena?", "detalles", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                                    if (JOptionPane.showConfirmDialog(null, "Desea mostrar el camino recorrido a la hora de evaluar la cadena?", "Seleccione una opción", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                                        if (JOptionPane.showConfirmDialog(null, "Desea mostrar el camino de todos los procesamientos de la cadena?", "Seleccione una opción", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
                                             JFileChooser file = new JFileChooser(new File("."));
                                             file.setDialogTitle("Seleccione la ubicación del archivo que contendrá la respuesta");
                                             if (file.showOpenDialog(file) == JFileChooser.CANCEL_OPTION) {

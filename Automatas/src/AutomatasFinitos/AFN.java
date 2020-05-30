@@ -53,7 +53,7 @@ public class AFN {
     
     /**
      * Constructor, inicializa los atributos.
-     * @param sigma Alfabeto
+     * @param Sigma Alfabeto
      * @param Q Conjunto de estados
      * @param q0 Estado inicial
      * @param F Estados de aceptación
@@ -83,7 +83,7 @@ public class AFN {
 
     /**
      * Inicializa los atributos a partir del archivo de texto.
-     * @param nombreArchivo 
+     * @param nombreArchivo Nombre del archivo donde está el automata a leer
      */
     public AFN(String nombreArchivo) {
         CreadorAutomata.Lecto lec = CreadorAutomata.Lecto.inicio;
@@ -257,7 +257,7 @@ public class AFN {
      * Función que procesa una cadena en el automata, e imprime todos los posibles procesamientos
      * @param cadena Cadena a procesar
      * @param nombreArchivo Nombre del archivo en el que se hará la impresión de los procesamientos
-     * @return boolean - True si la cadena ingresada es aceptada, false de otra forma.
+     * @return int - Devuelve el número de procesamientos obtenidos al procesar la cadena.
      */
         public int computarTodosLosProcesamientos(String cadena, String nombreArchivo){
         FileWriter fichero1 = null;
