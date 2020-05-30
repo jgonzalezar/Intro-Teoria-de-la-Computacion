@@ -651,5 +651,6 @@ public class ClasePrueba {
     probarAFNLambda(): Crear autómatas AFN-λ, calcular la λ- clausura de un estado,  calcular la λ- clausura de un conjunto de estados, procesar cadenas mostrando solo un procesamiento de aceptación,  procesar cadenas mostrando todos los procesamientos posibles, consultar los procesamientos de aceptación, abortados y de rechazo, procesar listas de cadenas, generar archivos.
     main(): invoca a los otros para que puedan ser comentados fácilmente y poder escoger cuál se va a probar.
     
+    
      */
 }
