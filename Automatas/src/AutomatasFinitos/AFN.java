@@ -244,11 +244,11 @@ public class AFN {
             computarTodosLosProcesamientos(q0,0);
         }
         if(respuesta.isAccepted()){
-            System.out.println(respuesta.getAccepted().get(0)+"-> true");
+            System.out.println(respuesta.getAccepted().get(0)+"-> Aceptado");
         }else if(respuesta.getRejected().size()>0){
-            System.out.println(respuesta.getRejected().get(0)+"-> false");
+            System.out.println(respuesta.getRejected().get(0)+"-> Rechazado");
         }else if(respuesta.getAborted().size()>0){
-            System.out.println(respuesta.getAborted().get(0) +"-> false");
+            System.out.println(respuesta.getAborted().get(0) +"-> Abortado");
         }
         return respuesta.isAccepted();
     }
