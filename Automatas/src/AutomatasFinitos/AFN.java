@@ -418,8 +418,8 @@ public class AFN {
                 }else if(respuesta.getAborted().size()>0){
                     res+="\tCadena abortada \t";
                 }
-                res+=Integer.toString(respuesta.getAccepted().size()+respuesta.getRejected().size()+respuesta.getAborted().size())+"\t"+Integer.toString(respuesta.getAccepted().size())+"\t";
-                res+=Integer.toString(respuesta.getAborted().size())+"\t"+ Integer.toString(respuesta.getRejected().size())+"\t";
+                res+=Integer.toString(respuesta.getAccepted().size()+respuesta.getRejected().size()+respuesta.getAborted().size())+" posibles procesamientos"+"\t"+Integer.toString(respuesta.getAccepted().size())+" procesamientos de aceptación"+"\t";
+                res+=Integer.toString(respuesta.getAborted().size())+" procesamientos abortados"+"\t"+ Integer.toString(respuesta.getRejected().size())+" procesamientos de rechazo"+"\t";
                 if(respuesta.isAccepted()){
                     res+="Sí";
                 }else{
