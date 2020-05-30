@@ -1,5 +1,11 @@
 package Herramientas;
 
+/**
+ * Esta clase guarda una transición de un estado a otro
+ * y se utiliza para manejar las transiciones del automata AFN
+ * @author jdacostabe
+ */
+
 public class Tuple{
 	private final String x; 
 	private final Integer y; 
