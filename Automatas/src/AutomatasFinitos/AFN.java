@@ -259,10 +259,9 @@ public class AFN {
      * @param nombreArchivo Nombre del archivo en el que se hará la impresión de los procesamientos
      * @return boolean - True si la cadena ingresada es aceptada, false de otra forma.
      */
-    public int computarTodosLosProcesamientos(String cadena, String nombreArchivo){        
+        public int computarTodosLosProcesamientos(String cadena, String nombreArchivo){        
         FileWriter fichero1 = null;
         PrintWriter pw1 = null;
-        String[] archivo = nombreArchivo.split("\\.");
         try
         {      
             this.cadena=cadena;
@@ -284,7 +283,7 @@ public class AFN {
             for(int i=0;i<respuesta.getAccepted().size();i++){
                 res+="  "+respuesta.getAccepted().get(i)+"\n";
             }
-            File nombre = new File(archivo[0]+"Aceptadas."+archivo[1]);
+            File nombre = new File(nombreArchivo+"Aceptadas.txt");
             if(!nombre.exists())nombre.createNewFile();
             fichero1 = new FileWriter(nombre);
             pw1 = new PrintWriter(fichero1);
@@ -299,7 +298,7 @@ public class AFN {
             for(int i=0;i<respuesta.getRejected().size();i++){
                 res+="  "+respuesta.getRejected().get(i)+"\n";
             }
-            nombre = new File(archivo[0]+"Rechazadas."+archivo[1]);
+            nombre = new File(nombreArchivo+"Rechazadas.txt");
             if(!nombre.exists())nombre.createNewFile();
             fichero1 = new FileWriter(nombre);
             pw1 = new PrintWriter(fichero1);
@@ -314,7 +313,7 @@ public class AFN {
             for(int i=0;i<respuesta.getAborted().size();i++){
                 res+="  "+respuesta.getAborted().get(i)+"\n";
             }
-            nombre = new File(archivo[0]+"Abortadas."+archivo[1]);
+            nombre = new File(nombreArchivo+"Abortadas.txt");
             if(!nombre.exists())nombre.createNewFile();
             fichero1 = new FileWriter(nombre);
             pw1 = new PrintWriter(fichero1);
@@ -428,6 +427,11 @@ public class AFN {
         }
     }
     
+    /**
+     * Verifica que la cadena dada pertenezca al alfabeto del automata.
+     * @param cadena para palabra a evaluar
+     * @return lista de caracteres que no pertenecen .
+     */
     public ArrayList<Character> ponerCadena(String cadena){
         ArrayList<Character> asd = new ArrayList<>();
         for (int i = 0; i < cadena.length(); i++) {
@@ -442,30 +446,5 @@ public class AFN {
         asd.clear();
         asd.addAll(hashSet);
         return asd;
-    }
-
-     /**
-     * Función que imprime el automata
-     */
-    public void printAutomata() {
-	System.out.println("El automata no determinista ingresado es:");
-	for(int i=0;i<this.Delta.size();i++) {
-            System.out.print("q"+i + ": ");
-            for(int j=0;j<this.Delta.get(i).size();j++) {
-		System.out.print(this.Delta.get(i).get(j).getSymbol()+",q" + this.Delta.get(i).get(j).getFinalState() + " ");
-            }
-            System.out.println();
-        }
-	System.out.println();
-	if(this.F.size()>0) {
-            System.out.println("Y sus estados de aceptación son:");
-            for(int i=0;i<this.F.size();i++) {
-		System.out.print("q"+F.get(i) + " ");
-            }
-	}else {
-            System.out.println("Aún no tiene estados de aceptación");
-	}
-	System.out.println();
-	System.out.println();
     }
 }
