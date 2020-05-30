@@ -1,8 +1,0 @@
-[Q1, aabbaabb] -> [Q2, aabbaabb] -> [Q3, abbaabb] ->  Abortado
-[Q1, aabbaabb] -> [Q1, abbaabb] -> [Q2, abbaabb] -> [Q3, bbaabb] -> [Q2, baabb] -> [Q5, baabb] -> [Q6, aabb] ->  Abortado
-[Q1, aabbaabb] -> [Q2, aabbaabb] -> [Q5, aabbaabb] ->  Abortado
-[Q1, aabbaabb] -> [Q1, abbaabb] -> [Q6, baabb] -> [Q6, aabb] ->  Abortado
-[Q1, aabbaabb] -> [Q1, abbaabb] -> [Q2, abbaabb] -> [Q5, abbaabb] ->  Abortado
-[Q1, aabbaabb] -> [Q1, abbaabb] -> [Q1, bbaabb] ->  Abortado
-[Q1, aabbaabb] -> [Q1, abbaabb] -> [Q4, baabb] ->  Abortado
-[Q1, aabbaabb] -> [Q1, abbaabb] -> [Q2, abbaabb] -> [Q3, bbaabb] -> [Q2, baabb] -> [Q4, aabb] -> [Q2, abb] -> [Q5, abb] ->  Abortado

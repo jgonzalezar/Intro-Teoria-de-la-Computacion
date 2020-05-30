@@ -393,7 +393,7 @@ public class ClasePrueba {
             System.out.println("El automata ha sido creado correctamente");
             while (true) {
                 String[] options1 = {"Procesar cadena", "Lambda clausura", "Salir"};
-                int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
+                int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
                 if (f == 2 || f == JOptionPane.CLOSED_OPTION) {
                     return Lectura.salir;
                 } else if (f == 0) {
@@ -479,7 +479,7 @@ public class ClasePrueba {
                             do {
                                 try{       
                                     String[] options2 = {"Procesar cadena", "Procesar y mostrar todas las computaciones" ,"Imprimir alguna de las computaciones" ,"Volver"};
-                                    int j = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options2, "Salir");
+                                    int j = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Procesamiento de cadenas", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options2, "Salir");
                                     if (j == 3){
                                         cuatro = false;
                                     } else if (j == JOptionPane.CLOSED_OPTION) {
@@ -557,7 +557,7 @@ public class ClasePrueba {
                                                     JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
                                                 } else {
                                                     String[] options3 = {"Aceptados", "Rechazados" ,"Abortados" ,"Salir"};
-                                                    int n = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options3, "Salir");
+                                                    int n = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Procedimiento que desea ver", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options3, "Salir");
                                                     if (n == 3 || n == JOptionPane.CLOSED_OPTION) {
                                                         return Lectura.salir;
                                                     } else {
@@ -585,7 +585,7 @@ public class ClasePrueba {
                     //return Lectura.CrearAutomata;
                 }else if(f == 1){
                     String[] options4 = {"Lambda clausura un estado", "Lambda clausura varios estados", "Salir"};
-                    int e = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options4, "Salir");
+                    int e = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options4, "Salir");
                     if (e == 2 || e == JOptionPane.CLOSED_OPTION) {
                         return Lectura.salir;
                     } else if (e == 0) {
@@ -617,7 +617,7 @@ public class ClasePrueba {
                 }
 
                 String[] options = {"Escoger otra opción", "Cambiar De Automata", "Salir"};
-                int a = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "titulo", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
+                int a = JOptionPane.showOptionDialog(null, "Indique la proxima acción a realizar", "¿Qué desea hacer?", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
                 if (a == 2 || a == JOptionPane.CLOSED_OPTION) {
                     return Lectura.salir;
                 } else if (a == 1) {

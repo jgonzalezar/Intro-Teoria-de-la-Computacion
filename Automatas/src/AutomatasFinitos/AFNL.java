@@ -499,7 +499,8 @@ public class AFNL {
         return new ProcesamientoCadenaAFNLambda(cadena, tupla);
     }
     /**
-     *Devuelve la cadena como una lista de caracteres ,verifica si los caracteres pertenecen al alfabeto.
+     *Devuelve la cadena como una lista de caracteres ,verifica si los caracteres ingresados por el usuario
+     * para procesar una cadena pertenecen al alfabeto.
      * @param cadena cadena a evaluar.
      */
     public ArrayList<Character> ponerCadena(String cadena) {
@@ -675,11 +676,11 @@ public class AFNL {
             ArrayList<String> Abortados = procesamiento.getListaProcesamientosAbortados();
             int TotaldeProcesamientos = Aceptados.size() + Rechazados.size() + Abortados.size();
             String Aceptada = (procesamiento.isEsAceptada())?"si":"no";
-            pw.println(listaCadenas.get(i)+"  "+procesamiento.imprimirCamino()+"    "+TotaldeProcesamientos+"    "
-            +Aceptados.size()+"   "+Rechazados.size()+"   "+Abortados.size()+"   "+Aceptada);
+            pw.println(listaCadenas.get(i)+"  "+procesamiento.imprimirCamino()+"    Numero de procesamientos: ["+TotaldeProcesamientos+"]    Procesamientos aceptados: ["
+            +Aceptados.size()+"]   Procesamientos rechazados: ["+Rechazados.size()+"]   Procesamientos abortados ["+Abortados.size()+"]    La cadena "+Aceptada+ " fue aceptada");
             if(imprimirPantalla==true){
-                System.out.println(listaCadenas.get(i)+"  "+procesamiento.imprimirCamino()+"    "+TotaldeProcesamientos+"    "
-                +Aceptados.size()+"   "+Rechazados.size()+"   "+Abortados.size()+"   "+Aceptada);
+                System.out.println(listaCadenas.get(i)+"  "+procesamiento.imprimirCamino()+"    Numero de procesamientos: ["+TotaldeProcesamientos+"]    Procesamientos aceptados: ["
+                +Aceptados.size()+"]   Procesamientos rechazados: ["+Rechazados.size()+"]   Procesamientos abortados ["+Abortados.size()+"]   La cadena "+Aceptada+ " fue aceptada");
             }    
         }
     } catch (Exception e) {

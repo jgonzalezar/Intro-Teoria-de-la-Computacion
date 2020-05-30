@@ -1,1 +1,0 @@
-[Q1, aabbaabb] -> [Q1, abbaabb] -> [Q2, abbaabb] -> [Q3, bbaabb] -> [Q2, baabb] -> [Q4, aabb] -> [Q2, abb] -> [Q3, bb] -> [Q2, b] -> [Q5, b] -> [Q6, ] ->  Aceptado
