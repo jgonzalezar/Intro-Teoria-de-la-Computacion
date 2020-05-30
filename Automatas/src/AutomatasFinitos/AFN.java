@@ -259,12 +259,12 @@ public class AFN {
      * @param nombreArchivo Nombre del archivo en el que se hará la impresión de los procesamientos
      * @return boolean - True si la cadena ingresada es aceptada, false de otra forma.
      */
-    public int computarTodosLosProcesamientos(String cadena, String nombreArchivo){        
+        public int computarTodosLosProcesamientos(String cadena, String nombreArchivo){
         FileWriter fichero1 = null;
         PrintWriter pw1 = null;
-        String[] archivo = nombreArchivo.split("\\.");
+        String archivo[]=nombreArchivo.split("\\.");
         try
-        {      
+        {
             this.cadena=cadena;
             this.print = new Integer[cadena.length()];
             respuesta = new ProcesamientoCadenaAFN(cadena,"Q"+Integer.toString(q0));
@@ -279,12 +279,17 @@ public class AFN {
             }
             String res="Aceptadas:\n";
             if(respuesta.getAccepted().isEmpty()){
-                res+="  No hay procesamientos aceptados para esta cadena\n";
+                res+="\n";
             }
             for(int i=0;i<respuesta.getAccepted().size();i++){
                 res+="  "+respuesta.getAccepted().get(i)+"\n";
             }
-            File nombre = new File(archivo[0]+"Aceptadas."+archivo[1]);
+            File nombre;
+            if(archivo.length==1){
+                nombre = new File(nombreArchivo+"Aceptadas");
+            }else{
+                nombre = new File(archivo[0]+"Aceptadas."+archivo[1]);
+            }
             if(!nombre.exists())nombre.createNewFile();
             fichero1 = new FileWriter(nombre);
             pw1 = new PrintWriter(fichero1);
@@ -294,12 +299,17 @@ public class AFN {
             
             res="Rechazadas:\n";
             if(respuesta.getRejected().isEmpty()){
-                res+="  No hay procesamientos rechazados para esta cadena\n";
+                res+="\n";
             }
             for(int i=0;i<respuesta.getRejected().size();i++){
                 res+="  "+respuesta.getRejected().get(i)+"\n";
             }
-            nombre = new File(archivo[0]+"Rechazadas."+archivo[1]);
+            
+            if(archivo.length==1){
+                nombre = new File(nombreArchivo+"Rechazadas");
+            }else{
+                nombre = new File(archivo[0]+"Rechazadas."+archivo[1]);
+            }
             if(!nombre.exists())nombre.createNewFile();
             fichero1 = new FileWriter(nombre);
             pw1 = new PrintWriter(fichero1);
@@ -309,12 +319,16 @@ public class AFN {
             
             res="Abortadas:\n";
             if(respuesta.getAborted().isEmpty()){
-                res+="  No hay procesamientos abortados para esta cadena\n";
+                res+="\n";
             }
             for(int i=0;i<respuesta.getAborted().size();i++){
                 res+="  "+respuesta.getAborted().get(i)+"\n";
             }
-            nombre = new File(archivo[0]+"Abortadas."+archivo[1]);
+            if(archivo.length==1){
+                nombre = new File(nombreArchivo+"Abortadas");
+            }else{
+                nombre = new File(archivo[0]+"Abortadas."+archivo[1]);
+            }
             if(!nombre.exists())nombre.createNewFile();
             fichero1 = new FileWriter(nombre);
             pw1 = new PrintWriter(fichero1);
@@ -404,8 +418,8 @@ public class AFN {
                 }else if(respuesta.getAborted().size()>0){
                     res+="\tCadena abortada \t";
                 }
-                res+=Integer.toString(respuesta.getAccepted().size()+respuesta.getRejected().size()+respuesta.getAborted().size())+"\t"+Integer.toString(respuesta.getAccepted().size())+"\t";
-                res+=Integer.toString(respuesta.getAborted().size())+"\t"+ Integer.toString(respuesta.getRejected().size())+"\t";
+                res+=Integer.toString(respuesta.getAccepted().size()+respuesta.getRejected().size()+respuesta.getAborted().size())+" posibles procesamientos"+"\t"+Integer.toString(respuesta.getAccepted().size())+" procesamientos de aceptación"+"\t";
+                res+=Integer.toString(respuesta.getAborted().size())+" procesamientos abortados"+"\t"+ Integer.toString(respuesta.getRejected().size())+" procesamientos de rechazo"+"\t";
                 if(respuesta.isAccepted()){
                     res+="Sí";
                 }else{
@@ -428,6 +442,11 @@ public class AFN {
         }
     }
     
+    /**
+     * Verifica que la cadena dada pertenezca al alfabeto del automata.
+     * @param cadena para palabra a evaluar
+     * @return lista de caracteres que no pertenecen .
+     */
     public ArrayList<Character> ponerCadena(String cadena){
         ArrayList<Character> asd = new ArrayList<>();
         for (int i = 0; i < cadena.length(); i++) {
@@ -442,30 +461,5 @@ public class AFN {
         asd.clear();
         asd.addAll(hashSet);
         return asd;
-    }
-
-     /**
-     * Función que imprime el automata
-     */
-    public void printAutomata() {
-	System.out.println("El automata no determinista ingresado es:");
-	for(int i=0;i<this.Delta.size();i++) {
-            System.out.print("q"+i + ": ");
-            for(int j=0;j<this.Delta.get(i).size();j++) {
-		System.out.print(this.Delta.get(i).get(j).getSymbol()+",q" + this.Delta.get(i).get(j).getFinalState() + " ");
-            }
-            System.out.println();
-        }
-	System.out.println();
-	if(this.F.size()>0) {
-            System.out.println("Y sus estados de aceptación son:");
-            for(int i=0;i<this.F.size();i++) {
-		System.out.print("q"+F.get(i) + " ");
-            }
-	}else {
-            System.out.println("Aún no tiene estados de aceptación");
-	}
-	System.out.println();
-	System.out.println();
     }
 }

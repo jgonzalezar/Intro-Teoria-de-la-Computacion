@@ -241,9 +241,9 @@ public class AFD {
             e.printStackTrace();
         } finally {          
            try {
-                if (null != fichero1)
+                if (null != fichero1){
                    fichero1.close();
-
+                }
            } catch (Exception e2) {
               e2.printStackTrace();
            }
