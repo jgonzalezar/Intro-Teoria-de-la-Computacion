@@ -1,0 +1,3 @@
+[Q6, bbbbbba] -> [Q6, bbbbba] -> [Q6, bbbba] -> [Q6, bbba] -> [Q6, bba] -> [Q6, ba] -> [Q6, a] ->  Abortado
+[Q1, bbbbbbba] ->  Abortado
+[Q4, bbbbbba] ->  Abortado
