@@ -168,7 +168,7 @@ public class AFD {
                 }
             }
         }catch(Error | Exception e){
-            System.err.println("Faltan transiciones a posibles estados limbos");
+            throw new Error("Faltan transiciones a posibles estados limbos");
         }
         
 {

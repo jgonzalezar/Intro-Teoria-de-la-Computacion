@@ -41,7 +41,6 @@ public class ClasePrueba {
     public static void main(String[] args) {
         Lectura lec = Lectura.CrearAutomata;
         Scanner scan = new Scanner(System.in);
-        System.out.println("la palabra \"$$EXIT$$\" esta reservada para salir de la aplicacion automaticamente");
         JFileChooser fileChooser = new JFileChooser(new File("."));
         fileChooser.setDialogTitle("Seleccione el automata que desea importar");
         String scad = "";
