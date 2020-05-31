@@ -553,13 +553,18 @@ public class AFNL {
         String nombreArchivoAceptados;
         String nombreArchivoRechazados;
         String nombreArchivoAbortados;
-        int index = nombreArchivo.lastIndexOf(".");
-        String[] parts = nombreArchivo.split(String.valueOf(nombreArchivo.charAt(index)));
-        String part1 = parts[0];
-        String part2 = parts[1];
-        nombreArchivoAceptados = part1 + "Aceptados." + part2;
-        nombreArchivoRechazados = part1 + "Rechazados." + part2;
-        nombreArchivoAbortados = part1 + "Abortados." + part2;
+        if((nombreArchivo.contains(".txt")&&(!nombreArchivo.substring(nombreArchivo.length()-4).equals(".txt")))|| !nombreArchivo.contains(".txt")){
+            nombreArchivoAceptados = nombreArchivo + "Aceptados.txt";
+            nombreArchivoRechazados = nombreArchivo + "Rechazados.txt";
+            nombreArchivoAbortados = nombreArchivo + "Abortados.txt";
+        }else {
+            String[] parts = nombreArchivo.split("\\.");
+            String part1 = parts[0];
+            String part2 = parts[1];
+            nombreArchivoAceptados = part1 + "Aceptados." + part2;
+            nombreArchivoRechazados = part1 + "Rechazados." + part2;
+            nombreArchivoAbortados = part1 + "Abortados." + part2;
+        }
         ProcesamientoCadenaAFNLambda procesamiento = procesarCadena(cadena);
         ArrayList<String> Aceptados = procesamiento.getListaProcesamientosAceptacion();
         ArrayList<String> Rechazados = procesamiento.getListaProcesamientosRechazados();
