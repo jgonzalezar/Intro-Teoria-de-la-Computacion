@@ -5,13 +5,14 @@
  */
 package Herramientas;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
  *  La clase Transition sirve para simular transiciones de  automatas tipo AFD
  *  posee un hashmap para cada simbolo del alphabeto que guarda las transiciones de cada estado a siguiente estado 
  */
-public class Transition {
+public class Transition implements Transitions{
     HashMap<Character,HashMap<String,String>> transicion;
 
     /**
@@ -29,6 +30,7 @@ public class Transition {
      * @param estado estado al que se realizara la transicion
      */
     
+    @Override
     public void add(Character Alphabeto, String Estado,String estado){
         if(transicion.get(Alphabeto)==null){
             transicion.put(Alphabeto, new HashMap<>());
@@ -42,6 +44,7 @@ public class Transition {
      */
     
 
+    @Override
     public int size() {
         return transicion.size();
     }
@@ -53,8 +56,18 @@ public class Transition {
      * @return estado al que se debe desplazar
      */
     
+    @Override
     public String cambio(Character Alphabeto, String Estado) {
         return transicion.get(Alphabeto).get(Estado);
+    }
+
+    @Override
+    public void add(Character Alphabeto, int Estado, int... estado) {
+    }
+
+    @Override
+    public ArrayList<Integer> getMove(int i, Character c) {
+        return null;
     }
     
 }

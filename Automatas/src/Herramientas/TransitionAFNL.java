@@ -9,12 +9,12 @@ import java.util.HashMap;
  *
  * @author ivonn
  */
-public class TransitionAFNL {
+public class TransitionAFNL implements Transitions{
 
     /**
      * El atributo transicionAFNL representa la transición.
      */
-    ArrayList<HashMap<Character, ArrayList<Integer>>> transicionAFNL;
+     ArrayList<HashMap<Character, ArrayList<Integer>>> transicionAFNL;
 
     /**
      * constructor de un arraylist de hashmaps de tamaño indice
@@ -38,6 +38,8 @@ public class TransitionAFNL {
      * @param estado lista de los estados a los que estado transiciona con el
      * caracter dado;
      */
+    
+     @Override
     public void add(Character Alphabeto, int Estado, int... estado) {
         ArrayList<Integer> state = new ArrayList<>();
         for (int i = 0; i < estado.length; i++) {
@@ -60,6 +62,7 @@ public class TransitionAFNL {
      *
      * @return Tamaño.
      */
+     @Override
     public int size() {
         return transicionAFNL.size();
     }
@@ -73,8 +76,18 @@ public class TransitionAFNL {
      * @param i estado en el cual estamos;
      * @return lista de estados a los que pasa eveluando el caracter dado.
      */
+     @Override
     public ArrayList<Integer> getMove(int i, Character c) {
         return transicionAFNL.get(i).get(c);
+    }
+
+    @Override
+    public void add(Character Alphabeto, String Estado, String estado) {
+    }
+
+    @Override
+    public String cambio(Character Alphabeto, String Estado) {
+        return null;
     }
 
 }

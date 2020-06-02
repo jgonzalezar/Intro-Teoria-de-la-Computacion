@@ -21,45 +21,7 @@ import java.util.Set;
  * @author equipo los Javas
  * @version 1.2
  */
-public class AFD {
-    /**
-     * El atributo Sigma representa el alfabeto del automata.
-     * Esta dado por la clase String, y cada una de los caracteres de Sigma es uno de los simbolos del alfabeto.     * 
-     */
-    private final char[] Sigma;
-    /**
-     * El atributo Q representa la lista de estados (representado con su nombre) que contiene el automata;
-     */
-    private final ArrayList<String> Q; 
-    /**
-     * El atributo q0 representa el estado inicial del autómata.
-     */
-    private final String q0;
-    /**
-     * El atributo F representa los estados aceptados del autómata. 
-     */
-    private final ArrayList<String> F;
-    /**
-     * El atributo Delta representa la función de transición del autómata.
-     * @see Transition
-     */
-    private final Transition Delta;
-    
-    /**
-     * Constructor, inicializa los atributos.
-     * @param Sigma cadena de caracteres que componen el alfabeto
-     * @param Q cadena de nombres de los estados del automata
-     * @param q0 estado inicial del automata
-     * @param F estados aceptados del automata
-     * @param Delta funcion transicion usada en el automata
-     */
-    public AFD(char[] Sigma, ArrayList<String> Q, String q0, ArrayList<String> F, Transition Delta) {
-        this.Sigma = Sigma;
-        this.Q = Q;
-        this.q0 = q0;
-        this.F = F;
-        this.Delta = Delta;
-    }
+public class AFD extends Automat{
     /**
      * Constructor Inicializa los atributos a partir del archivo de texto.
      * @param nombreArchivo url del archivo donde se encuentra el automata
@@ -159,8 +121,12 @@ public class AFD {
         }
         this.Sigma = ad;
         this.Q = W;
-        this.q0 = W0;
-        this.F = G;
+        this.q0 = Q.indexOf(W0);
+        this.F = new ArrayList<>();
+        for(String f:G){
+            F.add(Q.indexOf(f));
+        }
+        
         try{
             for (int i = 0; i < Sigma.length; i++) {
                 for (int j = 0; j < Q.size(); j++) {
@@ -183,6 +149,7 @@ public class AFD {
      * @return la aceptacion del lenguaje 
      */
 
+    @Override
     public boolean procesarCadena(String word){
         return prosCaden(word).EsAceptada();
     }
@@ -211,6 +178,7 @@ public class AFD {
      * @param word palabra a evaluar
      * @return la cadena es o no aceptada
      */
+    @Override
     public boolean procesarCadenaConDetalles(String word){
         ProcesamientoCadenaAFD fin =prosCaden(word);
         System.out.println(fin.pasos()+fin.EsAceptada());
@@ -234,6 +202,7 @@ public class AFD {
      * @param imprimirPantalla booleano que decide si se imprimira o no en consola
      */
     
+    @Override
     public void procesarListaCadenas(String[] listaCadenas,String nombreArchivo,boolean imprimirPantalla){
         FileWriter fichero1 = null;
         PrintWriter pw1 = null;
@@ -273,7 +242,7 @@ public class AFD {
     
     private ProcesamientoCadenaAFD Delta(String word) {
         ProcesamientoCadenaAFD f = new ProcesamientoCadenaAFD(word);
-        f.add(q0);
+        f.add(Q.get(q0));
         if(word==null||word.length()==0){   
             f.setEsAceptada(F.contains(q0));
             f.setCadena(word);
@@ -312,26 +281,24 @@ public class AFD {
         q.setEsAceptada(F.contains(q.getlastPaso()));
         return q;
     }
+
+    @Override
+    public int computarTodosLosProcesamientos(String cadena, String nombreArchivo) {
+        return 0;
+    }
     
-    /**
-     * Verifica que la cadena dada pertenezca al alfabeto del automata.
-     * @param cadena para palabra a evaluar
-     * @return lista de caracteres que no pertenecen .
-     */
-    
-    public ArrayList<Character> ponerCadena(String cadena){
-        ArrayList<Character> asd = new ArrayList<>();
-        for (int i = 0; i < cadena.length(); i++) {
-            boolean d = false;
-            for (char c : Sigma) {
-                if(c==cadena.charAt(i)) d=true;
-            }
-            if(!d) asd.add(cadena.charAt(i));
-        }
+    @Override
+    public void ImprimirlambdaClausura_unEstado(int estado) {
+       
+    }
+
+    @Override
+    public void ImprimirlambdaClausura_variosEstado(ArrayList<Integer> estados) {
+       
+    }
+
+    @Override
+    public void imprimirComputaciones(String cadena, int computacion) {
         
-        Set<Character> hashSet = new HashSet<>(asd);
-        asd.clear();
-        asd.addAll(hashSet);
-        return asd;
     }
 }

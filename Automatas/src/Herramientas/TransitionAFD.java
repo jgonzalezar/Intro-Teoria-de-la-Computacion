@@ -8,19 +8,19 @@ package Herramientas;
 import java.util.HashMap;
 
 /**
- *  La clase TransitionMult sirve para simular transiciones multiples de  automatas tipo AFN y AFNL
- *  posee un hashmap para cada simbolo del alphabeto que guarda las transiciones de cada estado a sus posibles siguientes
+ *  La clase TransitionAFD sirve para simular transiciones multiples de  automatas tipo AFN y AFNL
+  posee un hashmap para cada simbolo del alphabeto que guarda las transiciones de cada estado a sus posibles siguientes
  * 
  * @author 
  */
-public class TransitionMult {
+public class TransitionAFD {
     HashMap<Character,HashMap<String,String[]>> transicion;
     
     /**
      * crea el hash para guardar las transiciones multiples
      */
     
-    public TransitionMult() {
+    public TransitionAFD() {
         transicion = new HashMap<>();
         
     }

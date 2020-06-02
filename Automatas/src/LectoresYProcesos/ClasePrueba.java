@@ -8,6 +8,7 @@ package LectoresYProcesos;
 import AutomatasFinitos.AFD;
 import AutomatasFinitos.AFN;
 import AutomatasFinitos.AFNL;
+import AutomatasFinitos.Automat;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -25,7 +26,7 @@ public class ClasePrueba {
 
     static boolean salir;
     static CreadorAutomata.Type tp;
-    static String url;
+    static Automat automat;
 
     /**
      * enum lectura del main para saber si esta creando un automata o realizando otras acciones
@@ -55,6 +56,7 @@ public class ClasePrueba {
                         if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.CANCEL_OPTION) {
                             throw new NullPointerException();
                         }
+                        String url;
                         url = fileChooser.getSelectedFile().getAbsolutePath();
                         tp = CreadorAutomata.CheckType(url);
 
@@ -72,17 +74,20 @@ public class ClasePrueba {
                         switch (tp) {
                             case AFD:
                                 message = "Ha seleccionado un Automata finito determinista que representa la expresion " + expresion;
+                                automat = new AFD(url);
                                 break;
                             case AFN:
                                 message = "Ha seleccionado un Automata finito no determinista que representa la expresion " + expresion;
+                                automat = new AFN(url);
                                 break;
                             case AFNL:
+                                automat = new AFNL(url);
                                 message = "Ha seleccionado un Automata finito no determinista con transiciones lambda que representa la expresion " + expresion;
                                 break;
                         }
                         System.out.println(message);
                         lec = Lectura.LeerCadena;
-                    } catch (NullPointerException e) {
+                    } catch (Exception e) {
                         if (JOptionPane.showConfirmDialog(null, "No ha ingresado ningún automata. ¿Desea salir? Y/N", "Error", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0) {
                             lec = Lectura.salir;
                         }
@@ -113,7 +118,7 @@ public class ClasePrueba {
 
     private static Lectura probarAFD() {
         try {
-            AFD afd = new AFD(url);
+            Automat afd = automat;
             System.out.println("El automata ha sido creado correctamente");
             while (true) {
                 int i = JOptionPane.showConfirmDialog(null, "Desea ingresar más de una cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -251,7 +256,7 @@ public class ClasePrueba {
         int d = 0;
         while (d == 0) {
             try {
-                AFN afn = new AFN(url);
+                Automat afn = automat;
                 System.out.println("El automata ha sido creado correctamente");
                 int i = JOptionPane.showConfirmDialog(null, "Desea ingresar más de una cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                 switch (i) {
@@ -428,7 +433,7 @@ public class ClasePrueba {
 
     private static Lectura probarAFNLambda() {
         try {
-            AFNL afnl = new AFNL(url);
+            Automat afnl = automat;
             System.out.println("El automata ha sido creado correctamente");
             while (true) {
                 String[] options1 = {"Procesar cadena", "Lambda clausura", "Salir"};
@@ -501,9 +506,9 @@ public class ClasePrueba {
                                         throw new NullPointerException();
                                     }
                                     String asd = file.getSelectedFile().getAbsolutePath();
-                                    ArrayList<String> listaCadenas = new ArrayList<>();
+                                    String[] listaCadenas = new String[cadenas.size()];
                                     for (int j = 0; j < cadenas.size(); j++) {
-                                        listaCadenas.add(cadenas.get(j));
+                                        listaCadenas[j] = cadenas.get(j);
                                     }
                                     afnl.procesarListaCadenas(listaCadenas, asd, JOptionPane.showConfirmDialog(null, "Desea imprimir en consola tambien?", "detalles", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION);
                                     dos = false;
@@ -541,7 +546,7 @@ public class ClasePrueba {
                                                     if (JOptionPane.showConfirmDialog(null, "Desea mostrar el camino recorrido a la hora de evaluar la cadena?", "Mostrala con detalles", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
                                                         set = afnl.procesarCadenaConDetalles(cadena);
                                                     } else {
-                                                        set = afnl.ProcesarCadena(cadena);
+                                                        set = afnl.procesarCadena(cadena);
                                                     }
                                                     if (set) {
                                                         System.out.println("La cadena: " + cadena + " es aceptada");

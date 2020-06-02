@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  * @author jdacostabe
  */
 
-public class AFN {
+public class AFN extends Automat{
     
      /**
      * El atributo Sigma representa el alfabeto del automata.
@@ -259,7 +259,7 @@ public class AFN {
      * @param nombreArchivo Nombre del archivo en el que se hará la impresión de los procesamientos
      * @return int - Devuelve el número de procesamientos obtenidos al procesar la cadena.
      */
-        public int computarTodosLosProcesamientos(String cadena, String nombreArchivo){
+    public int computarTodosLosProcesamientos(String cadena, String nombreArchivo){
         FileWriter fichero1 = null;
         PrintWriter pw1 = null;
         String archivo[]=nombreArchivo.split("\\.");
@@ -386,6 +386,7 @@ public class AFN {
      * @param nombreArchivo Nombre del archivo donde se guardarán los resultados obtenidos
      * @param imprimirPantalla Booleano que indica si se debe imprimir la respuesta en consola o no
      */
+    @Override
     public void procesarListaCadenas(String[] listaCadenas, String nombreArchivo, boolean imprimirPantalla){
         FileWriter fichero1 = null;
         PrintWriter pw1 = null;
@@ -441,25 +442,19 @@ public class AFN {
            }
         }
     }
-    
-    /**
-     * Verifica que la cadena dada pertenezca al alfabeto del automata.
-     * @param cadena para palabra a evaluar
-     * @return lista de caracteres que no pertenecen .
-     */
-    public ArrayList<Character> ponerCadena(String cadena){
-        ArrayList<Character> asd = new ArrayList<>();
-        for (int i = 0; i < cadena.length(); i++) {
-            boolean d = false;
-            for (char c : Sigma) {
-                if(c==cadena.charAt(i)) d=true;
-            }
-            if(!d) asd.add(cadena.charAt(i));
-        }
+
+    @Override
+    public void ImprimirlambdaClausura_unEstado(int estado) {
+       
+    }
+
+    @Override
+    public void ImprimirlambdaClausura_variosEstado(ArrayList<Integer> estados) {
+       
+    }
+
+    @Override
+    public void imprimirComputaciones(String cadena, int computacion) {
         
-        Set<Character> hashSet = new HashSet<>(asd);
-        asd.clear();
-        asd.addAll(hashSet);
-        return asd;
     }
 }
