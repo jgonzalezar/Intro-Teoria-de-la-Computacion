@@ -13,7 +13,7 @@ import java.util.HashMap;
  *  posee un hashmap para cada simbolo del alphabeto que guarda las transiciones de cada estado a siguiente estado 
  */
 public class TransitionAFPD implements Transitions{
-    HashMap<ParPila,ParPila> transicion;
+    HashMap<String,HashMap<Character,trioPila>> transicion;
 
     /**
      * crea el hash para guardar las transiciones 
@@ -32,7 +32,7 @@ public class TransitionAFPD implements Transitions{
     
     @Override
     public void add(Character Alphabeto, String Estado,String estado){
-        transicion.get(Alphabeto).put(Estado, estado);
+        
     }
     
     /**
@@ -55,7 +55,7 @@ public class TransitionAFPD implements Transitions{
     
     @Override
     public String cambio(Character Alphabeto, String Estado) {
-        return transicion.get(Alphabeto).get(Estado);
+        return null;
     }
 
     @Override
@@ -75,6 +75,20 @@ public class TransitionAFPD implements Transitions{
     @Override
     public ArrayList<Tuple> get(int state) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void add(Character Alphabeto, String Inest, Character InPila, String estadoSig, Character ToPila) {
+        if(transicion.get(Inest)==null){
+            transicion.put(Inest, new HashMap<>());
+        }
+        
+        transicion.get(Inest).put(Alphabeto, new trioPila(InPila, new ParPila(ToPila, estadoSig)));
+    }
+
+    @Override
+    public ParPila cambio(Character Alphabeto, String Inest, Character InPila) {
+        return  transicion.get(Inest).get(Alphabeto).equals(InPila);
     }
     
 }

@@ -18,6 +18,9 @@ public abstract interface Transitions {
     
     public void add(Character Alphabeto, int Estado, int... estado);
     public void add(Character Alphabeto, String Estado,String estado);
+    public void add(Character Alphabeto, String Inest,Character InPila,String estadoSig,Character ToPila);
+    
+    public ParPila cambio(Character Alphabeto, String Inest,Character InPila);
     
     /**
      * cantidad de caracteres en el alfabeto
@@ -38,6 +41,8 @@ public abstract interface Transitions {
     public  ArrayList<Integer> getMove(int i, Character c);
 
     public void add(Integer initialState, String symbol, Integer finalState);
+    
+    
 
     public ArrayList<Tuple> get(int state);
     

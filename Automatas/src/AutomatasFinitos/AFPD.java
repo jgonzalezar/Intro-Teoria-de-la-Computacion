@@ -12,6 +12,7 @@ import java.io.PrintWriter;
 import java.util.Scanner;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Stack;
 
 
 /**
@@ -23,6 +24,7 @@ import java.util.Set;
  */
 public class AFPD extends Automat{
     private char[] Gamma;
+    private Stack<Character> pila;
     
     
     /**
