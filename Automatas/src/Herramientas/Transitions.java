@@ -36,5 +36,9 @@ public abstract interface Transitions {
     
     public  String cambio(Character Alphabeto, String Estado);
     public  ArrayList<Integer> getMove(int i, Character c);
+
+    public void add(Integer initialState, String symbol, Integer finalState);
+
+    public ArrayList<Tuple> get(int state);
     
 }

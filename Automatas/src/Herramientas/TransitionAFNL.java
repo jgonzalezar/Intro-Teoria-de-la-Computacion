@@ -90,4 +90,14 @@ public class TransitionAFNL implements Transitions{
         return null;
     }
 
+    @Override
+    public void add(Integer initialState, String symbol, Integer finalState) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public ArrayList<Tuple> get(int state) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

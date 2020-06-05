@@ -5,8 +5,13 @@
         <group>
             <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/LectoresYProcesos/ClasePrueba.java</file>
             <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFD.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/ParPila.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/trioPila.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/TransitionAFN.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFPD.java</file>
             <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFN.java</file>
             <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFNL.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/TransitionAFPD.java</file>
         </group>
     </open-files>
 </project-private>

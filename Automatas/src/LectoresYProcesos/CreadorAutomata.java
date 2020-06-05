@@ -41,6 +41,11 @@ public class CreadorAutomata {
          */
         estadoFin,
         /**
+         * se estan leyendo el alfabeto de pilas
+         */
+        pilaAlphabeto,
+        
+        /**
          * se esta leyendo la trancision del automata
          */
         transicion

@@ -1,5 +1,6 @@
 package AutomatasFinitos;
 
+import Herramientas.TransitionAFN;
 import LectoresYProcesos.CreadorAutomata;
 import java.util.ArrayList;
 import Herramientas.Tuple;
@@ -24,27 +25,6 @@ import java.util.logging.Logger;
 
 public class AFN extends Automat{
     
-     /**
-     * El atributo Sigma representa el alfabeto del automata.
-     */
-    public final char[] Sigma; 
-     /**
-     * El atributo Q representa el conjunto de estados que pertenecen al automata.
-     */
-    public final ArrayList<String> Q;
-     /**
-     * El atributo q0 representa el estado inicial del automata.
-     */
-    public final int q0;
-     /**
-     * El atributo F representa el conjunto de estados de aceptación del automata.
-     */
-    public final ArrayList<Integer> F;
-     /**
-     * El atributo Delta representa las transiciones del automata.
-     */
-    public final ArrayList<ArrayList<Tuple>> Delta;
-    
     private int cont;
     private String cadena;
     private Integer[] print;
@@ -67,16 +47,13 @@ public class AFN extends Automat{
         for(int i=0;i<F.size();i++)
             this.F.add(parseInt(F.get(i).substring(1)));
         
-        this.Delta = new ArrayList<>();
-        while(this.Delta.size()<=Q.size()) {
-            this.Delta.add(new ArrayList<>());
-        }
+        this.Delta = new TransitionAFN(Q.size());
         for(int i=0;i<Delta.size();i++) {
             if(Delta.get(i).getFinalState()>Q.size() || Delta.get(i).getInitialState()>Q.size()){
                 System.out.println("El número de estados ingresados no concuerda");
                 return;
             }
-            this.Delta.get(Delta.get(i).getInitialState()).add(new Tuple(Delta.get(i).getSymbol(),Delta.get(i).getFinalState()));
+            this.Delta.add(Delta.get(i).getInitialState(), Delta.get(i).getSymbol(), Delta.get(i).getFinalState());
         }
         this.cont=0;
     }
@@ -189,16 +166,13 @@ public class AFN extends Automat{
         for(int i=0;i<F.size();i++)
             this.F.add(parseInt(F.get(i).substring(1)));
         
-        this.Delta = new ArrayList<>();
-        while(this.Delta.size()<=Q.size()) {
-            this.Delta.add(new ArrayList<>());
-        }
+        this.Delta = new TransitionAFN(Q.size());
         for(int i=0;i<Delta.size();i++) {
             if(Delta.get(i).getFinalState()>Q.size() || Delta.get(i).getInitialState()>Q.size()){
                 System.out.println("El número de estados ingresados no concuerda");
                 return;
             }
-            this.Delta.get(Delta.get(i).getInitialState()).add(new Tuple(Delta.get(i).getSymbol(),Delta.get(i).getFinalState()));
+            this.Delta.add(Delta.get(i).getInitialState(),Delta.get(i).getSymbol(),Delta.get(i).getFinalState());
         }
         this.cont=0;
     }
@@ -208,6 +182,7 @@ public class AFN extends Automat{
      * @param cadena Cadena a procesar
      * @return boolean - True si la cadena ingresada es aceptada, false de otra forma.
      */
+    @Override
     public boolean procesarCadena(String cadena){
         respuesta = new ProcesamientoCadenaAFN(cadena,"Q"+Integer.toString(q0));
         if(cadena.length()==0) {
@@ -229,6 +204,7 @@ public class AFN extends Automat{
      * @param cadena Cadena a procesar
      * @return boolean - True si la cadena ingresada es aceptada, false de otra forma.
      */
+    @Override
     public boolean procesarCadenaConDetalles(String cadena){
         respuesta = new ProcesamientoCadenaAFN(cadena,"Q"+Integer.toString(q0));
         this.cadena=cadena;
@@ -259,6 +235,7 @@ public class AFN extends Automat{
      * @param nombreArchivo Nombre del archivo en el que se hará la impresión de los procesamientos
      * @return int - Devuelve el número de procesamientos obtenidos al procesar la cadena.
      */
+    @Override
     public int computarTodosLosProcesamientos(String cadena, String nombreArchivo){
         FileWriter fichero1 = null;
         PrintWriter pw1 = null;
