@@ -24,7 +24,7 @@ import java.util.Stack;
  */
 public class AFPD extends Automat{
     private char[] Gamma;
-    private Stack<Character> pila;
+    
     
     
     /**
@@ -126,13 +126,17 @@ public class AFPD extends Automat{
                             }
                             break;
                         case transicion:
-
                             String[] origin = lin.split(":");
                             String estado1 = origin[0];
                             if(!W.contains(estado1))throw new Error("el estado del que se parte debe pertenecer a los estados del automata");
                             String[] origin2 = origin[1].split(">");
                             String alpfa = origin2[0];
-                            if(!alpha.contains(alpfa.charAt(0)))throw new Error("el caracter de activacion debe pertenecer al alfabeto");
+                            
+                            //if(pilaT!='$') if(!T.contains(pilaT))throw new Error("el caracter de Tope de la pila no pertenece al alfabeto de la pila");
+                            //String[] partIn = alpfa.split(";");
+                            //Character pilaT = partIn[0].charAt(0);
+                            if(pilaT!='$') if(!T.contains(pilaT))throw new Error("el caracter de Tope de la pila no pertenece al alfabeto de la pila");
+                            
                             String estado2 = origin2[1];
                             if(!W.contains(estado2))throw new Error("el estado de llegada debe pertenecer a los estados del automata");
                             Deltos.add(alpfa.charAt(0), estado1, estado2);
