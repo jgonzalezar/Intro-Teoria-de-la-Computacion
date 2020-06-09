@@ -135,12 +135,7 @@ public class AFD extends Automat{
             }
         }catch(Error | Exception e){
             throw new Error("Faltan transiciones a posibles estados limbos");
-        }
-        
-{
-            
-        }
-        
+        }        
         this.Delta = Deltos;
     }
     /**
