@@ -43,7 +43,7 @@ public class TransitionAFN implements Transitions{
     
     @Override
     public int size() {
-        return transicion.get(0).size();
+        return transicion.size();
     }
     
     /**
