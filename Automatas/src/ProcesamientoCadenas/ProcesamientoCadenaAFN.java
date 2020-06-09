@@ -28,17 +28,20 @@ public class ProcesamientoCadenaAFN {
      */    
     public ArrayList<Integer> abortado;
     
+    private final String statesName;
+    
     /**
      * Constructor, inicializa los atributos.
      * @param cadena Cadena a la cual se le realizará el procesamiento en el automata
      * @param q0 Estado desde el cual se incial el procesamiento de la cadena
      */
-    public ProcesamientoCadenaAFN(String cadena, String q0) {
+    public ProcesamientoCadenaAFN(String cadena, String q0, String statesName) {
         this.cadena = cadena;
         this.q0=q0;
         aceptado = new ArrayList<>();
         rechazado = new ArrayList<>();
         abortado = new ArrayList<>();
+        this.statesName = statesName;
     }
     
     /**
@@ -82,9 +85,9 @@ public class ProcesamientoCadenaAFN {
         for(int i=0;i<aceptado.size()/cadena.length();i++){
             s="["+q0+","+cadena+"]";
             for(int j=0;j<cadena.length()-1;j++){
-                s += "-> [Q"+aceptado.get(j+i*cadena.length())+","+cadena.substring(j+1)+"]";
+                s += "-> ["+statesName+aceptado.get(j+i*cadena.length())+","+cadena.substring(j+1)+"]";
             }
-            s += "-> [Q"+aceptado.get(cadena.length()-1+i*cadena.length())+", ]";
+            s += "-> ["+statesName+aceptado.get(cadena.length()-1+i*cadena.length())+", ]";
             accepted.add(s);
         }
         return accepted;
@@ -101,15 +104,15 @@ public class ProcesamientoCadenaAFN {
             if(rechazado.size()==0){
                 return rejected;
             }
-            rejected.add("[Q0, ]");
+            rejected.add("["+q0+", ]");
             return rejected;
         }
         for(int i=0;i<rechazado.size()/cadena.length();i++){
             s="["+q0+","+cadena+"]";
             for(int j=0;j<cadena.length()-1;j++){
-                s += "-> [Q"+rechazado.get(j+i*cadena.length())+","+cadena.substring(j+1)+"]";
+                s += "-> ["+statesName+rechazado.get(j+i*cadena.length())+","+cadena.substring(j+1)+"]";
             }
-            s += "-> [Q"+aceptado.get(cadena.length()-1+i*cadena.length())+", ]";
+            s += "-> ["+statesName+aceptado.get(cadena.length()-1+i*cadena.length())+", ]";
             rejected.add(s);
         }
         return rejected;
@@ -129,7 +132,7 @@ public class ProcesamientoCadenaAFN {
                 s="["+q0+","+cadena+"]";
                 cont=0;
             }else{
-                s += "-> [Q"+abortado.get(i)+","+cadena.substring(cont+1)+"]";
+                s += "-> ["+statesName+abortado.get(i)+","+cadena.substring(cont+1)+"]";
                 cont++;
             }
         }

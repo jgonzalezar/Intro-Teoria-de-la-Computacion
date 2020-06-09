@@ -27,31 +27,11 @@ import java.util.logging.Logger;
 public class AFN extends Automat{
     
     private int cont;
-     /**
-     * El atributo Sigma representa el alfabeto del automata.
-     */
-    public final char[] Sigma; 
-     /**
-     * El atributo Q representa el conjunto de estados que pertenecen al automata.
-     */
-    public final ArrayList<String> Q;
-     /**
-     * El atributo q0 representa el estado inicial del automata.
-     */
-    public final int q0;
-     /**
-     * El atributo F representa el conjunto de estados de aceptación del automata.
-     */
-    public final ArrayList<Integer> F;
-     /**
-     * El atributo Delta representa las transiciones del automata.
-     */
-
-    public final ArrayList<ArrayList<Tuple>> Delta;
     private String cadena;
     private Integer[] print;
     private ProcesamientoCadenaAFN respuesta;
     private ArrayList<Integer> usefulStates;
+    private String statesName;
     
     /**
      * Constructor, inicializa los atributos.
@@ -62,16 +42,27 @@ public class AFN extends Automat{
      * @param Delta Transiciones
      */
     public AFN(char[] Sigma, ArrayList<String> Q, String q0, ArrayList<String> F, ArrayList<Tuple> Delta){
+        int maxState=0, numberIndex=1;
+        for(int i=0;i<q0.length();i++){
+            if(isInteger(q0.substring(i))){
+                numberIndex=i;
+                break;
+            }
+        }
+        this.statesName = q0.substring(0,numberIndex);
+        for(int i=0;i<Q.size();i++)
+            maxState=Math.max(maxState,parseInt(Q.get(i).substring(numberIndex)));
+        
         this.Sigma = Sigma;
         this.Q = Q;
-        this.q0 = parseInt(q0);
+        this.q0 = parseInt(q0.substring(numberIndex));
         this.F = new ArrayList<>();
         for(int i=0;i<F.size();i++)
-            this.F.add(parseInt(F.get(i).substring(1)));
+            this.F.add(parseInt(F.get(i).substring(numberIndex)));
         
-        this.Delta = new TransitionAFN(Q.size());
+        this.Delta = new TransitionAFN(maxState);
         for(int i=0;i<Delta.size();i++) {
-            if(Delta.get(i).getFinalState()>Q.size() || Delta.get(i).getInitialState()>Q.size()){
+            if(Delta.get(i).getFinalState()>maxState || Delta.get(i).getInitialState()>maxState){
                 System.out.println("El número de estados ingresados no concuerda");
                 return;
             }
@@ -90,6 +81,7 @@ public class AFN extends Automat{
         String q0 = null;
         ArrayList<String> F = null;
         ArrayList<Tuple> Delta = null;
+        int maxState=0, numberIndex=0;
         
         try {
             Scanner sca = new Scanner(new File(nombreArchivo));
@@ -143,6 +135,15 @@ public class AFN extends Automat{
                                 break;
                             case estados:
                                 Q.add(lin);
+                                if(numberIndex==0){
+                                    for(int i=0;i<lin.length();i++){
+                                        if(isInteger(lin.substring(i))){
+                                            numberIndex=i;
+                                            break;
+                                        }
+                                    }
+                                }
+                                maxState=Math.max(maxState,parseInt(lin.substring(numberIndex)));
                                 break;
                             case estadoinicial:
                                 if(!Q.contains(lin))throw new Error("el estado debe pertenecer a los estados del automata");
@@ -153,7 +154,6 @@ public class AFN extends Automat{
                                 F.add(lin);
                                 break;
                             case transicion:
-                                
                                 String[] origin = lin.split(":");
                                 String estado1 = origin[0];
                                 if(!Q.contains(estado1))throw new Error("el estado del que se parte debe pertenecer a los estados del automata");
@@ -164,7 +164,7 @@ public class AFN extends Automat{
                                 for(int i=0;i<origin3.length;i++){
                                     String estado2 = origin3[i];
                                     if(!Q.contains(estado2))throw new Error("el estado de llegada debe pertenecer a los estados del automata");
-                                    Delta.add(new Tuple(alpfa.substring(0), parseInt(estado1.substring(1)), parseInt(estado2.substring(1))));
+                                    Delta.add(new Tuple(alpfa.substring(0), parseInt(estado1.substring(numberIndex)), parseInt(estado2.substring(numberIndex))));
                                 }
                                 break;
                             default:
@@ -180,16 +180,17 @@ public class AFN extends Automat{
         for (int i = 0; i < alpha.size(); i++) {
             ad[i]=alpha.get(i);
         }
+        this.statesName = q0.substring(0,numberIndex);
         this.Sigma = ad;
         this.Q = Q;
-        this.q0 = parseInt(q0.substring(1));
+        this.q0 = parseInt(q0.substring(numberIndex));
         this.F = new ArrayList<>();
         for(int i=0;i<F.size();i++)
-            this.F.add(parseInt(F.get(i).substring(1)));
+            this.F.add(parseInt(F.get(i).substring(numberIndex)));
         
-        this.Delta = new TransitionAFN(Q.size());
+        this.Delta = new TransitionAFN(maxState);
         for(int i=0;i<Delta.size();i++) {
-            if(Delta.get(i).getFinalState()>Q.size() || Delta.get(i).getInitialState()>Q.size()){
+            if(Delta.get(i).getFinalState()>maxState || Delta.get(i).getInitialState()>maxState){
                 System.out.println("El número de estados ingresados no concuerda");
                 return;
             }
@@ -204,7 +205,7 @@ public class AFN extends Automat{
      */
     @Override
     public boolean procesarCadena(String cadena){
-        respuesta = new ProcesamientoCadenaAFN(cadena,"Q"+Integer.toString(q0));
+        respuesta = new ProcesamientoCadenaAFN(cadena,statesName+Integer.toString(q0),statesName);
         if(cadena.length()==0) {
             if(this.F.contains(q0)) {
                 respuesta.addAceptado(q0);
@@ -226,7 +227,7 @@ public class AFN extends Automat{
      */
     @Override
     public boolean procesarCadenaConDetalles(String cadena){
-        respuesta = new ProcesamientoCadenaAFN(cadena,"Q"+Integer.toString(q0));
+        respuesta = new ProcesamientoCadenaAFN(cadena,statesName+Integer.toString(q0),statesName);
         this.cadena=cadena;
         this.print = new Integer[cadena.length()];
         if(cadena.length()==0) {
@@ -264,7 +265,7 @@ public class AFN extends Automat{
         {
             this.cadena=cadena;
             this.print = new Integer[cadena.length()];
-            respuesta = new ProcesamientoCadenaAFN(cadena,"Q"+Integer.toString(q0));
+            respuesta = new ProcesamientoCadenaAFN(cadena,statesName+Integer.toString(q0),statesName);
             if(cadena.length()==0){
                 if(this.F.contains(q0)){
                     respuesta.addAceptado(q0);
@@ -396,7 +397,7 @@ public class AFN extends Automat{
             for (int i = 0; i < listaCadenas.length; i++){
                 this.cadena=listaCadenas[i];
                 this.print = new Integer[cadena.length()];
-                respuesta = new ProcesamientoCadenaAFN(cadena,"Q"+Integer.toString(q0));
+                respuesta = new ProcesamientoCadenaAFN(cadena,statesName+Integer.toString(q0),statesName);
                 if(listaCadenas[i].length()==0){
                     if(this.F.contains(q0)){
                         respuesta.addAceptado(q0);
@@ -729,6 +730,15 @@ public class AFN extends Automat{
 	}
 	System.out.println();
 	System.out.println();
+    }
+    
+    public boolean isInteger(String cadena){
+        try{
+            Integer.parseInt(cadena);
+            return true;
+        }catch(NumberFormatException e){
+            return false;
+        }
     }
 
     @Override

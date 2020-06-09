@@ -347,7 +347,7 @@ public class ClasePrueba {
                                     return Lectura.salir;
                                 }else if(j==0){
                                     String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "Recepción de cadena");
-                                    ArrayList<Character> error = afn.ponerCadena(cadena);
+                                    ArrayList<Character> error = afn.ponerCadena(cadena); //PonerCadena no esta funcionando
                                     if (error.size() > 0) {
                                         String errors = "";
                                         for (Character character : error) {
