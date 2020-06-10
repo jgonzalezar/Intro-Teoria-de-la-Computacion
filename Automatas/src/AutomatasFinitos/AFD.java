@@ -28,6 +28,9 @@ public class AFD extends Automat{
      * @throws Error error generado a la hora de leer el automata, 
      * @throws java.io.FileNotFoundException en caso de que el archivo no sea encontrado por el scanner
      */
+    
+    private ArrayList<String> estadosInaccesibles;
+    
     public AFD(String nombreArchivo) throws Error, FileNotFoundException{
         CreadorAutomata.Lecto lec = CreadorAutomata.Lecto.inicio;
         ArrayList<Character> alpha = null;
@@ -111,7 +114,6 @@ public class AFD extends Automat{
                         default:
                             break;
                     }
-
             }
         }
         
@@ -137,6 +139,7 @@ public class AFD extends Automat{
             throw new Error("Faltan transiciones a posibles estados limbos");
         }        
         this.Delta = Deltos;
+        this.estadosInaccesibles=new ArrayList<>();
     }
     /**
      * Procesa una palabra para decir si pertenece al lenguaje
@@ -227,7 +230,32 @@ public class AFD extends Automat{
            }
         }
     }
+    
+    /**
+     * Funcion que recorre el automata desde el estado inicial e identifica los estados inaccesibles
+     */
+    public void hallarEstadosInaccesibles(){
+        estadosInaccesibles.add(Q.get(q0));
+        identificarEstados(Q.get(q0));
+        ArrayList<String> estadosAccesibles = new ArrayList<>(estadosInaccesibles);
+        estadosInaccesibles.clear();
+        for(int i=0;i<Q.size();i++){
+            if(!estadosAccesibles.contains(Q.get(i))){
+                estadosInaccesibles.add(Q.get(i));
+            }
+        }
+    }
 
+    private void identificarEstados(String state) {
+        for(int i=0;i<Sigma.length;i++){
+            if(Delta.cambio(Sigma[i], state)!=null && !state.equals(Delta.cambio(Sigma[i], state)) && !estadosInaccesibles.contains(Delta.cambio(Sigma[i], state))){
+                estadosInaccesibles.add(Delta.cambio(Sigma[i], state));
+                identificarEstados(Delta.cambio(Sigma[i], state));
+            }
+        }
+    }
+    
+    
     /**
      * La Funcion delta recibe una palabra y crea su recurcion mas pequeña para luego desde la misma crear un camino y empezar a recorrerlo segun el ultimo caracter de la recursion hasta generar todo el camino de la palabra
      * @param word palabra a ser evaluada

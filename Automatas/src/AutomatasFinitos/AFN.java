@@ -26,7 +26,7 @@ import java.util.logging.Logger;
 
 public class AFN extends Automat{
     
-    private int cont;
+    private int cont, numberIndex;
     private String cadena;
     private Integer[] print;
     private ProcesamientoCadenaAFN respuesta;
@@ -42,7 +42,8 @@ public class AFN extends Automat{
      * @param Delta Transiciones
      */
     public AFN(char[] Sigma, ArrayList<String> Q, String q0, ArrayList<String> F, ArrayList<Tuple> Delta){
-        int maxState=0, numberIndex=1;
+        int maxState=0;
+        numberIndex=0;
         for(int i=0;i<q0.length();i++){
             if(isInteger(q0.substring(i))){
                 numberIndex=i;
@@ -74,20 +75,20 @@ public class AFN extends Automat{
      * Inicializa los atributos a partir del archivo de texto.
      * @param nombreArchivo Nombre del archivo donde está el automata a leer
      */
-    public AFN(String nombreArchivo) {
+    public AFN(String nombreArchivo) throws Error, FileNotFoundException{
         CreadorAutomata.Lecto lec = CreadorAutomata.Lecto.inicio;
         ArrayList<Character> alpha = null;
         ArrayList<String> Q = null;
         String q0 = null;
         ArrayList<String> F = null;
         ArrayList<Tuple> Delta = null;
-        int maxState=0, numberIndex=0;
+        int maxState=0;
+        numberIndex=0;
         
         try {
             Scanner sca = new Scanner(new File(nombreArchivo));
             while(sca.hasNextLine()){
                 String lin = sca.nextLine();
-                System.out.println(lin);
                 switch(lin){
                     case "#alphabet":
                         lec = CreadorAutomata.Lecto.alfabeto;
@@ -440,7 +441,7 @@ public class AFN extends Automat{
         }
     }
     
-    public void toDeterministic(String nombreArchivo) {
+    public void AFNtoAFD(String nombreArchivo) {
 	ArrayList<Integer> states = new ArrayList<>(), detAcceptance = new ArrayList<>();
 	ArrayList<Tuple> newStates = new ArrayList<>(), deterministicStates; //Los nuevos estados que se van generando por el conjunto de estado al que llegan los estados
         ArrayList<ArrayList<Tuple>> automataDeterminista = new ArrayList<>(); //DeltaDet (Transiciones del automata determinista)
@@ -577,7 +578,8 @@ public class AFN extends Automat{
         }
         //Cuando ya tenemos estos datos, buscamos y eliminamos los estados a los que no se llegan desde el estado inicial
         //Primero se recorre todo el automata y se llena una lista de estados por los que se pasa
-	usefulStates.add(q0);
+	
+        /*usefulStates.add(q0);
 	identifyUsefulStates(q0, automataDeterminista);
 	//Luego, esa lista se ordena de menor a mayor
 	Collections.sort(usefulStates);
@@ -633,7 +635,7 @@ public class AFN extends Automat{
         //Si cont es diferente de 0, hay estados que no es están usando y están al final de las transiciones del AFD, por lo cual se deben borrar (En la mayoria de los casos esto no pasará)
         for(int j=0;j<cont;j++) {
             automataDeterminista.remove(automataDeterminista.size()-1);
-        }
+        }*/
         
 	printDeterministic(automataDeterminista, detAcceptance);
 	printStateEquivalence(newStates);
@@ -699,10 +701,10 @@ public class AFN extends Automat{
 	ArrayList<Integer> auxArray;
 	System.out.println("Los estados añadidos representan los conjuntos de estados:");
 	for(int i=0;i<newStates.size();i++) {
-            System.out.print("q"+newStates.get(i).getFinalState()+": ");
+            System.out.print(statesName+newStates.get(i).getFinalState()+": ");
             auxArray = stringToValues(newStates.get(i).getSymbol());
             for(int j=0;j<auxArray.size();j++) {
-		System.out.print("q"+auxArray.get(j)+" ");
+		System.out.print(statesName+auxArray.get(j)+" ");
             }
             System.out.println();
         }
@@ -713,9 +715,9 @@ public class AFN extends Automat{
     private void printDeterministic(ArrayList<ArrayList<Tuple>> automataDeterminista, ArrayList<Integer> detAcceptance) {
 	System.out.println("El automata determinista resultante es:");
 	for(int i=0;i<automataDeterminista.size();i++) {
-            System.out.print("q"+i + ": ");
+            System.out.print(statesName+i + ": ");
             for(int j=0;j<automataDeterminista.get(i).size();j++) {
-		System.out.print(automataDeterminista.get(i).get(j).getSymbol()+",q" + automataDeterminista.get(i).get(j).getFinalState() + " ");
+		System.out.print(automataDeterminista.get(i).get(j).getSymbol()+","+statesName + automataDeterminista.get(i).get(j).getFinalState() + " ");
             }
             System.out.println();
 	}
@@ -723,7 +725,7 @@ public class AFN extends Automat{
 	if(detAcceptance.size()>0) {
             System.out.println("Y sus estados de aceptación son:");
             for(int i=0;i<detAcceptance.size();i++) {
-		System.out.print("q"+detAcceptance.get(i) + " ");
+		System.out.print(statesName+detAcceptance.get(i) + " ");
             }
 	}else{
             System.out.println("El automata no determinista no tenia estados de aceptación");
@@ -739,6 +741,30 @@ public class AFN extends Automat{
         }catch(NumberFormatException e){
             return false;
         }
+    }
+    
+    public void AFNtoString(){
+        //Arreglar de acuerdo a lo acordado
+	System.out.println("El automata no determinista ingresado es:");
+	for(int i=0;i<Q.size();i++) {
+            for(int j=0; j<Delta.get(parseInt(Q.get(i).substring(numberIndex))).size(); j++) {
+                
+                System.out.print(statesName+i+ ": ");
+                System.out.print(Delta.get(i).get(j).getSymbol()+",q" + Delta.get(i).get(j).getFinalState() + " ");
+            }
+            System.out.println();
+	}
+        System.out.println();
+	if(F.size()>0) {
+            System.out.println("Y sus estados de aceptación son:");
+            for(int i=0;i<F.size();i++) {
+		System.out.print(statesName+F.get(i) + " ");
+            }
+        }else {
+            System.out.println("Aún no tiene estados de aceptación");
+        }
+	System.out.println();
+	System.out.println();
     }
 
     @Override
