@@ -19,7 +19,7 @@ public abstract class Automat {
      * El atributo Sigma representa el alfabeto del automata.
      */
     
-    protected char[] Sigma;
+    protected Alfabeto Sigma;
     /**
      * El atributo Q representa el conjunto de estados que pertenecen al automata.
      */
@@ -48,8 +48,8 @@ public abstract class Automat {
         ArrayList<Character> asd = new ArrayList<>();
         for (int i = 0; i < cadena.length(); i++) {
             boolean d = false;
-            for (char c : Sigma) {
-                if(c==cadena.charAt(i)) d=true;
+            for(int j=0;j<Sigma.length();j++) {
+                if(Sigma.get(j)==cadena.charAt(i)) d=true;
             }
             if(!d) asd.add(cadena.charAt(i));
         }

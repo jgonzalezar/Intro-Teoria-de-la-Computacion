@@ -22,15 +22,16 @@ import java.util.Set;
  * @version 1.2
  */
 public class AFD extends Automat{
+    
+    public ArrayList<String> estadosInaccesibles;
+    public ArrayList<String> estadosLimbo;
+    
     /**
      * Constructor Inicializa los atributos a partir del archivo de texto.
      * @param nombreArchivo url del archivo donde se encuentra el automata
      * @throws Error error generado a la hora de leer el automata, 
      * @throws java.io.FileNotFoundException en caso de que el archivo no sea encontrado por el scanner
-     */
-    
-    private ArrayList<String> estadosInaccesibles;
-    
+     */    
     public AFD(String nombreArchivo) throws Error, FileNotFoundException{
         CreadorAutomata.Lecto lec = CreadorAutomata.Lecto.inicio;
         ArrayList<Character> alpha = null;
@@ -121,7 +122,7 @@ public class AFD extends Automat{
         for (int i = 0; i < alpha.size(); i++) {
             ad[i]=alpha.get(i);
         }
-        this.Sigma = ad;
+        this.Sigma = new Alfabeto(ad);
         this.Q = W;
         this.q0 = Q.indexOf(W0);
         this.F = new ArrayList<>();
@@ -130,9 +131,9 @@ public class AFD extends Automat{
         }
         
         try{
-            for (int i = 0; i < Sigma.length; i++) {
+            for (int i = 0; i < Sigma.length(); i++) {
                 for (int j = 0; j < Q.size(); j++) {
-                    String get = Deltos.cambio(Sigma[i], Q.get(j));
+                    String get = Deltos.cambio(Sigma.get(i), Q.get(j));
                 }
             }
         }catch(Error | Exception e){
@@ -140,6 +141,7 @@ public class AFD extends Automat{
         }        
         this.Delta = Deltos;
         this.estadosInaccesibles=new ArrayList<>();
+        this.estadosLimbo=new ArrayList<>();
     }
     /**
      * Procesa una palabra para decir si pertenece al lenguaje
@@ -232,11 +234,43 @@ public class AFD extends Automat{
     }
     
     /**
+     * Funcion evalua que estados tienen al menos un camino con el que puede llegar a un estado de aceptación
+     */
+    
+    public void hallarEstadosLimbo(){
+        boolean finished;
+        String changeState;
+        ArrayList<String> toEliminate = new ArrayList<>();
+        
+        for(int i=0; i<Q.size();i++){
+            if(!F.contains(i)){
+                estadosLimbo.add(Q.get(i));
+            }
+        }
+        
+        do{
+            toEliminate.clear();
+            for(int i=0;i<estadosLimbo.size();i++){
+                for(int j=0;j<Sigma.length();j++){
+                    changeState = Delta.cambio(Sigma.get(j), estadosLimbo.get(i));
+                    if(changeState!=null && (!estadosLimbo.contains(changeState) || toEliminate.contains(changeState)) ){
+                        toEliminate.add(estadosLimbo.get(i));
+                    }
+                }
+            }
+            for(int i=0;i<toEliminate.size();i++){
+                estadosLimbo.remove(toEliminate.get(i));
+            }
+            finished = !toEliminate.isEmpty();
+        }while(finished);
+    }
+    
+    /**
      * Funcion que recorre el automata desde el estado inicial e identifica los estados inaccesibles
      */
     public void hallarEstadosInaccesibles(){
         estadosInaccesibles.add(Q.get(q0));
-        identificarEstados(Q.get(q0));
+        identificarEstadosInaccesibles(Q.get(q0));
         ArrayList<String> estadosAccesibles = new ArrayList<>(estadosInaccesibles);
         estadosInaccesibles.clear();
         for(int i=0;i<Q.size();i++){
@@ -246,15 +280,14 @@ public class AFD extends Automat{
         }
     }
 
-    private void identificarEstados(String state) {
-        for(int i=0;i<Sigma.length;i++){
-            if(Delta.cambio(Sigma[i], state)!=null && !state.equals(Delta.cambio(Sigma[i], state)) && !estadosInaccesibles.contains(Delta.cambio(Sigma[i], state))){
-                estadosInaccesibles.add(Delta.cambio(Sigma[i], state));
-                identificarEstados(Delta.cambio(Sigma[i], state));
+    private void identificarEstadosInaccesibles(String state) {
+        for(int i=0;i<Sigma.length();i++){
+            if(Delta.cambio(Sigma.get(i), state)!=null && !state.equals(Delta.cambio(Sigma.get(i), state)) && !estadosInaccesibles.contains(Delta.cambio(Sigma.get(i), state))){
+                estadosInaccesibles.add(Delta.cambio(Sigma.get(i), state));
+                identificarEstadosInaccesibles(Delta.cambio(Sigma.get(i), state));
             }
         }
-    }
-    
+    }    
     
     /**
      * La Funcion delta recibe una palabra y crea su recurcion mas pequeña para luego desde la misma crear un camino y empezar a recorrerlo segun el ultimo caracter de la recursion hasta generar todo el camino de la palabra

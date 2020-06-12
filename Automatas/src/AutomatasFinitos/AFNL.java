@@ -42,7 +42,7 @@ public class AFNL extends Automat{
      * @see TransitionAFNL
      */
     public AFNL(char[] E, ArrayList<String> Q, int q0, ArrayList<String> F, TransitionAFNL delta) {
-        this.Sigma = E;
+        this.Sigma = new Alfabeto(E);
         this.Q = Q;
         this.q0 = q0;
         this.F = new ArrayList<Integer>();
@@ -186,7 +186,7 @@ public class AFNL extends Automat{
         for (int i = 0; i < alpha.size(); i++) {
             ad[i] = alpha.get(i);
         }
-        this.Sigma = ad;
+        this.Sigma = new Alfabeto(ad);
         this.Q = Estados;
         this.q0 = Q.indexOf(q0);
         this.F = new ArrayList<Integer>();

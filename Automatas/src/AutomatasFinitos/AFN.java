@@ -54,7 +54,7 @@ public class AFN extends Automat{
         for(int i=0;i<Q.size();i++)
             maxState=Math.max(maxState,parseInt(Q.get(i).substring(numberIndex)));
         
-        this.Sigma = Sigma;
+        this.Sigma = new Alfabeto(Sigma);
         this.Q = Q;
         this.q0 = parseInt(q0.substring(numberIndex));
         this.F = new ArrayList<>();
@@ -182,7 +182,7 @@ public class AFN extends Automat{
             ad[i]=alpha.get(i);
         }
         this.statesName = q0.substring(0,numberIndex);
-        this.Sigma = ad;
+        this.Sigma = new Alfabeto(ad);
         this.Q = Q;
         this.q0 = parseInt(q0.substring(numberIndex));
         this.F = new ArrayList<>();
@@ -457,11 +457,11 @@ public class AFN extends Automat{
 	for(int i=0;i<this.Delta.size();i++) {
             deterministicStates = new ArrayList<>();
             //Hacemos la evaluación por simbolo del alfabeto
-            for(int j=0;j<Sigma.length;j++) {
+            for(int j=0;j<Sigma.length();j++) {
 		states.clear();
                 //Por cada simbolo, revisamos a cuantos estados va el estado i, y los añadimos a un arraylist
 		for(int k=0;k<this.Delta.get(i).size();k++) {
-                    if(this.Delta.get(i).get(k).getSymbol().equals(String.valueOf(Sigma[j]))){
+                    if(this.Delta.get(i).get(k).getSymbol().equals(String.valueOf(Sigma.get(j)))){
 			states.add(this.Delta.get(i).get(k).getFinalState());
                     }
                 }
@@ -487,14 +487,14 @@ public class AFN extends Automat{
                         //Si no existe, se añade el estado a los nuevos estados (Y se aumenta el numero del siguiente estado), y se hace la transicion del estado inicial al "nuevo estado" del automata determinista
                         //Si existe, simplemente se añade la nueva transición
 			if(value>=0) {
-                            deterministicStates.add(new Tuple(String.valueOf(Sigma[j]),value));
+                            deterministicStates.add(new Tuple(String.valueOf(Sigma.get(j)),value));
 			}else{
                             newStates.add(new Tuple(statesString,numberNewState)); //(Se guarda la cadena de valores a los que reperesenta (En el simbolo) y el numero de estado que es (Como el estado final))
-                            deterministicStates.add(new Tuple(String.valueOf(Sigma[j]),numberNewState));
+                            deterministicStates.add(new Tuple(String.valueOf(Sigma.get(j)),numberNewState));
                             numberNewState++;
 			}
                     }else{
-			deterministicStates.add(new Tuple(String.valueOf(Sigma[j]),states.get(0)));
+			deterministicStates.add(new Tuple(String.valueOf(Sigma.get(j)),states.get(0)));
                     }
 		}
             }
@@ -510,12 +510,12 @@ public class AFN extends Automat{
             //combinationOf es la lista de estados que componen el conjunto de estados de llegada
             ArrayList<Integer> combinationOf = stringToValues(newStates.get(i).getSymbol());
             //Por cada símbolo del alfabeto se revisa a que estado o conjunto de estados llega el "nuevo estado"
-            for(int l=0;l<Sigma.length;l++) {
+            for(int l=0;l<Sigma.length();l++) {
 		states.clear();
                 //Se revisan los estados a los que llegan cada uno de los estados del "nuevo estado" con el respectivo simbolo y se añaden al conjunto de estados al que llega el estado con el símbolo
 		for(int j=0;j<combinationOf.size();j++){
                     for(int k=0;k<automataDeterminista.get(combinationOf.get(j)).size();k++){
-			if(automataDeterminista.get(combinationOf.get(j)).get(k).getSymbol().equals(String.valueOf(Sigma[l]))) {
+			if(automataDeterminista.get(combinationOf.get(j)).get(k).getSymbol().equals(String.valueOf(Sigma.get(l)))) {
                             //Si llega a un estado original del AFN, lo añade. Si llega a un conjunto de estados
                             if(automataDeterminista.get(combinationOf.get(j)).get(k).getFinalState()<this.Delta.size()) {
 				states.add(automataDeterminista.get(combinationOf.get(j)).get(k).getFinalState());
@@ -551,14 +551,14 @@ public class AFN extends Automat{
                             }
                         }
 			if(value>=0) {
-                            deterministicStates.add(new Tuple(String.valueOf(Sigma[l]),value));
+                            deterministicStates.add(new Tuple(String.valueOf(Sigma.get(l)),value));
                         }else{
                             newStates.add(new Tuple(statesString,numberNewState));
-                            deterministicStates.add(new Tuple(String.valueOf(Sigma[l]),numberNewState));
+                            deterministicStates.add(new Tuple(String.valueOf(Sigma.get(l)),numberNewState));
                             numberNewState++;
 			}
                     }else{
-                        deterministicStates.add(new Tuple(String.valueOf(Sigma[l]),states.get(0)));
+                        deterministicStates.add(new Tuple(String.valueOf(Sigma.get(l)),states.get(0)));
                     }
 		}
             }

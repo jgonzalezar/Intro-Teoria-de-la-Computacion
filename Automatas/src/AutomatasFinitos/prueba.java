@@ -30,9 +30,21 @@ public class prueba {
             Logger.getLogger(prueba.class.getName()).log(Level.SEVERE, null, ex);
         }*/
         
-        AFN afn;
+        AFD afd;
         try {
-            afn = new AFN("D:\\Documents\\GitHub\\Intro-Teoria-de-la-Computacion\\Automatas\\src\\AutomatasPredefinidos\\a.NFA");
+            afd = new AFD("D:\\Documents\\GitHub\\Intro-Teoria-de-la-Computacion\\Automatas\\src\\AutomatasPredefinidos\\b.DFA");
+            afd.hallarEstadosInaccesibles();
+            /*afd.hallarEstadosInaccesibles();
+            System.out.println("Estados inaccesibles");
+            for(int i=0;i<afd.estadosInaccesibles.size();i++){
+                System.out.println(afd.estadosInaccesibles.get(i));
+            }
+            
+            System.out.println("\nEstados limbo");
+            afd.hallarEstadosLimbo();
+            for(int i=0;i<afd.estadosLimbo.size();i++){
+                System.out.println(afd.estadosLimbo.get(i));
+            }*/
         } catch (Error ex) {
             Logger.getLogger(prueba.class.getName()).log(Level.SEVERE, null, ex);
         } catch (FileNotFoundException ex) {
