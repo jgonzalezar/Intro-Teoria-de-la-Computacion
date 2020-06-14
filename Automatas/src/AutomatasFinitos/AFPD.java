@@ -133,8 +133,8 @@ public class AFPD extends Automat{
                             String alpfa = origin2[0];
                             
                             //if(pilaT!='$') if(!T.contains(pilaT))throw new Error("el caracter de Tope de la pila no pertenece al alfabeto de la pila");
-                            //String[] partIn = alpfa.split(";");
-                            //Character pilaT = partIn[0].charAt(0);
+                            String[] partIn = alpfa.split(";");
+                            Character pilaT = partIn[0].charAt(0);
                             if(pilaT!='$') if(!T.contains(pilaT))throw new Error("el caracter de Tope de la pila no pertenece al alfabeto de la pila");
                             
                             String estado2 = origin2[1];
