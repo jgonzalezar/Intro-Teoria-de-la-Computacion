@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  * @author jdacostabe
  */
 
-public class AFN extends Automat{
+public class AFN extends AFD{
     
     private int cont, numberIndex;
     private String cadena;
@@ -32,6 +32,11 @@ public class AFN extends Automat{
     private ProcesamientoCadenaAFN respuesta;
     private ArrayList<Integer> usefulStates;
     private String statesName;
+    
+
+    
+    public AFN(){
+    }
     
     /**
      * Constructor, inicializa los atributos.
@@ -41,7 +46,9 @@ public class AFN extends Automat{
      * @param F Estados de aceptación
      * @param Delta Transiciones
      */
-    public AFN(char[] Sigma, ArrayList<String> Q, String q0, ArrayList<String> F, ArrayList<Tuple> Delta){
+
+
+    public AFN(char[] Sigma, ArrayList<String> Q, String q0, ArrayList<String> F, ArrayList<Tuple> Delta) {
         int maxState=0;
         numberIndex=0;
         for(int i=0;i<q0.length();i++){
@@ -257,7 +264,7 @@ public class AFN extends Automat{
      * @param nombreArchivo Nombre del archivo en el que se hará la impresión de los procesamientos
      * @return int - Devuelve el número de procesamientos obtenidos al procesar la cadena.
      */
-    @Override
+    
     public int computarTodosLosProcesamientos(String cadena, String nombreArchivo){
         FileWriter fichero1 = null;
         PrintWriter pw1 = null;
@@ -765,20 +772,5 @@ public class AFN extends Automat{
         }
 	System.out.println();
 	System.out.println();
-    }
-
-    @Override
-    public void ImprimirlambdaClausura_unEstado(int estado) {
-       
-    }
-
-    @Override
-    public void ImprimirlambdaClausura_variosEstado(ArrayList<Integer> estados) {
-       
-    }
-
-    @Override
-    public void imprimirComputaciones(String cadena, int computacion) {
-        
     }
 }
