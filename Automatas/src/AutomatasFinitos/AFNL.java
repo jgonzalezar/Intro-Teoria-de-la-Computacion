@@ -26,7 +26,7 @@ import java.io.PrintWriter;
  * Esta clase es el automata finito no determinista con transiciones lambda en este automata se puede realizar el procesamiento de cadenas sobre el automata ingresado.
  * @author jgonzalezar, ivonn, fnat
  */
-public class AFNL extends Automat{
+public class AFNL extends AFN{
     /**
      * El atributo lambda representa el caracter que actua para hacer la transiciòn lambda del automata.
      */

@@ -22,7 +22,7 @@ import java.util.Stack;
  * @author equipo los Javas
  * @version 1.2
  */
-public class AFPD extends Automat{
+public class AFPD extends AFD{
     private char[] Gamma;
     
     
@@ -303,25 +303,5 @@ public class AFPD extends Automat{
     private ProcesamientoCadenaAFD Finish(ProcesamientoCadenaAFD q) {
         q.setEsAceptada(F.contains(q.getlastPaso()));
         return q;
-    }
-
-    @Override
-    public int computarTodosLosProcesamientos(String cadena, String nombreArchivo) {
-        return 0;
-    }
-    
-    @Override
-    public void ImprimirlambdaClausura_unEstado(int estado) {
-       
-    }
-
-    @Override
-    public void ImprimirlambdaClausura_variosEstado(ArrayList<Integer> estados) {
-       
-    }
-
-    @Override
-    public void imprimirComputaciones(String cadena, int computacion) {
-        
     }
 }

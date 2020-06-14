@@ -22,6 +22,7 @@ public class Alfabeto {
     /**
      * Función que devuelve el caracter en una posición dada
      * @param index Posición del valor que se desea conocer
+     * @return 
      */
     public char get(int index){
         return simbolos[index];
@@ -29,6 +30,7 @@ public class Alfabeto {
     
     /**
      * Función que devuelve el número de simbolos que tiene el alfabeto del automata
+     * @return 
      */
     public int length(){
         return simbolos.length;
