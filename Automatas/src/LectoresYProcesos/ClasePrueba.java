@@ -8,7 +8,6 @@ package LectoresYProcesos;
 import AutomatasFinitos.AFD;
 import AutomatasFinitos.AFN;
 import AutomatasFinitos.AFNL;
-import AutomatasFinitos.Automat;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ public class ClasePrueba {
 
     static boolean salir;
     static CreadorAutomata.Type tp;
-    static Automat automat;
+    static String url;
 
     /**
      * enum lectura del main para saber si esta creando un automata o realizando otras acciones
@@ -74,17 +73,18 @@ public class ClasePrueba {
                         switch (tp) {
                             case AFD:
                                 message = "Ha seleccionado un Automata finito determinista que representa la expresion " + expresion;
-                                automat = new AFD(url);
+                                
                                 break;
                             case AFN:
                                 message = "Ha seleccionado un Automata finito no determinista que representa la expresion " + expresion;
-                                automat = new AFN(url);
+                                
                                 break;
                             case AFNL:
-                                automat = new AFNL(url);
+                               
                                 message = "Ha seleccionado un Automata finito no determinista con transiciones lambda que representa la expresion " + expresion;
                                 break;
                         }
+                        ClasePrueba.url=url;
                         System.out.println(message);
                         lec = Lectura.LeerCadena;
                     } catch (Exception e) {
@@ -118,7 +118,7 @@ public class ClasePrueba {
 
     private static Lectura probarAFD() {
         try {
-            Automat afd = automat;
+            AFD afd = new AFD(url);
             System.out.println("El automata ha sido creado correctamente");
             while (true) {
                 int i = JOptionPane.showConfirmDialog(null, "Desea ingresar más de una cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -256,7 +256,7 @@ public class ClasePrueba {
         int d = 0;
         while (d == 0) {
             try {
-                Automat afn = automat;
+                AFN afn = new AFN(url);
                 System.out.println("El automata ha sido creado correctamente");
                 int i = JOptionPane.showConfirmDialog(null, "Desea ingresar más de una cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                 switch (i) {
@@ -433,7 +433,7 @@ public class ClasePrueba {
 
     private static Lectura probarAFNLambda() {
         try {
-            Automat afnl = automat;
+            AFNL afnl = new AFNL(url);
             System.out.println("El automata ha sido creado correctamente");
             while (true) {
                 String[] options1 = {"Procesar cadena", "Lambda clausura", "Salir"};

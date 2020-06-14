@@ -2,6 +2,7 @@ package AutomatasFinitos;
 
 import LectoresYProcesos.CreadorAutomata;
 import Herramientas.Transition;
+import Herramientas.Transitions;
 import ProcesamientoCadenas.ProcesamientoCadenaAFD;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -21,10 +22,48 @@ import java.util.Set;
  * @author equipo los Javas
  * @version 1.2
  */
-public class AFD extends Automat{
+public class AFD {
+    /**
+     * El atributo Sigma representa el alfabeto del automata.
+     */
     
-    public ArrayList<String> estadosInaccesibles;
+    protected Alfabeto Sigma;
+    /**
+     * El atributo Q representa el conjunto de estados que pertenecen al automata.
+     */
+    protected ArrayList<String> Q;
+    /**
+     * El atributo q0 representa el estado inicial del automata.
+     */
+   
+    protected Integer q0;
+    /**
+     * El atributo F representa el conjunto de estados de aceptación del automata.
+     */
+    
+    protected ArrayList<Integer> F;
+    /**
+     * El atributo Delta representa las transiciones del automata.
+     */
+    protected Transitions Delta;
+    
+    
+    private ArrayList<String> estadosInaccesibles;
     public ArrayList<String> estadosLimbo;
+
+    public AFD() {
+    }
+
+    public AFD(Alfabeto Sigma, ArrayList<String> Q, Integer q0, ArrayList<Integer> F, Transitions Delta) {
+        this.Sigma = Sigma;
+        this.Q = Q;
+        this.q0 = q0;
+        this.F = F;
+        this.Delta = Delta;
+
+    }
+    
+    
     
     /**
      * Constructor Inicializa los atributos a partir del archivo de texto.
@@ -149,7 +188,6 @@ public class AFD extends Automat{
      * @return la aceptacion del lenguaje 
      */
 
-    @Override
     public boolean procesarCadena(String word){
         return prosCaden(word).EsAceptada();
     }
@@ -178,7 +216,7 @@ public class AFD extends Automat{
      * @param word palabra a evaluar
      * @return la cadena es o no aceptada
      */
-    @Override
+    
     public boolean procesarCadenaConDetalles(String word){
         ProcesamientoCadenaAFD fin =prosCaden(word);
         System.out.println(fin.pasos()+fin.EsAceptada());
@@ -202,7 +240,6 @@ public class AFD extends Automat{
      * @param imprimirPantalla booleano que decide si se imprimira o no en consola
      */
     
-    @Override
     public void procesarListaCadenas(String[] listaCadenas,String nombreArchivo,boolean imprimirPantalla){
         FileWriter fichero1 = null;
         PrintWriter pw1 = null;
@@ -338,23 +375,109 @@ public class AFD extends Automat{
         return q;
     }
 
-    @Override
-    public int computarTodosLosProcesamientos(String cadena, String nombreArchivo) {
-        return 0;
+    /**
+     *Devuelve la cadena como una lista de caracteres ,verifica si los caracteres ingresados por el usuario
+     * para procesar una cadena pertenecen al alfabeto.
+     * @param cadena cadena a evaluar.
+     * @return Lista de caracteres que no corresponden al alfabeto. 
+     */
+    public ArrayList<Character> ponerCadena(String cadena){
+        ArrayList<Character> asd = new ArrayList<>();
+        for (int i = 0; i < cadena.length(); i++) {
+            boolean d = false;
+            for(int j=0;j<Sigma.length();j++) {
+                if(Sigma.get(j)==cadena.charAt(i)) d=true;
+            }
+            if(!d) asd.add(cadena.charAt(i));
+        }
+        
+        Set<Character> hashSet = new HashSet<>(asd);
+        asd.clear();
+        asd.addAll(hashSet);
+        return asd;
     }
     
-    @Override
-    public void ImprimirlambdaClausura_unEstado(int estado) {
-       
-    }
+    AFD simplificar(){
+        int tam=Q.size();
+        boolean Table[][] = new boolean[tam][tam];
+        boolean change=false;
+        ArrayList<Integer>  estados = new ArrayList<>();
+        for (int i = 0; i < tam; i++) {
+            estados.add(i);
+            for (int j = i; j < tam; j++) {
+                boolean ee=F.contains(i)==F.contains(j);
+                if(!ee){
+                    change=true;
+                }
+                Table[i][j]=ee;
+                Table[j][i]=ee;
+            }
+        }
+        while(change){
+            change=false;
+            for (int i = 0; i < tam; i++) {
+                for (int j = i+1; j < tam; j++) {
+                    if(Table[i][j]){
+                        for (int k = 0; k < Sigma.length(); k++) {
+                            char let = Sigma.get(k);
+                            int uno=Q.indexOf(Delta.cambio(let, Q.get(i)));
+                            int dos=Q.indexOf(Delta.cambio(let, Q.get(j)));
+                            if(!Table[uno][dos]){
+                                change=true;
+                                Table[i][j]=false;
+                                Table[j][i]=false;
+                                k=Sigma.length();
+                            }
 
-    @Override
-    public void ImprimirlambdaClausura_variosEstado(ArrayList<Integer> estados) {
-       
-    }
-
-    @Override
-    public void imprimirComputaciones(String cadena, int computacion) {
+                        }
+                    }
+                }
+            }
+        }
+        ArrayList<String> Q2=new ArrayList<>();
+        ArrayList<Integer> F2=new ArrayList<>();
         
+        int q02=q0;
+        while(!estados.isEmpty()){
+            int estd=estados.get(0);
+            ArrayList<String> equals = new ArrayList<>();
+            if(F.contains(estd))F2.add(Q2.size());
+            for (int i = 0; i < tam; i++) {
+                if(Table[estados.get(0)][i]){
+                    equals.add(Q.get(i));
+                    boolean rev=estados.remove((Integer)i);
+                    if(i==q0)q02=Q2.size();
+                }
+            }
+            String name="{";
+            for (int i = 0; i < equals.size()-1; i++) {
+                name+=equals.get(0)+",";
+            }
+            name+=equals.get(equals.size()-1)+"}";
+            Q2.add(name);
+        }
+        
+        Transition Delta2 =new Transition();
+        Q2.forEach((q) -> {
+            String  q1="";
+            for(String qq:Q){
+                if(q.contains(qq)){
+                    q1=qq;
+                    break;
+                }
+            }
+            for(int i=0;i<Sigma.length();i++){
+                
+                String dd = Delta.cambio(Sigma.get(i), q1);
+                for(String qa:Q2){
+                    if(qa.contains(dd)){
+                        Delta2.add(Sigma.get(i), q1, qa);
+                    }
+                }
+            }
+            
+        });
+        
+        return new AFD(Sigma, Q2, q02, F2, Delta2);
     }
 }
