@@ -480,4 +480,25 @@ public class AFD {
         
         return new AFD(Sigma, Q2, q02, F2, Delta2);
     }
+
+    public Alfabeto getSigma() {
+        return Sigma;
+    }
+
+    public ArrayList<String> getQ() {
+        return Q;
+    }
+
+    public Integer getQ0() {
+        return q0;
+    }
+
+    public ArrayList<Integer> getF() {
+        return F;
+    }
+
+    public Transitions getDelta() {
+        return Delta;
+    }
+    
 }

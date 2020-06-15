@@ -8,6 +8,7 @@ package AutomatasFinitos;
 import LectoresYProcesos.CreadorAutomata;
 import AutomatasFinitos.AFD;
 import Herramientas.Transition;
+import Herramientas.Transitions;
 import java.util.ArrayList;
 import java.lang.Object;
 import java.util.HashMap;
@@ -17,82 +18,38 @@ import java.util.HashMap;
  * @author equipo los javas
  * @version 1.2
  */
-public class AFDProducto
+public class AFDProducto extends AFD
 {
-    ArrayList<Character> Sigma1 = null;
-    ArrayList<Character> Sigma2 = null;
-    ArrayList<String> Q = null;
-    ArrayList<String> Q1 = null;
-    ArrayList<String> Q2 = null;
-    String q1 = null;
-    String q2 = null;
-    ArrayList<String> F1 = null;
-    ArrayList<String> F2 = null;
-    HashMap<Character,HashMap<String,String>> Delta;
-    HashMap<Character,HashMap<String,String>> Delta1;
-    HashMap<Character,HashMap<String,String>> Delta2;
     
-    Transition transformation = new Transition();
-    
-        
-    /**
-     * Método que genera el producto cartesiano de dos autómatas
-     * exceptuando los estados aceptados.
-     * @param afd1 Autómata M1
-     * @param afd2 Autómata M2
-     * @param Q Producto cartesiano de Q1 y Q2
-     * @param Q1 Conjunto de estados de M1
-     * @param Q2 Conjunto de estados de M2
-     * @param q1 Estado inicial de M1
-     * @param q2 Estado Inicial de M2
-     * @param Delta1 Función de transición de M1
-     * @param Delta2 Función de Transición de M2
-     */
-    public void productoCartesiano(AFD afd1, AFD afd2, ArrayList<String> Q, ArrayList<String> Q1, ArrayList<String> Q2, String q1, String q2, HashMap<Character,HashMap<String,String>> Delta, HashMap<Character,HashMap<String,String>> Delta1, HashMap<Character,HashMap<String,String>> Delta2)
+    public AFDProducto(AFD afd1, AFD afd2)
     {
+        Alfabeto Sigma1 = afd1.getSigma();
+        Alfabeto Sigma2 = afd2.getSigma();
         if (!(Sigma1.equals(Sigma2)))
             {
-                System.out.println("Los alfabetos deben ser iguales para poder realizar el producto cartesiano de los autómatas.");
+                throw new Error("Los alfabetos deben ser iguales para poder realizar el producto cartesiano de los autómatas.");
             }
+        Sigma = Sigma1;
         //Genera Q
+        ArrayList<String> Q1 = afd1.getQ();
+        ArrayList<String> Q2 = afd2.getQ();
+        Q = new ArrayList<>();
         for (int i = 0; i < Q1.size(); i++) 
           for (int j = 0; j < Q2.size(); j++) 
-            Q.add("("+Q1.get(i)+Q2.get(j)+")");
+            Q.add("("+Q1.get(i)+","+Q2.get(j)+")");
+        q0 = Q.indexOf("("+Q1.get(0)+","+Q2.get(0)+")");
         //Genera Delta
-        if(Delta.get(Sigma1)==null){
-            Delta.put(Sigma1.get(0), new HashMap<>());
-        }
-        for (int i = 0; i < Q1.size(); i++) 
-          for (int j = 0; j < Q2.size(); j++) 
-          {
-            Delta.get(Sigma1).put(transformation.cambio(Sigma1.get(i), Q1.get(i)), transformation.cambio(Sigma1.get(j), Q2.get(i)));
-          }
-            
+        Transitions Delta1 = afd1.getDelta();
+        Transitions Delta2 = afd2.getDelta();
+        Delta = new Transition();
+        for (String estadosq1 : Q1)
+          for (String estadosq2 : Q2)
+            for (int k = 0; k < Sigma.length(); k++)
+            {
+                char a = Sigma.get(k);
+                String preDelta = "("+estadosq1+","+estadosq2+")";
+                String postDelta = "("+Delta1.cambio(a, estadosq1)+","+Delta2.cambio(a, estadosq2)+")";
+                Delta.add(a, preDelta, postDelta);
+            }
     }
-    
-    public void hallarProductoCartesianoY(AFD afd1, AFD afd2)
-    {
-        
-    }
-    
-    public void hallarProductoCartesianoO(AFD afd1, AFD afd2)
-    {
-        
-    }
-    
-    public void hallarProductoCartesianoDiferencia(AFD afd1, AFD afd2)
-    {
-        
-    }
-    
-    public void hallarProductoCartesianoDiferenciaSimetrica(AFD afd1, AFD afd2)
-    {
-        
-    }
-    
-    public void hallarProductoCartesiano(AFD afd1, AFD afd2, String operacion)
-    {
-        
-    }
-    
 }
