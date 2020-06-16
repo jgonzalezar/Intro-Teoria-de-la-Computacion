@@ -49,7 +49,7 @@ public class AFD {
     
     
     private ArrayList<String> estadosInaccesibles;
-    public ArrayList<String> estadosLimbo;
+    private ArrayList<String> estadosLimbo;
 
     public AFD() {
     }
