@@ -48,4 +48,10 @@ public class Alfabeto {
         }
         return res;
     }
+
+    public char[] getSimbolos() {
+        return simbolos;
+    }
+    
+    
 }

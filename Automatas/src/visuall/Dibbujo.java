@@ -17,7 +17,7 @@ import javax.swing.JFrame;
  *
  * @author fanat
  */
-public class Dibbujo extends Canvas{
+public class Dibbujo extends Canvas {
     private String Ini;
     private String actP;
     private String actN;
@@ -46,16 +46,27 @@ public class Dibbujo extends Canvas{
     @Override
     public void paint(Graphics g){
         g.setColor(Color.BLACK);
-        System.out.println("double");
         switch(ani){
             case estatic:
                 drawState(100,true,g);
                 break;
             case moveto:
-                
+                if(ye<220){
+                    drawState(100-ye,true,g);
+                    drawState(320-ye,false,g); 
+                    g.drawLine(160-ye, 100, 220-ye, 100);
+                    g.drawString(next+"", 200-ye, 100);
+                    ye+=5;
+                }else{
+                    ye=0;
+                    ani=anim.estatic;
+                    actP=actN;
+                    fiP=fiN;
+                    comeP=comeN;
+                    
+                }
                 break;
             case white:
-                System.out.println("ff");
                 g.clearRect(0, 0, 200, 200);
                 ani=anim.estatic;
                 break;
@@ -90,7 +101,7 @@ public class Dibbujo extends Canvas{
         }
         drawName(x, 100, data, g);
         if(come){
-            drawFle(x-40,100,g,4);
+            drawFle(x-60,100,g,4);
         }
     }
     
@@ -133,15 +144,19 @@ public class Dibbujo extends Canvas{
     }
     
     public void setData(String nextState,boolean Fin,boolean tp, char used){
+        if(nextState.equals(actP))return;
         if(tp){
             ani=anim.white;
             actP=nextState;
             fiP=Fin;
+            comeP=false;
         }else{
             ani=anim.moveto;
             actN=nextState;
             fiN=Fin;
             next=used;
+            comeN=true;
+
         }
         System.out.println(ani);
     }
@@ -149,4 +164,9 @@ public class Dibbujo extends Canvas{
     public boolean isStatic(){
         return ani==anim.estatic;
     }
+
+    public String getActP() {
+        return actP;
+    }
+    
 }
