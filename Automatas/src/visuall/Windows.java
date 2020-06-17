@@ -47,7 +47,7 @@ public class Windows extends JFrame {
                 System.out.print("");
             }
         }catch(HeadlessException | FileNotFoundException | NullPointerException e){
-                
+                System.out.println(e.toString());
         }
         
         
@@ -57,10 +57,12 @@ public class Windows extends JFrame {
     public Windows(String tittle, AFD aff){
         super(tittle);
         hey=true;
-        
+        this.aff=aff;
+        System.out.println("aa");
         initFrame();
         initCanvas();
         initButtons();
+        System.out.println("ggg");
         initEstados();
         
         //int a=0;
@@ -75,14 +77,17 @@ public class Windows extends JFrame {
         setSize(600, 400);
         setVisible(true);
         //getContentPane().setBackground(Color.DARK_GRAY);
+        setResizable(false);
+        setLocationRelativeTo(null);
         getContentPane().setLayout(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
     }
 
     private void initCanvas(){
-         vent = new Dibbujo("estate0");
-        vent.setBackground(Color.BLACK);
+         vent = new Dibbujo(aff.getQ().get(aff.getQ0()),aff.getF().contains(aff.getQ0()));
+        
         vent.setBounds(10,10,200, 200);
+        
         getContentPane().add(vent);
     }
     
@@ -98,44 +103,70 @@ public class Windows extends JFrame {
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                vent.repaint();
-                
+                ChangeEstado(box.getSelectedItem().toString(),' ',aff.getF().contains(box.getSelectedIndex()),true);
+                for(int i=0;i<5;i++){
+                    try
+                    {
+                        Thread.sleep(200);
+                    }catch(InterruptedException d){}
+                    
+                    vent.repaint();
+                    System.out.println("out");
+
+                }
+                System.out.println("out");
             }
         });
         getContentPane().add(next);
     }
     
-    /*
-    
-    */
+    private void repa(){
+        JButton s = new JButton();
+        
+        s.
+    }
 
     private void initEstados() {
+       
         ArrayList<String> Qa= aff.getQ();
+        
+        
         String[] estados = new String[Qa.size()];
         for (int i = 0; i < Qa.size(); i++) {
+            
             estados[i]=Qa.get(i);
         }
-        JLabel display = new JLabel("Ubuntu");
+       
 
-        createLayout(box, display);
+        //createLayout(box, display);
         box = new JComboBox<>(estados);
-        box.addItemListener(new ItemListener() {
-            @Override
-            public void itemStateChanged(ItemEvent e) {
-
-                if (e.getStateChange() == ItemEvent.SELECTED) {
-                    display.setText(e.getItem().toString());
-                }
+        box.setSelectedIndex(aff.getQ0());
+        box.addItemListener((ItemEvent e) -> {
+            if (e.getStateChange() == ItemEvent.SELECTED) {
+                //display.setText(e.getItem().toString());
             }
         });
-
+        box.setBackground(Color.GRAY);
+        box.setForeground(Color.BLACK);
+        box.setBounds(100,200,100,100);
+        box.setVisible(true);
+        getContentPane().add(box);
         
-
-        setTitle("JComboBox");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setLocationRelativeTo(null);
     }
-    private void ChangeEstado(String namenext,char used,boolean ini,boolean Fin, boolean tp ){
+    private void ChangeEstado(String namenext,char used,boolean Fin, boolean tp ){
+        boolean stay=true;
+        long Prev =0;
+        vent.setData(namenext, Fin, tp, used);       
+        /*while(stay){
+            long mil = System.currentTimeMillis();
+            if(mil-Prev>200){
+                Prev=mil;
+                System.out.println("hoo"+Prev);
+                vent.repaint();
+                stay=!vent.isStatic();
+            }
+            
+        }*/
         
     }
 }

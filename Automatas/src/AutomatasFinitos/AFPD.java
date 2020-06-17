@@ -152,7 +152,7 @@ public class AFPD extends AFD{
         for (int i = 0; i < alpha.size(); i++) {
             ad[i]=alpha.get(i);
         }
-        this.Sigma = ad;
+       // this.Sigma = ad;
         this.Q = W;
         this.q0 = Q.indexOf(W0);
         this.F = new ArrayList<>();
