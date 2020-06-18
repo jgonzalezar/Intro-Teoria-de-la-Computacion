@@ -173,6 +173,9 @@ public class AFD {
             for (int i = 0; i < Sigma.length(); i++) {
                 for (int j = 0; j < Q.size(); j++) {
                     String get = Deltos.cambio(Sigma.get(i), Q.get(j));
+                    if(get==null){
+                        throw new NullPointerException();
+                    }
                 }
             }
         }catch(Error | Exception e){
@@ -229,7 +232,7 @@ public class AFD {
      * @return procesamiento dado a la cadena de su camino y su resultado de aceptacion
      * @see ProcesamientoCadenaAFD
      */
-    private ProcesamientoCadenaAFD prosCaden(String word){
+    public ProcesamientoCadenaAFD prosCaden(String word){
         return Finish(Delta(word));
     }
     

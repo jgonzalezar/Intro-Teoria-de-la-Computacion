@@ -30,7 +30,7 @@ public class Dibbujo extends Canvas {
     private anim ani;
 
     private enum anim{
-        estatic,moveto,white
+        estatic,moveto,white,backto
     }
     
     public Dibbujo(String firstState,boolean iniFin) {
@@ -69,6 +69,22 @@ public class Dibbujo extends Canvas {
             case white:
                 g.clearRect(0, 0, 200, 200);
                 ani=anim.estatic;
+                break;
+            case backto:
+                if(ye<220){
+                    drawState(-120+ye,false,g);
+                    drawState(100+ye,true,g); 
+                    g.drawLine(-60+ye, 100,ye, 100);
+                    g.drawString(next+"", -20+ye, 100);
+                    ye+=5;
+                }else{
+                    ye=0;
+                    ani=anim.estatic;
+                    actP=actN;
+                    fiP=fiN;
+                    comeP=comeN;
+                    
+                }
                 break;
             default:
                 throw new AssertionError(ani.name());
@@ -143,20 +159,30 @@ public class Dibbujo extends Canvas {
         
     }
     
-    public void setData(String nextState,boolean Fin,boolean tp, char used){
+    public void setData(String nextState,boolean Fin,int tp, char used){
         if(nextState.equals(actP))return;
-        if(tp){
-            ani=anim.white;
-            actP=nextState;
-            fiP=Fin;
-            comeP=false;
-        }else{
-            ani=anim.moveto;
-            actN=nextState;
-            fiN=Fin;
-            next=used;
-            comeN=true;
-
+        switch (tp) {
+            case 0:
+                ani=anim.white;
+                actP=nextState;
+                fiP=Fin;
+                comeP=false;
+                break;
+            case 1:
+                ani=anim.moveto;
+                actN=nextState;
+                fiN=Fin;
+                next=used;
+                comeN=true;
+                break;
+            case -1:
+                ani=anim.backto;
+                actN=nextState;
+                fiN=Fin;
+                next=used;
+                comeP=true;
+                comeN=false;
+                break;
         }
         System.out.println(ani);
     }

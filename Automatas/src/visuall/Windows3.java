@@ -6,14 +6,20 @@
 package visuall;
 
 import AutomatasFinitos.AFD;
+import ProcesamientoCadenas.ProcesamientoCadenaAFD;
 import java.awt.Button;
 
 import java.awt.HeadlessException;
+import java.awt.Label;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Stack;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -22,8 +28,13 @@ import javax.swing.JFileChooser;
  *
  * @author fanat
  */
-public class Windows1 extends Windows{
-    JComboBox<String> estad;
+public class Windows3 extends Windows{
+    ProcesamientoCadenaAFD move;
+    int Camino;
+    ArrayList<Label> blueLabel;
+    Stack<String> avance;
+    Stack<String> seguro;
+    Label cadds;
     JComboBox<String> alpha;
     //ArrayList<
     public static void main(String[] args) {
@@ -38,7 +49,7 @@ public class Windows1 extends Windows{
             url = fileChooser.getSelectedFile().getAbsolutePath();
             AFD aff = new AFD(url);
             
-                Windows jf= new Windows1("Tutorial",aff);
+                Windows jf= new Windows3("Tutorial",aff);
             
                 jf.Simulat();
         }catch(HeadlessException | FileNotFoundException | NullPointerException e){
@@ -46,31 +57,17 @@ public class Windows1 extends Windows{
         }
     }
 
-    public Windows1(String tittle, AFD aff){
+    public Windows3(String tittle, AFD aff){
         super("tittle",aff);
+        initAlmc();
         initButtons();
-        initEstados();
         initAlphabe();
         
     }
 
     private void initButtons() {
-        Button next= new Button("Ir a:");
-        next.setBounds(220, 10, 75, 30);
-        next.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(vent.isStatic()){
-                    ChangeEstado(estad.getSelectedItem().toString(),'a',aff.getF().contains(estad.getSelectedIndex()),0);
-                }
-                
-                
-            }
-        });
-        getContentPane().add(next);
-        
         Button trans= new Button("Procesar:");
-        trans.setBounds(220, 50, 75, 30);
+        trans.setBounds(220, 10, 75, 30);
         trans.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -85,28 +82,21 @@ public class Windows1 extends Windows{
             }
         });
         getContentPane().add(trans);
-    }
-    
-    
-    private void initEstados() {
-        ArrayList<String> Qa= aff.getQ();
-        String[] estados = new String[Qa.size()];
-        for (int i = 0; i < Qa.size(); i++) {
-            estados[i]=Qa.get(i);
-        }
-
-        estad = new JComboBox<>(estados);
-        //estad.setSelectedIndex(aff.getQ0());
-        /*estad.addItemListener((ItemEvent e) -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                //display.setText(e.getItem().toString());
+        Button next= new Button("Ir a:");
+        next.setBounds(220, 10, 75, 30);
+        /*next.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(vent.isStatic()){
+                    ChangeEstado(estad.getSelectedItem().toString(),'a',aff.getF().contains(estad.getSelectedIndex()),0);
+                }
+                
+                
             }
         });*/
-        estad.setBounds(330,10,110,30);
-        System.out.println("estadops");
-        getContentPane().add(estad);
-        
+        //getContentPane().add(next);
     }
+    
     private void initAlphabe() {
         char[] alp= aff.getSigma().getSimbolos();
         String[] afl = new String[alp.length];
@@ -115,9 +105,24 @@ public class Windows1 extends Windows{
         }
         
         alpha = new JComboBox<>(afl);
-        alpha.setBounds(330,50,110,30);
+        alpha.setBounds(330,10,110,30);
         getContentPane().add(alpha);
         
+    }
+    /*
+    String myString;// =estad.getSelectedItem().toString();
+                    StringSelection stringSelection = new StringSelection(myString);
+                    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                    clipboard.setContents(stringSelection, null);
+    */
+
+    private void initAlmc() {
+        move=new ProcesamientoCadenaAFD("");
+        Camino=0;
+        blueLabel=new ArrayList<>();
+        avance=new Stack<>();
+        seguro=new Stack<>();
+        cadds=new Label();
     }
     
 }

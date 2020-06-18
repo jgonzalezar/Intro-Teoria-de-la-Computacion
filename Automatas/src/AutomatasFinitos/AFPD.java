@@ -214,9 +214,6 @@ public class AFPD extends AFD{
      * @return procesamiento dado a la cadena de su camino y su resultado de aceptacion
      * @see ProcesamientoCadenaAFD
      */
-    private ProcesamientoCadenaAFD prosCaden(String word){
-        return Finish(Delta(word));
-    }
     
     /**
      * La funcion procesarListaCadenas procesa cada una de una list de cadenas dada y la guarda dentro de un archivo con el nombre dado, y imprimirla en consola o no

@@ -7,26 +7,13 @@ package visuall;
 
 import AutomatasFinitos.AFD;
 
-import java.awt.Color;
-import java.awt.HeadlessException;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.ArrayList;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 
 /**
  *
  * @author fanat
  */
-public class Windows extends JFrame implements Runnable{
+public class Windows extends JFrame{
     static boolean hey;
     protected Dibbujo vent;
     protected int time;
@@ -63,25 +50,14 @@ public class Windows extends JFrame implements Runnable{
         super.dispose();
     }
     
-    protected void ChangeEstado(String namenext,char used,boolean Fin, boolean tp ){
+    protected void ChangeEstado(String namenext,char used,boolean Fin, int tp ){
         vent.setData(namenext, Fin, tp, used);       
-        if(tp){
+        if(tp==0){
             time=1000;
         }else{
             time=100;
         }
         ReDraw();
-    }
-
-    @Override
-    public void run() {
-        while(!vent.isStatic()){
-            try
-            {
-                Thread.sleep(200);
-            }catch(InterruptedException d){}
-            vent.repaint();
-        }
     }
     
     private void ReDraw(){
