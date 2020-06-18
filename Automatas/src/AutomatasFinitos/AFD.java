@@ -48,8 +48,8 @@ public class AFD {
     protected Transitions Delta;
     
     
-    private ArrayList<String> estadosInaccesibles;
-    private ArrayList<String> estadosLimbo;
+    protected ArrayList<String> estadosInaccesibles;
+    protected ArrayList<String> estadosLimbo;
 
     public AFD() {
     }

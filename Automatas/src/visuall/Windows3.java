@@ -76,6 +76,7 @@ public class Windows3 extends Windows{
                     String go = aff.getDelta().cambio(camb, vent.getActP());
                     ChangeEstado(go,camb,aff.getF().contains(aff.getQ().indexOf(go)),1);
                     
+                    
                 }
                 
                 
