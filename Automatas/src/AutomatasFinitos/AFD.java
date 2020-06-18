@@ -4,15 +4,18 @@ import LectoresYProcesos.CreadorAutomata;
 import Herramientas.Transition;
 import Herramientas.Transitions;
 import ProcesamientoCadenas.ProcesamientoCadenaAFD;
+import java.awt.HeadlessException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.HashSet;
 import java.util.Set;
+import javax.swing.JFileChooser;
 
 
 /**
@@ -116,19 +119,24 @@ public class AFD {
                     switch(lec){
                         case alfabeto:
                             if(lin.length()<2){
-                                alpha.add(lin.charAt(0));
+                                if(!alpha.contains(lin.charAt(0))){
+                                    alpha.add(lin.charAt(0));
+                                }
+                                
                             }else{
                                 int a = lin.charAt(0);
                                 int b = lin.charAt(2);
                                 int c = b-a;
                                 for (int i = 0; i <=c; i++) {
                                     char d = (char) (a+i);
-                                    alpha.add(d);
-
+                                    if(!alpha.contains(d)){
+                                        alpha.add(d);
+                                    }
                                 }
                             }
                             break;
                         case estados:
+                            if(W.contains(lin))throw new Error("el estado "+ lin+ "ya existe en el automata");
                             W.add(lin);
                             break;
                         case estadoinicial:
@@ -156,7 +164,7 @@ public class AFD {
                     }
             }
         }
-        
+        Collections.sort(alpha);
         char[] ad =new char[alpha.size()];
         for (int i = 0; i < alpha.size(); i++) {
             ad[i]=alpha.get(i);
@@ -164,6 +172,9 @@ public class AFD {
         this.Sigma = new Alfabeto(ad);
         this.Q = W;
         this.q0 = Q.indexOf(W0);
+        Set<String> no = new HashSet<>(G);
+        G.clear();
+        G.addAll(no);
         this.F = new ArrayList<>();
         for(String f:G){
             F.add(Q.indexOf(f));
@@ -482,6 +493,47 @@ public class AFD {
         });
         
         return new AFD(Sigma, Q2, q02, F2, Delta2);
+    }
+
+    @Override
+    public String toString() {
+        String automat="!dfa\n";
+        
+        //automat+="#alphabet\n";
+        automat+=Sigma.toString();
+        automat+="#states\n";
+        for (String string : Q) {
+            automat+=string+"\n";
+        }
+        automat+="#initial\n";
+        automat+=Q.get(q0)+"\n";
+        automat+="#accepting\n";
+        for (Integer integer : F) {
+            automat+=Q.get(integer)+"\n";
+        }
+        automat+="#transitions\n";
+        automat+=Delta.toString();
+        return automat;
+    }
+    
+    public static void main(String[] args) {
+        JFileChooser fileChooser = new JFileChooser(new File("."));
+        fileChooser.setDialogTitle("Seleccione el automata que desea importar");
+        
+        try {
+            if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.CANCEL_OPTION) {
+                throw new NullPointerException();
+            }
+            String url;
+            url = fileChooser.getSelectedFile().getAbsolutePath();
+            AFD aff = new AFD(url);
+            System.out.println("ssssd");
+            System.out.println(aff.toString());
+            
+                
+        }catch(HeadlessException | FileNotFoundException | NullPointerException e){
+                e.printStackTrace();
+        }
     }
 
     public Alfabeto getSigma() {
