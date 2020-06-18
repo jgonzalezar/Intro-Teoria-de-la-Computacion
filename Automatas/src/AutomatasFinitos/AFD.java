@@ -511,7 +511,6 @@ public class AFD {
         for (Integer integer : F) {
             automat+=Q.get(integer)+"\n";
         }
-        automat+="#transitions\n";
         automat+=Delta.toString();
         return automat;
     }
