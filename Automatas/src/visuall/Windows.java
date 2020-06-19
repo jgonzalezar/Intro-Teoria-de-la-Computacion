@@ -55,7 +55,7 @@ public class Windows extends JFrame{
         if(tp==0){
             time=1000;
         }else{
-            time=100;
+            time=50;
         }
         ReDraw();
     }

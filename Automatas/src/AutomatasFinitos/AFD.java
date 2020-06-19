@@ -290,7 +290,7 @@ public class AFD {
     
     public void hallarEstadosLimbo(){
         boolean finished;
-        String changeState;
+        
         ArrayList<String> toEliminate = new ArrayList<>();
         
         for(int i=0; i<Q.size();i++){
@@ -303,15 +303,16 @@ public class AFD {
             toEliminate.clear();
             for(int i=0;i<estadosLimbo.size();i++){
                 for(int j=0;j<Sigma.length();j++){
-                    changeState = Delta.cambio(Sigma.get(j), estadosLimbo.get(i));
-                    if(changeState!=null && (!estadosLimbo.contains(changeState) || toEliminate.contains(changeState)) ){
+                    String changeState = Delta.cambio(Sigma.get(j), estadosLimbo.get(i));
+                    if(!estadosLimbo.contains(changeState) || toEliminate.contains(changeState)){
                         toEliminate.add(estadosLimbo.get(i));
                     }
                 }
             }
-            for(int i=0;i<toEliminate.size();i++){
+            /*for(int i=0;i<toEliminate.size();i++){
                 estadosLimbo.remove(toEliminate.get(i));
-            }
+            }*/
+            estadosLimbo.removeAll(toEliminate);
             finished = !toEliminate.isEmpty();
         }while(finished);
     }
@@ -321,7 +322,7 @@ public class AFD {
      */
     public void hallarEstadosInaccesibles(){
         estadosInaccesibles.add(Q.get(q0));
-        identificarEstadosInaccesibles(Q.get(q0));
+        identificarEstadosAccesibles(Q.get(q0));
         ArrayList<String> estadosAccesibles = new ArrayList<>(estadosInaccesibles);
         estadosInaccesibles.clear();
         for(int i=0;i<Q.size();i++){
@@ -331,11 +332,12 @@ public class AFD {
         }
     }
 
-    private void identificarEstadosInaccesibles(String state) {
+    private void identificarEstadosAccesibles(String state) {
         for(int i=0;i<Sigma.length();i++){
-            if(Delta.cambio(Sigma.get(i), state)!=null && !state.equals(Delta.cambio(Sigma.get(i), state)) && !estadosInaccesibles.contains(Delta.cambio(Sigma.get(i), state))){
-                estadosInaccesibles.add(Delta.cambio(Sigma.get(i), state));
-                identificarEstadosInaccesibles(Delta.cambio(Sigma.get(i), state));
+            String Stadogo = Delta.cambio(Sigma.get(i), state);
+            if(!state.equals(Stadogo) && !estadosInaccesibles.contains(Stadogo)){
+                estadosInaccesibles.add(Stadogo);
+                identificarEstadosAccesibles(Stadogo);
             }
         }
     }    
@@ -513,26 +515,6 @@ public class AFD {
         }
         automat+=Delta.toString();
         return automat;
-    }
-    
-    public static void main(String[] args) {
-        JFileChooser fileChooser = new JFileChooser(new File("."));
-        fileChooser.setDialogTitle("Seleccione el automata que desea importar");
-        
-        try {
-            if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.CANCEL_OPTION) {
-                throw new NullPointerException();
-            }
-            String url;
-            url = fileChooser.getSelectedFile().getAbsolutePath();
-            AFD aff = new AFD(url);
-            System.out.println("ssssd");
-            System.out.println(aff.toString());
-            
-                
-        }catch(HeadlessException | FileNotFoundException | NullPointerException e){
-                e.printStackTrace();
-        }
     }
 
     public Alfabeto getSigma() {

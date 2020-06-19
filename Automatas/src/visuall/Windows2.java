@@ -52,7 +52,7 @@ public class Windows2 extends Windows{
             String url;
             url = fileChooser.getSelectedFile().getAbsolutePath();
             AFD aff = new AFD(url);
-            ProcesamientoCadenaAFD resp = aff.prosCaden("aab");
+            ProcesamientoCadenaAFD resp = aff.prosCaden("aaaaa");
                 Windows jf= new Windows2("Tutorial",aff,resp);
             
                 jf.Simulat();
@@ -66,8 +66,9 @@ public class Windows2 extends Windows{
         super("tittle",aff);
         move = resp;
         Camino=0;
-        initButtons();
         initScrool();
+        initButtons();
+     
     }
 
     private void initButtons() {
@@ -94,19 +95,20 @@ public class Windows2 extends Windows{
                     }else if(Camino==move.getCadena().length()-1){
                         blueLabel.get(1).setForeground(Color.BLACK);
                         blueLabel.get(2).setForeground(Color.RED);
-                        trans.setEnabled(false);
+                       // trans.setEnabled(false);
                     }else{
                         blueLabel.get(0).setText(caminos[Camino]);
                         blueLabel.get(1).setText(caminos[Camino+1]);
                         blueLabel.get(2).setText(caminos[Camino+2]);
                     }
                     Camino++;
+                    if(Camino==move.getCadena().length())trans.setEnabled(false);
                 }
                 
                 
             }
         });
-        
+        if(move.getCadena().length()==0)trans.setEnabled(false);
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -141,6 +143,7 @@ public class Windows2 extends Windows{
     private void initScrool() {
         String camino = move.pasos();
         caminos = camino.split("->");
+        String cad = move.getCadena();
         
         cadds=new Label(move.getCadena());
         cadds.setForeground(Color.BLACK);
@@ -152,14 +155,19 @@ public class Windows2 extends Windows{
         blueLabel.get(0).setForeground(Color.red);
         blueLabel.get(0).setBounds(230, 150, 100, 30);
         getContentPane().add(blueLabel.get(0));
-        blueLabel.add(new Label(caminos[1]));
-        blueLabel.get(1).setForeground(Color.BLACK);
-        blueLabel.get(1).setBounds(330, 150, 100, 30);
-        getContentPane().add(blueLabel.get(1));
-        blueLabel.add(new Label(caminos[2]));
-        blueLabel.get(2).setForeground(Color.BLACK);
-        blueLabel.get(2).setBounds(430, 150, 100, 30);
-        getContentPane().add(blueLabel.get(2));
+        if(cad.length()>0){
+            blueLabel.add(new Label(caminos[1]));
+            blueLabel.get(1).setForeground(Color.BLACK);
+            blueLabel.get(1).setBounds(330, 150, 100, 30);
+            getContentPane().add(blueLabel.get(1));
+        }
+        
+        if(cad.length()>1){
+            blueLabel.add(new Label(caminos[2]));
+            blueLabel.get(2).setForeground(Color.BLACK);
+            blueLabel.get(2).setBounds(430, 150, 100, 30);
+            getContentPane().add(blueLabel.get(2));
+        }
         //label = new JLabel("Aguirre, der Zorn Gottes");
         //label.setFont(new Font("Serif", Font.PLAIN, 12));
 

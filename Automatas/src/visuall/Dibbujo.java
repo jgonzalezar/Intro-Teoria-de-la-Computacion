@@ -194,5 +194,8 @@ public class Dibbujo extends Canvas {
     public String getActP() {
         return actP;
     }
-    
+
+    public boolean isFiP() {
+        return fiP;
+    }
 }
