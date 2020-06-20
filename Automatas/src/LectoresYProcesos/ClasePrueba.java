@@ -637,7 +637,6 @@ public class ClasePrueba {
                     } else if (e == 0) {
                         String[] estados = afnl.GetQ();
                         int estado = JOptionPane.showOptionDialog(null, "Escoja un estado", "Lambda clausura un estado", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, estados, estados[0]);
-                        System.out.println("La lambda clausura del estado " + estado + " es: \n");
                         afnl.ImprimirlambdaClausura_unEstado(estado);
                     } else if (e == 1){
                         ArrayList<Integer> escogidos = new ArrayList<>();
