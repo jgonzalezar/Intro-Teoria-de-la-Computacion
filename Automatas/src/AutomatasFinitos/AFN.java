@@ -33,11 +33,6 @@ public class AFN extends AFD{
     private ArrayList<Integer> usefulStates;
     private String statesName;
     
-
-    
-    public AFN(){
-    }
-    
     /**
      * Constructor, inicializa los atributos.
      * @param Sigma Alfabeto
@@ -76,6 +71,8 @@ public class AFN extends AFD{
             }
             this.Delta.add(Delta.get(i).getInitialState(), Delta.get(i).getSymbol(), Delta.get(i).getFinalState());
         }
+        this.estadosInaccesibles=new ArrayList<>();
+        this.estadosLimbo=new ArrayList<>();
     }
 
     /**
@@ -204,6 +201,8 @@ public class AFN extends AFD{
             }
             this.Delta.add(Delta.get(i).getInitialState(),Delta.get(i).getSymbol(),Delta.get(i).getFinalState());
         }
+        this.estadosInaccesibles=new ArrayList<>();
+        this.estadosLimbo=new ArrayList<>();
     }
     
     /**
@@ -750,27 +749,62 @@ public class AFN extends AFD{
         }
     }
     
-    public void AFNtoString(){
-        //Arreglar de acuerdo a lo acordado
-	System.out.println("El automata no determinista ingresado es:");
-	for(int i=0;i<Q.size();i++) {
-            for(int j=0; j<Delta.get(parseInt(Q.get(i).substring(numberIndex))).size(); j++) {
-                
-                System.out.print(statesName+i+ ": ");
-                System.out.print(Delta.get(i).get(j).getSymbol()+",q" + Delta.get(i).get(j).getFinalState() + " ");
+    @Override
+    public void hallarEstadosInaccesibles(){
+        estadosInaccesibles.add(statesName+q0);
+        identificarEstadosAccesibles(q0);
+        ArrayList<String> estadosAccesibles = new ArrayList<>(estadosInaccesibles);
+        estadosInaccesibles.clear();
+        for(int i=0;i<Q.size();i++){
+            if(!estadosAccesibles.contains(Q.get(i))){
+                estadosInaccesibles.add(Q.get(i));
+                //System.out.println(Q.get(i));
             }
-            System.out.println();
-	}
-        System.out.println();
-	if(F.size()>0) {
-            System.out.println("Y sus estados de aceptación son:");
-            for(int i=0;i<F.size();i++) {
-		System.out.print(statesName+F.get(i) + " ");
-            }
-        }else {
-            System.out.println("Aún no tiene estados de aceptación");
         }
-	System.out.println();
-	System.out.println();
+    }
+    
+    private void identificarEstadosAccesibles(int State) {
+        Integer Stadogo;
+        for(int i=0;i<Delta.get(State).size();i++){
+            Stadogo = Delta.get(State).get(i).getFinalState();
+            if(State!=Stadogo && !estadosInaccesibles.contains(statesName+Stadogo)){
+                estadosInaccesibles.add(statesName+Stadogo);
+                identificarEstadosAccesibles(Stadogo);
+            }
+        }
+    }
+    
+    @Override
+    public String toString(){
+        String cadena="!nfa\n";
+        cadena+=Sigma.toString();
+        cadena+="#states\n";
+        for (int i=0;i<Q.size();i++) {
+            cadena+=Q.get(i)+"\n";
+        }
+        cadena+="#initial\n"+statesName+q0+"\n"+"#accepting\n";
+        for (int i=0;i<F.size();i++) {
+            cadena+=statesName+F.get(i)+"\n";
+        }
+        cadena += "#transitions\n";
+        boolean aux;
+        for(int i=0;i<Q.size();i++) {
+            int value = parseInt(Q.get(i).substring(numberIndex));
+            for(int j=0;j<Sigma.length();j++){
+                aux = true;
+                for(int k=0;k<Delta.get(value).size(); k++) {
+                    if(aux && Delta.get(value).get(k).getSymbol().charAt(0) == Sigma.get(j)){
+                        cadena+=statesName+value+":"+Sigma.get(j)+">"+statesName+Delta.get(i).get(k).getFinalState();
+                        aux = false;
+                    }else if(Delta.get(value).get(k).getSymbol().charAt(0) == Sigma.get(j)){
+                        cadena+=";"+statesName+Delta.get(i).get(k).getFinalState();
+                    }
+                }
+                if(!aux){
+                    cadena+="\n";
+                }
+            }
+	}
+        return cadena;
     }
 }

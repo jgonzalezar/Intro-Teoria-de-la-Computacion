@@ -30,12 +30,12 @@ public class prueba {
             Logger.getLogger(prueba.class.getName()).log(Level.SEVERE, null, ex);
         }*/
         
-        AFD afd;
+        AFN afn;
         try {
-            afd = new AFD("D:\\Documents\\GitHub\\Intro-Teoria-de-la-Computacion\\Automatas\\src\\AutomatasPredefinidos\\b.DFA");
-            afd.hallarEstadosInaccesibles();
-            /*afd.hallarEstadosInaccesibles();
-            System.out.println("Estados inaccesibles");
+            afn = new AFN("D:\\Documents\\GitHub\\Intro-Teoria-de-la-Computacion\\Automatas\\src\\AutomatasPredefinidos\\a.NFA");
+            //System.out.println(afn.toString());
+            afn.hallarEstadosInaccesibles();
+            /*System.out.println("Estados inaccesibles");
             for(int i=0;i<afd.estadosInaccesibles.size();i++){
                 System.out.println(afd.estadosInaccesibles.get(i));
             }

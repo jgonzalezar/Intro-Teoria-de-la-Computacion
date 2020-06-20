@@ -63,10 +63,9 @@ public class AFD {
         this.q0 = q0;
         this.F = F;
         this.Delta = Delta;
-
-    }
-    
-    
+        this.estadosInaccesibles=new ArrayList<>();
+        this.estadosLimbo=new ArrayList<>();
+    }    
     
     /**
      * Constructor Inicializa los atributos a partir del archivo de texto.
@@ -290,7 +289,6 @@ public class AFD {
     
     public void hallarEstadosLimbo(){
         boolean finished;
-        
         ArrayList<String> toEliminate = new ArrayList<>();
         
         for(int i=0; i<Q.size();i++){
@@ -298,7 +296,6 @@ public class AFD {
                 estadosLimbo.add(Q.get(i));
             }
         }
-        
         do{
             toEliminate.clear();
             for(int i=0;i<estadosLimbo.size();i++){
@@ -309,9 +306,6 @@ public class AFD {
                     }
                 }
             }
-            /*for(int i=0;i<toEliminate.size();i++){
-                estadosLimbo.remove(toEliminate.get(i));
-            }*/
             estadosLimbo.removeAll(toEliminate);
             finished = !toEliminate.isEmpty();
         }while(finished);

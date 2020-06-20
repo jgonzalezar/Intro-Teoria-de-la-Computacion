@@ -3,12 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/visuall/Windows2.java</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/visuall/Windows.java</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasPredefinidos/%5B(aUb)(aUb)%5D'.DFA</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/visuall/Windows3.java</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/visuall/Dibbujo.java</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/visuall/Windows1.java</file>
+            <file>file:/D:/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFD.java</file>
+            <file>file:/D:/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/prueba.java</file>
+            <file>file:/D:/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/TransitionAFN.java</file>
+            <file>file:/D:/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/Transition.java</file>
+            <file>file:/D:/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFN.java</file>
         </group>
     </open-files>
 </project-private>
