@@ -1,8 +1,8 @@
 package AutomatasFinitos;
 
-import LectoresYProcesos.CreadorAutomata;
 import Herramientas.Transition;
 import Herramientas.Transitions;
+import LectoresYProcesos.InteraccionesAutomas.Lecto;
 import ProcesamientoCadenas.ProcesamientoCadenaAFD;
 import java.awt.HeadlessException;
 import java.util.ArrayList;
@@ -75,7 +75,7 @@ public class AFD {
      * @throws java.io.FileNotFoundException en caso de que el archivo no sea encontrado por el scanner
      */    
     public AFD(String nombreArchivo) throws Error, FileNotFoundException{
-        CreadorAutomata.Lecto lec = CreadorAutomata.Lecto.inicio;
+        Lecto lec = Lecto.inicio;
         ArrayList<Character> alpha = null;
         ArrayList<String> W = null;
         String W0 = null;
@@ -87,24 +87,24 @@ public class AFD {
             String lin = sca.nextLine();
             switch(lin){
                 case "#alphabet":
-                    lec = CreadorAutomata.Lecto.alfabeto;
+                    lec = Lecto.alfabeto;
                     alpha = new ArrayList<>();
                     break;
                 case "#states":
                     if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
-                    lec = CreadorAutomata.Lecto.estados;
+                    lec = Lecto.estados;
                     W = new ArrayList<>();
                     break;
                 case "#initial":
                     if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
                     if(W==null) throw new Error("primero debe iniciarse los estados");
-                    lec = CreadorAutomata.Lecto.estadoinicial;
+                    lec = Lecto.estadoinicial;
                     break;
                 case "#accepting":
                     if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
                     if(W==null) throw new Error("primero debe iniciarse los estados");
                     if(W0==null) throw new Error("primero debe dar el estado inicial");
-                    lec = CreadorAutomata.Lecto.estadoFin;
+                    lec = Lecto.estadoFin;
                     G = new ArrayList<>();
                     break;
                 case "#transitions":
@@ -112,7 +112,7 @@ public class AFD {
                     if(W==null) throw new Error("primero debe iniciarse los estados");
                     if(W0==null) throw new Error("primero debe dar el estado inicial");
                     if(G==null) throw new Error("primero debe dar los estados finales");
-                    lec = CreadorAutomata.Lecto.transicion;
+                    lec = Lecto.transicion;
                     Deltos = new Transition();
                     break;
                 default:
