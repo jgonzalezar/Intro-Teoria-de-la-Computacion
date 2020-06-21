@@ -4,7 +4,6 @@ import Herramientas.Transition;
 import Herramientas.TransitionAFN;
 import Herramientas.Transitions;
 import LectoresYProcesos.InteraccionesAutomas;
-import LectoresYProcesos.CreadorAutomata;
 import java.util.ArrayList;
 import Herramientas.Tuple;
 import LectoresYProcesos.InteraccionesAutomas.Lecto;
@@ -47,6 +46,9 @@ public class AFN extends AFD{
      * @param Delta Transiciones
      */
     
+    
+    public AFN() {
+    }
 
     public AFN(Alfabeto Sigma, ArrayList<String> Q, Integer q0, ArrayList<Integer> F, Transitions Delta) {
         super(Sigma, Q, q0, F, Delta);
