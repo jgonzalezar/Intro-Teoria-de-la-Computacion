@@ -678,7 +678,8 @@ public class AFN extends AFD{
     //Función para imprimir la tabla de la transicion de AFN a AFD
     private void printTableAFNtoAFD(ArrayList<ArrayList<Tuple>> automataDeterminista, ArrayList<Integer> detAcceptance,ArrayList<Tuple> newStates) {
 	String[] States;
-        String res = "D";
+        String res = "Δ";
+        boolean hasFinal;
         for(int i=0;i<Sigma.length();i++){
             res+="\t"+Sigma.get(i);
         }
@@ -698,6 +699,7 @@ public class AFN extends AFD{
             }
             
             for(int j=0;j<Sigma.length();j++){
+                hasFinal = true;
                 for(int k=0;k<automataDeterminista.get(i).size();k++){
                     if(automataDeterminista.get(i).get(k).getSymbol().charAt(0) == Sigma.get(j)){
                         if(Q.contains(statesName+automataDeterminista.get(i).get(j).getFinalState())){
@@ -710,8 +712,12 @@ public class AFN extends AFD{
                             }
                             res+=","+statesName+States[States.length-1]+"}";
                         }
+                        hasFinal = false;
                         break;
                     }
+                }
+                if(hasFinal){
+                    res+="∅";
                 }
                 res+="\t";
             }
