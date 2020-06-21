@@ -85,10 +85,6 @@ public class ProcesamientoCadenaAFD  {
      */
     
     public String pasos(){
-        String s ="";
-        for (int i = 0; i < listaEstadoSimboloDeProcesamiento.size(); i++) {
-            s += "["+listaEstadoSimboloDeProcesamiento.get(i)+", "+cadena.substring(i)+"]"+(char) 124+(char)61+(char)62;
-        }
         return pasos(cadena,listaEstadoSimboloDeProcesamiento,0);
     }
     

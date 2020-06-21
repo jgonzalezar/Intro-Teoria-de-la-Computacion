@@ -60,7 +60,9 @@ public class TransitionAFN implements Transitions{
 
     @Override
     public void add(Character Alphabeto, int Estado, int... estado) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for (int i = 0; i < estado.length; i++) {
+            this.add(Estado, Alphabeto.toString(), estado[i]);
+        }
     }
 
     @Override

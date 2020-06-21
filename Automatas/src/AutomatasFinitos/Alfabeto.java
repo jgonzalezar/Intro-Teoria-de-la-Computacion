@@ -1,5 +1,8 @@
 package AutomatasFinitos;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 /**
  * Esta clase se encarga de guardar los simbolos del alfabeto de un automata y procesarlos según se requiera
  * @author equipo los Javas
@@ -48,4 +51,39 @@ public class Alfabeto {
         }
         return res;
     }
+
+    public char[] getSimbolos() {
+        return simbolos;
+    }
+
+    @Override
+    public String toString() {
+        String alpha="#alphabet\n";
+        char ini= simbolos[0];
+        char fin= simbolos[0];
+        int ac = 1;
+        while(ac<simbolos.length){
+            if(fin+1==simbolos[ac]){
+                fin =simbolos[ac];
+            }else{
+                if(fin!=ini){
+                    alpha+=ini+"-"+fin+"\n";
+                }else{
+                    alpha+=fin+"\n";
+                    fin=ini=simbolos[ac];
+                }
+            }
+            ac++;
+        }
+        if(fin!=ini){
+            alpha+=ini+"-"+fin+"\n";
+        }else{
+            alpha+=fin+"\n";
+            
+        }
+        return alpha;
+    }
+    
+    
+    
 }

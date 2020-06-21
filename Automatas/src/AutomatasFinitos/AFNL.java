@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import Herramientas.RespuestaMult;
+import Herramientas.TransitionAFN;
 import Herramientas.Transitions;
 import Herramientas.Tupla;
 import ProcesamientoCadenas.ProcesamientoCadenaAFNLambda;
@@ -232,15 +233,23 @@ public class AFNL extends AFN{
     /**
      * Imprime en cosola la lambdaclausura de un solo estado.
      * @param estado estado del que se desea imprimir la lambda clausura.
+     * @return 
      */
-    public void ImprimirlambdaClausura_unEstado(int estado) {
-
+    public ArrayList<Integer> ImprimirlambdaClausura_unEstado(int estado) {
+        String lambdaC = "λ["+Q.get(estado)+"] = {";
         ArrayList<Integer> Clausura = lambdaClausura_unEstado(estado);
-        System.out.println("lambda clausura del estado " + Q.get(estado) + " es:");
-        Clausura.forEach((s) -> {
-            System.out.println(" " + Q.get(s));
-        });
-
+        //System.out.println("lambda clausura del estado " + Q.get(estado) + " es:");
+        //System.out.print("$["+Q.get(estado)+"] = {");
+        
+        for (Integer integer : Clausura) {
+            String cadena = Q.get(integer) + ",";
+            lambdaC += cadena;
+        }
+        
+        lambdaC = lambdaC.substring(0, lambdaC.length()-1) + "}.";
+        System.out.println(lambdaC);
+        
+        return Clausura;
     }
     /**
      * Encuentra el lambda clausura de varios estados , devuelve las lambdaclausuras de los estados juntas, como una sola.
@@ -656,5 +665,82 @@ public class AFNL extends AFN{
                 }
         }
     }
+    
+    public AFN AFN_LambdaToAFN(){
+        ArrayList<Integer> aceptacion = new ArrayList<>();
+        TransitionAFN delta = new TransitionAFN(this.Q.size());
+        
+        for (int i = 0; i < Q.size(); i++) {
+            ArrayList<Integer> lclausura = ImprimirlambdaClausura_unEstado(i);
+            for (Integer F1 : this.F) {
+                if(lclausura.contains(F1)){
+                    aceptacion.add(i);
+                }
+            }
+        }
+        
+        for (int i = 0; i < Q.size(); i++) {
+            for (int j = 0; j < Sigma.length(); j++) {
+                delta.add(Sigma.get(j), i, trancisiones(i,Sigma.get(j)));
+            }
+        }
+        
+        Set<Integer> hashSet = new HashSet<>(aceptacion);
+        aceptacion.clear();
+        aceptacion.addAll(hashSet);
+        return new AFN(Sigma, Q, q0, aceptacion, delta);
+    }
+    
+    public int[] trancisiones(int estado, char simb){
+        String output = "Δ'("+this.Q.get(estado)+","+simb+") = λ[Δ(λ["+this.Q.get(estado)+"],"+simb+")] = λ[Δ({";
+        ArrayList<Integer> lclausuraEstado = lambdaClausura_unEstado(estado);
+        for (int i = 0; i < lclausuraEstado.size(); i++) {
+            output += this.Q.get(lclausuraEstado.get(i)) + ",";
+        }
+        output = output.substring(0, output.length()-1) + "},"+simb+")] = λ[{";
+        RespuestaMult camino = new RespuestaMult();
+        camino.add(estado);
+        ArrayList<Integer> finals = Iteracion(simb,camino).getFinals();
+        Boolean bool;
+        do{
+            bool = finals.remove(null);
+        }while (bool);
+        
+        if(finals.size() > 1){
+            for (int i = 0; i < finals.size(); i++) {
+            output += this.Q.get(finals.get(i)) + ",";
+            }
+        
+            output = output.substring(0, output.length()-1) + "}] = ";
+            
+            for (int i = 0; i < finals.size(); i++) {
+                output += "λ[{"+this.Q.get(finals.get(i))+"}] U ";
+            }
+            output = output.substring(0, output.length()-2) + "= {";
+        }else if(finals.isEmpty()){
+            output += "∅}] = {";
+        }else{
+            output += this.Q.get(finals.get(0))+"}] = {";
+        } 
+        
+        ArrayList<Integer> lclauMul = lambdaClausura_variosEstado(finals);
+        
+        if(!lclauMul.isEmpty()){
+            for (int i = 0; i < lclauMul.size(); i++) {
+                output += this.Q.get(lclauMul.get(i)) + ",";
+            }
+        }else{
+            output += "∅,";
+        }
+        
+        output = output.substring(0, output.length()-1) + "}.";
+        System.out.println(output);
+        int[] rta = new int[lclauMul.size()];
+        for (int i = 0; i < lclauMul.size(); i++) {
+            rta[i] = lclauMul.get(i);
+        }
+        return rta;
+    }
+
 }
 

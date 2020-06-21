@@ -4,15 +4,18 @@ import LectoresYProcesos.CreadorAutomata;
 import Herramientas.Transition;
 import Herramientas.Transitions;
 import ProcesamientoCadenas.ProcesamientoCadenaAFD;
+import java.awt.HeadlessException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.Collections;
 import java.util.Scanner;
 import java.util.HashSet;
 import java.util.Set;
+import javax.swing.JFileChooser;
 
 
 /**
@@ -48,8 +51,8 @@ public class AFD {
     protected Transitions Delta;
     
     
-    private ArrayList<String> estadosInaccesibles;
-    private ArrayList<String> estadosLimbo;
+    protected ArrayList<String> estadosInaccesibles;
+    protected ArrayList<String> estadosLimbo;
 
     public AFD() {
     }
@@ -116,19 +119,24 @@ public class AFD {
                     switch(lec){
                         case alfabeto:
                             if(lin.length()<2){
-                                alpha.add(lin.charAt(0));
+                                if(!alpha.contains(lin.charAt(0))){
+                                    alpha.add(lin.charAt(0));
+                                }
+                                
                             }else{
                                 int a = lin.charAt(0);
                                 int b = lin.charAt(2);
                                 int c = b-a;
                                 for (int i = 0; i <=c; i++) {
                                     char d = (char) (a+i);
-                                    alpha.add(d);
-
+                                    if(!alpha.contains(d)){
+                                        alpha.add(d);
+                                    }
                                 }
                             }
                             break;
                         case estados:
+                            if(W.contains(lin))throw new Error("el estado "+ lin+ "ya existe en el automata");
                             W.add(lin);
                             break;
                         case estadoinicial:
@@ -156,7 +164,7 @@ public class AFD {
                     }
             }
         }
-        
+        Collections.sort(alpha);
         char[] ad =new char[alpha.size()];
         for (int i = 0; i < alpha.size(); i++) {
             ad[i]=alpha.get(i);
@@ -164,6 +172,9 @@ public class AFD {
         this.Sigma = new Alfabeto(ad);
         this.Q = W;
         this.q0 = Q.indexOf(W0);
+        Set<String> no = new HashSet<>(G);
+        G.clear();
+        G.addAll(no);
         this.F = new ArrayList<>();
         for(String f:G){
             F.add(Q.indexOf(f));
@@ -173,6 +184,9 @@ public class AFD {
             for (int i = 0; i < Sigma.length(); i++) {
                 for (int j = 0; j < Q.size(); j++) {
                     String get = Deltos.cambio(Sigma.get(i), Q.get(j));
+                    if(get==null){
+                        throw new NullPointerException();
+                    }
                 }
             }
         }catch(Error | Exception e){
@@ -229,7 +243,7 @@ public class AFD {
      * @return procesamiento dado a la cadena de su camino y su resultado de aceptacion
      * @see ProcesamientoCadenaAFD
      */
-    private ProcesamientoCadenaAFD prosCaden(String word){
+    public ProcesamientoCadenaAFD prosCaden(String word){
         return Finish(Delta(word));
     }
     
@@ -276,7 +290,7 @@ public class AFD {
     
     public void hallarEstadosLimbo(){
         boolean finished;
-        String changeState;
+        
         ArrayList<String> toEliminate = new ArrayList<>();
         
         for(int i=0; i<Q.size();i++){
@@ -289,15 +303,16 @@ public class AFD {
             toEliminate.clear();
             for(int i=0;i<estadosLimbo.size();i++){
                 for(int j=0;j<Sigma.length();j++){
-                    changeState = Delta.cambio(Sigma.get(j), estadosLimbo.get(i));
-                    if(changeState!=null && (!estadosLimbo.contains(changeState) || toEliminate.contains(changeState)) ){
+                    String changeState = Delta.cambio(Sigma.get(j), estadosLimbo.get(i));
+                    if(!estadosLimbo.contains(changeState) || toEliminate.contains(changeState)){
                         toEliminate.add(estadosLimbo.get(i));
                     }
                 }
             }
-            for(int i=0;i<toEliminate.size();i++){
+            /*for(int i=0;i<toEliminate.size();i++){
                 estadosLimbo.remove(toEliminate.get(i));
-            }
+            }*/
+            estadosLimbo.removeAll(toEliminate);
             finished = !toEliminate.isEmpty();
         }while(finished);
     }
@@ -307,7 +322,7 @@ public class AFD {
      */
     public void hallarEstadosInaccesibles(){
         estadosInaccesibles.add(Q.get(q0));
-        identificarEstadosInaccesibles(Q.get(q0));
+        identificarEstadosAccesibles(Q.get(q0));
         ArrayList<String> estadosAccesibles = new ArrayList<>(estadosInaccesibles);
         estadosInaccesibles.clear();
         for(int i=0;i<Q.size();i++){
@@ -317,11 +332,12 @@ public class AFD {
         }
     }
 
-    private void identificarEstadosInaccesibles(String state) {
+    private void identificarEstadosAccesibles(String state) {
         for(int i=0;i<Sigma.length();i++){
-            if(Delta.cambio(Sigma.get(i), state)!=null && !state.equals(Delta.cambio(Sigma.get(i), state)) && !estadosInaccesibles.contains(Delta.cambio(Sigma.get(i), state))){
-                estadosInaccesibles.add(Delta.cambio(Sigma.get(i), state));
-                identificarEstadosInaccesibles(Delta.cambio(Sigma.get(i), state));
+            String Stadogo = Delta.cambio(Sigma.get(i), state);
+            if(!state.equals(Stadogo) && !estadosInaccesibles.contains(Stadogo)){
+                estadosInaccesibles.add(Stadogo);
+                identificarEstadosAccesibles(Stadogo);
             }
         }
     }    
@@ -479,6 +495,26 @@ public class AFD {
         });
         
         return new AFD(Sigma, Q2, q02, F2, Delta2);
+    }
+
+    @Override
+    public String toString() {
+        String automat="!dfa\n";
+        
+        //automat+="#alphabet\n";
+        automat+=Sigma.toString();
+        automat+="#states\n";
+        for (String string : Q) {
+            automat+=string+"\n";
+        }
+        automat+="#initial\n";
+        automat+=Q.get(q0)+"\n";
+        automat+="#accepting\n";
+        for (Integer integer : F) {
+            automat+=Q.get(integer)+"\n";
+        }
+        automat+=Delta.toString();
+        return automat;
     }
 
     public Alfabeto getSigma() {

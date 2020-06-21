@@ -7,6 +7,7 @@ package Herramientas;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  *  La clase Transition sirve para simular transiciones de  automatas tipo AFD
@@ -88,6 +89,26 @@ public class Transition implements Transitions{
     @Override
     public ParPila cambio(Character Alphabeto, String Inest, Character InPila) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
     }
+
+    @Override
+    public String toString() {
+        String transiti = "#transitions\n";
+        for (Map.Entry<Character, HashMap<String, String>> entry : transicion.entrySet()) {
+            Character key = entry.getKey();
+            HashMap<String, String> value = entry.getValue();
+            for (Map.Entry<String, String> entry1 : value.entrySet()) {
+                String key1 = entry1.getKey();
+                String value1 = entry1.getValue();
+                transiti+=key1+":"+key+">"+value1+"\n";
+                
+            }
+            
+        }
+        return transiti;
+    }
+    
+    
     
 }
