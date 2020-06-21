@@ -573,19 +573,49 @@ public class AFN extends AFD{
         
         ArrayList<String> newQ = new ArrayList<>();
         Transition newDelta = new Transition();
+        boolean hasFinalState;
         for(int i=0;i<automataDeterminista.size();i++) {
             if(Q.contains(statesName+i)){
                 newQ.add(statesName+i);
+                for(int j=0;j<Sigma.length();j++){
+                    hasFinalState = true;
+                    for(int k=0;k<automataDeterminista.get(i).size();k++){
+                        if(Sigma.get(j)==automataDeterminista.get(i).get(k).getSymbol().charAt(0)){
+                            newDelta.add(Sigma.get(j), statesName+i, statesName+automataDeterminista.get(i).get(k).getFinalState());
+                            hasFinalState = false;
+                            break;
+                        }
+                    }
+                    if(hasFinalState){
+                        newDelta.add(Sigma.get(j), statesName+i, statesName+numberNewState);
+                    }
+                }
             }else if(!"".equals(search(i,newStates))){
                 newQ.add(statesName+i);
+                for(int j=0;j<Sigma.length();j++){
+                    hasFinalState = true;
+                    for(int k=0;k<automataDeterminista.get(i).size();k++){
+                        if(Sigma.get(j)==automataDeterminista.get(i).get(k).getSymbol().charAt(0)){
+                            newDelta.add(Sigma.get(j), statesName+i, statesName+automataDeterminista.get(i).get(k).getFinalState());
+                            hasFinalState = false;
+                            break;
+                        }
+                    }
+                    if(hasFinalState){
+                        newDelta.add(Sigma.get(j), statesName+i, statesName+numberNewState);
+                    }
+                }
             }
-            for(int j=0;j<automataDeterminista.get(i).size();j++){
-                newDelta.add(automataDeterminista.get(i).get(j).getSymbol().charAt(0), statesName+i, statesName+automataDeterminista.get(i).get(j).getFinalState());
-            }
+        }
+        newQ.add(statesName+numberNewState);
+        for(int i=0;i<Sigma.length();i++){
+            newDelta.add(Sigma.get(i), statesName+numberNewState, statesName+numberNewState);
         }
         
         AFD newDet = new AFD(Sigma, newQ, q0, detAcceptance, newDelta);
+        System.out.println(newDet);
         newDet.eliminarEstadosInaccesibles();
+        System.out.println(newDet);
         return newDet;
     }
     
@@ -713,6 +743,18 @@ public class AFN extends AFD{
                 identificarEstadosAccesibles(Stadogo);
             }
         }
+    }
+    
+    public boolean procesarCadenaConversion(String cadena) {
+        return AFNtoAFD().procesarCadena(cadena);
+    }
+
+    public boolean procesarCadenaConDetallesConversion(String cadena) {
+        return AFNtoAFD().procesarCadenaConDetalles(cadena);
+    }
+
+    public void procesarListaCadenasConversion(String[] listaCadenas, String nombreArchivo, boolean imprimirPantalla) {
+        AFNtoAFD().procesarListaCadenas(listaCadenas, nombreArchivo, imprimirPantalla);
     }
     
     @Override
