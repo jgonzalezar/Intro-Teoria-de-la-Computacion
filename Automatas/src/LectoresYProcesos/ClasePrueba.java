@@ -10,10 +10,13 @@ import AutomatasFinitos.AFN;
 import AutomatasFinitos.AFNL;
 import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
@@ -43,11 +46,7 @@ public class ClasePrueba {
         Scanner scan = new Scanner(System.in);
         JFileChooser fileChooser = new JFileChooser(new File("."));
         fileChooser.setDialogTitle("Seleccione el automata que desea importar");
-        String scad = "";
         while (!Lectura.salir.equals(lec)) {
-            if (scad.equals("$$EXIT$$")) {
-                lec = Lectura.salir;
-            }
             switch (lec) {
                 case CrearAutomata:
                     System.out.println("Seleccione el automata que desea importar");
@@ -92,6 +91,7 @@ public class ClasePrueba {
                             lec = Lectura.salir;
                         }
                     }
+                    pause();
                     break;
                 case LeerCadena:
                     switch (tp) {
@@ -109,10 +109,11 @@ public class ClasePrueba {
                 case salir:
                     break;
                 default:
-                    scad = scan.next();
+                    lec = Lectura.salir;
                     break;
 
             }
+            
         }
     }
 
@@ -235,6 +236,7 @@ public class ClasePrueba {
                         //una
                         break;
                 }
+                pause();
                 String[] options = {"Evaluar otra cadena", "Cambiar De Automata", "Salir"};
                 int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Seleccione", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
                 if (f == 2 || f == JOptionPane.CLOSED_OPTION) {
@@ -420,6 +422,7 @@ public class ClasePrueba {
 
                 return Lectura.CrearAutomata;
             }
+            pause();
             String[] options = {"Evaluar otra cadena", "Cambiar De Automata", "Salir"};
             int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
             if (f == 2 || f == JOptionPane.CLOSED_OPTION) {
@@ -660,7 +663,7 @@ public class ClasePrueba {
                             } while (tres);
                     }
                 }
-
+                pause();
                 String[] options = {"Escoger otra opción", "Cambiar De Automata", "Salir"};
                 int a = JOptionPane.showOptionDialog(null, "Indique la proxima acción a realizar", "¿Qué desea hacer?", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
                 if (a == 2 || a == JOptionPane.CLOSED_OPTION) {
@@ -900,7 +903,7 @@ public class ClasePrueba {
                     }
                     //return Lectura.CrearAutomata;
                 }
-
+                pause();
                 String[] options = {"Escoger otra opción", "Cambiar De Automata", "Salir"};
                 int a = JOptionPane.showOptionDialog(null, "Indique la proxima acción a realizar", "¿Qué desea hacer?", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
                 if (a == 2 || a == JOptionPane.CLOSED_OPTION) {
@@ -1096,7 +1099,7 @@ public class ClasePrueba {
                     }
                     //return Lectura.CrearAutomata;
                 }
-
+                pause();
                 String[] options = {"Escoger otra opción", "Cambiar De Automata", "Salir"};
                 int a = JOptionPane.showOptionDialog(null, "Indique la proxima acción a realizar", "¿Qué desea hacer?", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
                 if (a == 2 || a == JOptionPane.CLOSED_OPTION) {
@@ -1114,19 +1117,12 @@ public class ClasePrueba {
         }
     }
     
-    /*
-    Debe hacer una clase ClasePrueba para ejecutar todos los métodos realizados,
-    creando autómatas, procesando cadenas con ellos,
-    creando los objetos respectivos de acuerdo a dichos procesamientos,
-    procesando listas de cadenas, generando los archivos.
-    Dichas pruebas deben ser trabajadas en los siguientes métodos, 
-    los cuales deben ser llamadas desde el procesamiento principal:
-    probarAFD(): Crear autómatas AFD, procesar cadenas con y sin detalles,
-    procesar listas de cadenas, generar archivos.
-    probarAFN(): Crear autómatas AFN, procesar cadenas mostrando solo un procesamiento de aceptación,  procesar cadenas mostrando todos los procesamientos posibles, consultar los procesamientos de aceptación, abortados y de rechazo,  procesar listas de cadenas, generar archivos.
-    probarAFNLambda(): Crear autómatas AFN-λ, calcular la λ- clausura de un estado,  calcular la λ- clausura de un conjunto de estados, procesar cadenas mostrando solo un procesamiento de aceptación,  procesar cadenas mostrando todos los procesamientos posibles, consultar los procesamientos de aceptación, abortados y de rechazo, procesar listas de cadenas, generar archivos.
-    main(): invoca a los otros para que puedan ser comentados fácilmente y poder escoger cuál se va a probar.
-    
-    
-     */
+    private static void pause(){
+        System.out.println("presione una tecla para continuar");
+        try {
+            System.in.read();
+        } catch (IOException ex) {
+            Logger.getLogger(ClasePrueba.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

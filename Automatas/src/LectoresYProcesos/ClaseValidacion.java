@@ -13,11 +13,8 @@ import AutomatasFinitos.Alfabeto;
  * @author fanat
  */
 public class ClaseValidacion {
-    void validarAFNLambdaToAFN(AFNL afnl,Alfabeto sigma){
-        int tam =0;
-        for (int i = 0; i < 5000; i++) {
-            tam = afnl.getSigma().
-        }
+    void validarAFNLambdaToAFN(Alfabeto sigma){
+        
         
     }
 }
