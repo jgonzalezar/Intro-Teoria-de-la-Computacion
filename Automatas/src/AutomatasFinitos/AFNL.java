@@ -6,7 +6,6 @@
 package AutomatasFinitos;
 
 import Herramientas.TransitionAFNL;
-import LectoresYProcesos.CreadorAutomata;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -19,6 +18,7 @@ import Herramientas.RespuestaMult;
 import Herramientas.TransitionAFN;
 import Herramientas.Transitions;
 import Herramientas.Tupla;
+import LectoresYProcesos.InteraccionesAutomas.Lecto;
 import ProcesamientoCadenas.ProcesamientoCadenaAFNLambda;
 import java.io.FileWriter;
 import java.io.PrintWriter;
@@ -58,7 +58,7 @@ public class AFNL extends AFN{
      * @param nombreArchivo nombre que se le quiere dar al archivo
      */
     public AFNL(String nombreArchivo) {
-        CreadorAutomata.Lecto lec = CreadorAutomata.Lecto.inicio;
+        Lecto lec = Lecto.inicio;
         ArrayList<Character> alpha = null;
         ArrayList<String> Estados = null;
         String q0 = null;
@@ -71,14 +71,14 @@ public class AFNL extends AFN{
                 String lin = sca.nextLine();
                 switch (lin) {
                     case "#alphabet":
-                        lec = CreadorAutomata.Lecto.alfabeto;
+                        lec = Lecto.alfabeto;
                         alpha = new ArrayList<>();
                         break;
                     case "#states":
                         if (alpha == null) {
                             throw new Error("primero debe iniciarse el alfabeto");
                         }
-                        lec = CreadorAutomata.Lecto.estados;
+                        lec = Lecto.estados;
                         Estados = new ArrayList<>();
                         break;
                     case "#initial":
@@ -88,7 +88,7 @@ public class AFNL extends AFN{
                         if (Estados == null) {
                             throw new Error("primero debe iniciarse los estados");
                         }
-                        lec = CreadorAutomata.Lecto.estadoinicial;
+                        lec = Lecto.estadoinicial;
                         break;
                     case "#accepting":
                         if (alpha == null) {
@@ -100,7 +100,7 @@ public class AFNL extends AFN{
                         if (q0 == null) {
                             throw new Error("primero debe dar el estado inicial");
                         }
-                        lec = CreadorAutomata.Lecto.estadoFin;
+                        lec = Lecto.estadoFin;
                         F = new ArrayList<>();
                         break;
                     case "#transitions":
@@ -116,7 +116,7 @@ public class AFNL extends AFN{
                         if (F == null) {
                             throw new Error("primero debe dar los estados finales");
                         }
-                        lec = CreadorAutomata.Lecto.transicion;
+                        lec = Lecto.transicion;
                         transition = new TransitionAFNL(Estados.size());
                         break;
                     default:
@@ -180,7 +180,7 @@ public class AFNL extends AFN{
                 }
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(CreadorAutomata.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex.getMessage());
         }
 
         char[] ad = new char[alpha.size()];
@@ -666,6 +666,11 @@ public class AFNL extends AFN{
         }
     }
     
+    public AFD AFN_LambdaToAFD(){
+        //return AFN_LambdaToAFN().AFNtoAFD();
+        return null;
+    }
+    
     public AFN AFN_LambdaToAFN(){
         ArrayList<Integer> aceptacion = new ArrayList<>();
         TransitionAFN delta = new TransitionAFN(this.Q.size());
@@ -740,6 +745,18 @@ public class AFNL extends AFN{
             rta[i] = lclauMul.get(i);
         }
         return rta;
+    }
+    
+    public boolean procesarCadenaConversion(String cadena){
+        return AFN_LambdaToAFD().procesarCadena(cadena);
+    }
+    
+    public boolean procesarCadenaConDetallesConversion(String cadena){
+        return AFN_LambdaToAFD().procesarCadenaConDetalles(cadena);
+    }
+    
+    public void procesarListaCadenasConversion(String[] listaCadenas,String nombreArchivo, boolean imprimirPantalla){
+        AFN_LambdaToAFD().procesarListaCadenas(listaCadenas, nombreArchivo, imprimirPantalla);
     }
 
 }

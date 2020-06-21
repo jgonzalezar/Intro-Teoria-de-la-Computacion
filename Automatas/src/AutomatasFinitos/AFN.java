@@ -2,9 +2,10 @@ package AutomatasFinitos;
 
 import Herramientas.TransitionAFN;
 import Herramientas.Transitions;
-import LectoresYProcesos.CreadorAutomata;
+import LectoresYProcesos.InteraccionesAutomas;
 import java.util.ArrayList;
 import Herramientas.Tuple;
+import LectoresYProcesos.InteraccionesAutomas.Lecto;
 import ProcesamientoCadenas.ProcesamientoCadenaAFN;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -88,7 +89,7 @@ public class AFN extends AFD{
      * @param nombreArchivo Nombre del archivo donde está el automata a leer
      */
     public AFN(String nombreArchivo) throws Error, FileNotFoundException{
-        CreadorAutomata.Lecto lec = CreadorAutomata.Lecto.inicio;
+        Lecto lec = Lecto.inicio;
         ArrayList<Character> alpha = null;
         ArrayList<String> Q = null;
         String q0 = null;
@@ -103,24 +104,24 @@ public class AFN extends AFD{
                 String lin = sca.nextLine();
                 switch(lin){
                     case "#alphabet":
-                        lec = CreadorAutomata.Lecto.alfabeto;
+                        lec = Lecto.alfabeto;
                         alpha = new ArrayList<>();
                         break;
                     case "#states":
                         if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
-                        lec = CreadorAutomata.Lecto.estados;
+                        lec = Lecto.estados;
                         Q = new ArrayList<>();
                         break;
                     case "#initial":
                         if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
                         if(Q==null) throw new Error("primero debe iniciarse los estados");
-                        lec = CreadorAutomata.Lecto.estadoinicial;
+                        lec = Lecto.estadoinicial;
                         break;
                     case "#accepting":
                         if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
                         if(Q==null) throw new Error("primero debe iniciarse los estados");
                         if(q0==null) throw new Error("primero debe dar el estado inicial");
-                        lec = CreadorAutomata.Lecto.estadoFin;
+                        lec = Lecto.estadoFin;
                         F = new ArrayList<>();
                         break;
                     case "#transitions":
@@ -128,7 +129,7 @@ public class AFN extends AFD{
                         if(Q==null) throw new Error("primero debe iniciarse los estados");
                         if(q0==null) throw new Error("primero debe dar el estado inicial");
                         if(F==null) throw new Error("primero debe dar los estados finales");
-                        lec = CreadorAutomata.Lecto.transicion;
+                        lec = Lecto.transicion;
                         Delta = new ArrayList<>();
                         break;
                     default:
@@ -186,7 +187,7 @@ public class AFN extends AFD{
                 }
             }
         } catch (FileNotFoundException ex) {
-            Logger.getLogger(CreadorAutomata.class.getName()).log(Level.SEVERE, null, ex);
+            System.err.println(ex.getMessage());
         }
         
         char[] ad =new char[alpha.size()];
