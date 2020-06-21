@@ -5,6 +5,8 @@
  */
 package LectoresYProcesos;
 
+import AutomatasFinitos.Alfabeto;
+
 /**
  *
  * @author fanat

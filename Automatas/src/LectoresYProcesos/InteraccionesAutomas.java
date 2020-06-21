@@ -6,6 +6,7 @@
 package LectoresYProcesos;
 
 import AutomatasFinitos.AFD;
+import AutomatasFinitos.AFDComplemento;
 import AutomatasFinitos.AFDProductoD;
 import AutomatasFinitos.AFDProductoDSim;
 import AutomatasFinitos.AFDProductoO;
@@ -24,8 +25,7 @@ import java.util.Scanner;
  */
 public class InteraccionesAutomas {
     public static AFD AFNtoAFD(AFN afn){
-        //return afn.AFNtoAFD();
-        return null;
+        return afn.AFNtoAFD();
     }
     
     public static AFN AFN_LambdaToAFN(AFNL afnl){
@@ -37,8 +37,7 @@ public class InteraccionesAutomas {
     }
     
     public static AFD hallarComplemento(AFD afdInput){
-        //return afdInput.
-        return null;
+        return new AFDComplemento(afdInput);
     }
     
     public static AFD hallarProductoCartesianoY(AFD afd1, AFD afd2){
