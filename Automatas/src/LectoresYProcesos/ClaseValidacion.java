@@ -5,13 +5,19 @@
  */
 package LectoresYProcesos;
 
+import AutomatasFinitos.AFNL;
+import AutomatasFinitos.Alfabeto;
+
 /**
  *
  * @author fanat
  */
 public class ClaseValidacion {
-    void validarAFNLambdaToAFN(Alfabeto sigma){
-        
+    void validarAFNLambdaToAFN(AFNL afnl,Alfabeto sigma){
+        int tam =0;
+        for (int i = 0; i < 5000; i++) {
+            tam = afnl.getSigma().
+        }
         
     }
 }
