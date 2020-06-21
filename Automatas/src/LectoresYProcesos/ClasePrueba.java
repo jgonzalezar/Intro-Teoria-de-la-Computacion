@@ -681,6 +681,7 @@ public class ClasePrueba {
     private static Lectura probarAFNLambdaToAFN(){
         try {
             AFNL afnl = new AFNL(url);
+            AFN afn = InteraccionesAutomas.AFN_LambdaToAFN(afnl);
             System.out.println("El automata ha sido creado correctamente");
             while (true) {
                 String[] options1 = {"Procesar cadena", "Lambda clausura", "Salir"};
@@ -752,12 +753,20 @@ public class ClasePrueba {
                                     if (file.showSaveDialog(file) == JFileChooser.CANCEL_OPTION) {
                                         throw new NullPointerException();
                                     }
-                                    String asd = file.getSelectedFile().getAbsolutePath();
+                                    String asd = file.getSelectedFile().getAbsolutePath() + "afn";
                                     String[] listaCadenas = new String[cadenas.size()];
                                     for (int j = 0; j < cadenas.size(); j++) {
                                         listaCadenas[j] = cadenas.get(j);
                                     }
-                                    afnl.procesarListaCadenas(listaCadenas, asd, JOptionPane.showConfirmDialog(null, "Desea imprimir en consola tambien?", "detalles", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION);
+                                    boolean imprimir = JOptionPane.showConfirmDialog(null, "Desea imprimir en consola tambien?", "detalles", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
+                                    if(imprimir){
+                                        System.out.println("AFNL: ");
+                                    }
+                                    afnl.procesarListaCadenas(listaCadenas, asd+"l", imprimir);
+                                    if(imprimir){
+                                        System.out.println("AFN: ");
+                                    }
+                                    afn.procesarListaCadenas(listaCadenas, asd, imprimir);
                                     dos = false;
                                 } catch (NullPointerException e) {
                                     dos = false;
@@ -789,16 +798,23 @@ public class ClasePrueba {
                                                     }
                                                     JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
                                                 } else {
-                                                    boolean set;
+                                                    boolean setAfnl, setAfn;
                                                     if (JOptionPane.showConfirmDialog(null, "Desea mostrar el camino recorrido a la hora de evaluar la cadena?", "Mostrala con detalles", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                                                        set = afnl.procesarCadenaConDetalles(cadena);
+                                                        setAfnl = afnl.procesarCadenaConDetalles(cadena);
+                                                        setAfn = afn.procesarCadenaConDetalles(cadena);
                                                     } else {
-                                                        set = afnl.procesarCadena(cadena);
+                                                        setAfnl = afnl.procesarCadena(cadena);
+                                                        setAfn = afn.procesarCadena(cadena);
                                                     }
-                                                    if (set) {
-                                                        System.out.println("La cadena: " + cadena + " es aceptada");
-                                                    } else {
-                                                        System.out.println("La cadena: " + cadena + " no es aceptada");
+                                                    if (setAfnl) {
+                                                        System.out.println("La cadena: " + cadena + " es aceptada por el AFNL");
+                                                    } else{
+                                                        System.out.println("La cadena: " + cadena + " no es aceptada por el AFNL");
+                                                    }
+                                                    if (setAfn) {
+                                                        System.out.println("La cadena: " + cadena + " es aceptada por el AFN");
+                                                    } else{
+                                                        System.out.println("La cadena: " + cadena + " no es aceptada por el AFN");
                                                     }
                                                     tres = false;
                                                 }
@@ -826,9 +842,12 @@ public class ClasePrueba {
                                                     if (fileComputaciones.showSaveDialog(fileComputaciones) == JFileChooser.CANCEL_OPTION) {
                                                         throw new NullPointerException();
                                                     }
-                                                    String dirArch = fileComputaciones.getSelectedFile().getAbsolutePath();
-                                                    int respuesta = afnl.computarTodosLosProcesamientos(cadena, dirArch);
-                                                    System.out.println("En total, hubo "+ respuesta+ " procesamientos");
+                                                    String dirArch = fileComputaciones.getSelectedFile().getAbsolutePath()+ "afn";
+                                                    int respuestaAfnl = afnl.computarTodosLosProcesamientos(cadena, dirArch + "l");
+                                                    System.out.println("Para el AFNL en total, hubo "+ respuestaAfnl+ " procesamientos");
+                                                    
+                                                    int respuestaAfn = afnl.computarTodosLosProcesamientos(cadena, dirArch);
+                                                    System.out.println("Para el AFN en total, hubo "+ respuestaAfn+ " procesamientos");
                                                     tres = false;
                                                 }
                                             } catch (NullPointerException e) {
