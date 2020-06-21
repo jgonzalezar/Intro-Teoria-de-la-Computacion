@@ -45,5 +45,7 @@ public abstract interface Transitions {
     
 
     public ArrayList<Tuple> get(int state);
+
+    public void remove(String get);
     
 }
