@@ -125,7 +125,6 @@ public class Windows2 extends Windows{
                     }else if(Camino==move.getCadena().length()){
                         blueLabel.get(2).setForeground(Color.BLACK);
                         blueLabel.get(1).setForeground(Color.RED);
-                        trans.setEnabled(false);
                     }else{
                         blueLabel.get(2).setText(caminos[Camino]);
                         blueLabel.get(1).setText(caminos[Camino-1]);
