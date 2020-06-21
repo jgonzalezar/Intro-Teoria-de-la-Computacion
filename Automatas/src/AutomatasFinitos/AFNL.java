@@ -667,8 +667,7 @@ public class AFNL extends AFN{
     }
     
     public AFD AFN_LambdaToAFD(){
-        //return AFN_LambdaToAFN().AFNtoAFD();
-        return null;
+        return AFN_LambdaToAFN().AFNtoAFD();
     }
     
     public AFN AFN_LambdaToAFN(){
@@ -775,11 +774,7 @@ public class AFNL extends AFN{
                 this.estadosInaccesibles.add(Q.get(i));
             }
         }
-        
-       
-        
     }
-
 
 }
 
