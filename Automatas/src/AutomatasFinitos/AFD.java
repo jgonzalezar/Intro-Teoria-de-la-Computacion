@@ -317,8 +317,7 @@ public class AFD {
             for(int j=0;j<F.size();j++){
                 if(Q.indexOf(estadosInaccesibles.get(i))==F.get(j)){
                     F.remove(j);
-                }
-                if(Q.indexOf(estadosInaccesibles.get(i))<F.get(j)){
+                }else if(Q.indexOf(estadosInaccesibles.get(i))<F.get(j)){
                     F.set(j,F.get(j)-1);
                 }
             }
@@ -346,7 +345,7 @@ public class AFD {
     private void identificarEstadosAccesibles(String state) {
         for(int i=0;i<Sigma.length();i++){
             String Stadogo = Delta.cambio(Sigma.get(i), state);
-            if(!state.equals(Stadogo) && !estadosInaccesibles.contains(Stadogo) && Stadogo!=null){
+            if(!state.equals(Stadogo) && !estadosInaccesibles.contains(Stadogo)){
                 estadosInaccesibles.add(Stadogo);
                 identificarEstadosAccesibles(Stadogo);
             }
