@@ -5,13 +5,10 @@
  */
 package AutomatasFinitos;
 
-import LectoresYProcesos.CreadorAutomata;
 import AutomatasFinitos.AFD;
 import Herramientas.Transition;
 import Herramientas.Transitions;
 import java.util.ArrayList;
-import java.lang.Object;
-import java.util.HashMap;
 
 /**
  *
