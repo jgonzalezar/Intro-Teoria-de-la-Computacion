@@ -24,6 +24,10 @@ public class ClaseValidacion {
         this.afn = afn;
     }
     
+    public ClaseValidacion(AFN afn) {
+        this.afn = afn;
+    }
+    
     public void validarAFNLambdaToAFN(Alfabeto sigma){
         AFN Afn = afnl.AFN_LambdaToAFN();
         int cantidadrechazados = 0;
@@ -46,7 +50,7 @@ public class ClaseValidacion {
         ArrayList <String> rechazadas = new ArrayList<>();
         for (int i = 0; i < 5000; i++) {
             String cadena = sigma.generarCadenaAleatoria((int) (Math.random()*i)%100);
-            if(afnl.procesarCadena(cadena) != Afd.procesarCadena(cadena)){
+            if(afn.procesarCadena(cadena) != Afd.procesarCadena(cadena)){
                 cantidadrechazados++;
                 rechazadas.add(cadena);
             }
