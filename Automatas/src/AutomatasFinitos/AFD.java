@@ -63,10 +63,9 @@ public class AFD {
         this.q0 = q0;
         this.F = F;
         this.Delta = Delta;
-
-    }
-    
-    
+        this.estadosInaccesibles=new ArrayList<>();
+        this.estadosLimbo=new ArrayList<>();
+    }    
     
     /**
      * Constructor Inicializa los atributos a partir del archivo de texto.
@@ -191,7 +190,7 @@ public class AFD {
             }
         }catch(Error | Exception e){
             throw new Error("Faltan transiciones a posibles estados limbos");
-        }        
+        }   
         this.Delta = Deltos;
         this.estadosInaccesibles=new ArrayList<>();
         this.estadosLimbo=new ArrayList<>();
@@ -290,7 +289,6 @@ public class AFD {
     
     public void hallarEstadosLimbo(){
         boolean finished;
-        
         ArrayList<String> toEliminate = new ArrayList<>();
         
         for(int i=0; i<Q.size();i++){
@@ -298,7 +296,6 @@ public class AFD {
                 estadosLimbo.add(Q.get(i));
             }
         }
-        
         do{
             toEliminate.clear();
             for(int i=0;i<estadosLimbo.size();i++){
@@ -309,12 +306,26 @@ public class AFD {
                     }
                 }
             }
-            /*for(int i=0;i<toEliminate.size();i++){
-                estadosLimbo.remove(toEliminate.get(i));
-            }*/
             estadosLimbo.removeAll(toEliminate);
             finished = !toEliminate.isEmpty();
         }while(finished);
+    }
+    
+    public void eliminarEstadosInaccesibles(){
+        hallarEstadosInaccesibles();
+        for(int i=0;i<estadosInaccesibles.size();i++){
+            for(int j=0;j<F.size();j++){
+                if(Q.indexOf(estadosInaccesibles.get(i))==F.get(j)){
+                    F.remove(j);
+                }
+                if(Q.indexOf(estadosInaccesibles.get(i))<F.get(j)){
+                    F.set(j,F.get(j)-1);
+                }
+            }
+            Delta.remove(estadosInaccesibles.get(i));
+            Q.remove(estadosInaccesibles.get(i));
+            
+        }
     }
     
     /**
@@ -335,7 +346,7 @@ public class AFD {
     private void identificarEstadosAccesibles(String state) {
         for(int i=0;i<Sigma.length();i++){
             String Stadogo = Delta.cambio(Sigma.get(i), state);
-            if(!state.equals(Stadogo) && !estadosInaccesibles.contains(Stadogo)){
+            if(!state.equals(Stadogo) && !estadosInaccesibles.contains(Stadogo) && Stadogo!=null){
                 estadosInaccesibles.add(Stadogo);
                 identificarEstadosAccesibles(Stadogo);
             }

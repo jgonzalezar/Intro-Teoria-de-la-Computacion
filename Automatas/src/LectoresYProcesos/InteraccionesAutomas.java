@@ -23,41 +23,41 @@ import java.util.Scanner;
  * @author Juan Andres Gonzalez
  */
 public class InteraccionesAutomas {
-    public AFD AFNtoAFD(AFN afn){
+    public static AFD AFNtoAFD(AFN afn){
         //return afn.AFNtoAFD();
         return null;
     }
     
-    public AFN AFN_LambdaToAFN(AFNL afnl){
+    public static AFN AFN_LambdaToAFN(AFNL afnl){
         return new AFNL_AFN(afnl);
     }
     
-    public AFD AFN_LambdaToAFD(AFNL afnl){
+    public static AFD AFN_LambdaToAFD(AFNL afnl){
         return afnl.AFN_LambdaToAFD();
     }
     
-    public AFD hallarComplemento(AFD afdInput){
+    public static AFD hallarComplemento(AFD afdInput){
         //return afdInput.
         return null;
     }
     
-    public AFD hallarProductoCartesianoY(AFD afd1, AFD afd2){
+    public static AFD hallarProductoCartesianoY(AFD afd1, AFD afd2){
         return new AFDProductoY(afd1, afd2);
     }
     
-    public AFD hallarProductoCartesianoO(AFD afd1, AFD afd2){
+    public static AFD hallarProductoCartesianoO(AFD afd1, AFD afd2){
         return new AFDProductoO(afd1, afd2);
     }
     
-    public AFD hallarProductoCartesianoDiferencia(AFD afd1, AFD afd2){
+    public static AFD hallarProductoCartesianoDiferencia(AFD afd1, AFD afd2){
         return new AFDProductoD(afd1, afd2);
     }
     
-    public AFD hallarProductoCartesianoDiferenciaSimetrica(AFD afd1, AFD afd2){
+    public static AFD hallarProductoCartesianoDiferenciaSimetrica(AFD afd1, AFD afd2){
         return new AFDProductoDSim(afd1, afd2);
     }
     
-    public AFD hallarProductoCartesiano(AFD afd1, AFD afd2, String operacion){
+    public static AFD hallarProductoCartesiano(AFD afd1, AFD afd2, String operacion){
         switch(operacion){
             case "interseccion":
                 return hallarProductoCartesianoY(afd1, afd2);
@@ -75,14 +75,14 @@ public class InteraccionesAutomas {
         }
     }
     
-    public AFD simplificarAFD(AFD afdInput){
+    public static AFD simplificarAFD(AFD afdInput){
         return new AFDSimplificacion(afdInput);
     }
     
     /**
     * estados que ayudan a determinar la informacion actual que se esta recibiendo
     */ 
-    public enum Lecto{
+    public static enum Lecto{
         /**
          * estado inicial
          */
@@ -117,7 +117,7 @@ public class InteraccionesAutomas {
      * enum diseñado para escoger alguno de los tipos de los automatas
      */
     
-    public enum Type{
+    public static enum Type{
         /**
          * automata finito determinista
          */
