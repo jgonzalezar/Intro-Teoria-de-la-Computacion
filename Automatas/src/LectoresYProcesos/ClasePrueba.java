@@ -6,8 +6,12 @@
 package LectoresYProcesos;
 
 import AutomatasFinitos.AFD;
+import AutomatasFinitos.AFDSimplificacion;
 import AutomatasFinitos.AFN;
 import AutomatasFinitos.AFNL;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,6 +23,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import visuall.*;
 
 /**
  *
@@ -1105,6 +1110,197 @@ public class ClasePrueba {
                 if (a == 2 || a == JOptionPane.CLOSED_OPTION) {
                     return Lectura.salir;
                 } else if (a == 1) {
+                    return Lectura.CrearAutomata;
+                }
+            }
+        } catch (Error e) {
+            System.err.print(e.getMessage());
+            return Lectura.CrearAutomata;
+        } catch (FileNotFoundException e) {
+
+            return Lectura.CrearAutomata;
+        }
+    }
+    
+    private Lectura probarSimplificacion(){
+        try {
+            AFD afd = new AFD(url);
+            AFD simpl = new AFDSimplificacion(afd);
+            while (true) {
+
+                String[] options1 = {"Mostrar comparacion de automata\n y su simplificacion", "mostrar visual del automata simplificado","simular cadenas de forma visual","procesar Cadenas","Salir"};
+                int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
+                switch(f){
+                    case 0://tostring
+                        System.out.println("AFD original:");
+                        System.out.println(afd.toString());
+                        System.out.println("AFD simplificado");
+                        String d = simpl.toString();
+                        System.out.println(d);
+                        pause();
+                        switch(JOptionPane.showConfirmDialog(null, "Desea guardar el nuevo automata en el portapapeles?", "guardado de simplificacion", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE)){
+                            case JOptionPane.YES_OPTION:
+                                StringSelection stringSelection = new StringSelection(d);
+                                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                                clipboard.setContents(stringSelection, null);
+                                System.out.println("\nautomata simplificado copiado al portapapeles");
+                                break;
+                        }
+                        break;
+                    case 1://visuallibre
+                        int slashIndex = url.lastIndexOf('\\');
+                        int dotIndex = url.lastIndexOf('.');
+                        String expresion;
+                        if (dotIndex == -1) {
+                            expresion = url.substring(slashIndex + 1);
+                        } else {
+                            expresion = url.substring(slashIndex + 1, dotIndex);
+                        }
+                        expresion = expresion.replace('\'', '*');
+                        Windows1 visual = new Windows1(expresion, simpl);
+                        visual.Simulat();
+                        break;
+                    case 2://visual forzado
+                        int s = url.lastIndexOf('\\');
+                        int df = url.lastIndexOf('.');
+                        String exe;
+                        if (df == -1) {
+                            exe = url.substring(s + 1);
+                        } else {
+                            exe = url.substring(s + 1, df);
+                        }
+                        exe = exe.replace('\'', '*');
+                        Windows3 visuals = new Windows3(exe, simpl);
+                        visuals.Simulat();
+                        break;
+                    case 3://provesar
+                        
+                        break;
+                    case 4:
+                        return Lectura.salir;
+                    default:
+                        return Lectura.CrearAutomata;
+                }
+                int i = JOptionPane.showConfirmDialog(null, "Desea ingresar más de una cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                switch (i) {
+                    case JOptionPane.YES_OPTION:
+                        boolean dos = true;
+                        do {
+                            try {
+                                ArrayList<String> cadenas = new ArrayList<>();
+                                int k = JOptionPane.showConfirmDialog(null, "Desea ingresar un archivo con las cadenas", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                                switch (k) {
+                                    case JOptionPane.YES_OPTION:
+                                        JFileChooser file = new JFileChooser(new File("."));
+                                        file.setDialogTitle("Seleccione el archivo que contiene la lista de cadenas");
+                                        if (file.showOpenDialog(file) == JFileChooser.CANCEL_OPTION) {
+                                            throw new NullPointerException();
+                                        }
+                                        String asd = file.getSelectedFile().getAbsolutePath();
+
+                                        Scanner s = new Scanner(new File(asd));
+                                        while (s.hasNext()) {
+                                            String as = s.next();
+                                            if (!(afd.ponerCadena(as).size() > 0)) {
+                                                cadenas.add(as);
+                                            }
+                                        }
+                                        break;
+                                    case JOptionPane.NO_OPTION:
+                                        int de = JOptionPane.YES_OPTION;
+                                        do {
+                                            try {
+                                                String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
+                                                ArrayList<Character> error = afd.ponerCadena(cadena);
+                                                if (error.size() > 0) {
+                                                    String errors = "";
+                                                    for (Character character : error) {
+                                                        errors += character + " ";
+                                                    }
+                                                    JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
+                                                } else {
+                                                    cadenas.add(cadena);
+                                                    de = JOptionPane.showConfirmDialog(null, "¿Desea agregar otra cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
+                                                }
+                                            } catch (NullPointerException e) {
+                                                de = JOptionPane.CANCEL_OPTION;
+                                            }
+                                        } while (de == JOptionPane.YES_OPTION);
+                                        break;
+                                }
+
+                                Set<String> hashSet = new HashSet<>(cadenas);
+                                cadenas.clear();
+                                cadenas.addAll(hashSet);
+                                String cadenasd = "";
+                                for (String cadena : cadenas) {
+                                    cadenasd += cadena + "\n";
+                                }
+                                JOptionPane.showMessageDialog(null, "Las cadenas dadas son: \n" + cadenasd, "Cadenas Dadas", JOptionPane.INFORMATION_MESSAGE);
+                                JFileChooser file = new JFileChooser(new File("."));
+                                file.setDialogTitle("Elija nombre y ubicación para el archivo con la respuesta");
+                                file.setSelectedFile(new File("Respuesta.txt"));
+                                if (file.showSaveDialog(file) == JFileChooser.CANCEL_OPTION) {
+                                    throw new NullPointerException();
+                                }
+                                String asd = file.getSelectedFile().getAbsolutePath();
+                                String[] listaCadenas = new String[cadenas.size()];
+                                for (int j = 0; j < cadenas.size(); j++) {
+                                    listaCadenas[j] = cadenas.get(j);
+                                }
+                                afd.procesarListaCadenas(listaCadenas, asd, JOptionPane.showConfirmDialog(null, "Desea imprimir en consola tambien?", "Seleccione una opción", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION);
+                                dos = false;
+                            } catch (NullPointerException e) {
+                                dos = false;
+                            }
+
+                        } while (dos);
+                        break;
+
+                    case JOptionPane.NO_OPTION:
+                        boolean tres = true;
+                        do {
+                            try {
+                                String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
+                                ArrayList<Character> error = afd.ponerCadena(cadena);
+                                if (error.size() > 0) {
+                                    String errors = "";
+                                    for (Character character : error) {
+                                        errors += character + " ";
+                                    }
+                                    JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
+                                } else {
+                                    boolean set;
+                                    if (JOptionPane.showConfirmDialog(null, "Desea mostrar el camino recorrido a la hora de evaluar la cadena?", "Seleccione una opción", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                                        set = afd.procesarCadenaConDetalles(cadena);
+                                    } else {
+                                        set = afd.procesarCadena(cadena);
+                                    }
+                                    if (set) {
+                                        System.out.println("La cadena: " + cadena + " es aceptada");
+                                    } else {
+                                        System.out.println("La cadena: " + cadena + " no es aceptada");
+                                    }
+                                    tres = false;
+                                }
+                            } catch (NullPointerException e) {
+                                tres = false;
+                            }
+
+                        } while (tres);
+
+                        break;
+
+                    default:
+                        //una
+                        break;
+                }
+                pause();
+                String[] options = {"Evaluar otra cadena", "Cambiar De Automata", "Salir"};
+                int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Seleccione", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
+                if (f == 2 || f == JOptionPane.CLOSED_OPTION) {
+                    return Lectura.salir;
+                } else if (f == 1) {
                     return Lectura.CrearAutomata;
                 }
             }
