@@ -5,9 +5,11 @@
  */
 package LectoresYProcesos;
 
+import AutomatasFinitos.AFD;
 import AutomatasFinitos.AFN;
 import AutomatasFinitos.AFNL;
 import AutomatasFinitos.Alfabeto;
+import java.util.ArrayList;
 
 /**
  *
@@ -25,14 +27,36 @@ public class ClaseValidacion {
         this.afn = afn;
     }
     
-    void validarAFNLambdaToAFN(AFNL afnl,Alfabeto sigma){
+    public void validarAFNLambdaToAFN(Alfabeto sigma){
         AFN Afn = afnl.AFN_LambdaToAFN();
-        
+        int cantidadrechazados = 0;
+        ArrayList <String> rechazadas = new ArrayList<>();
         for (int i = 0; i < 5000; i++) {
-            afnl.getSigma().generarCadenaAleatoria((int) (Math.random()*i)%100);
-            
+            String cadena = sigma.generarCadenaAleatoria((int) (Math.random()*i)%100);
+            if(afnl.procesarCadena(cadena) != Afn.procesarCadena(cadena)){
+                cantidadrechazados++;
+                rechazadas.add(cadena);
+            }
         }
-        
-        
+        System.out.println("Casos con el mismo resultado: " + (5000-cantidadrechazados));
+        System.out.println("Casos con diferente resultado: " + cantidadrechazados);
+        System.out.println(rechazadas.toString().substring(1, rechazadas.toString().length()-1));
     }
+    
+    public void validarAFNtoAFD(Alfabeto sigma){
+        AFD Afd = afn.AFNtoAFD();
+        int cantidadrechazados = 0;
+        ArrayList <String> rechazadas = new ArrayList<>();
+        for (int i = 0; i < 5000; i++) {
+            String cadena = sigma.generarCadenaAleatoria((int) (Math.random()*i)%100);
+            if(afnl.procesarCadena(cadena) != Afd.procesarCadena(cadena)){
+                cantidadrechazados++;
+                rechazadas.add(cadena);
+            }
+        }
+        System.out.println("Casos con el mismo resultado: " + (5000-cantidadrechazados));
+        System.out.println("Casos con diferente resultado: " + cantidadrechazados);
+        System.out.println(rechazadas.toString().substring(1, rechazadas.toString().length()-1));
+    }
+    
 }
