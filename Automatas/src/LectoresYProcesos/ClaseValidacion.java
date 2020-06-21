@@ -5,6 +5,7 @@
  */
 package LectoresYProcesos;
 
+import AutomatasFinitos.AFN;
 import AutomatasFinitos.AFNL;
 import AutomatasFinitos.Alfabeto;
 
@@ -13,7 +14,24 @@ import AutomatasFinitos.Alfabeto;
  * @author fanat
  */
 public class ClaseValidacion {
-    void validarAFNLambdaToAFN(Alfabeto sigma){
+    private AFNL afnl;
+    private AFN afn;
+
+    public ClaseValidacion(AFNL afnl) {
+        this.afnl = afnl;
+    }
+
+    public ClaseValidacion(AFN afn) {
+        this.afn = afn;
+    }
+    
+    void validarAFNLambdaToAFN(AFNL afnl,Alfabeto sigma){
+        AFN Afn = afnl.AFN_LambdaToAFN();
+        
+        for (int i = 0; i < 5000; i++) {
+            afnl.getSigma().generarCadenaAleatoria((int) (Math.random()*i)%100);
+            
+        }
         
         
     }

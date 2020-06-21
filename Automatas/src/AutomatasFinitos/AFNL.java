@@ -24,17 +24,23 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 
 /**
- * Esta clase es el automata finito no determinista con transiciones lambda en este automata se puede realizar el procesamiento de cadenas sobre el automata ingresado.
+ * Esta clase es el automata finito no determinista con transiciones lambda en
+ * este automata se puede realizar el procesamiento de cadenas sobre el automata
+ * ingresado.
+ *
  * @author jgonzalezar, ivonn, fnat
  */
-public class AFNL extends AFN{
+public class AFNL extends AFN {
+
     /**
-     * El atributo lambda representa el caracter que actua para hacer la transiciòn lambda del automata.
+     * El atributo lambda representa el caracter que actua para hacer la
+     * transiciòn lambda del automata.
      */
     private final char lambda = '$';
-    
+
     /**
      * Constructor, inicializa los atributos.
+     *
      * @param E Alfabeto
      * @param Q Conjunto de estados
      * @param q0 Estado inicial
@@ -53,8 +59,10 @@ public class AFNL extends AFN{
         this.Delta = delta;
 
     }
+
     /**
      * Inicializa los atributos a partir del archivo de texto.
+     *
      * @param nombreArchivo nombre que se le quiere dar al archivo
      */
     public AFNL(String nombreArchivo) {
@@ -197,10 +205,13 @@ public class AFNL extends AFN{
         this.Delta = transition;
 
     }
+
     /**
      * Encuentra el lambda clausura de un solo estado.
-     * @param estado estado del que se desea hallar la lambda clausura. 
-     * @return  Lista de enteros representando los índices de los estados pertenecientes a la lambda clausura del estado dado.
+     *
+     * @param estado estado del que se desea hallar la lambda clausura.
+     * @return Lista de enteros representando los índices de los estados
+     * pertenecientes a la lambda clausura del estado dado.
      */
     public ArrayList<Integer> lambdaClausura_unEstado(int estado) {
         ArrayList<Integer> lClausura;
@@ -230,31 +241,38 @@ public class AFNL extends AFN{
 
         return lClausura;
     }
+
     /**
      * Imprime en cosola la lambdaclausura de un solo estado.
+     *
      * @param estado estado del que se desea imprimir la lambda clausura.
-     * @return 
+     * @return
      */
     public ArrayList<Integer> ImprimirlambdaClausura_unEstado(int estado) {
-        String lambdaC = "λ["+Q.get(estado)+"] = {";
+        String lambdaC = "λ[" + Q.get(estado) + "] = {";
         ArrayList<Integer> Clausura = lambdaClausura_unEstado(estado);
         //System.out.println("lambda clausura del estado " + Q.get(estado) + " es:");
         //System.out.print("$["+Q.get(estado)+"] = {");
-        
+
         for (Integer integer : Clausura) {
             String cadena = Q.get(integer) + ",";
             lambdaC += cadena;
         }
-        
-        lambdaC = lambdaC.substring(0, lambdaC.length()-1) + "}.";
+
+        lambdaC = lambdaC.substring(0, lambdaC.length() - 1) + "}.";
         System.out.println(lambdaC);
-        
+
         return Clausura;
     }
+
     /**
-     * Encuentra el lambda clausura de varios estados , devuelve las lambdaclausuras de los estados juntas, como una sola.
-     * @param estados lista de estados de los cuales quiere hallar la lambda clausura.
-     * @return Lista de enteros representando los índices de los estados pertenecientes a la lambda clausura de los estados dados.
+     * Encuentra el lambda clausura de varios estados , devuelve las
+     * lambdaclausuras de los estados juntas, como una sola.
+     *
+     * @param estados lista de estados de los cuales quiere hallar la lambda
+     * clausura.
+     * @return Lista de enteros representando los índices de los estados
+     * pertenecientes a la lambda clausura de los estados dados.
      */
     public ArrayList<Integer> lambdaClausura_variosEstado(ArrayList<Integer> estados) {
         ArrayList<Integer> lClausura_estados = new ArrayList<>();
@@ -271,9 +289,13 @@ public class AFNL extends AFN{
         return lClausura_estados;
 
     }
+
     /**
-     * Imprime el lambda clausura de varios estados , devuelve las lambdaclausuras de los estados juntas, como una sola.
-     * @param estados lista de estados de los cuales quiere Imprimir la lambda clausura.
+     * Imprime el lambda clausura de varios estados , devuelve las
+     * lambdaclausuras de los estados juntas, como una sola.
+     *
+     * @param estados lista de estados de los cuales quiere Imprimir la lambda
+     * clausura.
      */
     public void ImprimirlambdaClausura_variosEstado(ArrayList<Integer> estados) {
 
@@ -292,8 +314,11 @@ public class AFNL extends AFN{
         System.out.println("}");
 
     }
+
     /**
-     * imprime los caminos que son aceptados o rechazados o abortados del procesaiento de la cadena dada segun la opcion que se escoja.
+     * imprime los caminos que son aceptados o rechazados o abortados del
+     * procesaiento de la cadena dada segun la opcion que se escoja.
+     *
      * @param cadena cadena a evaluar.
      * @param computacion numero dado que define la opcion escogida.
      */
@@ -318,8 +343,12 @@ public class AFNL extends AFN{
         }
 
     }
+
     /**
-     * Guarda todos los caminos posibles en los cuales la cadena se puede evaluar sin importar si son de aceptacion , rechazo o aborto.     * 
+     * Guarda todos los caminos posibles en los cuales la cadena se puede
+     * evaluar sin importar si son de aceptacion , rechazo o aborto.
+     *
+     *
      * @param cadena cadena a evaluar.
      */
     private RespuestaMult caminosPosibles(String cadena) {
@@ -333,16 +362,22 @@ public class AFNL extends AFN{
             return Iteracion(cadena.charAt(cadena.length() - 1), caminos);
         }
     }
+
     /**
-     * Evalua la cadena dada y guarda una lista de los procesamientos Aceptados, Abortados y Rechazados junto con un conjunto de metodos que nos periten acceder a esta informacion.
+     * Evalua la cadena dada y guarda una lista de los procesamientos Aceptados,
+     * Abortados y Rechazados junto con un conjunto de metodos que nos periten
+     * acceder a esta informacion.
+     *
      * @param cadena cadena a evaluar.
      */
     private ProcesamientoCadenaAFNLambda procesarCadenad(String cadena) {
         RespuestaMult rta = caminosPosibles(cadena);
         return procesamiento(cadena, rta);
     }
+
     /**
-     *Guarda el valor booleano que indica si la cadena es o no aceptada 
+     * Guarda el valor booleano que indica si la cadena es o no aceptada
+     *
      * @param palabra cadena a evaluar.
      * @return verdadero si la palabra es aceptada, falso en otro caso.
      */
@@ -350,8 +385,13 @@ public class AFNL extends AFN{
     public boolean procesarCadena(String palabra) {
         return procesarCadenad(palabra).isEsAceptada();
     }
+
     /**
-     *Guarda el valor booleano que indica si la cadena es o no aceptada , ademas de esto imprime el camino mas corto de aceptacion de la cadena, si la cadena es aceptada , de lo contrario imprime el caino mas corto de Rechazo de la cadena.
+     * Guarda el valor booleano que indica si la cadena es o no aceptada ,
+     * ademas de esto imprime el camino mas corto de aceptacion de la cadena, si
+     * la cadena es aceptada , de lo contrario imprime el caino mas corto de
+     * Rechazo de la cadena.
+     *
      * @param word cadena a evaluar.
      * @return verdadero si la palabra es aceptada, falso en otro caso.
      */
@@ -361,8 +401,12 @@ public class AFNL extends AFN{
         System.out.println(fin.imprimirCamino());
         return fin.isEsAceptada();
     }
+
     /**
-     *Procesa y guarda una iteracion de la evaluacion de la cadena ,  solo procesa la evaluacion de uno de los caracteres de la cadena y guarda como quedarian los posibles caminos despues de la evaluacion de ese caracter.
+     * Procesa y guarda una iteracion de la evaluacion de la cadena , solo
+     * procesa la evaluacion de uno de los caracteres de la cadena y guarda como
+     * quedarian los posibles caminos despues de la evaluacion de ese caracter.
+     *
      * @param letra letra a evaluar.
      * @param caminos caminos recorridos y guardados hasta el momento.
      * @return Lista de caminos recorridos.
@@ -397,13 +441,17 @@ public class AFNL extends AFN{
         }
         return caminos;
     }
+
     /**
-     *Crea y retorna el String de una sola iteracion (cambio de estado con un caracer) de un camino especifico del procesamiento de la cadena. 
+     * Crea y retorna el String de una sola iteracion (cambio de estado con un
+     * caracer) de un camino especifico del procesamiento de la cadena.
+     *
      * @param cadena cadena evaluada.
      * @param caracter caracter que evalua.
      * @param estadoActual caminos recorridos y guardados hasta el momento .
      * @param estadoSiguiente caminos recorridos y guardados hasta el momento .
-     * @return String de una sola iteracion (cambio de estado con un caracer) de un camino especifico del procesamiento de la cadena
+     * @return String de una sola iteracion (cambio de estado con un caracer) de
+     * un camino especifico del procesamiento de la cadena
      */
     public String saltoDeEstados(String cadena, char caracter, int estadoActual, Integer estadoSiguiente) {
         ArrayList<Integer> alQueVa = this.Delta.getMove(estadoActual, caracter);
@@ -437,8 +485,12 @@ public class AFNL extends AFN{
         }
         return camino;
     }
+
     /**
-     *Crea y guarda los String de todos los caminos posibles del procesamiento de la cadena segun los parametros del profesor, adeas de esto retorna el procesamiento completo de la cadena AFNL.
+     * Crea y guarda los String de todos los caminos posibles del procesamiento
+     * de la cadena segun los parametros del profesor, adeas de esto retorna el
+     * procesamiento completo de la cadena AFNL.
+     *
      * @param cadena cadena a evaluar.
      * @param respuesta lista de caminos recorridos.
      * @return Lista de los procesamientos de la cadena.
@@ -488,16 +540,19 @@ public class AFNL extends AFN{
 
         return new ProcesamientoCadenaAFNLambda(cadena, tupla);
     }
-    
+
     /**
-     *Devuelve la lista de estados totales del automata.
+     * Devuelve la lista de estados totales del automata.
+     *
      * @return Lista de los estados del automata.
      */
     public ArrayList<String> getQ() {
         return Q;
     }
+
     /**
-     *Devuelve la lista de estados totales del automata como un arreglo.
+     * Devuelve la lista de estados totales del automata como un arreglo.
+     *
      * @return Arreglo de los estados del automata.
      */
     public String[] GetQ() {
@@ -508,10 +563,17 @@ public class AFNL extends AFN{
         }
         return estados;
     }
+
     /**
-     * Imprime cada uno de los posibles procesamientos de la cadena indicando de qué estado a qué estado pasa al procesar cada símbolo e indicanda si al final de cada procesamiento se llega a aceptación o rechazo.Llena una lista de todos procesamientos de aceptación, una lista de todos los procesamientos abortados y una lista de todos los procesamientos de rechazo.
-     Guardar los contenidos de estas listas cada una en un archivo .txt (uno diferente para cada tipo de camino)y las imprime en pantalla.
-     Retorna el numero total de procesamientos
+     * Imprime cada uno de los posibles procesamientos de la cadena indicando de
+     * qué estado a qué estado pasa al procesar cada símbolo e indicanda si al
+     * final de cada procesamiento se llega a aceptación o rechazo.Llena una
+     * lista de todos procesamientos de aceptación, una lista de todos los
+     * procesamientos abortados y una lista de todos los procesamientos de
+     * rechazo. Guardar los contenidos de estas listas cada una en un archivo
+     * .txt (uno diferente para cada tipo de camino)y las imprime en pantalla.
+     * Retorna el numero total de procesamientos
+     *
      * @param cadena cadena a evaluar.
      * @param nombreArchivo nombre que se le quiere dar a los archivos.
      * @return Procesamientos.
@@ -520,11 +582,11 @@ public class AFNL extends AFN{
         String nombreArchivoAceptados;
         String nombreArchivoRechazados;
         String nombreArchivoAbortados;
-        if((nombreArchivo.contains(".txt")&&(!nombreArchivo.substring(nombreArchivo.length()-4).equals(".txt")))|| !nombreArchivo.contains(".txt")){
+        if ((nombreArchivo.contains(".txt") && (!nombreArchivo.substring(nombreArchivo.length() - 4).equals(".txt"))) || !nombreArchivo.contains(".txt")) {
             nombreArchivoAceptados = nombreArchivo + "Aceptados.txt";
             nombreArchivoRechazados = nombreArchivo + "Rechazados.txt";
             nombreArchivoAbortados = nombreArchivo + "Abortados.txt";
-        }else {
+        } else {
             String[] parts = nombreArchivo.split("\\.");
             String part1 = parts[0];
             String part2 = parts[1];
@@ -615,129 +677,132 @@ public class AFNL extends AFN{
         }
         return TotaldeProcesamientos;
     }
-    
+
     /**
-     * procesa cada cadena con y los resultados son impresos en un archivo cuyo nombre es nombreArchivo; si este es inválido se asigna
-     un nombre por defecto. Además todo esto es impreso en pantalla de acuerdo al valor del Booleano imprimirPantalla.
+     * procesa cada cadena con y los resultados son impresos en un archivo cuyo
+     * nombre es nombreArchivo; si este es inválido se asigna un nombre por
+     * defecto. Además todo esto es impreso en pantalla de acuerdo al valor del
+     * Booleano imprimirPantalla.
+     *
      * @param listaCadenas lista de cadenas a evaluar.
      * @param nombreArchivo nombre que se le quiere dar a el archivo.
-     * @param imprimirPantalla valor boolean que deterina si se imprimen o no los resultads en pantalla.
+     * @param imprimirPantalla valor boolean que deterina si se imprimen o no
+     * los resultads en pantalla.
      */
-    
     @Override
-    public void procesarListaCadenas(String[] listaCadenas,String nombreArchivo, boolean imprimirPantalla){
-    if (!nombreArchivo.contains(".txt")||(!nombreArchivo.substring(nombreArchivo.length()-4).equals(".txt"))) {
-        nombreArchivo= nombreArchivo+".txt" ;
-    }
-    FileWriter fichero = null;
-    PrintWriter pw = null;
-    try {
-        File nombre = new File(nombreArchivo);
-        if (!nombre.exists()) {
-            nombre.createNewFile();
+    public void procesarListaCadenas(String[] listaCadenas, String nombreArchivo, boolean imprimirPantalla) {
+        if (!nombreArchivo.contains(".txt") || (!nombreArchivo.substring(nombreArchivo.length() - 4).equals(".txt"))) {
+            nombreArchivo = nombreArchivo + ".txt";
         }
-        nombre.createNewFile();
-        fichero = new FileWriter(nombre);
-        pw = new PrintWriter(fichero);
-        for(int i=0;i<listaCadenas.length;i++){
-            ProcesamientoCadenaAFNLambda procesamiento = procesarCadenad(listaCadenas[i]);
-            ArrayList<String> Aceptados = procesamiento.getListaProcesamientosAceptacion();
-            ArrayList<String> Rechazados = procesamiento.getListaProcesamientosRechazados();
-            ArrayList<String> Abortados = procesamiento.getListaProcesamientosAbortados();
-            int TotaldeProcesamientos = Aceptados.size() + Rechazados.size() + Abortados.size();
-            String Aceptada = (procesamiento.isEsAceptada())?"si":"no";
-            pw.println(listaCadenas[i]+"  "+procesamiento.imprimirCamino()+"    Numero de procesamientos: ["+TotaldeProcesamientos+"]    Procesamientos aceptados: ["
-            +Aceptados.size()+"]   Procesamientos rechazados: ["+Rechazados.size()+"]   Procesamientos abortados ["+Abortados.size()+"]    La cadena "+Aceptada+ " fue aceptada");
-            if(imprimirPantalla==true){
-                System.out.println(listaCadenas[i]+"  "+procesamiento.imprimirCamino()+"    Numero de procesamientos: ["+TotaldeProcesamientos+"]    Procesamientos aceptados: ["
-                +Aceptados.size()+"]   Procesamientos rechazados: ["+Rechazados.size()+"]   Procesamientos abortados ["+Abortados.size()+"]   La cadena "+Aceptada+ " fue aceptada");
-            }    
-        }
-    } catch (Exception e) {
-        e.printStackTrace();
-    } finally {
+        FileWriter fichero = null;
+        PrintWriter pw = null;
         try {
-            if (null != fichero) {
-                fichero.close();
+            File nombre = new File(nombreArchivo);
+            if (!nombre.exists()) {
+                nombre.createNewFile();
             }
-        } catch (Exception e2) {
-                    e2.printStackTrace();
+            nombre.createNewFile();
+            fichero = new FileWriter(nombre);
+            pw = new PrintWriter(fichero);
+            for (int i = 0; i < listaCadenas.length; i++) {
+                ProcesamientoCadenaAFNLambda procesamiento = procesarCadenad(listaCadenas[i]);
+                ArrayList<String> Aceptados = procesamiento.getListaProcesamientosAceptacion();
+                ArrayList<String> Rechazados = procesamiento.getListaProcesamientosRechazados();
+                ArrayList<String> Abortados = procesamiento.getListaProcesamientosAbortados();
+                int TotaldeProcesamientos = Aceptados.size() + Rechazados.size() + Abortados.size();
+                String Aceptada = (procesamiento.isEsAceptada()) ? "si" : "no";
+                pw.println(listaCadenas[i] + "  " + procesamiento.imprimirCamino() + "    Numero de procesamientos: [" + TotaldeProcesamientos + "]    Procesamientos aceptados: ["
+                        + Aceptados.size() + "]   Procesamientos rechazados: [" + Rechazados.size() + "]   Procesamientos abortados [" + Abortados.size() + "]    La cadena " + Aceptada + " fue aceptada");
+                if (imprimirPantalla == true) {
+                    System.out.println(listaCadenas[i] + "  " + procesamiento.imprimirCamino() + "    Numero de procesamientos: [" + TotaldeProcesamientos + "]    Procesamientos aceptados: ["
+                            + Aceptados.size() + "]   Procesamientos rechazados: [" + Rechazados.size() + "]   Procesamientos abortados [" + Abortados.size() + "]   La cadena " + Aceptada + " fue aceptada");
                 }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (null != fichero) {
+                    fichero.close();
+                }
+            } catch (Exception e2) {
+                e2.printStackTrace();
+            }
         }
     }
-    
-    public AFD AFN_LambdaToAFD(){
+
+    public AFD AFN_LambdaToAFD() {
         return AFN_LambdaToAFN().AFNtoAFD();
     }
-    
-    public AFN AFN_LambdaToAFN(){
+
+    public AFN AFN_LambdaToAFN() {
         ArrayList<Integer> aceptacion = new ArrayList<>();
         TransitionAFN delta = new TransitionAFN(this.Q.size());
-        
+
         for (int i = 0; i < Q.size(); i++) {
             ArrayList<Integer> lclausura = ImprimirlambdaClausura_unEstado(i);
             for (Integer F1 : this.F) {
-                if(lclausura.contains(F1)){
+                if (lclausura.contains(F1)) {
                     aceptacion.add(i);
                 }
             }
         }
-        
+
         for (int i = 0; i < Q.size(); i++) {
             for (int j = 0; j < Sigma.length(); j++) {
-                delta.add(Sigma.get(j), i, trancisiones(i,Sigma.get(j)));
+                delta.add(Sigma.get(j), i, trancisiones(i, Sigma.get(j)));
             }
         }
-        
+
         Set<Integer> hashSet = new HashSet<>(aceptacion);
         aceptacion.clear();
         aceptacion.addAll(hashSet);
         return new AFN(Sigma, Q, q0, aceptacion, delta);
     }
-    
-    public int[] trancisiones(int estado, char simb){
-        String output = "Δ'("+this.Q.get(estado)+","+simb+") = λ[Δ(λ["+this.Q.get(estado)+"],"+simb+")] = λ[Δ({";
+
+    public int[] trancisiones(int estado, char simb) {
+        String output = "Δ'(" + this.Q.get(estado) + "," + simb + ") = λ[Δ(λ[" + this.Q.get(estado) + "]," + simb + ")] = λ[Δ({";
         ArrayList<Integer> lclausuraEstado = lambdaClausura_unEstado(estado);
         for (int i = 0; i < lclausuraEstado.size(); i++) {
             output += this.Q.get(lclausuraEstado.get(i)) + ",";
         }
-        output = output.substring(0, output.length()-1) + "},"+simb+")] = λ[{";
+        output = output.substring(0, output.length() - 1) + "}," + simb + ")] = λ[{";
         RespuestaMult camino = new RespuestaMult();
         camino.add(estado);
-        ArrayList<Integer> finals = Iteracion(simb,camino).getFinals();
+        ArrayList<Integer> finals = Iteracion(simb, camino).getFinals();
         Boolean bool;
-        do{
+        do {
             bool = finals.remove(null);
-        }while (bool);
-        
-        if(finals.size() > 1){
+        } while (bool);
+
+        if (finals.size() > 1) {
             for (int i = 0; i < finals.size(); i++) {
-            output += this.Q.get(finals.get(i)) + ",";
+                output += this.Q.get(finals.get(i)) + ",";
             }
-        
-            output = output.substring(0, output.length()-1) + "}] = ";
-            
+
+            output = output.substring(0, output.length() - 1) + "}] = ";
+
             for (int i = 0; i < finals.size(); i++) {
-                output += "λ[{"+this.Q.get(finals.get(i))+"}] U ";
+                output += "λ[{" + this.Q.get(finals.get(i)) + "}] U ";
             }
-            output = output.substring(0, output.length()-2) + "= {";
-        }else if(finals.isEmpty()){
+            output = output.substring(0, output.length() - 2) + "= {";
+        } else if (finals.isEmpty()) {
             output += "∅}] = {";
-        }else{
-            output += this.Q.get(finals.get(0))+"}] = {";
-        } 
-        
+        } else {
+            output += this.Q.get(finals.get(0)) + "}] = {";
+        }
+
         ArrayList<Integer> lclauMul = lambdaClausura_variosEstado(finals);
-        
-        if(!lclauMul.isEmpty()){
+
+        if (!lclauMul.isEmpty()) {
             for (int i = 0; i < lclauMul.size(); i++) {
                 output += this.Q.get(lclauMul.get(i)) + ",";
             }
-        }else{
+        } else {
             output += "∅,";
         }
-        
-        output = output.substring(0, output.length()-1) + "}.";
+
+        output = output.substring(0, output.length() - 1) + "}.";
         System.out.println(output);
         int[] rta = new int[lclauMul.size()];
         for (int i = 0; i < lclauMul.size(); i++) {
@@ -745,36 +810,76 @@ public class AFNL extends AFN{
         }
         return rta;
     }
-    
-    public boolean procesarCadenaConversion(String cadena){
+
+    public boolean procesarCadenaConversion(String cadena) {
         return AFN_LambdaToAFD().procesarCadena(cadena);
     }
-    
-    public boolean procesarCadenaConDetallesConversion(String cadena){
+
+    public boolean procesarCadenaConDetallesConversion(String cadena) {
         return AFN_LambdaToAFD().procesarCadenaConDetalles(cadena);
     }
-    
-    public void procesarListaCadenasConversion(String[] listaCadenas,String nombreArchivo, boolean imprimirPantalla){
+
+    public void procesarListaCadenasConversion(String[] listaCadenas, String nombreArchivo, boolean imprimirPantalla) {
         AFN_LambdaToAFD().procesarListaCadenas(listaCadenas, nombreArchivo, imprimirPantalla);
     }
-    
-    public void EstadosInaccesibles(){
+
+    public void EstadosInaccesibles() {
         ArrayList<Integer> EstadosAccesibles = null;
-        for(int i=0; i< this.Q.size();i++){
-            for(int j=0;j< this.Sigma.length();j++){
-                for (int k=0;k<Delta.getMove(i, Sigma.get(j)).size();k++){
-                    if(!EstadosAccesibles.contains(Delta.getMove(i, Sigma.get(j)).get(k))&& !Delta.getMove(i, Sigma.get(j)).isEmpty()){
+        for (int i = 0; i < this.Q.size(); i++) {
+            for (int j = 0; j < this.Sigma.length(); j++) {
+                for (int k = 0; k < Delta.getMove(i, Sigma.get(j)).size(); k++) {
+                    if (!EstadosAccesibles.contains(Delta.getMove(i, Sigma.get(j)).get(k)) && !Delta.getMove(i, Sigma.get(j)).isEmpty()) {
                         EstadosAccesibles.add(Delta.getMove(i, Sigma.get(j)).get(k));
                     }
                 }
             }
         }
-        for (int i=0;i<this.Q.size();i++){
-            if (!EstadosAccesibles.contains(i)){
+        for (int i = 0; i < this.Q.size(); i++) {
+            if (!EstadosAccesibles.contains(i)) {
                 this.estadosInaccesibles.add(Q.get(i));
             }
         }
     }
 
-}
+    @Override
+    public String toString() {
+        String cadena = "!nfe\n";
+        cadena += "alphabet\n";
+        for (int i = 0; i < Sigma.toString().length(); i++) {
+            cadena += Sigma.toString().charAt(i);
+            if (Sigma.toString().length() - 1 >= i) {
+                cadena += "\n";
+            } else {
+                cadena += "-";
+            }
 
+        }
+        cadena += "#states\n";
+        for (int i = 0; i < Q.size(); i++) {
+            cadena += Q.get(i) + "\n";
+        }
+        cadena += "#initial\n" + q0 + "\n" + "#accepting\n";
+        for (int i = 0; i < F.size(); i++) {
+            cadena += Q.get(F.get(i)) + "\n";
+        }
+        cadena += "#transitions\n";
+        for (int i = 0; i < Q.size(); i++) {
+            for (int j = 0; j < this.Sigma.length(); j++) {
+                for (int k = 0; k < Delta.getMove(i, Sigma.get(j)).size(); k++) {
+                    if (!Delta.getMove(i, Sigma.get(j)).isEmpty()) {
+                        cadena += Q.get(i) + ":" + Sigma.get(j) + ">" + Q.get(Delta.getMove(i, Sigma.get(j)).get(k)) + "\n";
+                    }
+                }
+            }
+        }
+        for (int i = 0; i < Q.size(); i++) {
+            for (int k = 0; k < Delta.getMove(i, '$').size(); k++) {
+                if (!Delta.getMove(i, '$').isEmpty()) {
+                    cadena += Q.get(i) + ":" + "$" + ">" + Q.get(Delta.getMove(i, '$').get(k)) + "\n";
+                }
+            }
+        }
+        return cadena;
+    }
+
+}
