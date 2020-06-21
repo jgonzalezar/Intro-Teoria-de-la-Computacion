@@ -34,7 +34,8 @@ public class prueba {
         try {
             afn = new AFN("D:\\Documents\\GitHub\\Intro-Teoria-de-la-Computacion\\Automatas\\src\\AutomatasPredefinidos\\a.NFA");
             //System.out.println(afn.toString());
-            afn.hallarEstadosInaccesibles();
+            AFD afd = afn.AFNtoAFD();
+            
             /*System.out.println("Estados inaccesibles");
             for(int i=0;i<afd.estadosInaccesibles.size();i++){
                 System.out.println(afd.estadosInaccesibles.get(i));

@@ -90,5 +90,10 @@ public class TransitionAFPD implements Transitions{
     public ParPila cambio(Character Alphabeto, String Inest, Character InPila) {
         return  transicion.get(Inest).get(Alphabeto).equals(InPila);
     }
+
+    @Override
+    public void remove(String get) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

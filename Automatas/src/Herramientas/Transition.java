@@ -108,7 +108,12 @@ public class Transition implements Transitions{
         }
         return transiti;
     }
-    
-    
+
+    @Override
+    public void remove(String State) {
+        for (Character i : transicion.keySet()) {
+            transicion.get(i).remove(State);
+        }
+    }
     
 }
