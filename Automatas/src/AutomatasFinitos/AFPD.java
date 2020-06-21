@@ -1,7 +1,8 @@
 package AutomatasFinitos;
 
-import LectoresYProcesos.CreadorAutomata;
+import LectoresYProcesos.InteraccionesAutomas;
 import Herramientas.Transition;
+import LectoresYProcesos.InteraccionesAutomas.Lecto;
 import ProcesamientoCadenas.ProcesamientoCadenaAFD;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -34,7 +35,7 @@ public class AFPD extends AFD{
      * @throws java.io.FileNotFoundException en caso de que el archivo no sea encontrado por el scanner
      */
     public AFPD(String nombreArchivo) throws Error, FileNotFoundException{
-        CreadorAutomata.Lecto lec = CreadorAutomata.Lecto.inicio;
+        Lecto lec = Lecto.inicio;
         ArrayList<Character> alpha = null;
         ArrayList<String> W = null;
         String W0 = null;
@@ -47,24 +48,24 @@ public class AFPD extends AFD{
             String lin = sca.nextLine();
             switch(lin){
                 case "#alphabet":
-                    lec = CreadorAutomata.Lecto.alfabeto;
+                    lec = Lecto.alfabeto;
                     alpha = new ArrayList<>();
                     break;
                 case "#states":
                     if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
-                    lec = CreadorAutomata.Lecto.estados;
+                    lec = Lecto.estados;
                     W = new ArrayList<>();
                     break;
                 case "#initial":
                     if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
                     if(W==null) throw new Error("primero debe iniciarse los estados");
-                    lec = CreadorAutomata.Lecto.estadoinicial;
+                    lec = Lecto.estadoinicial;
                     break;
                 case "#accepting":
                     if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
                     if(W==null) throw new Error("primero debe iniciarse los estados");
                     if(W0==null) throw new Error("primero debe dar el estado inicial");
-                    lec = CreadorAutomata.Lecto.estadoFin;
+                    lec = Lecto.estadoFin;
                     G = new ArrayList<>();
                     break;
                 case "":    
@@ -73,7 +74,7 @@ public class AFPD extends AFD{
                     if(W0==null) throw new Error("primero debe dar el estado inicial");
                     if(G==null) throw new Error("primero debe dar los estados finales");
                     T=new ArrayList<>();
-                    lec = CreadorAutomata.Lecto.pilaAlphabeto;
+                    lec = Lecto.pilaAlphabeto;
                     break;
                 case "#transitions":
                     if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
@@ -81,7 +82,7 @@ public class AFPD extends AFD{
                     if(W0==null) throw new Error("primero debe dar el estado inicial");
                     if(G==null) throw new Error("primero debe dar los estados finales");
                     if(T==null) throw new Error("primero debe dar el alphabeto de la pila");
-                    lec = CreadorAutomata.Lecto.transicion;
+                    lec = Lecto.transicion;
                     Deltos = new Transition();
                     break;
                 default:

@@ -5,6 +5,7 @@
  */
 package AutomatasFinitos;
 
+import LectoresYProcesos.InteraccionesAutomas;
 import AutomatasFinitos.AFD;
 import Herramientas.Transition;
 import Herramientas.Transitions;
