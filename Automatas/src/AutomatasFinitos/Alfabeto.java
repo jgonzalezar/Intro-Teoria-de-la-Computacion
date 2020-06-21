@@ -43,7 +43,7 @@ public class Alfabeto {
      * Función que genera una cadena aleatoria con los símbolos del alfabeto del automata
      * @param n Longitud de la cadena aleatoria a generar
      */
-    String generarCadenaAleatoria(int n){
+    public String generarCadenaAleatoria(int n){
         String res = "";
         while(n>0){
             res+=simbolos[(int) (Math.random()*simbolos.length)];
