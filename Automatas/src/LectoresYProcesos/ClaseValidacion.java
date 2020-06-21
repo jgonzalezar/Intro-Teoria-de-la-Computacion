@@ -19,11 +19,8 @@ public class ClaseValidacion {
     private AFNL afnl;
     private AFN afn;
 
-    public ClaseValidacion(AFNL afnl) {
+    public ClaseValidacion(AFNL afnl, AFN afn) {
         this.afnl = afnl;
-    }
-
-    public ClaseValidacion(AFN afn) {
         this.afn = afn;
     }
     

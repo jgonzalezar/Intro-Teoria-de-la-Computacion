@@ -686,12 +686,8 @@ public class ClasePrueba {
             AFNL afnl = new AFNL(url);
             AFN afn = InteraccionesAutomas.AFN_LambdaToAFN(afnl);
             System.out.println("Los automatas han sido creados correctamente \n");
-            System.out.println("Automata AFNL: ");
-            System.out.println(afnl.toString());
-            System.out.println("Automata AFN: ");
-            System.out.println(afn.toString());
             while (true) {
-                String[] options1 = {"Procesar cadena", "Salir"};
+                String[] options1 = {"Procesar cadena", "Validar transformacion", "Imprimir automatas" ,"Salir"};
                 int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
                 if (f == 2 || f == JOptionPane.CLOSED_OPTION) {
                     return Lectura.salir;
@@ -902,6 +898,15 @@ public class ClasePrueba {
                             break;
                     }
                     //return Lectura.CrearAutomata;
+                }else if(f == 1){
+                    ClaseValidacion validacion  = new ClaseValidacion(afnl,afn);
+                    System.out.println("Validacion de AFNL a AFN");
+                    validacion.validarAFNLambdaToAFN(afnl.getSigma());
+                }else if(f == 2){
+                    System.out.println("Automata AFNL: ");
+                    System.out.println(afnl.toString());
+                    System.out.println("Automata AFN: ");
+                    System.out.println(afn.toString());
                 }
                 pause();
                 String[] options = {"Escoger otra opción", "Cambiar De Automata", "Salir"};
@@ -927,15 +932,8 @@ public class ClasePrueba {
             AFN afn = InteraccionesAutomas.AFN_LambdaToAFN(afnl);
             AFD afd = InteraccionesAutomas.AFN_LambdaToAFD(afnl);
             System.out.println("Los automatas han sido creados correctamente \n");
-            System.out.println("Automata AFNL: ");
-            System.out.println(afnl.toString());
-            System.out.println("Automata AFN: ");
-            System.out.println(afn.toString());
-            System.out.println("Automata AFD: ");
-            System.out.println(afd.toString());
-            
             while (true) {
-                String[] options1 = {"Procesar cadena", "Salir"};
+                String[] options1 = {"Procesar cadena", "Validar transformacion", "Imprimir automatas" ,"Salir"};
                 int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
                 if (f == 2 || f == JOptionPane.CLOSED_OPTION) {
                     return Lectura.salir;
@@ -1098,6 +1096,19 @@ public class ClasePrueba {
                             break;
                     }
                     //return Lectura.CrearAutomata;
+                }else if(f == 1){
+                    ClaseValidacion validacion  = new ClaseValidacion(afnl,afn);
+                    System.out.println("Validacion de AFNL a AFN");
+                    validacion.validarAFNLambdaToAFN(afnl.getSigma());
+                    System.out.println("Validacion de AFN a AFD");
+                    validacion.validarAFNtoAFD(afn.getSigma());
+                }else if(f == 2){
+                    System.out.println("Automata AFNL: ");
+                    System.out.println(afnl.toString());
+                    System.out.println("Automata AFN: ");
+                    System.out.println(afn.toString());
+                    System.out.println("Automata AFD: ");
+                    System.out.println(afd.toString());
                 }
                 pause();
                 String[] options = {"Escoger otra opción", "Cambiar De Automata", "Salir"};
