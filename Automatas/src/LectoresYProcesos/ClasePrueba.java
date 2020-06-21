@@ -682,7 +682,11 @@ public class ClasePrueba {
         try {
             AFNL afnl = new AFNL(url);
             AFN afn = InteraccionesAutomas.AFN_LambdaToAFN(afnl);
-            System.out.println("El automata ha sido creado correctamente");
+            System.out.println("Los automatas han sido creados correctamente \n");
+            System.out.println("Automata AFNL: ");
+            System.out.println(afnl.toString());
+            System.out.println("Automata AFN: ");
+            System.out.println(afn.toString());
             while (true) {
                 String[] options1 = {"Procesar cadena", "Salir"};
                 int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
@@ -919,7 +923,14 @@ public class ClasePrueba {
             AFNL afnl = new AFNL(url);
             AFN afn = InteraccionesAutomas.AFN_LambdaToAFN(afnl);
             AFD afd = InteraccionesAutomas.AFN_LambdaToAFD(afnl);
-            System.out.println("El automata ha sido creado correctamente");
+            System.out.println("Los automatas han sido creados correctamente \n");
+            System.out.println("Automata AFNL: ");
+            System.out.println(afnl.toString());
+            System.out.println("Automata AFN: ");
+            System.out.println(afn.toString());
+            System.out.println("Automata AFD: ");
+            System.out.println(afd.toString());
+            
             while (true) {
                 String[] options1 = {"Procesar cadena", "Salir"};
                 int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
