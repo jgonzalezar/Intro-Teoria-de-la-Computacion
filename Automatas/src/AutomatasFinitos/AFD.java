@@ -317,7 +317,8 @@ public class AFD {
             for(int j=0;j<F.size();j++){
                 if(Q.indexOf(estadosInaccesibles.get(i))==F.get(j)){
                     F.remove(j);
-                }else if(Q.indexOf(estadosInaccesibles.get(i))<F.get(j)){
+                }
+                if(Q.indexOf(estadosInaccesibles.get(i))<F.get(j)){
                     F.set(j,F.get(j)-1);
                 }
             }
@@ -397,7 +398,7 @@ public class AFD {
      */
 
     private ProcesamientoCadenaAFD Finish(ProcesamientoCadenaAFD q) {
-        q.setEsAceptada(F.contains(q.getlastPaso()));
+        q.setEsAceptada(F.contains(Q.indexOf(q.getlastPaso())));
         return q;
     }
 

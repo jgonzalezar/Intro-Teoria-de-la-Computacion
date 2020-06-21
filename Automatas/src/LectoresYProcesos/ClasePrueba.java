@@ -72,15 +72,24 @@ public class ClasePrueba {
                         switch (tp) {
                             case AFD:
                                 message = "Ha seleccionado un Automata finito determinista que representa la expresion " + expresion;
-                                
                                 break;
                             case AFN:
                                 message = "Ha seleccionado un Automata finito no determinista que representa la expresion " + expresion;
-                                
+                                int i = JOptionPane.showConfirmDialog(null, "Desea convertir el AFN en un AFD?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                                switch(i){
+                                    case JOptionPane.YES_OPTION:
+                                        tp=InteraccionesAutomas.Type.AFNtoAFD;
+                                        break;
+                                }
                                 break;
                             case AFNL:
-                               
                                 message = "Ha seleccionado un Automata finito no determinista con transiciones lambda que representa la expresion " + expresion;
+                                int j = JOptionPane.showConfirmDialog(null, "Desea convertir el AFNL en un AFD o en un AFN?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                                switch(j){
+                                    case JOptionPane.YES_OPTION:
+                                        tp=InteraccionesAutomas.Type.AFNLtoAFD;
+                                        break;
+                                }
                                 break;
                         }
                         ClasePrueba.url=url;
@@ -103,6 +112,12 @@ public class ClasePrueba {
                             break;
                         case AFNL:
                             lec = probarAFNLambda();
+                            break;
+                        case AFNtoAFD:
+                            lec = probarAFNoAFD();
+                            break;
+                        case AFNLtoAFD:
+                            lec = probarAFNLambdaToAFN();
                             break;
                     }
                     break;
@@ -681,7 +696,7 @@ public class ClasePrueba {
         }
     }
     
-    private static Lectura probarAFNToAFD(){
+    private static Lectura probarAFNoAFD(){
         try {
             AFN afn = new AFN(url);
             AFD afd = InteraccionesAutomas.AFNtoAFD(afn);
@@ -1308,7 +1323,7 @@ public class ClasePrueba {
     }
     
     private static void pause(){
-        System.out.println("presione una tecla para continuar");
+        System.out.println("presione enter para continuar");
         try {
             System.in.read();
         } catch (IOException ex) {

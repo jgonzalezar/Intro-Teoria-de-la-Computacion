@@ -568,7 +568,7 @@ public class AFN extends AFD{
 		}
             }
         }
-        
+        System.out.println("Tabla con las transiciones de la transformación AFN a AFD");
         printTableAFNtoAFD(automataDeterminista, detAcceptance, newStates);
         
         ArrayList<String> newQ = new ArrayList<>();
@@ -682,9 +682,7 @@ public class AFN extends AFD{
         }*/
         
         AFD newDet = new AFD(Sigma, newQ, q0, detAcceptance, newDelta);
-        System.out.println(newDet);
         newDet.eliminarEstadosInaccesibles();
-        System.out.println(newDet);
         return newDet;
     }
     
