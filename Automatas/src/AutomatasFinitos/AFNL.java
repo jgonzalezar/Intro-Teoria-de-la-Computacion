@@ -758,6 +758,28 @@ public class AFNL extends AFN{
     public void procesarListaCadenasConversion(String[] listaCadenas,String nombreArchivo, boolean imprimirPantalla){
         AFN_LambdaToAFD().procesarListaCadenas(listaCadenas, nombreArchivo, imprimirPantalla);
     }
+    
+    public void EstadosInaccesibles(){
+        ArrayList<Integer> EstadosAccesibles = null;
+        for(int i=0; i< this.Q.size();i++){
+            for(int j=0;j< this.Sigma.length();j++){
+                for (int k=0;k<Delta.getMove(i, Sigma.get(j)).size();k++){
+                    if(!EstadosAccesibles.contains(Delta.getMove(i, Sigma.get(j)).get(k))&& !Delta.getMove(i, Sigma.get(j)).isEmpty()){
+                        EstadosAccesibles.add(Delta.getMove(i, Sigma.get(j)).get(k));
+                    }
+                }
+            }
+        }
+        for (int i=0;i<this.Q.size();i++){
+            if (!EstadosAccesibles.contains(i)){
+                this.estadosInaccesibles.add(Q.get(i));
+            }
+        }
+        
+       
+        
+    }
+
 
 }
 
