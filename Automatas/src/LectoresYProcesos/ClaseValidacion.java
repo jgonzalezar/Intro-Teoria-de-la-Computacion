@@ -10,5 +10,8 @@ package LectoresYProcesos;
  * @author fanat
  */
 public class ClaseValidacion {
-    
+    void validarAFNLambdaToAFN(Alfabeto sigma){
+        
+        
+    }
 }
