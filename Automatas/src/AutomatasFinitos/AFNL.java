@@ -22,6 +22,7 @@ import LectoresYProcesos.InteraccionesAutomas.Lecto;
 import ProcesamientoCadenas.ProcesamientoCadenaAFNLambda;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import static java.lang.Integer.parseInt;
 
 /**
  * Esta clase es el automata finito no determinista con transiciones lambda en
@@ -840,45 +841,51 @@ public class AFNL extends AFN {
             }
         }
     }
-
+    
     @Override
-    public String toString() {
-        String cadena = "!nfe\n";
-        cadena += "alphabet\n";
-        for (int i = 0; i < Sigma.toString().length(); i++) {
-            cadena += Sigma.toString().charAt(i);
-            if (Sigma.toString().length() - 1 >= i) {
-                cadena += "\n";
-            } else {
-                cadena += "-";
-            }
+    public String toString(){
+        String cadena="!nfe\n";
+        cadena+="alphabet\n";
+        for(int i=0;i<Sigma.toString().length();i++){
+           cadena+=Sigma.toString().charAt(i);
+           if(Sigma.toString().length()-1>=i){
+               cadena+="\n";
+           }else{
+               cadena+="-";
+           }
+        
+        }        
+        cadena+="#states\n";
+        for (int i=0;i<Q.size();i++) {
+            cadena+=Q.get(i)+"\n";
         }
-        cadena += "#states\n";
-        for (int i = 0; i < Q.size(); i++) {
-            cadena += Q.get(i) + "\n";
-        }
-        cadena += "#initial\n" + q0 + "\n" + "#accepting\n";
-        for (int i = 0; i < F.size(); i++) {
-            cadena += Q.get(F.get(i)) + "\n";
+        cadena+="#initial\n"+q0+"\n"+"#accepting\n";
+        for (int i=0;i<F.size();i++) {
+            cadena+=Q.get(F.get(i))+"\n";
         }
         cadena += "#transitions\n";
-        for (int i = 0; i < Q.size(); i++) {
-            for (int j = 0; j < this.Sigma.length(); j++) {
-                for (int k = 0; k < Delta.getMove(i, Sigma.get(j)).size(); k++) {
-                    if (!Delta.getMove(i, Sigma.get(j)).isEmpty()) {
-                        cadena += Q.get(i) + ":" + Sigma.get(j) + ">" + Q.get(Delta.getMove(i, Sigma.get(j)).get(k)) + "\n";
+        for (int i=0;i<Q.size();i++) {
+            for(int j=0;j< this.Sigma.length();j++){
+                for (int k=0;k<Delta.getMove(i, Sigma.get(j)).size();k++){
+                    if( !Delta.getMove(i, Sigma.get(j)).isEmpty()){
+                        cadena+=Q.get(i)+":"+Sigma.get(j)+">"+Q.get(Delta.getMove(i, Sigma.get(j)).get(k))+"\n";
+                        
                     }
                 }
             }
         }
-        for (int i = 0; i < Q.size(); i++) {
-            for (int k = 0; k < Delta.getMove(i, '$').size(); k++) {
-                if (!Delta.getMove(i, '$').isEmpty()) {
-                    cadena += Q.get(i) + ":" + "$" + ">" + Q.get(Delta.getMove(i, '$').get(k)) + "\n";
-                }
+        for(int i=0;i<Q.size();i++) {
+            for(int k=0;k<Delta.getMove(i,'$').size();k++){
+                if( !Delta.getMove(i,'$').isEmpty()){
+                cadena+=Q.get(i)+":"+"$"+">"+Q.get(Delta.getMove(i,'$').get(k))+"\n";
             }
-        }
+        }      
+        
+    }        
         return cadena;
-    }
-
 }
+    
+}
+
+
+    
