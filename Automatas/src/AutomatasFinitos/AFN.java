@@ -37,6 +37,13 @@ public class AFN extends AFD{
     private ArrayList<Integer> usefulStates;
     private String statesName;
     
+    
+    /**
+     * Constructor de un AFN vacío
+     */
+    public AFN() {
+    }
+    
     /**
      * Constructor, inicializa los atributos.
      * @param Sigma Alfabeto
@@ -45,15 +52,18 @@ public class AFN extends AFD{
      * @param F Estados de aceptación
      * @param Delta Transiciones
      */
-    
-    
-    public AFN() {
-    }
-
     public AFN(Alfabeto Sigma, ArrayList<String> Q, Integer q0, ArrayList<Integer> F, Transitions Delta) {
         super(Sigma, Q, q0, F, Delta);
     }
-
+    
+    /**
+     * Constructor, inicializa los atributos.
+     * @param Sigma Alfabeto
+     * @param Q Conjunto de estados
+     * @param q0 Estado inicial
+     * @param F Estados de aceptación
+     * @param Delta Transiciones
+     */
     public AFN(char[] Sigma, ArrayList<String> Q, String q0, ArrayList<String> F, ArrayList<Tuple> Delta) {
         int maxState=0;
         numberIndex=0;
@@ -274,7 +284,6 @@ public class AFN extends AFD{
      * @param nombreArchivo Nombre del archivo en el que se hará la impresión de los procesamientos
      * @return int - Devuelve el número de procesamientos obtenidos al procesar la cadena.
      */
-    
     public int computarTodosLosProcesamientos(String cadena, String nombreArchivo){
         FileWriter fichero1 = null;
         PrintWriter pw1 = null;
@@ -458,6 +467,10 @@ public class AFN extends AFD{
         }
     }
     
+    /**
+     * Función que realiza la conversión del AFN actual al AFD respectivo
+     * @return AFD - Automata Finito Determinista equivalente al AFN que llama la función
+     */
     public AFD AFNtoAFD() {
 	ArrayList<Integer> states = new ArrayList<>(), detAcceptance = new ArrayList<>();
 	ArrayList<Tuple> newStates = new ArrayList<>(), deterministicStates;
@@ -704,7 +717,6 @@ public class AFN extends AFD{
         return "";
     }
 
-    //Función para imprimir la equivalencia de estados entre el AFN y el AFD
     private void printStateEquivalence(ArrayList<Tuple> newStates) {
 	ArrayList<Integer> auxArray;
 	System.out.println("Los estados añadidos representan los conjuntos de estados:");
@@ -718,31 +730,7 @@ public class AFN extends AFD{
         }
 	System.out.println();
     }
-	
-    //Función para imprimir todas las transiciones de un automata determinista obtenido
-    private void printDeterministic(ArrayList<ArrayList<Tuple>> automataDeterminista, ArrayList<Integer> detAcceptance) {
-	System.out.println("El automata determinista resultante es:");
-	for(int i=0;i<automataDeterminista.size();i++) {
-            System.out.print(statesName+i + ": ");
-            for(int j=0;j<automataDeterminista.get(i).size();j++) {
-		System.out.print(automataDeterminista.get(i).get(j).getSymbol()+","+statesName + automataDeterminista.get(i).get(j).getFinalState() + " ");
-            }
-            System.out.println();
-	}
-	System.out.println();
-	if(detAcceptance.size()>0) {
-            System.out.println("Y sus estados de aceptación son:");
-            for(int i=0;i<detAcceptance.size();i++) {
-		System.out.print(statesName+detAcceptance.get(i) + " ");
-            }
-	}else{
-            System.out.println("El automata no determinista no tenia estados de aceptación");
-	}
-	System.out.println();
-	System.out.println();
-    }
     
-    //Función para imprimir la tabla de la transicion de AFN a AFD
     private void printTableAFNtoAFD(ArrayList<ArrayList<Tuple>> automataDeterminista, ArrayList<Integer> detAcceptance,ArrayList<Tuple> newStates) {
 	String[] States;
         String res = "Δ";
@@ -793,6 +781,9 @@ public class AFN extends AFD{
         System.out.println(res);
     }
     
+    /**
+     * Función que busca los estados inaccesibles del automata y los guarda en una variable
+     */
     @Override
     public void hallarEstadosInaccesibles(){
         estadosInaccesibles.add(statesName+q0);
@@ -802,7 +793,6 @@ public class AFN extends AFD{
         for(int i=0;i<Q.size();i++){
             if(!estadosAccesibles.contains(Q.get(i))){
                 estadosInaccesibles.add(Q.get(i));
-                //System.out.println(Q.get(i));
             }
         }
     }
@@ -818,18 +808,38 @@ public class AFN extends AFD{
         }
     }
     
+    /**
+     * Función que procesa una cadena dada en el AFD equivalente del AFN que hace el llamado de la función
+     * @param cadena Cadena a procesar
+     * @return boolean - True si la cadena es aceptada, False de otra forma
+     */
     public boolean procesarCadenaConversion(String cadena) {
         return AFNtoAFD().procesarCadena(cadena);
     }
 
+    /**
+     * Función que procesa una cadena dada en el AFD equivalente del AFN que hace el llamado de la función, e imprime el procesamiento de esta
+     * @param cadena Cadena a procesar
+     * @return boolean - True si la cadena es aceptada, False de otra forma
+     */
     public boolean procesarCadenaConDetallesConversion(String cadena) {
         return AFNtoAFD().procesarCadenaConDetalles(cadena);
     }
 
+    /**
+     * Función que procesa una lista de cadenas dada en el AFD equivalente del AFN que hace el llamado de la función
+     * @param listaCadenas Lista de cadenas a procesar
+     * @param nombreArchivo Nombre del archivo donde se hace la impresión del resultado
+     * @param imprimirPantalla Booleano que indica si se imprime el resultado en pantalla o no
+     */
     public void procesarListaCadenasConversion(String[] listaCadenas, String nombreArchivo, boolean imprimirPantalla) {
         AFNtoAFD().procesarListaCadenas(listaCadenas, nombreArchivo, imprimirPantalla);
     }
     
+    /**
+     * Función que retorna una cadena con toda la información del automata que hace el llamado de la función
+     * @return String - Cadena que contiene toda la información del automata actual
+     */
     @Override
     public String toString(){
         String cadena="!nfa\n";
@@ -864,7 +874,7 @@ public class AFN extends AFD{
         return cadena;
     }
     
-    public boolean isInteger(String cadena){
+    private boolean isInteger(String cadena){
         try{
             Integer.parseInt(cadena);
             return true;
@@ -873,6 +883,11 @@ public class AFN extends AFD{
         }
     }
     
+    /**
+     * Función que imprime en consola una lista de procesamientos indicada, de una cadena dada
+     * @param cadena cadena a procesar
+     * @param computacion lista de procesamientos que se desea imprimir 0 - Aceptados, 1 - Rechazados, 2 - Abortados
+     */
     public void imprimirComputaciones(String cadena, int computacion) {
         procesarCadena(cadena);
         ArrayList<String> lista;
