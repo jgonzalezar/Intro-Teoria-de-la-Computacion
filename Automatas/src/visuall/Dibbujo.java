@@ -7,18 +7,14 @@ package visuall;
 
 import java.awt.Canvas;
 import java.awt.Color;
-import java.awt.Font;
 import java.awt.Graphics;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.swing.JFrame;
 
 /**
- *
+ * la clase Dibbujo extiende de un canvas para representar un dibujo grafico de un automata finito determinista
  * @author fanat
  */
 public class Dibbujo extends Canvas {
-    private String Ini;
+    private final String Ini;
     private String actP;
     private String actN;
     private boolean fiP;
@@ -33,6 +29,12 @@ public class Dibbujo extends Canvas {
         estatic,moveto,white,backto
     }
     
+    /**
+     * constructor de la calse Dibujo 
+     * @param firstState nombre del estado inicial
+     * @param iniFin el estado inicial es aceptado
+     */
+    
     public Dibbujo(String firstState,boolean iniFin) {
         actP=actN=Ini = firstState;
         fiP=fiN=iniFin;
@@ -42,6 +44,11 @@ public class Dibbujo extends Canvas {
         init();
         
     }
+    
+    /**
+     * funcion paint que dibuja en el canvas
+     * @param g grafics del dibbujo
+     */
     
     @Override
     public void paint(Graphics g){
@@ -159,6 +166,14 @@ public class Dibbujo extends Canvas {
         
     }
     
+    
+    /**
+     * funcion para actualizar los datos de la case y cambiar el estado de la animacion
+     * @param nextState nombre del estado al que se debe desplazar
+     * @param Fin el estado al que se debe mover es aceptado?
+     * @param tp el desplazamiento sera instantaneo o tiene direccion
+     * @param used caracter por el cual se realiza el movimiento
+     */
     public void setData(String nextState,boolean Fin,int tp, char used){
         if(nextState.equals(actP))return;
         switch (tp) {
@@ -185,15 +200,30 @@ public class Dibbujo extends Canvas {
                 break;
         }
     }
+    
+    /**
+     * la animacion esta en un estado estatico
+     * @return 
+     */
  
     public boolean isStatic(){
         return ani==anim.estatic;
     }
+    
+    /**
+     * consigue el nombre del estado previo
+     * @return 
+     */
 
     public String getActP() {
         return actP;
     }
 
+    /**
+     * returna si el estado previo es aceptado
+     * @return 
+     */
+    
     public boolean isFiP() {
         return fiP;
     }
