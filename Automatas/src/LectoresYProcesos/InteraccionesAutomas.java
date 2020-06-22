@@ -20,41 +20,100 @@ import java.io.FileNotFoundException;
 import java.util.Scanner;
 
 /**
- *
+ * la clase InteraccionesAutomas guarda algunos metodos estaticos y tipos de enum los cuales permiten interacciones entre diferentes tipos de automata
  * @author Juan Andres Gonzalez
  */
 public class InteraccionesAutomas {
+    
+    /**
+     * convierte un AFN dado en un AFD
+     * @param afn afn base
+     * @return afd equivalente
+     */
     public static AFD AFNtoAFD(AFN afn){
         return afn.AFNtoAFD();
     }
+    
+    /**
+     * convierte un AFNL en un AFN
+     * @param afnl AFNL base
+     * @return afn equivalente
+     */
     
     public static AFN AFN_LambdaToAFN(AFNL afnl){
         return new AFNL_AFN(afnl);
     }
     
+    /**
+     * convierte de un AFNL a AFD
+     * @param afnl afnl base
+     * @return afd equivalente
+     */
+    
     public static AFD AFN_LambdaToAFD(AFNL afnl){
         return afnl.AFN_LambdaToAFD();
     }
+    
+    /**
+     * halla el complemento de un AFD dado
+     * @param afdInput AFD base 
+     * @return complemento del AFD
+     */
     
     public static AFD hallarComplemento(AFD afdInput){
         return new AFDComplemento(afdInput);
     }
     
+    /**
+     * halla el producto cartesiano en interseccion
+     * @param afd1 AFD base uno
+     * @param afd2 AFD base dos
+     * @return AFD resultante
+     */
+    
     public static AFD hallarProductoCartesianoY(AFD afd1, AFD afd2){
         return new AFDProductoY(afd1, afd2);
     }
     
+    /**
+     * halla el producto cartesiano en union
+     * @param afd1 AFD base uno
+     * @param afd2 AFD base dos
+     * @return AFD resultante
+     */
+    
     public static AFD hallarProductoCartesianoO(AFD afd1, AFD afd2){
         return new AFDProductoO(afd1, afd2);
     }
+    /**
+     * halla el producto cartesiano en su diferencia
+     * @param afd1 AFD base uno
+     * @param afd2 AFD base dos
+     * @return AFD resultante
+     */
     
     public static AFD hallarProductoCartesianoDiferencia(AFD afd1, AFD afd2){
         return new AFDProductoD(afd1, afd2);
     }
     
+    /**
+     * halla el producto cartesiano en su diferencia simetrica
+     * @param afd1 AFD base uno
+     * @param afd2 AFD base dos
+     * @return AFD resultante
+     */
+    
     public static AFD hallarProductoCartesianoDiferenciaSimetrica(AFD afd1, AFD afd2){
         return new AFDProductoDSim(afd1, afd2);
     }
+    
+    /**
+     * halla el producto cartesiano segun el comando dado
+     * @param afd1 AFD base uno
+     * @param afd2 AFD base dos
+     * @param operacion comando a realizar
+     * @return AFD resultante
+     */
     
     public static AFD hallarProductoCartesiano(AFD afd1, AFD afd2, String operacion){
         switch(operacion){
@@ -73,6 +132,13 @@ public class InteraccionesAutomas {
                 throw new AssertionError(operacion);
         }
     }
+    
+    /**
+     * simplifica un afd dado
+     * @param afdInput AFD base
+     * @return simplificacion del AFD
+     */
+    
     
     public static AFD simplificarAFD(AFD afdInput){
         return new AFDSimplificacion(afdInput);

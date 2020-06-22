@@ -27,7 +27,7 @@ import javax.swing.JOptionPane;
 import visuall.*;
 
 /**
- *
+ *  la ClasePrueba contiene el main y todos sus subprocesos
  * @author fanat
  */
 public class ClasePrueba {
