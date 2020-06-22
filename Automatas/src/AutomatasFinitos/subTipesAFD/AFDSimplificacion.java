@@ -28,7 +28,13 @@ public class AFDSimplificacion extends AFD
        q0=simp.getQ0();
        F=simp.getF();
        Delta = simp.getDelta();
+       elina();
        
+    }
+    
+    private void elina(){
+        hallarEstadosInaccesibles();
+       eliminarEstadosInaccesibles();
     }
 
     @Override
