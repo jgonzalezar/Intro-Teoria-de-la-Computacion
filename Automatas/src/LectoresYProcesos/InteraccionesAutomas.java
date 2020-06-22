@@ -136,7 +136,11 @@ public class InteraccionesAutomas {
         /**
          * automatafinito no determinista con transiciones lambda
          */
-        AFNLtoAFD
+        AFNLtoAFD,
+        
+        AFDsimplfic,
+        
+        AFDcomplement,
     }
     
     /**
