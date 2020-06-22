@@ -10,6 +10,7 @@ import AutomatasFinitos.AFDComplemento;
 import AutomatasFinitos.AFDSimplificacion;
 import AutomatasFinitos.AFN;
 import AutomatasFinitos.AFNL;
+import static LectoresYProcesos.InteraccionesAutomas.*;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
@@ -1329,7 +1330,7 @@ public class ClasePrueba {
     private static Lectura probarSimplificacion() {
         try {
             AFD afd = new AFD(url);
-            AFD simpl = new AFDSimplificacion(afd);
+            AFD simpl =  simplificarAFD(afd);
             while (true) {
 
                 String[] options1 = {"Mostrar comparacion de automata\n y su simplificacion", "mostrar visual del automata simplificado", "simular cadenas de forma visual", "procesar Cadenas", "Salir"};
@@ -1544,7 +1545,7 @@ public class ClasePrueba {
      private static Lectura probarComplemento() {
         try {
             AFD afd = new AFD(url);
-            AFD compl = new AFDComplemento(afd);
+            AFD compl = hallarComplemento(afd);
             while (true) {
 
                 String[] options1 = {"Mostrar comparacion de automata\n y su complemento", "mostrar visual del AFD Complemento", "simular cadenas de forma visual", "procesar Cadenas", "Salir"};
