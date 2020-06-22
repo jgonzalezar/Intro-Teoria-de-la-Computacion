@@ -346,7 +346,7 @@ public class AFD {
     private void identificarEstadosAccesibles(String state) {
         for(int i=0;i<Sigma.length();i++){
             String Stadogo = Delta.cambio(Sigma.get(i), state);
-            if(!state.equals(Stadogo) && !estadosInaccesibles.contains(Stadogo) && Stadogo!=null){
+            if(!state.equals(Stadogo) && !estadosInaccesibles.contains(Stadogo)){
                 estadosInaccesibles.add(Stadogo);
                 identificarEstadosAccesibles(Stadogo);
             }
@@ -398,7 +398,7 @@ public class AFD {
      */
 
     private ProcesamientoCadenaAFD Finish(ProcesamientoCadenaAFD q) {
-        q.setEsAceptada(F.contains(q.getlastPaso()));
+        q.setEsAceptada(F.contains(Q.indexOf(q.getlastPaso())));
         return q;
     }
 

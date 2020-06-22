@@ -896,7 +896,6 @@ public class AFNL extends AFN {
             } else {
                 cadena += "-";
             }
-
         }
         cadena += "#states\n";
         for (int i = 0; i < Q.size(); i++) {
