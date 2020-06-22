@@ -28,6 +28,10 @@ public class ClaseValidacion {
         this.afn = afn;
     }
     
+    public ClaseValidacion(AFNL afnl) {
+        this.afnl = afnl;
+    }
+    
     public void validarAFNLambdaToAFN(Alfabeto sigma){
         AFN Afn = afnl.AFN_LambdaToAFN();
         int cantidadrechazados = 0;
