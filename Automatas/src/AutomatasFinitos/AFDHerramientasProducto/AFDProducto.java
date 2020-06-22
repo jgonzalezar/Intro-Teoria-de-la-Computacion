@@ -25,7 +25,7 @@ public class AFDProducto extends AFD
     {
         Alfabeto Sigma1 = afd1.getSigma();
         Alfabeto Sigma2 = afd2.getSigma();
-        if (!(Sigma1.equals(Sigma2)))
+        if (!(Sigma1.toString().equals(Sigma2.toString())))
             {
                 throw new Error("Los alfabetos deben ser iguales para poder realizar el producto cartesiano de los autómatas.");
             }

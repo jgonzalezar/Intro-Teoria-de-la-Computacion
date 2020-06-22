@@ -58,7 +58,7 @@ public class InteraccionesAutomas {
     
     public static AFD hallarProductoCartesiano(AFD afd1, AFD afd2, String operacion){
         switch(operacion){
-            case "interseccion":
+            case "intersección":
                 return hallarProductoCartesianoY(afd1, afd2);
             
             case "union":
@@ -149,6 +149,10 @@ public class InteraccionesAutomas {
          * hallar complemento de un automata finito determinista
          */
         AFDcomplement,
+        /**
+         * hallar el producto del automata con otro automata
+         */
+        AFDproducto,
     }
     
     /**

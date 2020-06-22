@@ -51,15 +51,17 @@ public class ClasePrueba {
     }
 
     /**
-     * enum lectura del main para saber si esta creando un automata o realizando otras acciones
+     * enum lectura del main para saber si esta creando un automata o realizando
+     * otras acciones
      */
-    
     public enum Lectura {
         CrearAutomata, LeerCadena, salir
     }
+
     /**
-     * main que realiza el proyecto 
-     * @param args 
+     * main que realiza el proyecto
+     *
+     * @param args
      */
     public static void main(String[] args) {
         Lectura lec = Lectura.CrearAutomata;
@@ -83,25 +85,25 @@ public class ClasePrueba {
                         switch (tp) {
                             case AFD:
                                 message = "Ha seleccionado un Automata finito determinista que representa la expresion " + expresion;
-                                String[] options1 = {"realizar procesos\n sobre el automata","Simplificar el Automata", "Realizar el ProductoCartesiano\n con otro automata"};
-                                int f = JOptionPane.showOptionDialog(null, message+"\n Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
-                                switch(f){
+                                String[] options1 = {"Procesar cadenas", "Simplificar el Automata", "Calcular el complemento", "Realizar el ProductoCartesiano\n con otro automata"};
+                                int f = JOptionPane.showOptionDialog(null, message + "\n Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
+                                switch (f) {
                                     case 1:
-                                        tp=InteraccionesAutomas.Type.AFDsimplfic;
+                                        tp = InteraccionesAutomas.Type.AFDsimplfic;
                                         break;
                                     case 2:
-                                        tp=InteraccionesAutomas.Type.AFDcomplement;
+                                        tp = InteraccionesAutomas.Type.AFDcomplement;
                                         break;
-                                    case JOptionPane.CLOSED_OPTION:
-                                        return;
+                                    case 3:
+                                        tp = InteraccionesAutomas.Type.AFDproducto;
                                 }
                                 break;
                             case AFN:
                                 message = "Ha seleccionado un Automata finito no determinista que representa la expresion " + expresion;
                                 int i = JOptionPane.showConfirmDialog(null, "Desea convertir el AFN en un AFD?", "Conversión AFN a AFD", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                                switch(i){
+                                switch (i) {
                                     case JOptionPane.YES_OPTION:
-                                        tp=InteraccionesAutomas.Type.AFNtoAFD;
+                                        tp = InteraccionesAutomas.Type.AFNtoAFD;
                                         break;
                                     case JOptionPane.CLOSED_OPTION:
                                         return;
@@ -113,10 +115,10 @@ public class ClasePrueba {
                                 int g = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options2, "Salir");
                                 switch (g) {
                                     case 0:
-                                        tp=InteraccionesAutomas.Type.AFNLtoAFN;
+                                        tp = InteraccionesAutomas.Type.AFNLtoAFN;
                                         break;
                                     case 1:
-                                        tp=InteraccionesAutomas.Type.AFNLtoAFD;
+                                        tp = InteraccionesAutomas.Type.AFNLtoAFD;
                                         break;
                                     case JOptionPane.CLOSED_OPTION:
                                         return;
@@ -153,10 +155,13 @@ public class ClasePrueba {
                             lec = probarAFNLambdaToAFD();
                             break;
                         case AFDsimplfic:
-                            lec=probarSimplificacion();
+                            lec = probarSimplificacion();
                             break;
                         case AFDcomplement:
-                            lec=probarComplemento();
+                            lec = probarComplemento();
+                            break;
+                        case AFDproducto:
+                            lec = probarProductoCartesiano();
                             break;
                     }
                     break;
@@ -167,7 +172,7 @@ public class ClasePrueba {
                     break;
 
             }
-            
+
         }
     }
 
@@ -183,80 +188,80 @@ public class ClasePrueba {
                         visual.Simulat();
                         break;
                     case 1://visual forzado
-                        
+
                         Windows3 visuals = new Windows3(getExpresion(), afd);
                         visuals.Simulat();
                         break;
                     case 2:
-                    int i = JOptionPane.showConfirmDialog(null, "Desea ingresar más de una cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-                    switch (i) {
-                        case JOptionPane.YES_OPTION:
-                            boolean dos = true;
-                            do {
-                                try {
-                                    procsVariasCadenas(afd);
-                                    dos = false;
-                                } catch (NullPointerException e) {
-                                    dos = false;
-                                }
+                        int i = JOptionPane.showConfirmDialog(null, "Desea ingresar más de una cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                        switch (i) {
+                            case JOptionPane.YES_OPTION:
+                                boolean dos = true;
+                                do {
+                                    try {
+                                        procsVariasCadenas(afd);
+                                        dos = false;
+                                    } catch (NullPointerException e) {
+                                        dos = false;
+                                    }
 
-                            } while (dos);
-                            break;
+                                } while (dos);
+                                break;
 
-                        case JOptionPane.NO_OPTION:
-                            boolean tres = true;
-                            do {
-                                try {
-                                    String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
-                                    ArrayList<Character> error = afd.ponerCadena(cadena);
-                                    if (error.size() > 0) {
-                                        String errors = "";
-                                        for (Character character : error) {
-                                            errors += character + " ";
-                                        }
-                                        JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
-                                    } else {
-                                        boolean set;
-                                        String[] optionss = {"dar resultado solamente","imprimir en consola el proceso y el resultado","imprimirn en consola y evaluar en una ventana"};
-                                        int fss = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Seleccione", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionss, "Salir");
-                                        switch(fss){
-                                            case 0:
-                                                set = afd.procesarCadena(cadena);
-                                                break;
-                                            case 1:
-                                                
-                                            case 2:
-                                                set = afd.procesarCadenaConDetalles(cadena);
-                                                break;
-                                            default:
-                                                set = afd.procesarCadena(cadena);
-                                                break;
-                                        }
-                                        
-                                        if (set) {
-                                            System.out.println("La cadena: " + cadena + " es aceptada");
+                            case JOptionPane.NO_OPTION:
+                                boolean tres = true;
+                                do {
+                                    try {
+                                        String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
+                                        ArrayList<Character> error = afd.ponerCadena(cadena);
+                                        if (error.size() > 0) {
+                                            String errors = "";
+                                            for (Character character : error) {
+                                                errors += character + " ";
+                                            }
+                                            JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
                                         } else {
-                                            System.out.println("La cadena: " + cadena + " no es aceptada");
+                                            boolean set;
+                                            String[] optionss = {"dar resultado solamente", "imprimir en consola el proceso y el resultado", "imprimirn en consola y evaluar en una ventana"};
+                                            int fss = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Seleccione", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionss, "Salir");
+                                            switch (fss) {
+                                                case 0:
+                                                    set = afd.procesarCadena(cadena);
+                                                    break;
+                                                case 1:
+
+                                                case 2:
+                                                    set = afd.procesarCadenaConDetalles(cadena);
+                                                    break;
+                                                default:
+                                                    set = afd.procesarCadena(cadena);
+                                                    break;
+                                            }
+
+                                            if (set) {
+                                                System.out.println("La cadena: " + cadena + " es aceptada");
+                                            } else {
+                                                System.out.println("La cadena: " + cadena + " no es aceptada");
+                                            }
+                                            if (fss == 2) {
+                                                Windows2 cin = new Windows2(getExpresion(), afd, afd.prosCaden(cadena));
+                                                cin.Simulat();
+                                            }
+                                            tres = false;
                                         }
-                                        if(fss==2){
-                                            Windows2 cin = new Windows2(getExpresion(), afd, afd.prosCaden(cadena));
-                                            cin.Simulat();
-                                        }
+                                    } catch (NullPointerException e) {
                                         tres = false;
                                     }
-                                } catch (NullPointerException e) {
-                                    tres = false;
-                                }
 
-                            } while (tres);
+                                } while (tres);
 
-                            break;
+                                break;
 
-                        default:
-                            //una
-                            break;
-                    }
-                    break;
+                            default:
+                                //una
+                                break;
+                        }
+                        break;
                 }
                 pause();
                 String[] options = {"Evaluar otra cadena", "Cambiar De Automata", "Salir"};
@@ -362,81 +367,81 @@ public class ClasePrueba {
                         boolean tres = true;
                         do {
                             try {
-                                String[] options2 = {"Procesar cadena","Procesar y mostrar todas las computaciones","Imprimir alguna de las computaciones","Volver"};
+                                String[] options2 = {"Procesar cadena", "Procesar y mostrar todas las computaciones", "Imprimir alguna de las computaciones", "Volver"};
                                 int j = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Procesamiento de cadenas", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options2, "Salir");
-                                
+
                                 switch (j) {
                                     case 3:
                                         tres = false;
                                         break;
                                     case JOptionPane.CLOSED_OPTION:
                                         return Lectura.salir;
-                                    case 0:
-                                        {
-                                            String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "Recepción de cadena");
-                                            ArrayList<Character> error = afn.ponerCadena(cadena);
-                                            if (error.size() > 0) {
-                                                String errors = "";
-                                                for (Character character : error) {
-                                                    errors += character + " ";
-                                                }
-                                                JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
+                                    case 0: {
+                                        String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "Recepción de cadena");
+                                        ArrayList<Character> error = afn.ponerCadena(cadena);
+                                        if (error.size() > 0) {
+                                            String errors = "";
+                                            for (Character character : error) {
+                                                errors += character + " ";
+                                            }
+                                            JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
+                                        } else {
+                                            boolean set = afn.procesarCadena(cadena);
+                                            if (set) {
+                                                System.out.println("La cadena: " + cadena + " es aceptada");
                                             } else {
-                                                boolean set = afn.procesarCadena(cadena);
-                                                if (set) {
-                                                    System.out.println("La cadena: " + cadena + " es aceptada");
-                                                } else {
-                                                    System.out.println("La cadena: " + cadena + " no es aceptada");
-                                                }
-                                                tres = false;
-                                            }       break;
+                                                System.out.println("La cadena: " + cadena + " no es aceptada");
+                                            }
+                                            tres = false;
                                         }
-                                    case 1:
-                                        {
-                                            String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "Recepción de cadena");
-                                            ArrayList<Character> error = afn.ponerCadena(cadena);
-                                            if (error.size() > 0) {
-                                                String errors = "";
-                                                for (Character character : error) {
-                                                    errors += character + " ";
-                                                }
-                                                JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
+                                        break;
+                                    }
+                                    case 1: {
+                                        String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "Recepción de cadena");
+                                        ArrayList<Character> error = afn.ponerCadena(cadena);
+                                        if (error.size() > 0) {
+                                            String errors = "";
+                                            for (Character character : error) {
+                                                errors += character + " ";
+                                            }
+                                            JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
+                                        } else {
+                                            JFileChooser file = new JFileChooser(new File("."));
+                                            file.setDialogTitle("Elija nombre y ubicación para el archivo con la respuesta");
+                                            file.setSelectedFile(new File("Respuesta.txt"));
+                                            if (file.showSaveDialog(file) == JFileChooser.CANCEL_OPTION) {
+                                                throw new NullPointerException();
+                                            }
+                                            String asd = file.getSelectedFile().getAbsolutePath();
+                                            afn.computarTodosLosProcesamientos(cadena, asd);
+                                            tres = false;
+                                        }
+                                        break;
+                                    }
+                                    case 2: {
+                                        String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "Recepción de cadena");
+                                        ArrayList<Character> error = afn.ponerCadena(cadena);
+                                        if (error.size() > 0) {
+                                            String errors = "";
+                                            for (Character character : error) {
+                                                errors += character + " ";
+                                            }
+                                            JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
+                                        } else {
+                                            boolean set = afn.procesarCadenaConDetalles(cadena);
+                                            if (set) {
+                                                System.out.println("La cadena: " + cadena + " es aceptada");
                                             } else {
-                                                JFileChooser file = new JFileChooser(new File("."));
-                                                file.setDialogTitle("Elija nombre y ubicación para el archivo con la respuesta");
-                                                file.setSelectedFile(new File("Respuesta.txt"));
-                                                if (file.showSaveDialog(file) == JFileChooser.CANCEL_OPTION) {
-                                                    throw new NullPointerException();
-                                                }
-                                                String asd = file.getSelectedFile().getAbsolutePath();
-                                                afn.computarTodosLosProcesamientos(cadena, asd);
-                                                tres = false;
-                                            }       break;
+                                                System.out.println("La cadena: " + cadena + " no es aceptada");
+                                            }
+                                            tres = false;
                                         }
-                                    case 2:
-                                        {
-                                            String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "Recepción de cadena");
-                                            ArrayList<Character> error = afn.ponerCadena(cadena);
-                                            if (error.size() > 0) {
-                                                String errors = "";
-                                                for (Character character : error) {
-                                                    errors += character + " ";
-                                                }
-                                                JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
-                                            } else {
-                                                boolean set = afn.procesarCadenaConDetalles(cadena);
-                                                if (set) {
-                                                    System.out.println("La cadena: " + cadena + " es aceptada");
-                                                } else {
-                                                    System.out.println("La cadena: " + cadena + " no es aceptada");
-                                                }
-                                                tres = false;
-                                            }       break;
-                                        }
+                                        break;
+                                    }
                                     default:
                                         break;
                                 }
-                                
+
                             } catch (NullPointerException e) {
                                 tres = false;
                             }
@@ -505,23 +510,23 @@ public class ClasePrueba {
                                             int de = JOptionPane.YES_OPTION;
                                             do {
                                                 try {
-                                                    
-                                                String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
-                                                ArrayList<Character> error = afnl.ponerCadena(cadena);
-                                                if (error.size() > 0) {
-                                                    String errors = "";
-                                                    for (Character character : error) {
-                                                        errors += character + " ";
+
+                                                    String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
+                                                    ArrayList<Character> error = afnl.ponerCadena(cadena);
+                                                    if (error.size() > 0) {
+                                                        String errors = "";
+                                                        for (Character character : error) {
+                                                            errors += character + " ";
+                                                        }
+                                                        JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
+                                                    } else {
+                                                        cadenas.add(cadena);
+                                                        de = JOptionPane.showConfirmDialog(null, "¿Desea agregar otra cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                                                     }
-                                                    JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
-                                                } else {
-                                                    cadenas.add(cadena);
-                                                    de = JOptionPane.showConfirmDialog(null, "¿Desea agregar otra cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                                                }
                                                 } catch (NullPointerException e) {
                                                     de = JOptionPane.CANCEL_OPTION;
                                                 }
-                                                 
+
                                             } while (de == JOptionPane.YES_OPTION);
                                             break;
                                     }
@@ -557,10 +562,10 @@ public class ClasePrueba {
                         case JOptionPane.NO_OPTION:
                             boolean cuatro = true;
                             do {
-                                try{       
-                                    String[] options2 = {"Procesar cadena", "Procesar y mostrar todas las computaciones" ,"Imprimir alguna de las computaciones" ,"Volver"};
+                                try {
+                                    String[] options2 = {"Procesar cadena", "Procesar y mostrar todas las computaciones", "Imprimir alguna de las computaciones", "Volver"};
                                     int j = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Procesamiento de cadenas", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options2, "Salir");
-                                    if (j == 3){
+                                    if (j == 3) {
                                         cuatro = false;
                                     } else if (j == JOptionPane.CLOSED_OPTION) {
                                         return Lectura.salir;
@@ -595,7 +600,7 @@ public class ClasePrueba {
                                             }
 
                                         } while (tres);
-                                    }else if(j == 1){
+                                    } else if (j == 1) {
                                         boolean tres = true;
                                         do {
                                             try {
@@ -616,7 +621,7 @@ public class ClasePrueba {
                                                     }
                                                     String dirArch = fileComputaciones.getSelectedFile().getAbsolutePath();
                                                     int respuesta = afnl.computarTodosLosProcesamientos(cadena, dirArch);
-                                                    System.out.println("En total, hubo "+ respuesta+ " procesamientos");
+                                                    System.out.println("En total, hubo " + respuesta + " procesamientos");
                                                     tres = false;
                                                 }
                                             } catch (NullPointerException e) {
@@ -624,7 +629,7 @@ public class ClasePrueba {
                                             }
 
                                         } while (tres);
-                                    }else if(j == 2){
+                                    } else if (j == 2) {
                                         boolean tres = true;
                                         do {
                                             try {
@@ -637,7 +642,7 @@ public class ClasePrueba {
                                                     }
                                                     JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
                                                 } else {
-                                                    String[] options3 = {"Aceptados", "Rechazados" ,"Abortados" ,"Salir"};
+                                                    String[] options3 = {"Aceptados", "Rechazados", "Abortados", "Salir"};
                                                     int n = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Procedimiento que desea ver", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options3, "Salir");
                                                     if (n == 3 || n == JOptionPane.CLOSED_OPTION) {
                                                         return Lectura.salir;
@@ -664,7 +669,7 @@ public class ClasePrueba {
                             break;
                     }
                     //return Lectura.CrearAutomata;
-                }else if(f == 1){
+                } else if (f == 1) {
                     String[] options4 = {"Lambda clausura un estado", "Lambda clausura varios estados", "Salir"};
                     int e = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options4, "Salir");
                     if (e == 2 || e == JOptionPane.CLOSED_OPTION) {
@@ -673,26 +678,26 @@ public class ClasePrueba {
                         String[] estados = afnl.GetQ();
                         int estado = JOptionPane.showOptionDialog(null, "Escoja un estado", "Lambda clausura un estado", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, estados, estados[0]);
                         afnl.ImprimirlambdaClausura_unEstado(estado);
-                    } else if (e == 1){
+                    } else if (e == 1) {
                         ArrayList<Integer> escogidos = new ArrayList<>();
                         String[] estados = afnl.GetQ();
                         boolean tres = true;
-                            do {
-                                try {
-                                    int estado = JOptionPane.showOptionDialog(null, "Escoja un estado", "Lambda clausura un estado", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, estados, estados[0]);
-                                    escogidos.add(estado);
-                                    
-                                    if (JOptionPane.showConfirmDialog(null, "¿Desea escoger otro estado?", "Lambda clausura varios estados", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.NO_OPTION) {
-                                        Set<Integer> hashSet = new HashSet<>(escogidos);
-                                        escogidos.clear();
-                                        escogidos.addAll(hashSet);
-                                        afnl.ImprimirlambdaClausura_variosEstado(escogidos);
-                                        tres = false;
-                                    }
-                                } catch (NullPointerException h) {
+                        do {
+                            try {
+                                int estado = JOptionPane.showOptionDialog(null, "Escoja un estado", "Lambda clausura un estado", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, estados, estados[0]);
+                                escogidos.add(estado);
+
+                                if (JOptionPane.showConfirmDialog(null, "¿Desea escoger otro estado?", "Lambda clausura varios estados", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.NO_OPTION) {
+                                    Set<Integer> hashSet = new HashSet<>(escogidos);
+                                    escogidos.clear();
+                                    escogidos.addAll(hashSet);
+                                    afnl.ImprimirlambdaClausura_variosEstado(escogidos);
                                     tres = false;
                                 }
-                            } while (tres);
+                            } catch (NullPointerException h) {
+                                tres = false;
+                            }
+                        } while (tres);
                     }
                 }
                 pause();
@@ -712,14 +717,14 @@ public class ClasePrueba {
             return Lectura.CrearAutomata;
         }
     }
-    
-    private static Lectura probarAFNoAFD(){
+
+    private static Lectura probarAFNoAFD() {
         try {
             AFN afn = new AFN(url);
             AFD afd = InteraccionesAutomas.AFNtoAFD(afn);
             System.out.println("Los automatas han sido creados correctamente \n");
             while (true) {
-                String[] options1 = {"Procesar cadena", "Validar transformacion", "Imprimir automatas" ,"Salir"};
+                String[] options1 = {"Procesar cadena", "Validar transformacion", "Imprimir automatas", "Salir"};
                 int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
                 if (f == 3 || f == JOptionPane.CLOSED_OPTION) {
                     return Lectura.salir;
@@ -753,23 +758,23 @@ public class ClasePrueba {
                                             int de = JOptionPane.YES_OPTION;
                                             do {
                                                 try {
-                                                    
-                                                String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
-                                                ArrayList<Character> error = afn.ponerCadena(cadena);
-                                                if (error.size() > 0) {
-                                                    String errors = "";
-                                                    for (Character character : error) {
-                                                        errors += character + " ";
+
+                                                    String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
+                                                    ArrayList<Character> error = afn.ponerCadena(cadena);
+                                                    if (error.size() > 0) {
+                                                        String errors = "";
+                                                        for (Character character : error) {
+                                                            errors += character + " ";
+                                                        }
+                                                        JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
+                                                    } else {
+                                                        cadenas.add(cadena);
+                                                        de = JOptionPane.showConfirmDialog(null, "¿Desea agregar otra cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                                                     }
-                                                    JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
-                                                } else {
-                                                    cadenas.add(cadena);
-                                                    de = JOptionPane.showConfirmDialog(null, "¿Desea agregar otra cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                                                }
                                                 } catch (NullPointerException e) {
                                                     de = JOptionPane.CANCEL_OPTION;
                                                 }
-                                                 
+
                                             } while (de == JOptionPane.YES_OPTION);
                                             break;
                                     }
@@ -790,29 +795,29 @@ public class ClasePrueba {
                                     }
                                     String asd = file.getSelectedFile().getAbsolutePath();
                                     String[] div = asd.split("\\.");
-                                    asd = div[0]+"af";
+                                    asd = div[0] + "af";
                                     String[] listaCadenas = new String[cadenas.size()];
                                     for (int j = 0; j < cadenas.size(); j++) {
                                         listaCadenas[j] = cadenas.get(j);
                                     }
                                     boolean imprimir = JOptionPane.showConfirmDialog(null, "Desea imprimir en consola tambien?", "detalles", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
-                                    if(imprimir){
+                                    if (imprimir) {
                                         System.out.println("AFN: ");
                                     }
-                                    if(div.length>1){
-                                        afn.procesarListaCadenas(listaCadenas, asd+"n."+div[1], imprimir);
-                                    }else{
-                                        afn.procesarListaCadenas(listaCadenas, asd+"n", imprimir);
+                                    if (div.length > 1) {
+                                        afn.procesarListaCadenas(listaCadenas, asd + "n." + div[1], imprimir);
+                                    } else {
+                                        afn.procesarListaCadenas(listaCadenas, asd + "n", imprimir);
                                     }
-                                    if(imprimir){
+                                    if (imprimir) {
                                         System.out.println("AFD: ");
                                     }
-                                    if(div.length>1){
-                                        afd.procesarListaCadenas(listaCadenas, asd+"d."+div[1], imprimir);
-                                    }else{
-                                        afd.procesarListaCadenas(listaCadenas, asd+"d", imprimir);
+                                    if (div.length > 1) {
+                                        afd.procesarListaCadenas(listaCadenas, asd + "d." + div[1], imprimir);
+                                    } else {
+                                        afd.procesarListaCadenas(listaCadenas, asd + "d", imprimir);
                                     }
-                                    
+
                                     dos = false;
                                 } catch (NullPointerException e) {
                                     dos = false;
@@ -824,7 +829,7 @@ public class ClasePrueba {
                             boolean tres = true;
                             do {
                                 try {
-                                    String[] options2 = {"Procesar cadena","Procesar y mostrar todas las computaciones","Imprimir alguna de las computaciones","Volver"};
+                                    String[] options2 = {"Procesar cadena", "Procesar y mostrar todas las computaciones", "Imprimir alguna de las computaciones", "Volver"};
                                     int j = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Procesamiento de cadenas", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options2, "Salir");
 
                                     switch (j) {
@@ -833,108 +838,105 @@ public class ClasePrueba {
                                             break;
                                         case JOptionPane.CLOSED_OPTION:
                                             return Lectura.salir;
-                                        case 0:
-                                            {
-                                                String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "Recepción de cadena");
-                                                ArrayList<Character> error = afn.ponerCadena(cadena);
-                                                if (error.size() > 0) {
-                                                    String errors = "";
-                                                    for (Character character : error) {
-                                                        errors += character + " ";
-                                                    }
-                                                    JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
-                                                } else {
-                                                    boolean set1 = afn.procesarCadena(cadena);
-                                                    boolean set2 = afd.procesarCadena(cadena);
-                                                    if(set2==set1){
-                                                        System.out.print("En ambos casos la cadena: " + cadena + " es ");
-                                                        if(set1){
-                                                            System.out.println("aceptada");
-                                                        }else{
-                                                            System.out.println("rechazada");
-                                                        }
-                                                    }else{
-                                                        System.out.println("En cada automata, el resultado con la cadena: " + cadena + " es diferente: ");
-                                                        if(set1){
-                                                            System.out.println("Para el AFN la cadena es aceptada");
-                                                        }else{
-                                                            System.out.println("Para el AFN la cadena es rechazada");
-                                                        }
-                                                        if(set2){
-                                                            System.out.println("Para el AFD la cadena es aceptada");
-                                                        }else{
-                                                            System.out.println("Para el AFD la cadena es rechazada");
-                                                        }
-                                                    }
-                                                    tres = false;
+                                        case 0: {
+                                            String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "Recepción de cadena");
+                                            ArrayList<Character> error = afn.ponerCadena(cadena);
+                                            if (error.size() > 0) {
+                                                String errors = "";
+                                                for (Character character : error) {
+                                                    errors += character + " ";
                                                 }
-                                                break;
-                                            }
-                                        case 1:
-                                            {
-                                                String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "Recepción de cadena");
-                                                ArrayList<Character> error = afn.ponerCadena(cadena);
-                                                if (error.size() > 0) {
-                                                    String errors = "";
-                                                    for (Character character : error) {
-                                                        errors += character + " ";
-                                                    }
-                                                    JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
-                                                } else {
-                                                    JFileChooser file = new JFileChooser(new File("."));
-                                                    file.setDialogTitle("Elija nombre y ubicación para el archivo con la respuesta");
-                                                    file.setSelectedFile(new File("Respuesta.txt"));
-                                                    if (file.showSaveDialog(file) == JFileChooser.CANCEL_OPTION) {
-                                                        throw new NullPointerException();
-                                                    }
-                                                    String asd = file.getSelectedFile().getAbsolutePath();
-                                                    String[] div = asd.split("\\.");
-                                                    int nafn;
-                                                    if(div.length>1){
-                                                        nafn=afn.computarTodosLosProcesamientos(cadena, div[0]+"afn."+div[1]);
-                                                    }else{
-                                                        nafn=afn.computarTodosLosProcesamientos(cadena, div[0]+"afn");
-                                                    }
-                                                    System.out.println("El AFN tiene "+nafn+" procesamientos para la cadena: "+cadena);
-                                                    System.out.println("\nMientras que el procesamiento de la cadena: "+cadena+" en el AFD equivalente es:");
-                                                    afd.procesarCadenaConDetalles(cadena);
-                                                    System.out.println();
-                                                    tres = false;
-                                                }       
-                                                break;
-                                            }
-                                        case 2:
-                                            {
-                                                String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "Recepción de cadena");
-                                                ArrayList<Character> error = afn.ponerCadena(cadena);
-                                                if (error.size() > 0) {
-                                                    String errors = "";
-                                                    for (Character character : error) {
-                                                        errors += character + " ";
-                                                    }
-                                                    JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
-                                                } else {
-                                                    System.out.println("El procesamiento de la cadena: " + cadena + " en el AFN es");
-                                                    boolean set1 = afn.procesarCadenaConDetalles(cadena);
+                                                JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
+                                            } else {
+                                                boolean set1 = afn.procesarCadena(cadena);
+                                                boolean set2 = afd.procesarCadena(cadena);
+                                                if (set2 == set1) {
+                                                    System.out.print("En ambos casos la cadena: " + cadena + " es ");
                                                     if (set1) {
-                                                        System.out.println("La cadena es aceptada en el AFN");
+                                                        System.out.println("aceptada");
                                                     } else {
-                                                        System.out.println("La cadena no es aceptada en el AFN");
+                                                        System.out.println("rechazada");
                                                     }
-                                                    System.out.println("\nEl procesamiento de la cadena: " + cadena + " en el AFD equivalente es");
-                                                    boolean set2 = afd.procesarCadenaConDetalles(cadena);
+                                                } else {
+                                                    System.out.println("En cada automata, el resultado con la cadena: " + cadena + " es diferente: ");
+                                                    if (set1) {
+                                                        System.out.println("Para el AFN la cadena es aceptada");
+                                                    } else {
+                                                        System.out.println("Para el AFN la cadena es rechazada");
+                                                    }
                                                     if (set2) {
-                                                        System.out.println("La cadena es aceptada en el AFD equivalente\n");
+                                                        System.out.println("Para el AFD la cadena es aceptada");
                                                     } else {
-                                                        System.out.println("La cadena no es aceptada en el AFD equivalente\n");
+                                                        System.out.println("Para el AFD la cadena es rechazada");
                                                     }
-                                                    tres = false;
-                                                }       
-                                                break;
+                                                }
+                                                tres = false;
                                             }
+                                            break;
+                                        }
+                                        case 1: {
+                                            String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "Recepción de cadena");
+                                            ArrayList<Character> error = afn.ponerCadena(cadena);
+                                            if (error.size() > 0) {
+                                                String errors = "";
+                                                for (Character character : error) {
+                                                    errors += character + " ";
+                                                }
+                                                JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
+                                            } else {
+                                                JFileChooser file = new JFileChooser(new File("."));
+                                                file.setDialogTitle("Elija nombre y ubicación para el archivo con la respuesta");
+                                                file.setSelectedFile(new File("Respuesta.txt"));
+                                                if (file.showSaveDialog(file) == JFileChooser.CANCEL_OPTION) {
+                                                    throw new NullPointerException();
+                                                }
+                                                String asd = file.getSelectedFile().getAbsolutePath();
+                                                String[] div = asd.split("\\.");
+                                                int nafn;
+                                                if (div.length > 1) {
+                                                    nafn = afn.computarTodosLosProcesamientos(cadena, div[0] + "afn." + div[1]);
+                                                } else {
+                                                    nafn = afn.computarTodosLosProcesamientos(cadena, div[0] + "afn");
+                                                }
+                                                System.out.println("El AFN tiene " + nafn + " procesamientos para la cadena: " + cadena);
+                                                System.out.println("\nMientras que el procesamiento de la cadena: " + cadena + " en el AFD equivalente es:");
+                                                afd.procesarCadenaConDetalles(cadena);
+                                                System.out.println();
+                                                tres = false;
+                                            }
+                                            break;
+                                        }
+                                        case 2: {
+                                            String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "Recepción de cadena");
+                                            ArrayList<Character> error = afn.ponerCadena(cadena);
+                                            if (error.size() > 0) {
+                                                String errors = "";
+                                                for (Character character : error) {
+                                                    errors += character + " ";
+                                                }
+                                                JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
+                                            } else {
+                                                System.out.println("El procesamiento de la cadena: " + cadena + " en el AFN es");
+                                                boolean set1 = afn.procesarCadenaConDetalles(cadena);
+                                                if (set1) {
+                                                    System.out.println("La cadena es aceptada en el AFN");
+                                                } else {
+                                                    System.out.println("La cadena no es aceptada en el AFN");
+                                                }
+                                                System.out.println("\nEl procesamiento de la cadena: " + cadena + " en el AFD equivalente es");
+                                                boolean set2 = afd.procesarCadenaConDetalles(cadena);
+                                                if (set2) {
+                                                    System.out.println("La cadena es aceptada en el AFD equivalente\n");
+                                                } else {
+                                                    System.out.println("La cadena no es aceptada en el AFD equivalente\n");
+                                                }
+                                                tres = false;
+                                            }
+                                            break;
+                                        }
                                         default:
                                             break;
-                                    }                              
+                                    }
                                 } catch (NullPointerException e) {
                                     tres = false;
                                 }
@@ -944,11 +946,11 @@ public class ClasePrueba {
                         default:
                             break;
                     }
-                }else if(f == 1){
-                    ClaseValidacion validacion  = new ClaseValidacion(afn);
+                } else if (f == 1) {
+                    ClaseValidacion validacion = new ClaseValidacion(afn);
                     System.out.println("Validacion de AFN a AFD");
                     validacion.validarAFNtoAFD(afn.getSigma());
-                }else if(f == 2){
+                } else if (f == 2) {
                     System.out.println("Automata AFN: ");
                     System.out.println(afn.toString());
                     System.out.println("\nAutomata AFD: ");
@@ -971,14 +973,14 @@ public class ClasePrueba {
             return Lectura.CrearAutomata;
         }
     }
-    
-    private static Lectura probarAFNLambdaToAFN(){
+
+    private static Lectura probarAFNLambdaToAFN() {
         try {
             AFNL afnl = new AFNL(url);
             AFN afn = InteraccionesAutomas.AFN_LambdaToAFN(afnl);
             System.out.println("Los automatas han sido creados correctamente \n");
             while (true) {
-                String[] options1 = {"Procesar cadena", "Validar transformacion", "Imprimir automatas" ,"Salir"};
+                String[] options1 = {"Procesar cadena", "Validar transformacion", "Imprimir automatas", "Salir"};
                 int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
                 if (f == 3 || f == JOptionPane.CLOSED_OPTION) {
                     return Lectura.salir;
@@ -1012,23 +1014,23 @@ public class ClasePrueba {
                                             int de = JOptionPane.YES_OPTION;
                                             do {
                                                 try {
-                                                    
-                                                String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
-                                                ArrayList<Character> error = afnl.ponerCadena(cadena);
-                                                if (error.size() > 0) {
-                                                    String errors = "";
-                                                    for (Character character : error) {
-                                                        errors += character + " ";
+
+                                                    String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
+                                                    ArrayList<Character> error = afnl.ponerCadena(cadena);
+                                                    if (error.size() > 0) {
+                                                        String errors = "";
+                                                        for (Character character : error) {
+                                                            errors += character + " ";
+                                                        }
+                                                        JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
+                                                    } else {
+                                                        cadenas.add(cadena);
+                                                        de = JOptionPane.showConfirmDialog(null, "¿Desea agregar otra cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                                                     }
-                                                    JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
-                                                } else {
-                                                    cadenas.add(cadena);
-                                                    de = JOptionPane.showConfirmDialog(null, "¿Desea agregar otra cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                                                }
                                                 } catch (NullPointerException e) {
                                                     de = JOptionPane.CANCEL_OPTION;
                                                 }
-                                                 
+
                                             } while (de == JOptionPane.YES_OPTION);
                                             break;
                                     }
@@ -1049,26 +1051,26 @@ public class ClasePrueba {
                                     }
                                     String asd = file.getSelectedFile().getAbsolutePath();
                                     String[] div = asd.split("\\.");
-                                    asd = div[0]+"afn";
+                                    asd = div[0] + "afn";
                                     String[] listaCadenas = new String[cadenas.size()];
                                     for (int j = 0; j < cadenas.size(); j++) {
                                         listaCadenas[j] = cadenas.get(j);
                                     }
                                     boolean imprimir = JOptionPane.showConfirmDialog(null, "Desea imprimir en consola tambien?", "detalles", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
-                                    if(imprimir){
+                                    if (imprimir) {
                                         System.out.println("AFNL: ");
                                     }
-                                    if(div.length>1){
-                                        afnl.procesarListaCadenas(listaCadenas, asd+"l."+div[1], imprimir);
-                                    }else{
-                                        afnl.procesarListaCadenas(listaCadenas, asd+"l", imprimir);
+                                    if (div.length > 1) {
+                                        afnl.procesarListaCadenas(listaCadenas, asd + "l." + div[1], imprimir);
+                                    } else {
+                                        afnl.procesarListaCadenas(listaCadenas, asd + "l", imprimir);
                                     }
-                                    if(imprimir){
+                                    if (imprimir) {
                                         System.out.println("AFN: ");
                                     }
-                                    if(div.length>1){
-                                        afn.procesarListaCadenas(listaCadenas, asd+"."+div[1], imprimir);
-                                    }else{
+                                    if (div.length > 1) {
+                                        afn.procesarListaCadenas(listaCadenas, asd + "." + div[1], imprimir);
+                                    } else {
                                         afn.procesarListaCadenas(listaCadenas, asd, imprimir);
                                     }
                                     dos = false;
@@ -1082,10 +1084,10 @@ public class ClasePrueba {
                         case JOptionPane.NO_OPTION:
                             boolean cuatro = true;
                             do {
-                                try{       
-                                    String[] options2 = {"Procesar cadena", "Procesar y mostrar todas las computaciones" ,"Imprimir alguna de las computaciones" ,"Volver"};
+                                try {
+                                    String[] options2 = {"Procesar cadena", "Procesar y mostrar todas las computaciones", "Imprimir alguna de las computaciones", "Volver"};
                                     int j = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Procesamiento de cadenas", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options2, "Salir");
-                                    if (j == 3){
+                                    if (j == 3) {
                                         cuatro = false;
                                     } else if (j == JOptionPane.CLOSED_OPTION) {
                                         return Lectura.salir;
@@ -1112,12 +1114,12 @@ public class ClasePrueba {
                                                     }
                                                     if (setAfnl) {
                                                         System.out.println("La cadena: " + cadena + " es aceptada por el AFNL");
-                                                    } else{
+                                                    } else {
                                                         System.out.println("La cadena: " + cadena + " no es aceptada por el AFNL");
                                                     }
                                                     if (setAfn) {
                                                         System.out.println("La cadena: " + cadena + " es aceptada por el AFN");
-                                                    } else{
+                                                    } else {
                                                         System.out.println("La cadena: " + cadena + " no es aceptada por el AFN");
                                                     }
                                                     tres = false;
@@ -1127,7 +1129,7 @@ public class ClasePrueba {
                                             }
 
                                         } while (tres);
-                                    }else if(j == 1){
+                                    } else if (j == 1) {
                                         boolean tres = true;
                                         do {
                                             try {
@@ -1148,20 +1150,20 @@ public class ClasePrueba {
                                                     }
                                                     String dirArch = fileComputaciones.getSelectedFile().getAbsolutePath();
                                                     String[] div = dirArch.split("\\.");
-                                                    if(div.length>1){
-                                                        int respuestaAfnl = afnl.computarTodosLosProcesamientos(cadena, div[0]+"afnl."+div[1]);
-                                                        System.out.println("Para el AFNL en total, hubo "+ respuestaAfnl+ " procesamientos\n");
+                                                    if (div.length > 1) {
+                                                        int respuestaAfnl = afnl.computarTodosLosProcesamientos(cadena, div[0] + "afnl." + div[1]);
+                                                        System.out.println("Para el AFNL en total, hubo " + respuestaAfnl + " procesamientos\n");
 
-                                                        int respuestaAfn = afnl.computarTodosLosProcesamientos(cadena, div[0]+"afn."+div[1]);
-                                                        System.out.println("Para el AFN en total, hubo "+ respuestaAfn+ " procesamientos\n");
-                                                    }else{
-                                                        int respuestaAfnl = afnl.computarTodosLosProcesamientos(cadena, dirArch+ "afnl");
-                                                        System.out.println("Para el AFNL en total, hubo "+ respuestaAfnl+ " procesamientos\n");
+                                                        int respuestaAfn = afnl.computarTodosLosProcesamientos(cadena, div[0] + "afn." + div[1]);
+                                                        System.out.println("Para el AFN en total, hubo " + respuestaAfn + " procesamientos\n");
+                                                    } else {
+                                                        int respuestaAfnl = afnl.computarTodosLosProcesamientos(cadena, dirArch + "afnl");
+                                                        System.out.println("Para el AFNL en total, hubo " + respuestaAfnl + " procesamientos\n");
 
-                                                        int respuestaAfn = afnl.computarTodosLosProcesamientos(cadena, dirArch+ "afn");
-                                                        System.out.println("Para el AFN en total, hubo "+ respuestaAfn+ " procesamientos\n");
+                                                        int respuestaAfn = afnl.computarTodosLosProcesamientos(cadena, dirArch + "afn");
+                                                        System.out.println("Para el AFN en total, hubo " + respuestaAfn + " procesamientos\n");
                                                     }
-                                                    
+
                                                     tres = false;
                                                 }
                                             } catch (NullPointerException e) {
@@ -1169,7 +1171,7 @@ public class ClasePrueba {
                                             }
 
                                         } while (tres);
-                                    }else if(j == 2){
+                                    } else if (j == 2) {
                                         boolean tres = true;
                                         do {
                                             try {
@@ -1182,7 +1184,7 @@ public class ClasePrueba {
                                                     }
                                                     JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
                                                 } else {
-                                                    String[] options3 = {"Aceptados", "Rechazados" ,"Abortados" ,"Salir"};
+                                                    String[] options3 = {"Aceptados", "Rechazados", "Abortados", "Salir"};
                                                     int n = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Procedimiento que desea ver", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options3, "Salir");
                                                     if (n == 3 || n == JOptionPane.CLOSED_OPTION) {
                                                         return Lectura.salir;
@@ -1209,11 +1211,11 @@ public class ClasePrueba {
                             break;
                     }
                     //return Lectura.CrearAutomata;
-                }else if(f == 1){
-                    ClaseValidacion validacion  = new ClaseValidacion(afnl,afn);
+                } else if (f == 1) {
+                    ClaseValidacion validacion = new ClaseValidacion(afnl, afn);
                     System.out.println("Validacion de AFNL a AFN");
                     validacion.validarAFNLambdaToAFN(afnl.getSigma());
-                }else if(f == 2){
+                } else if (f == 2) {
                     System.out.println("Automata AFNL: ");
                     System.out.println(afnl.toString());
                     System.out.println("\nAutomata AFN: ");
@@ -1236,15 +1238,15 @@ public class ClasePrueba {
             return Lectura.CrearAutomata;
         }
     }
-    
-    private static Lectura probarAFNLambdaToAFD(){
+
+    private static Lectura probarAFNLambdaToAFD() {
         try {
             AFNL afnl = new AFNL(url);
             AFN afn = InteraccionesAutomas.AFN_LambdaToAFN(afnl);
             AFD afd = InteraccionesAutomas.AFN_LambdaToAFD(afnl);
             System.out.println("Los automatas han sido creados correctamente \n");
             while (true) {
-                String[] options1 = {"Procesar cadena", "Validar transformacion", "Imprimir automatas" ,"Salir"};
+                String[] options1 = {"Procesar cadena", "Validar transformacion", "Imprimir automatas", "Salir"};
                 int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
                 if (f == 3 || f == JOptionPane.CLOSED_OPTION) {
                     return Lectura.salir;
@@ -1278,23 +1280,23 @@ public class ClasePrueba {
                                             int de = JOptionPane.YES_OPTION;
                                             do {
                                                 try {
-                                                    
-                                                String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
-                                                ArrayList<Character> error = afnl.ponerCadena(cadena);
-                                                if (error.size() > 0) {
-                                                    String errors = "";
-                                                    for (Character character : error) {
-                                                        errors += character + " ";
+
+                                                    String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
+                                                    ArrayList<Character> error = afnl.ponerCadena(cadena);
+                                                    if (error.size() > 0) {
+                                                        String errors = "";
+                                                        for (Character character : error) {
+                                                            errors += character + " ";
+                                                        }
+                                                        JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
+                                                    } else {
+                                                        cadenas.add(cadena);
+                                                        de = JOptionPane.showConfirmDialog(null, "¿Desea agregar otra cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
                                                     }
-                                                    JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
-                                                } else {
-                                                    cadenas.add(cadena);
-                                                    de = JOptionPane.showConfirmDialog(null, "¿Desea agregar otra cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE);
-                                                }
                                                 } catch (NullPointerException e) {
                                                     de = JOptionPane.CANCEL_OPTION;
                                                 }
-                                                 
+
                                             } while (de == JOptionPane.YES_OPTION);
                                             break;
                                     }
@@ -1312,39 +1314,39 @@ public class ClasePrueba {
                                     file.setSelectedFile(new File("Respuesta.txt"));
                                     if (file.showSaveDialog(file) == JFileChooser.CANCEL_OPTION) {
                                         throw new NullPointerException();
-                                    }                                    
+                                    }
                                     String asd = file.getSelectedFile().getAbsolutePath();
                                     String[] div = asd.split("\\.");
-                                    asd = div[0]+"af";
+                                    asd = div[0] + "af";
                                     String[] listaCadenas = new String[cadenas.size()];
                                     for (int j = 0; j < cadenas.size(); j++) {
                                         listaCadenas[j] = cadenas.get(j);
                                     }
                                     boolean imprimir = JOptionPane.showConfirmDialog(null, "Desea imprimir en consola tambien?", "detalles", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION;
-                                    if(imprimir){
+                                    if (imprimir) {
                                         System.out.println("AFNL: ");
                                     }
-                                    if(div.length>1){
-                                        afnl.procesarListaCadenas(listaCadenas, asd+"nl."+div[1], imprimir);
-                                    }else{
-                                        afnl.procesarListaCadenas(listaCadenas, asd+"nl", imprimir);
+                                    if (div.length > 1) {
+                                        afnl.procesarListaCadenas(listaCadenas, asd + "nl." + div[1], imprimir);
+                                    } else {
+                                        afnl.procesarListaCadenas(listaCadenas, asd + "nl", imprimir);
                                     }
-                                    if(imprimir){
+                                    if (imprimir) {
                                         System.out.println("AFN: ");
                                     }
-                                    if(div.length>1){
-                                        afn.procesarListaCadenas(listaCadenas, asd+"n."+div[1], imprimir);
-                                    }else{
-                                        afn.procesarListaCadenas(listaCadenas, asd+"n", imprimir);
+                                    if (div.length > 1) {
+                                        afn.procesarListaCadenas(listaCadenas, asd + "n." + div[1], imprimir);
+                                    } else {
+                                        afn.procesarListaCadenas(listaCadenas, asd + "n", imprimir);
                                     }
-                                    if(imprimir){
+                                    if (imprimir) {
                                         System.out.println("AFD: ");
                                     }
-                                    if(div.length>1){
-                                        afd.procesarListaCadenas(listaCadenas, asd+"d."+div[1], imprimir);
-                                    }else{
-                                        afd.procesarListaCadenas(listaCadenas, asd+"d", imprimir);
-                                    }                                    
+                                    if (div.length > 1) {
+                                        afd.procesarListaCadenas(listaCadenas, asd + "d." + div[1], imprimir);
+                                    } else {
+                                        afd.procesarListaCadenas(listaCadenas, asd + "d", imprimir);
+                                    }
                                     dos = false;
                                 } catch (NullPointerException e) {
                                     dos = false;
@@ -1356,10 +1358,10 @@ public class ClasePrueba {
                         case JOptionPane.NO_OPTION:
                             boolean cuatro = true;
                             do {
-                                try{       
-                                    String[] options2 = {"Procesar cadena","Volver"};
+                                try {
+                                    String[] options2 = {"Procesar cadena", "Volver"};
                                     int j = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Procesamiento de cadenas", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options2, "Salir");
-                                    if (j == 3){
+                                    if (j == 3) {
                                         cuatro = false;
                                     } else if (j == JOptionPane.CLOSED_OPTION) {
                                         return Lectura.salir;
@@ -1388,17 +1390,17 @@ public class ClasePrueba {
                                                     }
                                                     if (setAfnl) {
                                                         System.out.println("La cadena: " + cadena + " es aceptada por el AFNL");
-                                                    } else{
+                                                    } else {
                                                         System.out.println("La cadena: " + cadena + " no es aceptada por el AFNL");
                                                     }
                                                     if (setAfn) {
                                                         System.out.println("La cadena: " + cadena + " es aceptada por el AFN");
-                                                    } else{
+                                                    } else {
                                                         System.out.println("La cadena: " + cadena + " no es aceptada por el AFN");
                                                     }
                                                     if (setAfd) {
                                                         System.out.println("La cadena: " + cadena + " es aceptada por el AFD");
-                                                    } else{
+                                                    } else {
                                                         System.out.println("La cadena: " + cadena + " no es aceptada por el AFD");
                                                     }
                                                     tres = false;
@@ -1421,13 +1423,13 @@ public class ClasePrueba {
                             break;
                     }
                     //return Lectura.CrearAutomata;
-                }else if(f == 1){
-                    ClaseValidacion validacion  = new ClaseValidacion(afnl,afn);
+                } else if (f == 1) {
+                    ClaseValidacion validacion = new ClaseValidacion(afnl, afn);
                     System.out.println("Validacion de AFNL a AFN");
                     validacion.validarAFNLambdaToAFN(afnl.getSigma());
                     System.out.println("Validacion de AFN a AFD");
                     validacion.validarAFNtoAFD(afn.getSigma());
-                }else if(f == 2){
+                } else if (f == 2) {
                     System.out.println("Automata AFNL: ");
                     System.out.println(afnl.toString());
                     System.out.println("\nAutomata AFN: ");
@@ -1452,11 +1454,11 @@ public class ClasePrueba {
             return Lectura.CrearAutomata;
         }
     }
-    
+
     private static Lectura probarSimplificacion() {
         try {
             AFD afd = new AFD(url);
-            AFD simpl =  simplificarAFD(afd);
+            AFD simpl = simplificarAFD(afd);
             while (true) {
 
                 String[] options1 = {"Mostrar comparacion de automata\n y su simplificacion", "mostrar visual del automata simplificado", "simular cadenas de forma visual", "procesar Cadenas", "Salir"};
@@ -1525,7 +1527,7 @@ public class ClasePrueba {
                                             JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
                                         } else {
                                             boolean set;
-                                            String[] optionss = {"dar resultado solamente","imprimir en consola el proceso y el resultado","imprimirn en consola y evaluar en una ventana"};
+                                            String[] optionss = {"dar resultado solamente", "imprimir en consola el proceso y el resultado", "imprimirn en consola y evaluar en una ventana"};
                                             int fss = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Seleccione", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionss, "Salir");
                                             switch (fss) {
                                                 case 0:
@@ -1546,7 +1548,7 @@ public class ClasePrueba {
                                             } else {
                                                 System.out.println("La cadena: " + cadena + " no es aceptada");
                                             }
-                                            if(fss==2){
+                                            if (fss == 2) {
                                                 Windows2 cin = new Windows2(getExpresion(), afd, afd.prosCaden(cadena));
                                                 cin.Simulat();
                                             }
@@ -1588,8 +1590,8 @@ public class ClasePrueba {
             return Lectura.CrearAutomata;
         }
     }
-    
-    private static void pause(){
+
+    private static void pause() {
         System.out.println("presione enter para continuar");
         try {
             System.in.read();
@@ -1597,9 +1599,9 @@ public class ClasePrueba {
             Logger.getLogger(ClasePrueba.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private static ArrayList<String> leerArchivo(String fid,AFD afd) throws FileNotFoundException{
-        ArrayList<String> cadenas=new ArrayList<>();
+
+    private static ArrayList<String> leerArchivo(String fid, AFD afd) throws FileNotFoundException {
+        ArrayList<String> cadenas = new ArrayList<>();
         Scanner sd = new Scanner(new File(fid));
         while (sd.hasNext()) {
             String as = sd.next();
@@ -1609,7 +1611,7 @@ public class ClasePrueba {
         }
         return cadenas;
     }
-    
+
     private static void procsVariasCadenas(AFD simpl) throws FileNotFoundException {
         ArrayList<String> cadenas = new ArrayList<>();
         int k = JOptionPane.showConfirmDialog(null, "Desea ingresar un archivo con las cadenas", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -1667,8 +1669,8 @@ public class ClasePrueba {
         }
         simpl.procesarListaCadenas(listaCadenas, asd, JOptionPane.showConfirmDialog(null, "Desea imprimir en consola tambien?", "Seleccione una opción", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION);
     }
-    
-     private static Lectura probarComplemento() {
+
+    private static Lectura probarComplemento() {
         try {
             AFD afd = new AFD(url);
             AFD compl = hallarComplemento(afd);
@@ -1780,7 +1782,7 @@ public class ClasePrueba {
                                             } else {
                                                 System.out.println("La cadena: " + cadena + " no es aceptada por el AFD original");
                                             }
-                                            if(fss==2){
+                                            if (fss == 2) {
                                                 Windows2 cin = new Windows2(getExpresion(), afd, afd.prosCaden(cadena));
                                                 cin.Simulat();
                                             }
@@ -1822,6 +1824,210 @@ public class ClasePrueba {
 
             return Lectura.CrearAutomata;
         }
-    }   
-        
+    }
+
+    private static Lectura probarProductoCartesiano() {
+        try {
+            AFD afd1 = new AFD(url);
+
+            while (true) {
+                try {
+                    JFileChooser fileChooser = new JFileChooser(new File("."));
+                    fileChooser.setDialogTitle("Seleccione el automata que desea importar");
+                    String url2;
+                    if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.CANCEL_OPTION) {
+                        throw new NullPointerException();
+                    }
+                    url2 = fileChooser.getSelectedFile().getAbsolutePath();
+                    switch (InteraccionesAutomas.CheckType(url2)) {
+                        case AFD:
+                            break;
+                        default:
+                            throw new Error("El autómata ingresado debe ser un AFD");
+                    }
+                    AFD afd2 = new AFD(url2);
+                    String operacion;
+
+                    String[] optionsProducto = {"union", "intersección", "diferencia", "diferencia simétrica"};
+                    int k = JOptionPane.showOptionDialog(null, "Elija el tipo de producto que desea", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionsProducto, "Salir");
+                    operacion = optionsProducto[k];
+                    AFD afd = hallarProductoCartesiano(afd1, afd2, operacion);
+                    //Procesamiento
+
+                    String[] options1 = {"Mostrar comparacion de los\n automatas y su producto", "mostrar visual del producto", "simular cadenas de forma visual", "procesar Cadenas", "Salir"};
+                    int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
+                    switch (f) {
+                        case 0://tostring
+                            System.out.println("Primer AFD:");
+                            System.out.println(afd1.toString());
+                            System.out.println("Segundo AFD:");
+                            System.out.println(afd2.toString());
+                            System.out.println("Producto de los AFD ingresados");
+                            String d = afd.toString();
+                            System.out.println(d);
+                            pause();
+                            switch (JOptionPane.showConfirmDialog(null, "Desea guardar el nuevo automata en el portapapeles?", "Guardando AFD producto", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE)) {
+                                case JOptionPane.YES_OPTION:
+                                    StringSelection stringSelection = new StringSelection(d);
+                                    Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                                    clipboard.setContents(stringSelection, null);
+                                    System.out.println("\n Producto de los AFD's copiado al portapapeles");
+                                    break;
+                            }
+                            break;
+                        case 1://visuallibre
+                            int slashIndex = url.lastIndexOf('\\');
+                            int dotIndex = url.lastIndexOf('.');
+                            String expresion;
+                            if (dotIndex == -1) {
+                                expresion = url.substring(slashIndex + 1);
+                            } else {
+                                expresion = url.substring(slashIndex + 1, dotIndex);
+                            }
+                            expresion = expresion.replace('\'', '*');
+                            Windows1 visual = new Windows1(expresion, afd);
+                            visual.Simulat();
+                            break;
+                        case 2://visual forzado
+                            int s = url.lastIndexOf('\\');
+                            int df = url.lastIndexOf('.');
+                            String exe;
+                            if (df == -1) {
+                                exe = url.substring(s + 1);
+                            } else {
+                                exe = url.substring(s + 1, df);
+                            }
+                            exe = exe.replace('\'', '*');
+                            Windows3 visuals = new Windows3(exe, afd);
+                            visuals.Simulat();
+                            break;
+                        case 3://provesar
+                            int i = JOptionPane.showConfirmDialog(null, "Desea ingresar más de una cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                            switch (i) {
+                                case JOptionPane.YES_OPTION:
+                                    boolean dos = true;
+                                    do {
+                                        try {
+                                            procsVariasCadenas(afd);
+                                            dos = false;
+                                        } catch (NullPointerException e) {
+                                            dos = false;
+                                        }
+
+                                    } while (dos);
+                                    break;
+
+                                case JOptionPane.NO_OPTION:
+                                    boolean tres = true;
+                                    do {
+                                        try {
+                                            String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
+                                            ArrayList<Character> error = afd.ponerCadena(cadena);
+                                            if (error.size() > 0) {
+                                                String errors = "";
+                                                for (Character character : error) {
+                                                    errors += character + " ";
+                                                }
+                                                JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
+                                            } else {
+                                                boolean set;
+                                                boolean set0;
+                                                boolean set1;
+                                                String[] optionss = {"dar resultado solamente", "imprimir en consola el proceso y el resultado", "imprimirn en consola y evaluar en una ventana"};
+                                                int fss = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Seleccione", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionss, "Salir");
+                                                switch (fss) {
+                                                    case 0:
+                                                        set = afd.procesarCadena(cadena);
+                                                        set0 = afd1.procesarCadena(cadena);
+                                                        set1 = afd2.procesarCadena(cadena);
+                                                        break;
+                                                    case 1:
+
+                                                    case 2:
+                                                        set = afd.procesarCadenaConDetalles(cadena);
+                                                        set0 = afd1.procesarCadenaConDetalles(cadena);
+                                                        set1 = afd2.procesarCadenaConDetalles(cadena);
+                                                        break;
+                                                    default:
+                                                        set = afd.procesarCadena(cadena);
+                                                        set0 = afd1.procesarCadena(cadena);
+                                                        set1 = afd2.procesarCadena(cadena);
+                                                        break;
+                                                }
+                                                System.out.println("Procesamiento del Producto AFD (" + operacion + ") :");
+                                                if (set) {
+                                                    System.out.println("La cadena: " + cadena + " es aceptada");
+                                                } else {
+                                                    System.out.println("La cadena: " + cadena + " no es aceptada");
+                                                }
+                                                System.out.println("Procesamiento del primer AFD:");
+                                                if (set0) {
+                                                    System.out.println("La cadena: " + cadena + " es aceptada por el AFD original");
+                                                } else {
+                                                    System.out.println("La cadena: " + cadena + " no es aceptada por el AFD original");
+                                                }
+                                                System.out.println("Procesamiento del segundo AFD:");
+                                                if (set1) {
+                                                    System.out.println("La cadena: " + cadena + " es aceptada por el AFD original");
+                                                } else {
+                                                    System.out.println("La cadena: " + cadena + " no es aceptada por el AFD original");
+                                                }
+                                                if (fss == 2) {
+                                                    Windows2 cin = new Windows2("Procesamiento del producto (" + operacion + ") : ", afd, afd.prosCaden(cadena));
+                                                    cin.Simulat();
+                                                }
+
+                                                tres = false;
+                                            }
+                                        } catch (NullPointerException e) {
+                                            tres = false;
+                                        }
+
+                                    } while (tres);
+
+                                    break;
+
+                                default:
+                                    //una
+                                    break;
+                            }
+                            pause();
+                            break;
+                        case 4:
+                            return Lectura.salir;
+                        default:
+                            return Lectura.CrearAutomata;
+                    }
+
+                    String[] options = {"mantener Automata", "Cambiar De Automata", "Salir"};
+                    int fs = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Seleccione", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
+                    if (fs == 2 || fs == JOptionPane.CLOSED_OPTION) {
+                        return Lectura.salir;
+                    } else if (fs == 1) {
+                        return Lectura.CrearAutomata;
+                    }
+
+                } catch (Error e) {
+                    System.err.print(e.getMessage());
+                }
+
+                pause();
+                String[] options = {"Evaluar otra cadena", "Cambiar De Automata", "Salir"};
+                int fs = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Seleccione", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
+                if (fs == 2 || fs == JOptionPane.CLOSED_OPTION) {
+                    return Lectura.salir;
+                } else if (fs == 1) {
+                    return Lectura.CrearAutomata;
+                }
+            }
+        } catch (Error e) {
+            System.err.print(e.getMessage());
+            return Lectura.CrearAutomata;
+        } catch (FileNotFoundException e) {
+
+            return Lectura.CrearAutomata;
+        }
+
+    }
+
 }
