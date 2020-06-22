@@ -59,6 +59,8 @@ public class AFD {
     protected ArrayList<String> estadosLimbo;
 
     public AFD() {
+        estadosInaccesibles=new ArrayList<>();
+        estadosLimbo=new ArrayList<>();
     }
 
     /**
