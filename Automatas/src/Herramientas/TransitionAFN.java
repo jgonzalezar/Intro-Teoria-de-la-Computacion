@@ -6,7 +6,6 @@
 package Herramientas;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  *  La clase TransitionAFN sirve para simular transiciones multiples de  automatas tipo AFN y AFNL

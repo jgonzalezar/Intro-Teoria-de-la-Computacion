@@ -37,9 +37,9 @@ public class RespuestaMult {
     public void addRuta(Integer paso, int ruta, boolean add) {
         if (add) {
             pasos.add(new ArrayList<>());
-            for (Integer get : pasos.get(ruta)) {
+            pasos.get(ruta).forEach((get) -> {
                 pasos.get(pasos.size() - 1).add(get);
-            }
+            });
             pasos.get(pasos.size() - 1).add(paso);
         } else {
             pasos.get(ruta).add(paso);

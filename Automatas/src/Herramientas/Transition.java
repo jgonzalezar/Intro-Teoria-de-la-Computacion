@@ -111,9 +111,9 @@ public class Transition implements Transitions{
 
     @Override
     public void remove(String State) {
-        for (Character i : transicion.keySet()) {
+        transicion.keySet().forEach((i) -> {
             transicion.get(i).remove(State);
-        }
+        });
     }
     
 }
