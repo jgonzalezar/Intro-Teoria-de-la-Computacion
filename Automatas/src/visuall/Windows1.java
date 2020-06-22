@@ -7,44 +7,25 @@ package visuall;
 
 import AutomatasFinitos.AFD;
 import java.awt.Button;
-
-import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 
 /**
- *
+ * la clase Windows1 extiende de la clase windows y esta diseñada para mostrar una version de la ventana que permite moverse a travez del automata de forma libre pero no puede guardar nada
  * @author fanat
  */
 public class Windows1 extends Windows{
     JComboBox<String> estad;
     JComboBox<String> alpha;
     //ArrayList<
-    public static void main(String[] args) {
-        JFileChooser fileChooser = new JFileChooser(new File("."));
-        fileChooser.setDialogTitle("Seleccione el automata que desea importar");
-        
-        try {
-            if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.CANCEL_OPTION) {
-                throw new NullPointerException();
-            }
-            String url;
-            url = fileChooser.getSelectedFile().getAbsolutePath();
-            AFD aff = new AFD(url);
-            
-                Windows jf= new Windows1("Tutorial",aff);
-            
-                jf.Simulat();
-        }catch(HeadlessException | FileNotFoundException | NullPointerException e){
-                e.printStackTrace();
-        }
-    }
+    
+    /**
+     * constructor para crear la ventana
+     * @param tittle titulo de la ventana
+     * @param aff automata
+     */
 
     public Windows1(String tittle, AFD aff){
         super("tittle",aff);

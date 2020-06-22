@@ -1,8 +1,4 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 package visuall;
 
 import AutomatasFinitos.AFD;
@@ -21,12 +17,11 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Stack;
-import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
 
 /**
- *
+ * clase que extiende el jfrma ventana que permite simular el uso de una cadena
  * @author fanat
  */
 public class Windows3 extends Windows{    
@@ -35,27 +30,12 @@ public class Windows3 extends Windows{
     Stack<String> seguro;
     Label cadds;
     JComboBox<String> alpha;
-    //ArrayList<
-    public static void main(String[] args) {
-        JFileChooser fileChooser = new JFileChooser(new File("."));
-        fileChooser.setDialogTitle("Seleccione el automata que desea importar");
-        
-        try {
-            if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.CANCEL_OPTION) {
-                throw new NullPointerException();
-            }
-            String url;
-            url = fileChooser.getSelectedFile().getAbsolutePath();
-            AFD aff = new AFD(url);
-            
-                Windows jf= new Windows3("Tutorial",aff);
-            
-                jf.Simulat();
-        }catch(HeadlessException | FileNotFoundException | NullPointerException e){
-                e.printStackTrace();
-        }
-    }
-
+    
+    /**
+     * constructor para la clase
+     * @param tittle nombre del automata
+     * @param aff automata a usar
+     */
     public Windows3(String tittle, AFD aff){
         super("tittle",aff);
         initAlmc();

@@ -9,30 +9,17 @@ import AutomatasFinitos.AFD;
 import ProcesamientoCadenas.ProcesamientoCadenaAFD;
 import java.awt.Button;
 import java.awt.Color;
-import java.awt.Dimension;
-
 import java.awt.HeadlessException;
 import java.awt.Label;
-import java.awt.ScrollPane;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
-import javax.swing.Box;
-import javax.swing.BoxLayout;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JTextField;
 
 /**
- *
+ * la clase Windows2 genera una ventana del estilo windows con la variacion de que permite visualizar el camino tomado por la cadena procesada
  * @author fanat
  */
 public class Windows2 extends Windows{
@@ -41,26 +28,13 @@ public class Windows2 extends Windows{
     String[] caminos;
     ArrayList<Label> blueLabel;
     Label cadds;
-    public static void main(String[] args) {
-        JFileChooser fileChooser = new JFileChooser(new File("."));
-        fileChooser.setDialogTitle("Seleccione el automata que desea importar");
-        
-        try {
-            if (fileChooser.showOpenDialog(fileChooser) == JFileChooser.CANCEL_OPTION) {
-                throw new NullPointerException();
-            }
-            String url;
-            url = fileChooser.getSelectedFile().getAbsolutePath();
-            AFD aff = new AFD(url);
-            ProcesamientoCadenaAFD resp = aff.prosCaden("aaaaa");
-                Windows jf= new Windows2("Tutorial",aff,resp);
-            
-                jf.Simulat();
-        }catch(HeadlessException | FileNotFoundException | NullPointerException e){
-                e.printStackTrace();
-        }
-    }
-
+    
+    /**
+     * constructor del segundo tipo de ventana 
+     * @param tittle nombre de la ventana
+     * @param aff automata
+     * @param resp procesamiento de la cadena
+     */
     public Windows2(String tittle, AFD aff,ProcesamientoCadenaAFD resp){
         super("tittle",aff);
         move = resp;
