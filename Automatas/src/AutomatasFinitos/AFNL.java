@@ -867,9 +867,8 @@ public class AFNL extends AFN {
         for (int i=0;i<Q.size();i++) {
             for(int j=0;j< this.Sigma.length();j++){
                 for (int k=0;k<Delta.getMove(i, Sigma.get(j)).size();k++){
-                    if( !Delta.getMove(i, Sigma.get(j)).isEmpty()){
+                    if(!Delta.getMove(i, Sigma.get(j)).isEmpty()){
                         cadena+=Q.get(i)+":"+Sigma.get(j)+">"+Q.get(Delta.getMove(i, Sigma.get(j)).get(k))+"\n";
-                        
                     }
                 }
             }

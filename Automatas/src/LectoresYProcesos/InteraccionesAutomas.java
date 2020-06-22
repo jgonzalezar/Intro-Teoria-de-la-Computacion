@@ -126,20 +126,28 @@ public class InteraccionesAutomas {
          */
         AFN,
         /**
-         * automatafinito no determinista con transiciones lambda
+         * automata finito no determinista con transiciones lambda
          */
         AFNL,
         /**
-         * automatafinito no determinista con transiciones lambda
+         * automata finito no determinista a automata finito determinista
          */
         AFNtoAFD,
         /**
-         * automatafinito no determinista con transiciones lambda
+         * automata finito no determinista con transiciones lambda a automata finito no determinista
+         */
+        AFNLtoAFN,
+        /**
+         * automata finito no determinista con transiciones lambda a automata finito determinista
          */
         AFNLtoAFD,
-        
+        /**
+         * simplificar automata finito determinista
+         */
         AFDsimplfic,
-        
+        /**
+         * hallar complemento de un automata finito determinista
+         */
         AFDcomplement,
     }
     

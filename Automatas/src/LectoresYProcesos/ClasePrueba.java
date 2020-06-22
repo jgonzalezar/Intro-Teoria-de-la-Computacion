@@ -91,7 +91,7 @@ public class ClasePrueba {
                                 break;
                             case AFN:
                                 message = "Ha seleccionado un Automata finito no determinista que representa la expresion " + expresion;
-                                int i = JOptionPane.showConfirmDialog(null, "Desea convertir el AFN en un AFD?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                                int i = JOptionPane.showConfirmDialog(null, "Desea convertir el AFN en un AFD?", "Conversión AFN a AFD", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
                                 switch(i){
                                     case JOptionPane.YES_OPTION:
                                         tp=InteraccionesAutomas.Type.AFNtoAFD;
@@ -100,9 +100,13 @@ public class ClasePrueba {
                                 break;
                             case AFNL:
                                 message = "Ha seleccionado un Automata finito no determinista con transiciones lambda que representa la expresion " + expresion;
-                                int j = JOptionPane.showConfirmDialog(null, "Desea convertir el AFNL en un AFD o en un AFN?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-                                switch(j){
-                                    case JOptionPane.YES_OPTION:
+                                String[] options2 = {"Convertir AFNL a AFN", "Convertir AFNL a AFD", "No realizar ninguna conversión"};
+                                int g = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options2, "Salir");
+                                switch (g) {
+                                    case 0:
+                                        tp=InteraccionesAutomas.Type.AFNLtoAFN;
+                                        break;
+                                    case 1:
                                         tp=InteraccionesAutomas.Type.AFNLtoAFD;
                                         break;
                                 }
@@ -132,13 +136,18 @@ public class ClasePrueba {
                         case AFNtoAFD:
                             lec = probarAFNoAFD();
                             break;
-                        case AFNLtoAFD:
+                        case AFNLtoAFN:
                             lec = probarAFNLambdaToAFN();
+                            break;
+                        case AFNLtoAFD:
+                            lec = probarAFNLambdaToAFD();
                             break;
                         case AFDsimplfic:
                             lec=probarSimplificacion();
+                            break;
+                        case AFDcomplement:
                             
-                            
+                            break;
                     }
                     break;
                 case salir:
@@ -818,21 +827,21 @@ public class ClasePrueba {
                                             if(set2==set1){
                                                 System.out.print("En ambos casos la cadena: " + cadena + " es ");
                                                 if(set1){
-                                                    System.out.print("aceptada");
+                                                    System.out.println("aceptada");
                                                 }else{
-                                                    System.out.print("rechazada");
+                                                    System.out.println("rechazada");
                                                 }
                                             }else{
                                                 System.out.println("En cada automata, el resultado con la cadena: " + cadena + " es diferente: ");
                                                 if(set1){
-                                                    System.out.print("Para el AFN la cadena es aceptada");
+                                                    System.out.println("Para el AFN la cadena es aceptada");
                                                 }else{
-                                                    System.out.print("Para el AFN la cadena es rechazada");
+                                                    System.out.println("Para el AFN la cadena es rechazada");
                                                 }
                                                 if(set2){
-                                                    System.out.print("Para el AFD la cadena es aceptada");
+                                                    System.out.println("Para el AFD la cadena es aceptada");
                                                 }else{
-                                                    System.out.print("Para el AFD la cadena es rechazada");
+                                                    System.out.println("Para el AFD la cadena es rechazada");
                                                 }
                                             }
                                             tres = false;
@@ -883,7 +892,7 @@ public class ClasePrueba {
             while (true) {
                 String[] options1 = {"Procesar cadena", "Validar transformacion", "Imprimir automatas" ,"Salir"};
                 int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
-                if (f == 2 || f == JOptionPane.CLOSED_OPTION) {
+                if (f == 3 || f == JOptionPane.CLOSED_OPTION) {
                     return Lectura.salir;
                 } else if (f == 0) {
                     int i = JOptionPane.showConfirmDialog(null, "¿Desea ingresar más de una cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -1129,7 +1138,7 @@ public class ClasePrueba {
             while (true) {
                 String[] options1 = {"Procesar cadena", "Validar transformacion", "Imprimir automatas" ,"Salir"};
                 int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
-                if (f == 2 || f == JOptionPane.CLOSED_OPTION) {
+                if (f == 3 || f == JOptionPane.CLOSED_OPTION) {
                     return Lectura.salir;
                 } else if (f == 0) {
                     int i = JOptionPane.showConfirmDialog(null, "¿Desea ingresar más de una cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
@@ -1297,13 +1306,15 @@ public class ClasePrueba {
                     System.out.println("Validacion de AFN a AFD");
                     validacion.validarAFNtoAFD(afn.getSigma());
                 }else if(f == 2){
-                    System.out.println("Automata AFNL: ");
+                    /*System.out.println("Automata AFNL: ");
                     System.out.println(afnl.toString());
                     System.out.println("Automata AFN: ");
                     System.out.println(afn.toString());
                     System.out.println("Automata AFD: ");
-                    System.out.println(afd.toString());
+                    System.out.println(afd.toString());*/
+                    System.out.println("hola");
                 }
+                System.out.println("hola");
                 pause();
                 String[] options = {"Escoger otra opción", "Cambiar De Automata", "Salir"};
                 int a = JOptionPane.showOptionDialog(null, "Indique la proxima acción a realizar", "¿Qué desea hacer?", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");

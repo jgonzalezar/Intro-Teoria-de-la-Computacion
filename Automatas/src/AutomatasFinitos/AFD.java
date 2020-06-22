@@ -528,8 +528,6 @@ public class AFD {
     @Override
     public String toString() {
         String automat="!dfa\n";
-        
-        //automat+="#alphabet\n";
         automat+=Sigma.toString();
         automat+="#states\n";
         for (String string : Q) {
