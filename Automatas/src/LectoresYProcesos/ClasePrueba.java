@@ -996,9 +996,6 @@ public class ClasePrueba {
                                     }else{
                                         afn.procesarListaCadenas(listaCadenas, asd, imprimir);
                                     }
-                                    
-                                    
-                                   
                                     dos = false;
                                 } catch (NullPointerException e) {
                                     dos = false;
@@ -1076,10 +1073,10 @@ public class ClasePrueba {
                                                     }
                                                     String dirArch = fileComputaciones.getSelectedFile().getAbsolutePath()+ "afn";
                                                     int respuestaAfnl = afnl.computarTodosLosProcesamientos(cadena, dirArch + "l");
-                                                    System.out.println("Para el AFNL en total, hubo "+ respuestaAfnl+ " procesamientos");
+                                                    System.out.println("Para el AFNL en total, hubo "+ respuestaAfnl+ " procesamientos\n");
                                                     
                                                     int respuestaAfn = afnl.computarTodosLosProcesamientos(cadena, dirArch);
-                                                    System.out.println("Para el AFN en total, hubo "+ respuestaAfn+ " procesamientos");
+                                                    System.out.println("Para el AFN en total, hubo "+ respuestaAfn+ " procesamientos\n");
                                                     tres = false;
                                                 }
                                             } catch (NullPointerException e) {
@@ -1346,15 +1343,13 @@ public class ClasePrueba {
                     System.out.println("Validacion de AFN a AFD");
                     validacion.validarAFNtoAFD(afn.getSigma());
                 }else if(f == 2){
-                    /*System.out.println("Automata AFNL: ");
+                    System.out.println("Automata AFNL: ");
                     System.out.println(afnl.toString());
                     System.out.println("Automata AFN: ");
                     System.out.println(afn.toString());
                     System.out.println("Automata AFD: ");
-                    System.out.println(afd.toString());*/
-                    System.out.println("hola");
+                    System.out.println(afd.toString());
                 }
-                System.out.println("hola");
                 pause();
                 String[] options = {"Escoger otra opción", "Cambiar De Automata", "Salir"};
                 int a = JOptionPane.showOptionDialog(null, "Indique la proxima acción a realizar", "¿Qué desea hacer?", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
