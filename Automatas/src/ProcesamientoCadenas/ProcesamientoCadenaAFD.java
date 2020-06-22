@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class ProcesamientoCadenaAFD  {
     private String cadena;
     private boolean esAceptada;
-    private ArrayList<String> listaEstadoSimboloDeProcesamiento;
+    private final ArrayList<String> listaEstadoSimboloDeProcesamiento;
 
     /**
      * Constructor del procesamiento donde guarda alguna cadena inicial eh crea un nuevo objeto para el resto de variables

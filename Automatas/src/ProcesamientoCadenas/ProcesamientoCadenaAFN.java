@@ -34,6 +34,7 @@ public class ProcesamientoCadenaAFN {
      * Constructor, inicializa los atributos.
      * @param cadena Cadena a la cual se le realizará el procesamiento en el automata
      * @param q0 Estado desde el cual se incial el procesamiento de la cadena
+     * @param statesName nombre sub de los estados
      */
     public ProcesamientoCadenaAFN(String cadena, String q0, String statesName) {
         this.cadena = cadena;
@@ -76,7 +77,7 @@ public class ProcesamientoCadenaAFN {
         ArrayList<String> accepted = new ArrayList<>();
         String s;
         if(cadena.length()==0){
-            if(aceptado.size()==0){
+            if(aceptado.isEmpty()){
                 return accepted;
             }
             accepted.add("["+q0+", ]");
@@ -101,7 +102,7 @@ public class ProcesamientoCadenaAFN {
         ArrayList<String> rejected = new ArrayList<>();
         String s;
         if(cadena.length()==0){
-            if(rechazado.size()==0){
+            if(rechazado.isEmpty()){
                 return rejected;
             }
             rejected.add("["+q0+", ]");

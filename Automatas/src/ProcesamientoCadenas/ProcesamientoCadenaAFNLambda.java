@@ -20,7 +20,7 @@ public class ProcesamientoCadenaAFNLambda {
      * El atributo esAcptada retorna verdadero si la lista de procesamientos
      * aceptados no está vacía.
      */
-    private boolean esAceptada;
+    private final boolean esAceptada;
     /**
      * El atributo listaProcesamientosAbortados guarda los procesamientos
      * abortados.
