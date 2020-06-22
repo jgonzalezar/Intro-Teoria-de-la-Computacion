@@ -6,8 +6,8 @@
 package LectoresYProcesos;
 
 import AutomatasFinitos.AFD;
-import AutomatasFinitos.AFDComplemento;
-import AutomatasFinitos.AFDSimplificacion;
+import AutomatasFinitos.subTipesAFD.AFDComplemento;
+import AutomatasFinitos.subTipesAFD.AFDSimplificacion;
 import AutomatasFinitos.AFN;
 import AutomatasFinitos.AFNL;
 import static LectoresYProcesos.InteraccionesAutomas.*;

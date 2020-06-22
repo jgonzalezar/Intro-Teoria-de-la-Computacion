@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package AutomatasFinitos;
+package AutomatasFinitos.subTipesAFD;
 
+import AutomatasFinitos.AFD;
 import AutomatasFinitos.AFD;
 import Herramientas.Transition;
 import Herramientas.Transitions;

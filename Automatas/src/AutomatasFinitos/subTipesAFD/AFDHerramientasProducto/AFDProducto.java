@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package AutomatasFinitos.AFDHerramientasProducto;
+package AutomatasFinitos.subTipesAFD.AFDHerramientasProducto;
 
 import LectoresYProcesos.InteraccionesAutomas;
 import AutomatasFinitos.AFD;

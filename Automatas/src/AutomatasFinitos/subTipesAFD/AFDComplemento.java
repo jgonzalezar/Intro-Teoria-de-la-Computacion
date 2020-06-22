@@ -3,7 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package AutomatasFinitos;
+package AutomatasFinitos.subTipesAFD;
+import AutomatasFinitos.AFD;
 import java.util.ArrayList;
 /**
  *
@@ -14,17 +15,17 @@ public class AFDComplemento extends AFD{
     public AFDComplemento(AFD afd){
         ArrayList<Integer> estadosRechazo = null;
         for(int i=0;i<Q.size();i++){
-            if(!F.contains(i)){
+            if(!afd.getF().contains(i)){
                 estadosRechazo.add(i);
                 
             }
         }
         
-        this.Delta=afd.Delta;
+        this.Delta=afd.getDelta();
         this.F=estadosRechazo;
-        this.Q=afd.Q;
-        this.Sigma=afd.Sigma;
-        this.q0=afd.q0;
+        this.Q=afd.getQ();
+        this.Sigma=afd.getSigma();
+        this.q0=afd.getQ0();
     }
      
     
