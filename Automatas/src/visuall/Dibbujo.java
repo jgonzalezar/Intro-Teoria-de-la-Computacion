@@ -184,7 +184,6 @@ public class Dibbujo extends Canvas {
                 comeN=false;
                 break;
         }
-        System.out.println(ani);
     }
  
     public boolean isStatic(){
