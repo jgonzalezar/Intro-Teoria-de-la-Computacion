@@ -8,7 +8,6 @@ package visuall;
 import AutomatasFinitos.AFD;
 import java.awt.Button;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
 
@@ -38,30 +37,20 @@ public class Windows1 extends Windows{
     private void initButtons() {
         Button next= new Button("Ir a:");
         next.setBounds(220, 10, 75, 30);
-        next.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(vent.isStatic()){
-                    ChangeEstado(estad.getSelectedItem().toString(),'a',aff.getF().contains(estad.getSelectedIndex()),0);
-                }
-                
-                
+        next.addActionListener((ActionEvent e) -> {
+            if(vent.isStatic()){
+                ChangeEstado(estad.getSelectedItem().toString(),'a',aff.getF().contains(estad.getSelectedIndex()),0);
             }
         });
         getContentPane().add(next);
         
         Button trans= new Button("Procesar:");
         trans.setBounds(220, 50, 75, 30);
-        trans.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(vent.isStatic()){
-                    char camb=alpha.getSelectedItem().toString().charAt(0);
-                    String go = aff.getDelta().cambio(camb, vent.getActP());
-                    ChangeEstado(go,camb,aff.getF().contains(aff.getQ().indexOf(go)),1);
-                    
-                }
-                
+        trans.addActionListener((ActionEvent e) -> {
+            if(vent.isStatic()){
+                char camb=alpha.getSelectedItem().toString().charAt(0);
+                String go = aff.getDelta().cambio(camb, vent.getActP());
+                ChangeEstado(go,camb,aff.getF().contains(aff.getQ().indexOf(go)),1);
                 
             }
         });

@@ -6,19 +6,14 @@ import ProcesamientoCadenas.ProcesamientoCadenaAFD;
 import java.awt.Button;
 import java.awt.Color;
 
-import java.awt.HeadlessException;
 import java.awt.Label;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
 import java.awt.datatransfer.StringSelection;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
-import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Stack;
 import javax.swing.JComboBox;
-import javax.swing.JFileChooser;
 
 /**
  * clase que extiende el jfrma ventana que permite simular el uso de una cadena
@@ -59,80 +54,62 @@ public class Windows3 extends Windows{
         Button trans= new Button("siguiente");
         trans.setBounds(330, 50, 100, 40);
         trans.setEnabled(false);
-        trans.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(vent.isStatic()){
-                    if(!next.isEnabled())next.setEnabled(true);
-                    String name = seguro.pop();
-                    char camb=cadds.getText().charAt(avance.size()+1);
-                    String back = blueLabel.get(1).getText();
-                    avance.add(back);
-                    blueLabel.get(0).setText(back);
-                    blueLabel.get(1).setText(name);
-                    ChangeEstado(name,camb,aff.getF().contains(aff.getQ().indexOf(name)),1);
-                    cadds.setText(cadds.getText()+camb);
-                    avance.add(vent.getActP());
-                    
-                    if(seguro.size()>0){
-                        blueLabel.get(2).setText(seguro.peek());
-                    }else{
-                        blueLabel.get(2).setText("");
-                        trans.setEnabled(false);
-                    }
+        trans.addActionListener((ActionEvent e) -> {
+            if (vent.isStatic()) {
+                if(!next.isEnabled())next.setEnabled(true);
+                String name1 = seguro.pop();
+                char camb=cadds.getText().charAt(avance.size()+1);
+                String back = blueLabel.get(1).getText();
+                avance.add(back);
+                blueLabel.get(0).setText(back);
+                blueLabel.get(1).setText(name1);
+                ChangeEstado(name1, camb, aff.getF().contains(aff.getQ().indexOf(name1)), 1);
+                cadds.setText(cadds.getText()+camb);
+                avance.add(vent.getActP());
+                if(seguro.size()>0){
+                    blueLabel.get(2).setText(seguro.peek());
+                }else{
+                    blueLabel.get(2).setText("");
+                    trans.setEnabled(false);
                 }
-                
-                
             }
         });
         
-        next.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(vent.isStatic()){
-                    if(!trans.isEnabled())trans.setEnabled(true);                    
-                    String name = avance.pop();
-                    char camb=cadds.getText().charAt(avance.size()+1);
-                    String back = blueLabel.get(1).getText();
-                    seguro.add(back);
-                    blueLabel.get(2).setText(back);
-                    blueLabel.get(1).setText(name);
-                    if(avance.size()>0){
-                        blueLabel.get(0).setText(avance.peek());
-                    }else{
-                        blueLabel.get(0).setText("");
-                        next.setEnabled(false);
-                    }                    
-                    ChangeEstado(name,camb,aff.getF().contains(aff.getQ().indexOf(name)),-1);
-                    
-                    
+        next.addActionListener((ActionEvent e) -> {
+            if (vent.isStatic()) {
+                if(!trans.isEnabled())trans.setEnabled(true);
+                String name1 = avance.pop();
+                char camb=cadds.getText().charAt(avance.size()+1);
+                String back = blueLabel.get(1).getText();
+                seguro.add(back);
+                blueLabel.get(2).setText(back);
+                blueLabel.get(1).setText(name1);
+                if(avance.size()>0){
+                    blueLabel.get(0).setText(avance.peek());
+                }else{
+                    blueLabel.get(0).setText("");
+                    next.setEnabled(false);
                 }
-                
-                
+                ChangeEstado(name1, camb, aff.getF().contains(aff.getQ().indexOf(name1)), -1);
             }
         });
         
         getContentPane().add(trans);
-        procs.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(vent.isStatic()){
-                    seguro.clear();
-                    blueLabel.get(2).setText("");
-                    char camb=alpha.getSelectedItem().toString().charAt(0);
-                    String Prev= blueLabel.get(1).getText();
-                    avance.push(Prev);
-                    blueLabel.get(0).setText(Prev);
-                    String go = aff.getDelta().cambio(camb, Prev);
-                    blueLabel.get(1).setText(go);
-                    ChangeEstado(go,camb,aff.getF().contains(aff.getQ().indexOf(go)),1);
-                    
-                    cadds.setText(cadds.getText().substring(0, avance.size())+camb);
-                    trans.setEnabled(false);
-                    next.setEnabled(true);
-                }
+        procs.addActionListener((ActionEvent e) -> {
+            if(vent.isStatic()){
+                seguro.clear();
+                blueLabel.get(2).setText("");
+                char camb=alpha.getSelectedItem().toString().charAt(0);
+                String Prev= blueLabel.get(1).getText();
+                avance.push(Prev);
+                blueLabel.get(0).setText(Prev);
+                String go = aff.getDelta().cambio(camb, Prev);
+                blueLabel.get(1).setText(go);
+                ChangeEstado(go,camb,aff.getF().contains(aff.getQ().indexOf(go)),1);
                 
-                
+                cadds.setText(cadds.getText().substring(0, avance.size())+camb);                
+                trans.setEnabled(false);
+                next.setEnabled(true);
             }
         });
         
@@ -153,13 +130,13 @@ public class Windows3 extends Windows{
             if(!vent.isStatic())return;
             ProcesamientoCadenaAFD move = new ProcesamientoCadenaAFD(cadds.getText());
             blueLabel.get(1);
-            for (String string : avance) {
+            avance.forEach((string) -> {
                 move.add(string);
-            }
+            });
             move.add(blueLabel.get(1).getText());
-            for (String string : seguro) {
+            seguro.forEach((string) -> {
                 move.add(string);
-            }
+            });
             
             move.setEsAceptada(vent.isFiP());
             
