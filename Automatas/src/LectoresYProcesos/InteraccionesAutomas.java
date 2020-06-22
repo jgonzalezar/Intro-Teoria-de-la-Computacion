@@ -7,10 +7,10 @@ package LectoresYProcesos;
 
 import AutomatasFinitos.AFD;
 import AutomatasFinitos.AFDComplemento;
-import AutomatasFinitos.AFDProductoD;
-import AutomatasFinitos.AFDProductoDSim;
-import AutomatasFinitos.AFDProductoO;
-import AutomatasFinitos.AFDProductoY;
+import AutomatasFinitos.AFDHerramientasProducto.AFDProductoD;
+import AutomatasFinitos.AFDHerramientasProducto.AFDProductoDSim;
+import AutomatasFinitos.AFDHerramientasProducto.AFDProductoO;
+import AutomatasFinitos.AFDHerramientasProducto.AFDProductoY;
 import AutomatasFinitos.AFDSimplificacion;
 import AutomatasFinitos.AFN;
 import AutomatasFinitos.AFNL;
