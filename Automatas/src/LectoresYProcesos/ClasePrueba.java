@@ -154,67 +154,98 @@ public class ClasePrueba {
     private static Lectura probarAFD() {
         try {
             AFD afd = new AFD(url);
-            System.out.println("El automata ha sido creado correctamente");
             while (true) {
-                int i = JOptionPane.showConfirmDialog(null, "Desea ingresar más de una cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
-                switch (i) {
-                    case JOptionPane.YES_OPTION:
-                        boolean dos = true;
-                        do {
-                            try {
-                                procsVariasCadenas(afd);
-                                dos = false;
-                            } catch (NullPointerException e) {
-                                dos = false;
-                            }
-
-                        } while (dos);
+                String[] options1 = {"mostrar visual del automata", "simular cadenas de forma visual", "procesar Cadenas", "Salir"};
+                int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
+                switch (f) {
+                    case 0://tostring
+                        int slashIndex = url.lastIndexOf('\\');
+                        int dotIndex = url.lastIndexOf('.');
+                        String expresion;
+                        if (dotIndex == -1) {
+                            expresion = url.substring(slashIndex + 1);
+                        } else {
+                            expresion = url.substring(slashIndex + 1, dotIndex);
+                        }
+                        expresion = expresion.replace('\'', '*');
+                        Windows1 visual = new Windows1(expresion, afd);
+                        visual.Simulat();
                         break;
+                    case 2://visual forzado
+                        int s = url.lastIndexOf('\\');
+                        int df = url.lastIndexOf('.');
+                        String exe;
+                        if (df == -1) {
+                            exe = url.substring(s + 1);
+                        } else {
+                            exe = url.substring(s + 1, df);
+                        }
+                        exe = exe.replace('\'', '*');
+                        Windows3 visuals = new Windows3(exe, afd);
+                        visuals.Simulat();
+                        break;
+                    case 3:
+                    int i = JOptionPane.showConfirmDialog(null, "Desea ingresar más de una cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                    switch (i) {
+                        case JOptionPane.YES_OPTION:
+                            boolean dos = true;
+                            do {
+                                try {
+                                    procsVariasCadenas(afd);
+                                    dos = false;
+                                } catch (NullPointerException e) {
+                                    dos = false;
+                                }
 
-                    case JOptionPane.NO_OPTION:
-                        boolean tres = true;
-                        do {
-                            try {
-                                String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
-                                ArrayList<Character> error = afd.ponerCadena(cadena);
-                                if (error.size() > 0) {
-                                    String errors = "";
-                                    for (Character character : error) {
-                                        errors += character + " ";
-                                    }
-                                    JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
-                                } else {
-                                    boolean set;
-                                    if (JOptionPane.showConfirmDialog(null, "Desea mostrar el camino recorrido a la hora de evaluar la cadena?", "Seleccione una opción", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                                        set = afd.procesarCadenaConDetalles(cadena);
+                            } while (dos);
+                            break;
+
+                        case JOptionPane.NO_OPTION:
+                            boolean tres = true;
+                            do {
+                                try {
+                                    String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
+                                    ArrayList<Character> error = afd.ponerCadena(cadena);
+                                    if (error.size() > 0) {
+                                        String errors = "";
+                                        for (Character character : error) {
+                                            errors += character + " ";
+                                        }
+                                        JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
                                     } else {
-                                        set = afd.procesarCadena(cadena);
+                                        boolean set;
+                                        if (JOptionPane.showConfirmDialog(null, "Desea mostrar el camino recorrido a la hora de evaluar la cadena?", "Seleccione una opción", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
+                                            set = afd.procesarCadenaConDetalles(cadena);
+                                        } else {
+                                            set = afd.procesarCadena(cadena);
+                                        }
+                                        if (set) {
+                                            System.out.println("La cadena: " + cadena + " es aceptada");
+                                        } else {
+                                            System.out.println("La cadena: " + cadena + " no es aceptada");
+                                        }
+                                        tres = false;
                                     }
-                                    if (set) {
-                                        System.out.println("La cadena: " + cadena + " es aceptada");
-                                    } else {
-                                        System.out.println("La cadena: " + cadena + " no es aceptada");
-                                    }
+                                } catch (NullPointerException e) {
                                     tres = false;
                                 }
-                            } catch (NullPointerException e) {
-                                tres = false;
-                            }
 
-                        } while (tres);
+                            } while (tres);
 
-                        break;
+                            break;
 
-                    default:
-                        //una
-                        break;
+                        default:
+                            //una
+                            break;
+                    }
+                    break;
                 }
                 pause();
                 String[] options = {"Evaluar otra cadena", "Cambiar De Automata", "Salir"};
-                int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Seleccione", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
-                if (f == 2 || f == JOptionPane.CLOSED_OPTION) {
+                int fs = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Seleccione", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
+                if (fs == 2 || fs == JOptionPane.CLOSED_OPTION) {
                     return Lectura.salir;
-                } else if (f == 1) {
+                } else if (fs == 1) {
                     return Lectura.CrearAutomata;
                 }
             }

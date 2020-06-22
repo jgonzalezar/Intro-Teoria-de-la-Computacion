@@ -472,10 +472,13 @@ public class AFD {
             for (int i = 0; i < tam; i++) {
                 if(Table[estados.get(0)][i]){
                     equals.add(Q.get(i));
-                    boolean rev=estados.remove((Integer)i);
+                    if(i!=estados.get(0)){
+                        boolean rev=estados.remove((Integer)i);
+                    }
                     if(i==q0)q02=Q2.size();
                 }
             }
+            Integer ss=estados.remove(0);
             String name="{";
             for (int i = 0; i < equals.size()-1; i++) {
                 name+=equals.get(0)+",";
@@ -483,7 +486,6 @@ public class AFD {
             name+=equals.get(equals.size()-1)+"}";
             Q2.add(name);
         }
-        
         Transition Delta2 =new Transition();
         Q2.forEach((q) -> {
             String  q1="";
@@ -498,13 +500,12 @@ public class AFD {
                 String dd = Delta.cambio(Sigma.get(i), q1);
                 for(String qa:Q2){
                     if(qa.contains(dd)){
-                        Delta2.add(Sigma.get(i), q1, qa);
+                        Delta2.add(Sigma.get(i), q, qa);
                     }
                 }
             }
             
         });
-        
         return new AFD(Sigma, Q2, q02, F2, Delta2);
     }
 

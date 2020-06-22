@@ -103,7 +103,6 @@ public class Windows1 extends Windows{
             }
         });*/
         estad.setBounds(330,10,110,30);
-        System.out.println("estadops");
         getContentPane().add(estad);
         
     }

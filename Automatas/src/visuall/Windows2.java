@@ -56,7 +56,6 @@ public class Windows2 extends Windows{
                 Windows jf= new Windows2("Tutorial",aff,resp);
             
                 jf.Simulat();
-                System.out.println("heeey");
         }catch(HeadlessException | FileNotFoundException | NullPointerException e){
                 e.printStackTrace();
         }
