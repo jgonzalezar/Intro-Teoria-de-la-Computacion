@@ -112,7 +112,7 @@ public class ProcesamientoCadenaAFN {
             for(int j=0;j<cadena.length()-1;j++){
                 s += "-> ["+statesName+rechazado.get(j+i*cadena.length())+","+cadena.substring(j+1)+"]";
             }
-            s += "-> ["+statesName+aceptado.get(cadena.length()-1+i*cadena.length())+", ]";
+            s += "-> ["+statesName+rechazado.get(cadena.length()-1+i*cadena.length())+", ]";
             rejected.add(s);
         }
         return rejected;

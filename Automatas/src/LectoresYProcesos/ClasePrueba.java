@@ -780,7 +780,9 @@ public class ClasePrueba {
                                     if (file.showSaveDialog(file) == JFileChooser.CANCEL_OPTION) {
                                         throw new NullPointerException();
                                     }
-                                    String asd = file.getSelectedFile().getAbsolutePath() + "af";
+                                    String asd = file.getSelectedFile().getAbsolutePath();
+                                    String[] div = asd.split("\\.");
+                                    asd = div[0]+"af";
                                     String[] listaCadenas = new String[cadenas.size()];
                                     for (int j = 0; j < cadenas.size(); j++) {
                                         listaCadenas[j] = cadenas.get(j);
@@ -789,11 +791,20 @@ public class ClasePrueba {
                                     if(imprimir){
                                         System.out.println("AFN: ");
                                     }
-                                    afn.procesarListaCadenas(listaCadenas, asd+"n", imprimir);
+                                    if(div.length>1){
+                                        afn.procesarListaCadenas(listaCadenas, asd+"n."+div[1], imprimir);
+                                    }else{
+                                        afn.procesarListaCadenas(listaCadenas, asd+"n", imprimir);
+                                    }
                                     if(imprimir){
                                         System.out.println("AFD: ");
                                     }
-                                    afd.procesarListaCadenas(listaCadenas, asd+"d", imprimir);
+                                    if(div.length>1){
+                                        afd.procesarListaCadenas(listaCadenas, asd+"d."+div[1], imprimir);
+                                    }else{
+                                        afd.procesarListaCadenas(listaCadenas, asd+"d", imprimir);
+                                    }
+                                    
                                     dos = false;
                                 } catch (NullPointerException e) {
                                     dos = false;
@@ -959,7 +970,9 @@ public class ClasePrueba {
                                     if (file.showSaveDialog(file) == JFileChooser.CANCEL_OPTION) {
                                         throw new NullPointerException();
                                     }
-                                    String asd = file.getSelectedFile().getAbsolutePath() + "afn";
+                                    String asd = file.getSelectedFile().getAbsolutePath();
+                                    String[] div = asd.split("\\.");
+                                    asd = div[0]+"afn";
                                     String[] listaCadenas = new String[cadenas.size()];
                                     for (int j = 0; j < cadenas.size(); j++) {
                                         listaCadenas[j] = cadenas.get(j);
@@ -968,11 +981,22 @@ public class ClasePrueba {
                                     if(imprimir){
                                         System.out.println("AFNL: ");
                                     }
-                                    afnl.procesarListaCadenas(listaCadenas, asd+"l", imprimir);
+                                    if(div.length>1){
+                                        afnl.procesarListaCadenas(listaCadenas, asd+"l."+div[1], imprimir);
+                                    }else{
+                                        afnl.procesarListaCadenas(listaCadenas, asd+"l", imprimir);
+                                    }
                                     if(imprimir){
                                         System.out.println("AFN: ");
                                     }
-                                    afn.procesarListaCadenas(listaCadenas, asd, imprimir);
+                                    if(div.length>1){
+                                        afn.procesarListaCadenas(listaCadenas, asd+"."+div[1], imprimir);
+                                    }else{
+                                        afn.procesarListaCadenas(listaCadenas, asd, imprimir);
+                                    }
+                                    
+                                    
+                                   
                                     dos = false;
                                 } catch (NullPointerException e) {
                                     dos = false;
@@ -1204,8 +1228,10 @@ public class ClasePrueba {
                                     file.setSelectedFile(new File("Respuesta.txt"));
                                     if (file.showSaveDialog(file) == JFileChooser.CANCEL_OPTION) {
                                         throw new NullPointerException();
-                                    }
-                                    String asd = file.getSelectedFile().getAbsolutePath() + "af";
+                                    }                                    
+                                    String asd = file.getSelectedFile().getAbsolutePath();
+                                    String[] div = asd.split("\\.");
+                                    asd = div[0]+"af";
                                     String[] listaCadenas = new String[cadenas.size()];
                                     for (int j = 0; j < cadenas.size(); j++) {
                                         listaCadenas[j] = cadenas.get(j);
@@ -1214,15 +1240,27 @@ public class ClasePrueba {
                                     if(imprimir){
                                         System.out.println("AFNL: ");
                                     }
-                                    afnl.procesarListaCadenas(listaCadenas, asd+"nl", imprimir);
+                                    if(div.length>1){
+                                        afnl.procesarListaCadenas(listaCadenas, asd+"nl."+div[1], imprimir);
+                                    }else{
+                                        afnl.procesarListaCadenas(listaCadenas, asd+"nl", imprimir);
+                                    }
                                     if(imprimir){
                                         System.out.println("AFN: ");
                                     }
-                                    afn.procesarListaCadenas(listaCadenas, asd+"n", imprimir);
+                                    if(div.length>1){
+                                        afn.procesarListaCadenas(listaCadenas, asd+"n."+div[1], imprimir);
+                                    }else{
+                                        afn.procesarListaCadenas(listaCadenas, asd+"n", imprimir);
+                                    }
                                     if(imprimir){
                                         System.out.println("AFD: ");
                                     }
-                                    afd.procesarListaCadenas(listaCadenas, asd+"d", imprimir);
+                                    if(div.length>1){
+                                        afd.procesarListaCadenas(listaCadenas, asd+"d."+div[1], imprimir);
+                                    }else{
+                                        afd.procesarListaCadenas(listaCadenas, asd+"d", imprimir);
+                                    }                                    
                                     dos = false;
                                 } catch (NullPointerException e) {
                                     dos = false;
