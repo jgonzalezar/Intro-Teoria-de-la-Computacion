@@ -49,14 +49,26 @@ public class AFD {
      * El atributo Delta representa las transiciones del automata.
      */
     protected Transitions Delta;
-    
-    
+    /**
+     * El atributo estadosInaccesibles se encarga de guardar los estados inaccesibles del automata.
+     */
     protected ArrayList<String> estadosInaccesibles;
+    /**
+     * El atributo estadosLimbo se enecarga de guardar los estados limbo del automata.
+     */
     protected ArrayList<String> estadosLimbo;
 
     public AFD() {
     }
 
+    /**
+     * Constructor, inicializa los atributos.
+     * @param Sigma Alfabeto
+     * @param Q Conjunto de estados
+     * @param q0 Estado inicial
+     * @param F Estados de aceptación
+     * @param Delta Transiciones
+     */  
     public AFD(Alfabeto Sigma, ArrayList<String> Q, Integer q0, ArrayList<Integer> F, Transitions Delta) {
         this.Sigma = Sigma;
         this.Q = Q;
@@ -195,22 +207,21 @@ public class AFD {
         this.estadosInaccesibles=new ArrayList<>();
         this.estadosLimbo=new ArrayList<>();
     }
+    
     /**
      * Procesa una palabra para decir si pertenece al lenguaje
      * @param word palabra a determinar
      * @return la aceptacion del lenguaje 
      */
-
     public boolean procesarCadena(String word){
         return prosCaden(word).EsAceptada();
     }
+    
     /**
      * Procesa una cadena para decir si pertenece al lenguaje
      * @param word cadena a determinar
      * @return la aceptacion del lenguaje
      */
-    
-    
     public boolean procesarCadena(char[] word){
         return procesarCadena(Arrays.toString(word));
     }
@@ -229,7 +240,6 @@ public class AFD {
      * @param word palabra a evaluar
      * @return la cadena es o no aceptada
      */
-    
     public boolean procesarCadenaConDetalles(String word){
         ProcesamientoCadenaAFD fin =prosCaden(word);
         System.out.println(fin.pasos()+fin.EsAceptada());
@@ -252,7 +262,6 @@ public class AFD {
      * @param nombreArchivo nombre del archivo donde se guardara 
      * @param imprimirPantalla booleano que decide si se imprimira o no en consola
      */
-    
     public void procesarListaCadenas(String[] listaCadenas,String nombreArchivo,boolean imprimirPantalla){
         FileWriter fichero1 = null;
         PrintWriter pw1 = null;
@@ -284,9 +293,8 @@ public class AFD {
     }
     
     /**
-     * Funcion evalua que estados tienen al menos un camino con el que puede llegar a un estado de aceptación
+     * Funcion que busca los estados limbo del automata y los guarda en el atributo estadosLimbo del automata
      */
-    
     public void hallarEstadosLimbo(){
         boolean finished;
         ArrayList<String> toEliminate = new ArrayList<>();
@@ -311,6 +319,9 @@ public class AFD {
         }while(finished);
     }
     
+    /**
+     * Funcion que busca y elimina los estados inaccesibles del automata
+     */
     public void eliminarEstadosInaccesibles(){
         hallarEstadosInaccesibles();
         for(int i=0;i<estadosInaccesibles.size();i++){
@@ -329,7 +340,7 @@ public class AFD {
     }
     
     /**
-     * Funcion que recorre el automata desde el estado inicial e identifica los estados inaccesibles
+     * Funcion que busca los estados inaccesibles y los guarda en el atributo estadosInaccesibles del automata
      */
     public void hallarEstadosInaccesibles(){
         estadosInaccesibles.add(Q.get(q0));
@@ -359,7 +370,6 @@ public class AFD {
      * @return procesamiento recursivo de la palabra dada
      * @see ProcesamientoCadenaAFD
      */
-    
     private ProcesamientoCadenaAFD Delta(String word) {
         ProcesamientoCadenaAFD f = new ProcesamientoCadenaAFD(word);
         f.add(Q.get(q0));
@@ -383,7 +393,6 @@ public class AFD {
      * @return un procesamiento con el cambio por la cadena añadido
      * @see ProcesamientoCadenaAFD
      */
-    
     private ProcesamientoCadenaAFD Delta(ProcesamientoCadenaAFD i, char u) {
         String tas = Delta.cambio(u,i.getlastPaso());
         i.add(tas);
@@ -396,7 +405,6 @@ public class AFD {
      * @return Procesamiento modificado
      * @see ProcesamientoCadenaAFD
      */
-
     private ProcesamientoCadenaAFD Finish(ProcesamientoCadenaAFD q) {
         q.setEsAceptada(F.contains(Q.indexOf(q.getlastPaso())));
         return q;
@@ -424,7 +432,11 @@ public class AFD {
         return asd;
     }
     
-    AFD simplificar(){
+    /**
+     * Funcion que realiza la simplificación del AFD actual
+     * @return AFD simplificado con el método visto en clase 
+     */
+    public AFD simplificar(){
         int tam=Q.size();
         boolean Table[][] = new boolean[tam][tam];
         boolean change=false;
@@ -509,6 +521,10 @@ public class AFD {
         return new AFD(Sigma, Q2, q02, F2, Delta2);
     }
 
+    /**
+     * Función que retorna una cadena con toda la información del automata que hace el llamado de la función
+     * @return String - Cadena que contiene toda la información del automata actual
+     */
     @Override
     public String toString() {
         String automat="!dfa\n";
