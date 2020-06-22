@@ -31,7 +31,7 @@ public class AFDSimplificacion extends AFD
     }
 
     @Override
-    AFD simplificar() {
+    public AFD simplificar() {
         return new AFD(Sigma, Q, q0, F, Delta);
     }
     

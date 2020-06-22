@@ -140,7 +140,10 @@ public class ClasePrueba {
                             break;
                         case AFDsimplfic:
                             lec=probarSimplificacion();
-                            
+                            break;
+                        case AFDcomplement:
+                            lec=probarComplemento();
+                            break;
                             
                     }
                     break;
@@ -163,21 +166,12 @@ public class ClasePrueba {
                 int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
                 switch (f) {
                     case 0://tostring
-                        int slashIndex = url.lastIndexOf('\\');
-                        int dotIndex = url.lastIndexOf('.');
-                        String expresion;
-                        if (dotIndex == -1) {
-                            expresion = url.substring(slashIndex + 1);
-                        } else {
-                            expresion = url.substring(slashIndex + 1, dotIndex);
-                        }
-                        expresion = expresion.replace('\'', '*');
-                        Windows1 visual = new Windows1(expresion, afd);
+                        Windows1 visual = new Windows1(getExpresion(), afd);
                         visual.Simulat();
                         break;
                     case 1://visual forzado
-                        String exe = getExpresion();
-                        Windows3 visuals = new Windows3(exe, afd);
+                        
+                        Windows3 visuals = new Windows3(getExpresion(), afd);
                         visuals.Simulat();
                         break;
                     case 2:
@@ -231,8 +225,10 @@ public class ClasePrueba {
                                         } else {
                                             System.out.println("La cadena: " + cadena + " no es aceptada");
                                         }
-                                        Windows2 cin = new Windows2(getExpresion(), afd, afd.prosCaden(cadena));
-                                        cin.Simulat();
+                                        if(fss==2){
+                                            Windows2 cin = new Windows2(getExpresion(), afd, afd.prosCaden(cadena));
+                                            cin.Simulat();
+                                        }
                                         tres = false;
                                     }
                                 } catch (NullPointerException e) {
@@ -1423,8 +1419,10 @@ public class ClasePrueba {
                                             } else {
                                                 System.out.println("La cadena: " + cadena + " no es aceptada");
                                             }
-                                            Windows2 cin = new Windows2(getExpresion(), afd, afd.prosCaden(cadena));
-                                            cin.Simulat();
+                                            if(fss==2){
+                                                Windows2 cin = new Windows2(getExpresion(), afd, afd.prosCaden(cadena));
+                                                cin.Simulat();
+                                            }
                                             tres = false;
                                         }
                                     } catch (NullPointerException e) {
@@ -1624,51 +1622,42 @@ public class ClasePrueba {
                                             JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
                                         } else {
                                             boolean set;
-                                            String[] optionss = {"dar resultado solamente","imprimir en consola el proceso y el resultado","imprimirn en consola y evaluar en una ventana"};
-                                        int fss = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Seleccione", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionss, "Salir");
-                                        switch(fss){
-                                            case 0:
-                                                set = afd.procesarCadena(cadena);
-                                                break;
-                                            case 1:
-                                                
-                                            case 2:
-                                                set = afd.procesarCadenaConDetalles(cadena);
-                                                break;
-                                            default:
-                                                set = afd.procesarCadena(cadena);
-                                                break;
-                                        }
-                                        
-                                        if (set) {
-                                            System.out.println("La cadena: " + cadena + " es aceptada");
-                                        } else {
-                                            System.out.println("La cadena: " + cadena + " no es aceptada");
-                                        }
-                                        Windows2 cin = new Windows2(getExpresion(), afd, afd.prosCaden(cadena));
-                                        cin.Simulat();
-                                        tres = false;
                                             boolean setO;
-                                            if (JOptionPane.showConfirmDialog(null, "Desea mostrar el camino recorrido a la hora de evaluar la cadena?", "Seleccione una opción", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION) {
-                                                System.out.println("Procesamiento AFD Complemento:");
-                                                set = compl.procesarCadenaConDetalles(cadena);
-                                                System.out.println("Procesamiento AFD Original:");
-                                                setO = afd.procesarCadenaConDetalles(cadena);
-                                            } else {
-                                                set = compl.procesarCadena(cadena);
-                                                setO = afd.procesarCadena(cadena);
+                                            String[] optionss = {"dar resultado solamente", "imprimir en consola el proceso y el resultado", "imprimirn en consola y evaluar en una ventana"};
+                                            int fss = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Seleccione", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionss, "Salir");
+                                            switch (fss) {
+                                                case 0:
+                                                    set = compl.procesarCadena(cadena);
+                                                    setO = afd.procesarCadena(cadena);
+                                                    break;
+                                                case 1:
+
+                                                case 2:
+                                                    set = compl.procesarCadenaConDetalles(cadena);
+                                                    setO = afd.procesarCadenaConDetalles(cadena);
+                                                    break;
+                                                default:
+                                                    set = compl.procesarCadena(cadena);
+                                                    setO = afd.procesarCadena(cadena);
+                                                    break;
                                             }
+                                            System.out.println("Procesamiento AFD Complemento:");
                                             if (set) {
-                                                System.out.println("La cadena: " + cadena + " es aceptada por el AFD Complemento");
+                                                System.out.println("La cadena: " + cadena + " es aceptada");
                                             } else {
-                                                System.out.println("La cadena: " + cadena + " no es aceptada por el AFD Complemento");
+                                                System.out.println("La cadena: " + cadena + " no es aceptada");
                                             }
-                                            
+                                            System.out.println("Procesamiento AFD Original:");
                                             if (setO) {
                                                 System.out.println("La cadena: " + cadena + " es aceptada por el AFD original");
                                             } else {
                                                 System.out.println("La cadena: " + cadena + " no es aceptada por el AFD original");
                                             }
+                                            if(fss==2){
+                                                Windows2 cin = new Windows2(getExpresion(), afd, afd.prosCaden(cadena));
+                                                cin.Simulat();
+                                            }
+
                                             tres = false;
                                         }
                                     } catch (NullPointerException e) {
