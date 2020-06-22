@@ -82,6 +82,7 @@ public class ClasePrueba {
                         String expresion = getExpresion();
                         System.out.println(expresion);
                         String message = "";
+                        boolean fals=false;
                         switch (tp) {
                             case AFD:
                                 message = "Ha seleccionado un Automata finito determinista que representa la expresion " + expresion;
@@ -96,6 +97,9 @@ public class ClasePrueba {
                                         break;
                                     case 3:
                                         tp = InteraccionesAutomas.Type.AFDproducto;
+                                    case JOptionPane.CLOSED_OPTION:
+                                        fals=true;
+                                        break;
                                 }
                                 break;
                             case AFN:
@@ -106,7 +110,8 @@ public class ClasePrueba {
                                         tp = InteraccionesAutomas.Type.AFNtoAFD;
                                         break;
                                     case JOptionPane.CLOSED_OPTION:
-                                        return;
+                                        fals=true;
+                                        break;
                                 }
                                 break;
                             case AFNL:
@@ -121,12 +126,18 @@ public class ClasePrueba {
                                         tp = InteraccionesAutomas.Type.AFNLtoAFD;
                                         break;
                                     case JOptionPane.CLOSED_OPTION:
-                                        return;
+                                        fals=true;
+                                        break;
                                 }
                                 break;
                         }
-                        System.out.println(message);
-                        lec = Lectura.LeerCadena;
+                        if(!fals){
+                            System.out.println(message);
+                            lec = Lectura.LeerCadena;
+                        }else{
+                            
+                        }
+                        
                     } catch (Exception e) {
                         if (JOptionPane.showConfirmDialog(null, "No ha ingresado ningún automata. ¿Desea salir? Y/N", "Error", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0) {
                             lec = Lectura.salir;
