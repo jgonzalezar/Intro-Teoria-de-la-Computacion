@@ -9,10 +9,16 @@ import AutomatasFinitos.AFD;
 import java.util.ArrayList;
 
 /**
- *
+ * Clase que genera una variacion de la Clase AFDProducto pero con los finales definidos para una diferencia 
  * @author brandon
  */
 public class AFDProductoD extends AFDProducto{
+    
+    /**
+     * constructor de la Clase
+     * @param afd1 automata 1
+     * @param afd2 automata 2
+     */
     
     public AFDProductoD(AFD afd1, AFD afd2) {
         super(afd1, afd2);

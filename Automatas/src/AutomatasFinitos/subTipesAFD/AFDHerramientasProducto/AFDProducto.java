@@ -5,8 +5,6 @@
  */
 package AutomatasFinitos.subTipesAFD.AFDHerramientasProducto;
 
-import LectoresYProcesos.InteraccionesAutomas;
-import AutomatasFinitos.AFD;
 import AutomatasFinitos.AFD;
 import AutomatasFinitos.Alfabeto;
 import Herramientas.Transition;
@@ -14,13 +12,17 @@ import Herramientas.Transitions;
 import java.util.ArrayList;
 
 /**
- *
+ * la clase AFDProducto extiente a un AFD y sirve para crear un AFD que seria sus productos pero sin iniciar sus finales
  * @author equipo los javas
  * @version 1.2
  */
 public class AFDProducto extends AFD
 {
-    
+    /**
+     * constructor para la clase
+     * @param afd1 AFD base uno
+     * @param afd2 AFD base dos
+     */
     public AFDProducto(AFD afd1, AFD afd2)
     {
         Alfabeto Sigma1 = afd1.getSigma();
