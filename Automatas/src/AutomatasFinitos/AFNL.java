@@ -512,7 +512,7 @@ public class AFNL extends AFN {
                         throw new NullPointerException();
                     }
                     camino += saltoDeEstados(cadena.substring(j), charActual, estadoActual, siguiente);
-                } catch (NullPointerException e) {
+                } catch (NullPointerException | IndexOutOfBoundsException e) {
                     break;
                 }
             }
