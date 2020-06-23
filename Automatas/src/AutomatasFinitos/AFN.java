@@ -3,7 +3,6 @@ package AutomatasFinitos;
 import Herramientas.Transition;
 import Herramientas.TransitionAFN;
 import Herramientas.Transitions;
-import LectoresYProcesos.InteraccionesAutomas;
 import java.util.ArrayList;
 import Herramientas.Tuple;
 import LectoresYProcesos.InteraccionesAutomas.Lecto;
@@ -11,6 +10,7 @@ import ProcesamientoCadenas.ProcesamientoCadenaAFN;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.Integer.parseInt;
 import java.util.Collections;
@@ -18,8 +18,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * Esta clase es el automata finito no determinista
@@ -99,14 +97,16 @@ public class AFN extends AFD{
     /**
      * Inicializa los atributos a partir del archivo de texto.
      * @param nombreArchivo Nombre del archivo donde está el automata a leer
+     * @throws Error error generado a la hora de leer el automata, 
+     * @throws java.io.FileNotFoundException en caso de que el archivo no sea encontrado por el scanner
      */
     public AFN(String nombreArchivo) throws Error, FileNotFoundException{
         Lecto lec = Lecto.inicio;
         ArrayList<Character> alpha = null;
-        ArrayList<String> Q = null;
-        String q0 = null;
-        ArrayList<String> F = null;
-        ArrayList<Tuple> Delta = null;
+        ArrayList<String> qq = null;
+        String q00 = null;
+        ArrayList<String> ff = null;
+        ArrayList<Tuple> dDelta = null;
         int maxState=0;
         numberIndex=0;
         
@@ -122,27 +122,27 @@ public class AFN extends AFD{
                     case "#states":
                         if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
                         lec = Lecto.estados;
-                        Q = new ArrayList<>();
+                        qq = new ArrayList<>();
                         break;
                     case "#initial":
                         if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
-                        if(Q==null) throw new Error("primero debe iniciarse los estados");
+                        if(qq==null) throw new Error("primero debe iniciarse los estados");
                         lec = Lecto.estadoinicial;
                         break;
                     case "#accepting":
                         if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
-                        if(Q==null) throw new Error("primero debe iniciarse los estados");
-                        if(q0==null) throw new Error("primero debe dar el estado inicial");
+                        if(qq==null) throw new Error("primero debe iniciarse los estados");
+                        if(q00==null) throw new Error("primero debe dar el estado inicial");
                         lec = Lecto.estadoFin;
-                        F = new ArrayList<>();
+                        ff = new ArrayList<>();
                         break;
                     case "#transitions":
                         if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
-                        if(Q==null) throw new Error("primero debe iniciarse los estados");
-                        if(q0==null) throw new Error("primero debe dar el estado inicial");
-                        if(F==null) throw new Error("primero debe dar los estados finales");
+                        if(qq==null) throw new Error("primero debe iniciarse los estados");
+                        if(q00==null) throw new Error("primero debe dar el estado inicial");
+                        if(ff==null) throw new Error("primero debe dar los estados finales");
                         lec = Lecto.transicion;
-                        Delta = new ArrayList<>();
+                        dDelta = new ArrayList<>();
                         break;
                     default:
                         switch(lec){
@@ -160,7 +160,7 @@ public class AFN extends AFD{
                                 }
                                 break;
                             case estados:
-                                Q.add(lin);
+                                qq.add(lin);
                                 if(numberIndex==0){
                                     for(int i=0;i<lin.length();i++){
                                         if(isInteger(lin.substring(i))){
@@ -172,25 +172,25 @@ public class AFN extends AFD{
                                 maxState=Math.max(maxState,parseInt(lin.substring(numberIndex)));
                                 break;
                             case estadoinicial:
-                                if(!Q.contains(lin))throw new Error("el estado debe pertenecer a los estados del automata");
-                                q0=lin;
+                                if(!qq.contains(lin))throw new Error("el estado debe pertenecer a los estados del automata");
+                                q00=lin;
                                 break;
                             case estadoFin:
-                                if(!Q.contains(lin))throw new Error("el estado debe pertenecer a los estados del automata");
-                                F.add(lin);
+                                if(!qq.contains(lin))throw new Error("el estado debe pertenecer a los estados del automata");
+                                ff.add(lin);
                                 break;
                             case transicion:
                                 String[] origin = lin.split(":");
                                 String estado1 = origin[0];
-                                if(!Q.contains(estado1))throw new Error("el estado del que se parte debe pertenecer a los estados del automata");
+                                if(!qq.contains(estado1))throw new Error("el estado del que se parte debe pertenecer a los estados del automata");
                                 String[] origin2 = origin[1].split(">");
                                 String alpfa = origin2[0];
                                 if(!alpha.contains(alpfa.charAt(0)))throw new Error("el caracter de activacion debe pertenecer al alfabeto");
                                 String[] origin3 = origin2[1].split(";");
                                 for(int i=0;i<origin3.length;i++){
                                     String estado2 = origin3[i];
-                                    if(!Q.contains(estado2))throw new Error("el estado de llegada debe pertenecer a los estados del automata");
-                                    Delta.add(new Tuple(alpfa.substring(0), parseInt(estado1.substring(numberIndex)), parseInt(estado2.substring(numberIndex))));
+                                    if(!qq.contains(estado2))throw new Error("el estado de llegada debe pertenecer a los estados del automata");
+                                    dDelta.add(new Tuple(alpfa.substring(0), parseInt(estado1.substring(numberIndex)), parseInt(estado2.substring(numberIndex))));
                                 }
                                 break;
                             default:
@@ -206,21 +206,21 @@ public class AFN extends AFD{
         for (int i = 0; i < alpha.size(); i++) {
             ad[i]=alpha.get(i);
         }
-        this.statesName = q0.substring(0,numberIndex);
+        this.statesName = q00.substring(0,numberIndex);
         this.Sigma = new Alfabeto(ad);
-        this.Q = Q;
-        this.q0 = parseInt(q0.substring(numberIndex));
+        this.Q = qq;
+        this.q0 = parseInt(q00.substring(numberIndex));
         this.F = new ArrayList<>();
-        for(int i=0;i<F.size();i++)
-            this.F.add(parseInt(F.get(i).substring(numberIndex)));
+        for(int i=0;i<ff.size();i++)
+            this.F.add(parseInt(ff.get(i).substring(numberIndex)));
         
         this.Delta = new TransitionAFN(maxState);
-        for(int i=0;i<Delta.size();i++) {
-            if(Delta.get(i).getFinalState()>maxState || Delta.get(i).getInitialState()>maxState){
+        for(int i=0;i<dDelta.size();i++) {
+            if(dDelta.get(i).getFinalState()>maxState || dDelta.get(i).getInitialState()>maxState){
                 System.out.println("El número de estados ingresados no concuerda");
                 return;
             }
-            this.Delta.add(Delta.get(i).getInitialState(),Delta.get(i).getSymbol(),Delta.get(i).getFinalState());
+            this.Delta.add(dDelta.get(i).getInitialState(),dDelta.get(i).getSymbol(),dDelta.get(i).getFinalState());
         }
         this.estadosInaccesibles=new ArrayList<>();
         this.estadosLimbo=new ArrayList<>();
@@ -286,7 +286,7 @@ public class AFN extends AFD{
      */
     public int computarTodosLosProcesamientos(String cadena, String nombreArchivo){
         FileWriter fichero1 = null;
-        PrintWriter pw1 = null;
+        PrintWriter pw1;
         String archivo[]=nombreArchivo.split("\\.");
         try
         {
@@ -360,13 +360,12 @@ public class AFN extends AFD{
             pw1.println("Para la cadena:"+cadena+"\n"+res);
             System.out.println(res);
             
-        } catch (Exception e) {
+        } catch (IOException e) {
         } finally {
            try {
            if (null != fichero1)
               fichero1.close();
-           } catch (Exception e2) {
-              e2.printStackTrace();
+           } catch (IOException e2) {
            }
         }
         return respuesta.getAborted().size()+respuesta.getAccepted().size()+respuesta.getRejected().size();
@@ -414,27 +413,26 @@ public class AFN extends AFD{
     @Override
     public void procesarListaCadenas(String[] listaCadenas, String nombreArchivo, boolean imprimirPantalla){
         FileWriter fichero1 = null;
-        PrintWriter pw1 = null;
+        PrintWriter pw1;
         try
         {
             File nombre = new File(nombreArchivo);
             if(!nombre.exists())nombre.createNewFile();
             fichero1 = new FileWriter(nombre);
             pw1 = new PrintWriter(fichero1);
-            for (int i = 0; i < listaCadenas.length; i++){
-                this.cadena=listaCadenas[i];
+            for (String listaCadena : listaCadenas) {
+                this.cadena = listaCadena;
                 this.print = new Integer[cadena.length()];
                 respuesta = new ProcesamientoCadenaAFN(cadena,statesName+Integer.toString(q0),statesName);
-                if(listaCadenas[i].length()==0){
+                if (listaCadena.length() == 0) {
                     if(this.F.contains(q0)){
                         respuesta.addAceptado(q0);
                     }else{
                         respuesta.addRechazado(q0);
                     }
-                }else{
+                } else {
                     computarTodosLosProcesamientos(q0,0);
                 }
-                
                 String res=cadena;
                 if(respuesta.isAccepted()){
                     res+="   "+respuesta.getAccepted().get(0)+"   ";
@@ -455,14 +453,12 @@ public class AFN extends AFD{
                     System.out.println(res);
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
         } finally {
            try {
            if (null != fichero1)
               fichero1.close();
-           } catch (Exception e2) {
-              e2.printStackTrace();
+           } catch (IOException e2) {
            }
         }
     }
@@ -475,7 +471,7 @@ public class AFN extends AFD{
 	ArrayList<Integer> states = new ArrayList<>(), detAcceptance = new ArrayList<>();
 	ArrayList<Tuple> newStates = new ArrayList<>(), deterministicStates;
         ArrayList<ArrayList<Tuple>> automataDeterminista = new ArrayList<>();
-	int numberNewState=this.Delta.size(), cont=0;
+	int numberNewState=this.Delta.size(), conts=0;
         usefulStates = new ArrayList<>();
         
         for(int i=0;i<this.F.size();i++) {
@@ -702,8 +698,8 @@ public class AFN extends AFD{
     private ArrayList<Integer> stringToValues(String cadena) {
         String[] values = cadena.split(" ");
         ArrayList<Integer> combinationOf = new ArrayList<>();
-        for(int i=0;i<values.length;i++){
-            combinationOf.add(Integer.parseInt(values[i]));
+        for (String value : values) {
+            combinationOf.add(Integer.parseInt(value));
         }
 	return combinationOf;
     }
@@ -842,17 +838,17 @@ public class AFN extends AFD{
      */
     @Override
     public String toString(){
-        String cadena="!nfa\n";
-        cadena+=Sigma.toString();
-        cadena+="#states\n";
+        String cadenas="!nfa\n";
+        cadenas+=Sigma.toString();
+        cadenas+="#states\n";
         for (int i=0;i<Q.size();i++) {
-            cadena+=Q.get(i)+"\n";
+            cadenas+=Q.get(i)+"\n";
         }
-        cadena+="#initial\n"+statesName+q0+"\n"+"#accepting\n";
+        cadenas+="#initial\n"+statesName+q0+"\n"+"#accepting\n";
         for (int i=0;i<F.size();i++) {
-            cadena+=statesName+F.get(i)+"\n";
+            cadenas+=statesName+F.get(i)+"\n";
         }
-        cadena += "#transitions\n";
+        cadenas += "#transitions\n";
         boolean aux;
         for(int i=0;i<Q.size();i++) {
             int value = parseInt(Q.get(i).substring(numberIndex));
@@ -860,18 +856,18 @@ public class AFN extends AFD{
                 aux = true;
                 for(int k=0;k<Delta.get(value).size(); k++) {
                     if(aux && Delta.get(value).get(k).getSymbol().charAt(0) == Sigma.get(j)){
-                        cadena+=statesName+value+":"+Sigma.get(j)+">"+statesName+Delta.get(i).get(k).getFinalState();
+                        cadenas+=statesName+value+":"+Sigma.get(j)+">"+statesName+Delta.get(i).get(k).getFinalState();
                         aux = false;
                     }else if(Delta.get(value).get(k).getSymbol().charAt(0) == Sigma.get(j)){
-                        cadena+=";"+statesName+Delta.get(i).get(k).getFinalState();
+                        cadenas+=";"+statesName+Delta.get(i).get(k).getFinalState();
                     }
                 }
                 if(!aux){
-                    cadena+="\n";
+                    cadenas+="\n";
                 }
             }
 	}
-        return cadena;
+        return cadenas;
     }
     
     private boolean isInteger(String cadena){

@@ -9,6 +9,7 @@ import java.util.Arrays;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.Collections;
 import java.util.Scanner;
@@ -268,30 +269,28 @@ public class AFD {
      */
     public void procesarListaCadenas(String[] listaCadenas,String nombreArchivo,boolean imprimirPantalla){
         FileWriter fichero1 = null;
-        PrintWriter pw1 = null;
+        PrintWriter pw1;
         try
         {
             File nombre = new File(nombreArchivo);
             if(!nombre.exists())nombre.createNewFile();
             fichero1 = new FileWriter(nombre);
             pw1 = new PrintWriter(fichero1);
-            for (int i = 0; i < listaCadenas.length; i++){
-                ProcesamientoCadenaAFD res = prosCaden(listaCadenas[i]);
+            for (String listaCadena : listaCadenas) {
+                ProcesamientoCadenaAFD res = prosCaden(listaCadena);
                 String pas =res.pasos();
-                String res2= listaCadenas[i]+"\t"+pas+"\t"+res.EsAceptada();
+                String res2 = listaCadena + "\t" + pas + "\t" + res.EsAceptada();
                 pw1.println(res2);
                 if(imprimirPantalla) System.out.println(res2);
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
         } finally {          
            try {
                 if (null != fichero1){
                    fichero1.close();
                 }
-           } catch (Exception e2) {
-              e2.printStackTrace();
+           } catch (IOException e2) {
            }
         }
     }
@@ -534,15 +533,11 @@ public class AFD {
         String automat="!dfa\n";
         automat+=Sigma.toString();
         automat+="#states\n";
-        for (String string : Q) {
-            automat+=string+"\n";
-        }
+        automat = Q.stream().map((string) -> string+"\n").reduce(automat, String::concat);
         automat+="#initial\n";
         automat+=Q.get(q0)+"\n";
         automat+="#accepting\n";
-        for (Integer integer : F) {
-            automat+=Q.get(integer)+"\n";
-        }
+        automat = F.stream().map((integer) -> Q.get(integer)+"\n").reduce(automat, String::concat);
         automat+=Delta.toString();
         return automat;
     }
