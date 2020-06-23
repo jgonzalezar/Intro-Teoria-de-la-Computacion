@@ -851,10 +851,11 @@ public class AFNL extends AFN {
         for (int i=0;i<Q.size();i++) {
             cadena+=Q.get(i)+"\n";
         }
-        cadena+="#initial\n"+Q.get(0)+"\n"+"#accepting\n";
+        cadena+="#initial\n"+Q.get(this.q0)+"\n"+"#accepting\n";
         for (int i=0;i<F.size();i++) {
             cadena+=Q.get(F.get(i))+"\n";
         }
+        if(this.Delta!=null){
         cadena += "#transitions\n";
         for (int i=0;i<Q.size();i++) {
             for(int j=0;j< this.Sigma.length();j++){
@@ -883,11 +884,13 @@ public class AFNL extends AFN {
                 }
             }      
         
-        }        
+        }
+        }
        
     }
      return cadena;
     }
+    
     
     
 }
