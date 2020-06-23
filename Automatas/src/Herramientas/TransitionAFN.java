@@ -80,6 +80,13 @@ public class TransitionAFN implements Transitions{
     }
 
     @Override
+    public String toString() {
+        return "";
+    }
+
+    
+    
+    @Override
     public ArrayList<Tuple> get(int state) {
         return transicion.get(state);
     }
