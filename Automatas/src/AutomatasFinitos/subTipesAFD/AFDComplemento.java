@@ -13,7 +13,9 @@ import java.util.ArrayList;
 public class AFDComplemento extends AFD{
     
     public AFDComplemento(AFD afd){
-        ArrayList<Integer> estadosRechazo = null;
+        this.Q=afd.getQ();
+        
+        ArrayList<Integer> estadosRechazo = new ArrayList<>();
         for(int i=0;i<Q.size();i++){
             if(!afd.getF().contains(i)){
                 estadosRechazo.add(i);
@@ -23,7 +25,6 @@ public class AFDComplemento extends AFD{
         
         this.Delta=afd.getDelta();
         this.F=estadosRechazo;
-        this.Q=afd.getQ();
         this.Sigma=afd.getSigma();
         this.q0=afd.getQ0();
     }
