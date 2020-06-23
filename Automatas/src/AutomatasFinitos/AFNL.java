@@ -21,6 +21,7 @@ import Herramientas.Tupla;
 import LectoresYProcesos.InteraccionesAutomas.Lecto;
 import ProcesamientoCadenas.ProcesamientoCadenaAFNLambda;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.Integer.parseInt;
 
@@ -254,11 +255,7 @@ public class AFNL extends AFN {
         ArrayList<Integer> Clausura = lambdaClausura_unEstado(estado);
         //System.out.println("lambda clausura del estado " + Q.get(estado) + " es:");
         //System.out.print("$["+Q.get(estado)+"] = {");
-
-        for (Integer integer : Clausura) {
-            String cadena = Q.get(integer) + ",";
-            lambdaC += cadena;
-        }
+        lambdaC = Clausura.stream().map((integer) -> Q.get(integer) + ",").map((cadena) -> cadena).reduce(lambdaC, String::concat);
 
         lambdaC = lambdaC.substring(0, lambdaC.length() - 1) + "}.";
         System.out.println(lambdaC);
@@ -303,15 +300,15 @@ public class AFNL extends AFN {
         ArrayList<Integer> Clausura = lambdaClausura_variosEstado(estados);
         System.out.print("lambda clausura de los estados {");
 
-        for (Integer s : estados) {
+        estados.forEach((s) -> {
             System.out.print(" " + Q.get(s) + " ");
-        }
+        });
         System.out.print("} es : ");
 
         System.out.print(" {");
-        for (Integer s : Clausura) {
+        Clausura.forEach((s) -> {
             System.out.print(" " + Q.get(s) + " ");
-        }
+        });
         System.out.println("}");
 
     }
@@ -323,6 +320,7 @@ public class AFNL extends AFN {
      * @param cadena cadena a evaluar.
      * @param computacion numero dado que define la opcion escogida.
      */
+    @Override
     public void imprimirComputaciones(String cadena, int computacion) {
         ProcesamientoCadenaAFNLambda procesada = procesarCadenad(cadena);
         ArrayList<String> lista;
@@ -514,7 +512,7 @@ public class AFNL extends AFN {
                         throw new NullPointerException();
                     }
                     camino += saltoDeEstados(cadena.substring(j), charActual, estadoActual, siguiente);
-                } catch (Exception e) {
+                } catch (NullPointerException e) {
                     break;
                 }
             }
@@ -540,15 +538,6 @@ public class AFNL extends AFN {
         }
 
         return new ProcesamientoCadenaAFNLambda(cadena, tupla);
-    }
-
-    /**
-     * Devuelve la lista de estados totales del automata.
-     *
-     * @return Lista de los estados del automata.
-     */
-    public ArrayList<String> getQ() {
-        return Q;
     }
 
     /**
@@ -579,6 +568,7 @@ public class AFNL extends AFN {
      * @param nombreArchivo nombre que se le quiere dar a los archivos.
      * @return Procesamientos.
      */
+    @Override
     public int computarTodosLosProcesamientos(String cadena, String nombreArchivo) {
         String nombreArchivoAceptados;
         String nombreArchivoRechazados;
@@ -601,7 +591,7 @@ public class AFNL extends AFN {
         ArrayList<String> Abortados = procesamiento.getListaProcesamientosAbortados();
         int TotaldeProcesamientos = Aceptados.size() + Rechazados.size() + Abortados.size();
         FileWriter fichero1 = null;
-        PrintWriter pw1 = null;
+        PrintWriter pw1;
         try {
             File nombreAc = new File(nombreArchivoAceptados);
             if (!nombreAc.exists()) {
@@ -614,19 +604,17 @@ public class AFNL extends AFN {
                 System.out.println(Aceptados.get(i));
                 pw1.println(Aceptados.get(i));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
         } finally {
             try {
                 if (null != fichero1) {
                     fichero1.close();
                 }
-            } catch (Exception e2) {
-                e2.printStackTrace();
+            } catch (IOException e2) {
             }
         }
         FileWriter fichero2 = null;
-        PrintWriter pw2 = null;
+        PrintWriter pw2;
         try {
             File nombreRe = new File(nombreArchivoRechazados);
             if (!nombreRe.exists()) {
@@ -639,19 +627,17 @@ public class AFNL extends AFN {
                 System.out.println(Rechazados.get(i));
                 pw2.println(Rechazados.get(i));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
         } finally {
             try {
                 if (null != fichero2) {
                     fichero2.close();
                 }
-            } catch (Exception e2) {
-                e2.printStackTrace();
+            } catch (IOException e2) {
             }
         }
         FileWriter fichero3 = null;
-        PrintWriter pw3 = null;
+        PrintWriter pw3;
         try {
             File nombreAb = new File(nombreArchivoAbortados);
             if (!nombreAb.exists()) {
@@ -665,15 +651,13 @@ public class AFNL extends AFN {
                 pw3.println(Abortados.get(i));
 
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
         } finally {
             try {
                 if (null != fichero3) {
                     fichero3.close();
                 }
-            } catch (Exception e2) {
-                e2.printStackTrace();
+            } catch (IOException e2) {
             }
         }
         return TotaldeProcesamientos;
@@ -696,7 +680,7 @@ public class AFNL extends AFN {
             nombreArchivo = nombreArchivo + ".txt";
         }
         FileWriter fichero = null;
-        PrintWriter pw = null;
+        PrintWriter pw;
         try {
             File nombre = new File(nombreArchivo);
             if (!nombre.exists()) {
@@ -705,29 +689,25 @@ public class AFNL extends AFN {
             nombre.createNewFile();
             fichero = new FileWriter(nombre);
             pw = new PrintWriter(fichero);
-            for (int i = 0; i < listaCadenas.length; i++) {
-                ProcesamientoCadenaAFNLambda procesamiento = procesarCadenad(listaCadenas[i]);
+            for (String listaCadena : listaCadenas) {
+                ProcesamientoCadenaAFNLambda procesamiento = procesarCadenad(listaCadena);
                 ArrayList<String> Aceptados = procesamiento.getListaProcesamientosAceptacion();
                 ArrayList<String> Rechazados = procesamiento.getListaProcesamientosRechazados();
                 ArrayList<String> Abortados = procesamiento.getListaProcesamientosAbortados();
                 int TotaldeProcesamientos = Aceptados.size() + Rechazados.size() + Abortados.size();
                 String Aceptada = (procesamiento.isEsAceptada()) ? "si" : "no";
-                pw.println(listaCadenas[i] + "  " + procesamiento.imprimirCamino() + "    Numero de procesamientos: [" + TotaldeProcesamientos + "]    Procesamientos aceptados: ["
-                        + Aceptados.size() + "]   Procesamientos rechazados: [" + Rechazados.size() + "]   Procesamientos abortados [" + Abortados.size() + "]    La cadena " + Aceptada + " fue aceptada");
+                pw.println(listaCadena + "  " + procesamiento.imprimirCamino() + "    Numero de procesamientos: [" + TotaldeProcesamientos + "]    Procesamientos aceptados: [" + Aceptados.size() + "]   Procesamientos rechazados: [" + Rechazados.size() + "]   Procesamientos abortados [" + Abortados.size() + "]    La cadena " + Aceptada + " fue aceptada");
                 if (imprimirPantalla == true) {
-                    System.out.println(listaCadenas[i] + "  " + procesamiento.imprimirCamino() + "    Numero de procesamientos: [" + TotaldeProcesamientos + "]    Procesamientos aceptados: ["
-                            + Aceptados.size() + "]   Procesamientos rechazados: [" + Rechazados.size() + "]   Procesamientos abortados [" + Abortados.size() + "]   La cadena " + Aceptada + " fue aceptada");
+                    System.out.println(listaCadena + "  " + procesamiento.imprimirCamino() + "    Numero de procesamientos: [" + TotaldeProcesamientos + "]    Procesamientos aceptados: [" + Aceptados.size() + "]   Procesamientos rechazados: [" + Rechazados.size() + "]   Procesamientos abortados [" + Abortados.size() + "]   La cadena " + Aceptada + " fue aceptada");
                 }
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
         } finally {
             try {
                 if (null != fichero) {
                     fichero.close();
                 }
-            } catch (Exception e2) {
-                e2.printStackTrace();
+            } catch (IOException e2) {
             }
         }
     }
@@ -812,14 +792,17 @@ public class AFNL extends AFN {
         return rta;
     }
 
+    @Override
     public boolean procesarCadenaConversion(String cadena) {
         return AFN_LambdaToAFD().procesarCadena(cadena);
     }
 
+    @Override
     public boolean procesarCadenaConDetallesConversion(String cadena) {
         return AFN_LambdaToAFD().procesarCadenaConDetalles(cadena);
     }
 
+    @Override
     public void procesarListaCadenasConversion(String[] listaCadenas, String nombreArchivo, boolean imprimirPantalla) {
         AFN_LambdaToAFD().procesarListaCadenas(listaCadenas, nombreArchivo, imprimirPantalla);
     }
