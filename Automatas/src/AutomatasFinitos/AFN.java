@@ -12,7 +12,6 @@ import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
-import static java.lang.Integer.parseInt;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
@@ -52,46 +51,6 @@ public class AFN extends AFD{
      */
     public AFN(Alfabeto Sigma, ArrayList<String> Q, Integer q0, ArrayList<Integer> F, Transitions Delta) {
         super(Sigma, Q, q0, F, Delta);
-    }
-    
-    /**
-     * Constructor, inicializa los atributos.
-     * @param Sigma Alfabeto
-     * @param Q Conjunto de estados
-     * @param q0 Estado inicial
-     * @param F Estados de aceptación
-     * @param Delta Transiciones
-     */
-    public AFN(char[] Sigma, ArrayList<String> Q, String q0, ArrayList<String> F, ArrayList<Tuple> Delta) {
-        int maxState=0;
-        numberIndex=0;
-        for(int i=0;i<q0.length();i++){
-            if(isInteger(q0.substring(i))){
-                numberIndex=i;
-                break;
-            }
-        }
-        this.statesName = q0.substring(0,numberIndex);
-        for(int i=0;i<Q.size();i++)
-            maxState=Math.max(maxState,parseInt(Q.get(i).substring(numberIndex)));
-        
-        this.Sigma = new Alfabeto(Sigma);
-        this.Q = Q;
-        this.q0 = parseInt(q0.substring(numberIndex));
-        this.F = new ArrayList<>();
-        for(int i=0;i<F.size();i++)
-            this.F.add(parseInt(F.get(i).substring(numberIndex)));
-        
-        this.Delta = new TransitionAFN(maxState);
-        for(int i=0;i<Delta.size();i++) {
-            if(Delta.get(i).getFinalState()>maxState || Delta.get(i).getInitialState()>maxState){
-                System.out.println("El número de estados ingresados no concuerda");
-                return;
-            }
-            this.Delta.add(Delta.get(i).getInitialState(), Delta.get(i).getSymbol(), Delta.get(i).getFinalState());
-        }
-        this.estadosInaccesibles=new ArrayList<>();
-        this.estadosLimbo=new ArrayList<>();
     }
 
     /**
@@ -161,15 +120,6 @@ public class AFN extends AFD{
                                 break;
                             case estados:
                                 qq.add(lin);
-                                if(numberIndex==0){
-                                    for(int i=0;i<lin.length();i++){
-                                        if(isInteger(lin.substring(i))){
-                                            numberIndex=i;
-                                            break;
-                                        }
-                                    }
-                                }
-                                maxState=Math.max(maxState,parseInt(lin.substring(numberIndex)));
                                 break;
                             case estadoinicial:
                                 if(!qq.contains(lin))throw new Error("el estado debe pertenecer a los estados del automata");
@@ -190,7 +140,7 @@ public class AFN extends AFD{
                                 for(int i=0;i<origin3.length;i++){
                                     String estado2 = origin3[i];
                                     if(!qq.contains(estado2))throw new Error("el estado de llegada debe pertenecer a los estados del automata");
-                                    dDelta.add(new Tuple(alpfa.substring(0), parseInt(estado1.substring(numberIndex)), parseInt(estado2.substring(numberIndex))));
+                                    dDelta.add(new Tuple(alpfa.charAt(0)+"", qq.indexOf(estado1), qq.indexOf(estado2)));
                                 }
                                 break;
                             default:
@@ -206,20 +156,16 @@ public class AFN extends AFD{
         for (int i = 0; i < alpha.size(); i++) {
             ad[i]=alpha.get(i);
         }
-        this.statesName = q00.substring(0,numberIndex);
+        //this.statesName = Qq.indexOf(q00);
         this.Sigma = new Alfabeto(ad);
         this.Q = qq;
-        this.q0 = parseInt(q00.substring(numberIndex));
+        this.q0 = Q.indexOf(q00);
         this.F = new ArrayList<>();
         for(int i=0;i<ff.size();i++)
-            this.F.add(parseInt(ff.get(i).substring(numberIndex)));
+            this.F.add(Q.indexOf(ff.get(i)));
         
-        this.Delta = new TransitionAFN(maxState);
+        this.Delta = new TransitionAFN(Q.size());
         for(int i=0;i<dDelta.size();i++) {
-            if(dDelta.get(i).getFinalState()>maxState || dDelta.get(i).getInitialState()>maxState){
-                System.out.println("El número de estados ingresados no concuerda");
-                return;
-            }
             this.Delta.add(dDelta.get(i).getInitialState(),dDelta.get(i).getSymbol(),dDelta.get(i).getFinalState());
         }
         this.estadosInaccesibles=new ArrayList<>();
@@ -233,7 +179,7 @@ public class AFN extends AFD{
      */
     @Override
     public boolean procesarCadena(String cadena){
-        respuesta = new ProcesamientoCadenaAFN(cadena,statesName+Integer.toString(q0),statesName);
+        respuesta = new ProcesamientoCadenaAFN(cadena,Q.get(q0),statesName);
         if(cadena.length()==0) {
             if(this.F.contains(q0)) {
                 respuesta.addAceptado(q0);
@@ -255,7 +201,7 @@ public class AFN extends AFD{
      */
     @Override
     public boolean procesarCadenaConDetalles(String cadena){
-        respuesta = new ProcesamientoCadenaAFN(cadena,statesName+Integer.toString(q0),statesName);
+        respuesta = new ProcesamientoCadenaAFN(cadena,Q.get(q0),statesName);
         this.cadena=cadena;
         this.print = new Integer[cadena.length()];
         if(cadena.length()==0) {
@@ -292,7 +238,7 @@ public class AFN extends AFD{
         {
             this.cadena=cadena;
             this.print = new Integer[cadena.length()];
-            respuesta = new ProcesamientoCadenaAFN(cadena,statesName+Integer.toString(q0),statesName);
+            respuesta = new ProcesamientoCadenaAFN(cadena,Q.get(q0),statesName);
             if(cadena.length()==0){
                 if(this.F.contains(q0)){
                     respuesta.addAceptado(q0);
@@ -423,7 +369,7 @@ public class AFN extends AFD{
             for (String listaCadena : listaCadenas) {
                 this.cadena = listaCadena;
                 this.print = new Integer[cadena.length()];
-                respuesta = new ProcesamientoCadenaAFN(cadena,statesName+Integer.toString(q0),statesName);
+                respuesta = new ProcesamientoCadenaAFN(cadena,Q.get(q0),statesName);
                 if (listaCadena.length() == 0) {
                     if(this.F.contains(q0)){
                         respuesta.addAceptado(q0);
@@ -868,15 +814,6 @@ public class AFN extends AFD{
             }
 	}
         return cadenas;
-    }
-    
-    private boolean isInteger(String cadena){
-        try{
-            Integer.parseInt(cadena);
-            return true;
-        }catch(NumberFormatException e){
-            return false;
-        }
     }
     
     /**
