@@ -3,19 +3,11 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/ParPila.java</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/TransitionAFN.java</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFN.java</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/TransitionAFNL.java</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/subTipesAFD/AFDSimplificacion.java</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/Transition.java</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/Transitions.java</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/Tupla.java</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/trioPila.java</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFD.java</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/Tuple.java</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/package-info.java</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/TransitionAFPD.java</file>
+            <file>file:/C:/Users/ivonn/Documents/automatas/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasPredefinidos/a'(abUba)'b+.NFe</file>
+            <file>file:/C:/Users/ivonn/Documents/automatas/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFD.java</file>
+            <file>file:/C:/Users/ivonn/Documents/automatas/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFNL.java</file>
+            <file>file:/C:/Users/ivonn/Documents/automatas/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFN.java</file>
+            <file>file:/C:/Users/ivonn/Documents/automatas/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/Alfabeto.java</file>
         </group>
     </open-files>
 </project-private>
