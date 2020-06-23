@@ -12,6 +12,11 @@ import java.util.ArrayList;
  */
 public class AFDComplemento extends AFD{
     
+    /**
+     * constructor para la clase
+     * @param afd AFD base 
+     */
+    
     public AFDComplemento(AFD afd){
         this.Q=afd.getQ();
         ArrayList<Integer> estadosRechazo = new ArrayList<>();

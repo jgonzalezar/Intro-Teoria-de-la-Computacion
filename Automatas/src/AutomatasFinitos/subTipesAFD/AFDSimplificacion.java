@@ -6,19 +6,18 @@
 package AutomatasFinitos.subTipesAFD;
 
 import AutomatasFinitos.AFD;
-import AutomatasFinitos.AFD;
-import Herramientas.Transition;
-import Herramientas.Transitions;
-import java.util.ArrayList;
 
 /**
- *
+ * la clase simplificacion crea una simplificacion de un AFD
  * @author equipo los javas
  * @version 1.2
  */
 public class AFDSimplificacion extends AFD
 {
-    
+    /**
+     * constructor para la clase
+     * @param afd1 AFD base 
+     */
     public AFDSimplificacion(AFD afd1)
     {
        AFD simp = afd1.simplificar();
