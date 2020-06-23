@@ -839,27 +839,27 @@ public class AFN extends AFD{
     @Override
     public String toString(){
         String cadenas="!nfa\n";
-        cadenas+=Sigma.toString();
-        cadenas+="#states\n";
+        cadenas+=super.toString().substring(4);
+        /*cadenas+="#states\n";
         for (int i=0;i<Q.size();i++) {
             cadenas+=Q.get(i)+"\n";
         }
         cadenas+="#initial\n"+statesName+q0+"\n"+"#accepting\n";
         for (int i=0;i<F.size();i++) {
             cadenas+=statesName+F.get(i)+"\n";
-        }
+        }*/
         cadenas += "#transitions\n";
         boolean aux;
         for(int i=0;i<Q.size();i++) {
-            int value = parseInt(Q.get(i).substring(numberIndex));
             for(int j=0;j<Sigma.length();j++){
                 aux = true;
-                for(int k=0;k<Delta.get(value).size(); k++) {
-                    if(aux && Delta.get(value).get(k).getSymbol().charAt(0) == Sigma.get(j)){
-                        cadenas+=statesName+value+":"+Sigma.get(j)+">"+statesName+Delta.get(i).get(k).getFinalState();
+                for(int k=0;k<Delta.get(i).size(); k++) {
+                    Tuple de= Delta.get(i).get(k);
+                    if(aux && de.getSymbol().charAt(0) == Sigma.get(j)){
+                        cadenas+=Q.get(i)+":"+Sigma.get(j)+">"+Q.get(de.getFinalState());
                         aux = false;
-                    }else if(Delta.get(value).get(k).getSymbol().charAt(0) == Sigma.get(j)){
-                        cadenas+=";"+statesName+Delta.get(i).get(k).getFinalState();
+                    }else if(de.getSymbol().charAt(0) == Sigma.get(j)){
+                        cadenas+=";"+Q.get(de.getFinalState());
                     }
                 }
                 if(!aux){
