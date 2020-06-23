@@ -718,6 +718,8 @@ public class AFNL extends AFN {
 
     public AFN AFN_LambdaToAFN() {
         ArrayList<Integer> aceptacion = new ArrayList<>();
+        ArrayList<String> newQ = new ArrayList<>();
+        int index = 0;
         TransitionAFN delta = new TransitionAFN(this.Q.size());
 
         for (int i = 0; i < Q.size(); i++) {
@@ -729,16 +731,24 @@ public class AFNL extends AFN {
             }
         }
 
+        for(int i=0;i<Q.get(0).length();i++){
+            if(isInteger(Q.get(0).substring(i))){
+                index=i;
+                break;
+            }
+        }
+        
         for (int i = 0; i < Q.size(); i++) {
             for (int j = 0; j < Sigma.length(); j++) {
                 delta.add(Sigma.get(j), i, trancisiones(i, Sigma.get(j)));
             }
+            newQ.add(Q.get(i).substring(0,index)+i);
         }
 
         Set<Integer> hashSet = new HashSet<>(aceptacion);
         aceptacion.clear();
         aceptacion.addAll(hashSet);
-        return new AFN(Sigma, Q, q0, aceptacion, delta);
+        return new AFN(Sigma, newQ, q0, aceptacion, delta);
     }
 
     public int[] trancisiones(int estado, char simb) {
@@ -790,6 +800,15 @@ public class AFNL extends AFN {
             rta[i] = lclauMul.get(i);
         }
         return rta;
+    }
+    
+    private boolean isInteger(String cadena){
+        try{
+            Integer.parseInt(cadena);
+            return true;
+        }catch(NumberFormatException e){
+            return false;
+        }
     }
 
     @Override
