@@ -85,7 +85,7 @@ public class ClasePrueba {
                         switch (tp) {
                             case AFD:
                                 message = "Ha seleccionado un Automata finito determinista que representa la expresion " + expresion;
-                                String[] options1 = {"Procesar cadenas", "Simplificar el Automata", "Calcular el complemento", "Realizar el ProductoCartesiano\n con otro automata"};
+                                String[] options1 = {"Procesar cadenas", "Simplificar el Automata", "Calcular el complemento", "Realizar el Producto Cartesiano\n con otro automata"};
                                 int f = JOptionPane.showOptionDialog(null, message + "\n Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Procesar cadenas");
                                 switch (f) {
                                     case 1:
@@ -96,6 +96,7 @@ public class ClasePrueba {
                                         break;
                                     case 3:
                                         tp = InteraccionesAutomas.Type.AFDproducto;
+                                        break;
                                     case JOptionPane.CLOSED_OPTION:
                                         fals=true;
                                         break;
