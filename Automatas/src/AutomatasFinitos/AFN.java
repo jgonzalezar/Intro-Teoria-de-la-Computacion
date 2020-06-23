@@ -156,7 +156,13 @@ public class AFN extends AFD{
         for (int i = 0; i < alpha.size(); i++) {
             ad[i]=alpha.get(i);
         }
-        //this.statesName = Qq.indexOf(q00);
+        for(int i=0; i<q00.length();i++){
+            if(q00.charAt(i)>='0'&&q00.charAt(i)<='9'){
+                this.statesName = q00.substring(0, i);
+                break;
+            }
+        }
+        
         this.Sigma = new Alfabeto(ad);
         this.Q = qq;
         this.q0 = Q.indexOf(q00);
