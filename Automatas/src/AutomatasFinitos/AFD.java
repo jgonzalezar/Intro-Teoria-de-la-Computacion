@@ -331,7 +331,8 @@ public class AFD {
             for(int j=0;j<F.size();j++){
                 if(Q.indexOf(estadosInaccesibles.get(i))==F.get(j)){
                     F.remove(j);
-                }else if(Q.indexOf(estadosInaccesibles.get(i))<F.get(j)){
+                }
+                if(Q.indexOf(estadosInaccesibles.get(i))<F.get(j)){
                     F.set(j,F.get(j)-1);
                 }
             }

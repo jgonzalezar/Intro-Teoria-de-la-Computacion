@@ -51,7 +51,28 @@ public class AFN extends AFD{
      * @param Delta Transiciones
      */
     public AFN(Alfabeto Sigma, ArrayList<String> Q, Integer q0, ArrayList<Integer> F, Transitions Delta) {
-        super(Sigma, Q, q0, F, Delta);
+        int maxState=0;
+        numberIndex=0;
+        for(int i=0;i<Q.get(q0).length();i++){
+            if(isInteger(Q.get(q0).substring(i))){
+                numberIndex=i;
+                break;
+            }
+        }
+        this.statesName = Q.get(q0).substring(0,numberIndex);
+        for(int i=0;i<Q.size();i++)
+            maxState=Math.max(maxState,parseInt(Q.get(i).substring(numberIndex)));
+        
+        this.Sigma = Sigma;
+        this.Q = Q;
+        this.q0 = parseInt(Q.get(q0).substring(numberIndex));
+        this.F = new ArrayList<>();
+        for(int i=0;i<F.size();i++)
+            this.F.add(parseInt(Q.get(F.get(i)).substring(numberIndex)));
+        
+        this.Delta = Delta;
+        this.estadosInaccesibles=new ArrayList<>();
+        this.estadosLimbo=new ArrayList<>();
     }
     
     /**
@@ -839,29 +860,27 @@ public class AFN extends AFD{
     @Override
     public String toString(){
         String cadenas="!nfa\n";
-        cadenas+=super.toString().substring(4);
-        /*cadenas+="#states\n";
+        cadenas+=Sigma.toString();
+        cadenas+="#states\n";
         for (int i=0;i<Q.size();i++) {
             cadenas+=Q.get(i)+"\n";
         }
         cadenas+="#initial\n"+statesName+q0+"\n"+"#accepting\n";
         for (int i=0;i<F.size();i++) {
             cadenas+=statesName+F.get(i)+"\n";
-        }*/
-        
-        
+        }
         cadenas += "#transitions\n";
         boolean aux;
         for(int i=0;i<Q.size();i++) {
+            int value = parseInt(Q.get(i).substring(numberIndex));
             for(int j=0;j<Sigma.length();j++){
                 aux = true;
-                for(int k=0;k<Delta.get(i).size(); k++) {
-                    Tuple ad = Delta.get(i).get(k);
-                    if(aux && ad.getSymbol().charAt(0) == Sigma.get(j)){
-                        cadenas+=Q.get(i)+":"+Sigma.get(j)+">"+Q.get(ad.getFinalState());
+                for(int k=0;k<Delta.get(value).size(); k++) {
+                    if(aux && Delta.get(value).get(k).getSymbol().charAt(0) == Sigma.get(j)){
+                        cadenas+=statesName+value+":"+Sigma.get(j)+">"+statesName+Delta.get(i).get(k).getFinalState();
                         aux = false;
-                    }else if(ad.getSymbol().charAt(0) == Sigma.get(j)){
-                        cadenas+=";"+Q.get(ad.getFinalState());
+                    }else if(Delta.get(value).get(k).getSymbol().charAt(0) == Sigma.get(j)){
+                        cadenas+=";"+statesName+Delta.get(i).get(k).getFinalState();
                     }
                 }
                 if(!aux){
