@@ -9,11 +9,15 @@ import AutomatasFinitos.AFD;
 import java.util.ArrayList;
 
 /**
- *
+ * Clase que genera una variacion de la Clase AFDProducto pero con los finales definidos para una interseccion
  * @author brandon
  */
 public class AFDProductoY extends AFDProducto{
-    
+    /**
+     * constructor de la Clase
+     * @param afd1 automata 1
+     * @param afd2 automata 2
+     */
     public AFDProductoY(AFD afd1, AFD afd2) {
         super(afd1, afd2);
         ArrayList<Integer> F1 = afd1.getF();

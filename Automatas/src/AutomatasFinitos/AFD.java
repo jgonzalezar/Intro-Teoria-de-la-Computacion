@@ -4,7 +4,6 @@ import Herramientas.Transition;
 import Herramientas.Transitions;
 import LectoresYProcesos.InteraccionesAutomas.Lecto;
 import ProcesamientoCadenas.ProcesamientoCadenaAFD;
-import java.awt.HeadlessException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.File;
@@ -15,7 +14,6 @@ import java.util.Collections;
 import java.util.Scanner;
 import java.util.HashSet;
 import java.util.Set;
-import javax.swing.JFileChooser;
 
 
 /**
@@ -58,7 +56,11 @@ public class AFD {
      */
     protected ArrayList<String> estadosLimbo;
 
-    public AFD() {
+    /**
+     * constructor vacio
+     */
+    
+    protected AFD() {
         estadosInaccesibles=new ArrayList<>();
         estadosLimbo=new ArrayList<>();
     }
