@@ -14,8 +14,12 @@ public class AFDComplemento extends AFD{
     
     public AFDComplemento(AFD afd){
         this.Q=afd.getQ();
+<<<<<<< Updated upstream
         
         ArrayList<Integer> estadosRechazo = new ArrayList<>();
+=======
+        ArrayList<Integer> estadosRechazo = null;
+>>>>>>> Stashed changes
         for(int i=0;i<Q.size();i++){
             if(!afd.getF().contains(i)){
                 estadosRechazo.add(i);

@@ -845,21 +845,13 @@ public class AFNL extends AFN {
     @Override
     public String toString(){
         String cadena="!nfe\n";
-        cadena+="alphabet\n";
-        for(int i=0;i<Sigma.length();i++){
-           cadena+=Sigma.get(i);
-           if(Sigma.length()>=i){
-               cadena+="\n";
-           }else{
-               cadena+="-";
-           }
-        
-        }        
+        cadena+=Sigma.toString();
+                
         cadena+="#states\n";
         for (int i=0;i<Q.size();i++) {
             cadena+=Q.get(i)+"\n";
         }
-        cadena+="#initial\n"+q0+"\n"+"#accepting\n";
+        cadena+="#initial\n"+Q.get(0)+"\n"+"#accepting\n";
         for (int i=0;i<F.size();i++) {
             cadena+=Q.get(F.get(i))+"\n";
         }
