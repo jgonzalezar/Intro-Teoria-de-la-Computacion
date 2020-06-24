@@ -26,7 +26,7 @@ public class Windows extends JFrame{
      * @param aff afd a usar
      */
     public Windows(String tittle, AFD aff){
-        super("tittle");
+        super(tittle);
         hey=true;
         this.aff=aff;
         initFrame();

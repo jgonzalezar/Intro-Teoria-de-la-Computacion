@@ -32,7 +32,7 @@ public class Windows2 extends Windows{
      * @param resp procesamiento de la cadena
      */
     public Windows2(String tittle, AFD aff,ProcesamientoCadenaAFD resp){
-        super("tittle",aff);
+        super(tittle,aff);
         move = resp;
         Camino=0;
         initScrool();

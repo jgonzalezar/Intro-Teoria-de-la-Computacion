@@ -10,12 +10,13 @@ import java.awt.Button;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
+import javax.swing.JFrame;
 
 /**
  * la clase Windows1 extiende de la clase windows y esta diseñada para mostrar una version de la ventana que permite moverse a travez del automata de forma libre pero no puede guardar nada
  * @author fanat
  */
-public class Windows1 extends Windows{
+public class WindowsS extends JFrame{
     JComboBox<String> estad;
     JComboBox<String> alpha;
     //ArrayList<
@@ -26,14 +27,14 @@ public class Windows1 extends Windows{
      * @param aff automata
      */
 
-    public Windows1(String tittle, AFD aff){
-        super(tittle,aff);
-        initButtons();
+    public WindowsS(String tittle, AFD aff){
+        super("tittle");
+       /* initButtons();
         initEstados();
-        initAlphabe();
+        initAlphabe();*/
         
     }
-
+/*
     private void initButtons() {
         Button next= new Button("Ir a:");
         next.setBounds(220, 10, 75, 30);
@@ -71,7 +72,7 @@ public class Windows1 extends Windows{
             if (e.getStateChange() == ItemEvent.SELECTED) {
                 //display.setText(e.getItem().toString());
             }
-        });*/
+        });*//*
         estad.setBounds(330,10,110,30);
         getContentPane().add(estad);
         
@@ -87,7 +88,7 @@ public class Windows1 extends Windows{
         alpha.setBounds(330,50,110,30);
         getContentPane().add(alpha);
         
-    }
+    }*/
     
 }
 

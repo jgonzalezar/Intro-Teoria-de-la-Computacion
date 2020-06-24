@@ -32,7 +32,7 @@ public class Windows3 extends Windows{
      * @param aff automata a usar
      */
     public Windows3(String tittle, AFD aff){
-        super("tittle",aff);
+        super(tittle,aff);
         initAlmc();
         initButtons();
         initAlphabe();
