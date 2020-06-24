@@ -14,7 +14,6 @@ import AutomatasFinitos.subTipesAFD.AFDHerramientasProducto.AFDProductoY;
 import AutomatasFinitos.subTipesAFD.AFDSimplificacion;
 import AutomatasFinitos.AFN;
 import AutomatasFinitos.AFNL;
-import AutomatasFinitos.AFNL_AFN;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -41,7 +40,7 @@ public class InteraccionesAutomas {
      */
     
     public static AFN AFN_LambdaToAFN(AFNL afnl){
-        return new AFNL_AFN(afnl);
+        return afnl.AFN_LambdaToAFN();
     }
     
     /**
