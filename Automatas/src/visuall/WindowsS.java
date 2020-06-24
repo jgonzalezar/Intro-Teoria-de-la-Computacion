@@ -11,84 +11,55 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import javax.swing.JComboBox;
 import javax.swing.JFrame;
+import javax.swing.JTable;
 
 /**
  * la clase Windows1 extiende de la clase windows y esta diseñada para mostrar una version de la ventana que permite moverse a travez del automata de forma libre pero no puede guardar nada
  * @author fanat
  */
 public class WindowsS extends JFrame{
-    JComboBox<String> estad;
-    JComboBox<String> alpha;
+    boolean hey;
     //ArrayList<
     
     /**
      * constructor para crear la ventana
      * @param tittle titulo de la ventana
-     * @param aff automata
+     * @param Table tabla a mostrar
      */
 
-    public WindowsS(String tittle, AFD aff){
+    public WindowsS(String tittle, String Table[][],String[] Q){
         super("tittle");
-       /* initButtons();
-        initEstados();
-        initAlphabe();*/
-        
-    }
-/*
-    private void initButtons() {
-        Button next= new Button("Ir a:");
-        next.setBounds(220, 10, 75, 30);
-        next.addActionListener((ActionEvent e) -> {
-            if(vent.isStatic()){
-                ChangeEstado(estad.getSelectedItem().toString(),'a',aff.getF().contains(estad.getSelectedIndex()),0);
-            }
-        });
-        getContentPane().add(next);
-        
-        Button trans= new Button("Procesar:");
-        trans.setBounds(220, 50, 75, 30);
-        trans.addActionListener((ActionEvent e) -> {
-            if(vent.isStatic()){
-                char camb=alpha.getSelectedItem().toString().charAt(0);
-                String go = aff.getDelta().cambio(camb, vent.getActP());
-                ChangeEstado(go,camb,aff.getF().contains(aff.getQ().indexOf(go)),1);
-                
-            }
-        });
-        getContentPane().add(trans);
+        JTable sd  =new JTable(Table, Q);
+        sd.setBounds(10,10,200,200);
+        hey=true;
+        initFrame();
+        getContentPane().add(sd);
     }
     
+    private void initFrame(){
+        setSize(250, 250);
+        setVisible(true);
+        setResizable(false);
+        setLocationRelativeTo(null);
+        getContentPane().setLayout(null);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+    }
+        
     
-    private void initEstados() {
-        ArrayList<String> Qa= aff.getQ();
-        String[] estados = new String[Qa.size()];
-        for (int i = 0; i < Qa.size(); i++) {
-            estados[i]=Qa.get(i);
-        }
+    @Override
+    public void dispose() {
+        hey=false;
+        setVisible(false);
+        super.dispose();
+    }
 
-        estad = new JComboBox<>(estados);
-        //estad.setSelectedIndex(aff.getQ0());
-        /*estad.addItemListener((ItemEvent e) -> {
-            if (e.getStateChange() == ItemEvent.SELECTED) {
-                //display.setText(e.getItem().toString());
-            }
-        });*//*
-        estad.setBounds(330,10,110,30);
-        getContentPane().add(estad);
-        
-    }
-    private void initAlphabe() {
-        char[] alp= aff.getSigma().getSimbolos();
-        String[] afl = new String[alp.length];
-        for (int i = 0; i < alp.length; i++) {
-            afl[i]=alp[i]+"";
+    public void Simulat(){
+        while(hey&&isVisible()){
+            try
+            {
+                Thread.sleep(500);
+            }catch(InterruptedException d){}
         }
-        
-        alpha = new JComboBox<>(afl);
-        alpha.setBounds(330,50,110,30);
-        getContentPane().add(alpha);
-        
-    }*/
-    
+    }
 }
 

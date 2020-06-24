@@ -20,6 +20,7 @@ import javax.swing.JComboBox;
  * @author fanat
  */
 public class Windows3 extends Windows{    
+    
     ArrayList<Label> blueLabel;
     Stack<String> avance;
     Stack<String> seguro;
@@ -33,6 +34,7 @@ public class Windows3 extends Windows{
      */
     public Windows3(String tittle, AFD aff){
         super(tittle,aff);
+    
         initAlmc();
         initButtons();
         initAlphabe();

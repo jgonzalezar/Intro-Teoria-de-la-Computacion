@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.Scanner;
 import java.util.HashSet;
 import java.util.Set;
+import visuall.WindowsS;
 
 
 /**
@@ -476,20 +477,32 @@ public class AFD {
                 }
             }
         }
-        
+        String Table2[][] = new String[tam][tam];
+        String qs[] = new String[tam];
         for (int i = 0; i < tam; i++) {
             String line="";
+            qs[i]=Q.get(i);
             for (int j = 0; j < i; j++) {
                 if(Table[j][i]){
+                    Table2[i][j]=Table2[j][i]="X";
                     line+="X";
                 }else{
+                    Table2[i][j]=Table2[j][i]=" ";
                     line+="_";
                 }
                 line+="\t";
             }
+            if(Table[i][i]){
+                Table2[i][i]="X";
+            }else{
+                Table2[i][i]=" ";
+            }
             line+=Q.get(i);
             System.out.println(line);
         }
+        
+        WindowsS table = new WindowsS("tabla de simplificacion", Table2, qs);
+        table.Simulat();
         ArrayList<String> Q2=new ArrayList<>();
         ArrayList<Integer> F2=new ArrayList<>();
         
