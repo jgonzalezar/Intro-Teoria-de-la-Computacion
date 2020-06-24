@@ -475,6 +475,20 @@ public class AFD {
                 }
             }
         }
+        
+        for (int i = 0; i < tam; i++) {
+            String line="";
+            for (int j = 0; j < i; j++) {
+                if(Table[j][i]){
+                    line+="X";
+                }else{
+                    line+="_";
+                }
+                line+="\t";
+            }
+            line+=Q.get(i);
+            System.out.println(line);
+        }
         ArrayList<String> Q2=new ArrayList<>();
         ArrayList<Integer> F2=new ArrayList<>();
         
