@@ -481,22 +481,19 @@ public class AFD {
         String qs[] = new String[tam];
         for (int i = 0; i < tam; i++) {
             String line="";
-            qs[i]=Q.get(i);
+            Table2[i][i]=qs[i]=Q.get(i);
             for (int j = 0; j < i; j++) {
                 if(Table[j][i]){
-                    Table2[i][j]=Table2[j][i]="X";
+                    Table2[i][j]="X";
                     line+="X";
                 }else{
-                    Table2[i][j]=Table2[j][i]=" ";
+                    Table2[i][j]=" ";
                     line+="_";
                 }
                 line+="\t";
             }
-            if(Table[i][i]){
-                Table2[i][i]="X";
-            }else{
-                Table2[i][i]=" ";
-            }
+            
+            
             line+=Q.get(i);
             System.out.println(line);
         }
