@@ -19,41 +19,75 @@ public class ClaseValidacion {
     /**
      * metodo que valida por medio de la comparacion de cadenas aleatorias de un alfabeto sobre el AFNL y su tranformacion
      * @param sigma alfabeto a utilizar
+     * @param listaDeAFDs
      */
     
-    public void validarAFNLambdaToAFN(Alfabeto sigma,AFN listaDeAFDs[]){
-       /* AFN Afn = afnl.AFN_LambdaToAFN();
-        int cantidadrechazados = 0;
-        ArrayList <String> rechazadas = new ArrayList<>();
-        for (int i = 0; i < 5000; i++) {
-            String cadena = sigma.generarCadenaAleatoria((int) (Math.random()*i)%100);
-            if(afnl.procesarCadena(cadena) != Afn.procesarCadena(cadena)){
-                cantidadrechazados++;
-                rechazadas.add(cadena);
+    public static void validarAFNLambdaToAFN(Alfabeto sigma,AFNL listaDeAFDs[]){
+        int a=0;
+        for (AFNL listaDeAFD : listaDeAFDs) {
+            a++;
+             AFN Afn = listaDeAFD.AFN_LambdaToAFN();
+            int cantidadrechazados = 0;
+            ArrayList<String> rechazadas = new ArrayList<>();
+            for (int i = 0; i < 5000; i++) {
+                String cadena = listaDeAFD.getSigma().generarCadenaAleatoria((int) (Math.random() * i) % 100);
+                if (listaDeAFD.procesarCadena(cadena) != Afn.procesarCadena(cadena)) {
+                    cantidadrechazados++;
+                    rechazadas.add(cadena);
+                }
             }
+            System.out.println("automata "+ a);
+            System.out.println("Casos con el mismo resultado: " + (5000 - cantidadrechazados));
+            System.out.println("Casos con diferente resultado: " + cantidadrechazados);
+            System.out.println(rechazadas.toString().substring(1, rechazadas.toString().length() - 1));
         }
-        System.out.println("Casos con el mismo resultado: " + (5000-cantidadrechazados));
-        System.out.println("Casos con diferente resultado: " + cantidadrechazados);
-        System.out.println(rechazadas.toString().substring(1, rechazadas.toString().length()-1));*/
+       
     }
     /**
      * metodo que valida por medio de la comparacion de cadenas aleatorias de un alfabeto sobre el AFN y su tranformacion
      * @param sigma alfabeto a utilizar
      */
-    public void validarAFNtoAFD(Alfabeto sigma,AFN listaDeAFNs[]){
-        /*AFD Afd = afn.AFNtoAFD();
-        int cantidadrechazados = 0;
-        ArrayList <String> rechazadas = new ArrayList<>();
-        for (int i = 0; i < 5000; i++) {
-            String cadena = sigma.generarCadenaAleatoria((int) (Math.random()*i)%100);
-            if(afn.procesarCadena(cadena) != Afd.procesarCadena(cadena)){
-                cantidadrechazados++;
-                rechazadas.add(cadena);
+    public static void validarAFNtoAFD(Alfabeto sigma,AFN listaDeAFNs[]){
+        int a=0;
+        for (AFN listaDeAFN : listaDeAFNs) {
+            a++;
+            AFD Afd = listaDeAFN.AFNtoAFD();
+            int cantidadrechazados = 0;
+            ArrayList <String> rechazadas = new ArrayList<>();
+            for (int i = 0; i < 5000; i++) {
+                String cadena = listaDeAFN.getSigma().generarCadenaAleatoria((int) (Math.random()*i)%100);
+                if(listaDeAFN.procesarCadena(cadena) != Afd.procesarCadena(cadena)){
+                    cantidadrechazados++;
+                    rechazadas.add(cadena);
+                }
             }
+            System.out.println("automata "+ a);
+            System.out.println("Casos con el mismo resultado: " + (5000-cantidadrechazados));
+            System.out.println("Casos con diferente resultado: " + cantidadrechazados);
+            System.out.println(rechazadas.toString().substring(1, rechazadas.toString().length()-1));
         }
-        System.out.println("Casos con el mismo resultado: " + (5000-cantidadrechazados));
-        System.out.println("Casos con diferente resultado: " + cantidadrechazados);
-        System.out.println(rechazadas.toString().substring(1, rechazadas.toString().length()-1));*/
+        
+    }
+    public static void validarAFNLtoAFD(Alfabeto sigma,AFNL listaDeAFNs[]){
+        int a=0;
+        for (AFNL listaDeAFN : listaDeAFNs) {
+            a++;
+            AFD Afd = listaDeAFN.AFN_LambdaToAFD();
+            int cantidadrechazados = 0;
+            ArrayList <String> rechazadas = new ArrayList<>();
+            for (int i = 0; i < 5000; i++) {
+                String cadena = listaDeAFN.getSigma().generarCadenaAleatoria((int) (Math.random()*i)%100);
+                if(listaDeAFN.procesarCadena(cadena) != Afd.procesarCadena(cadena)){
+                    cantidadrechazados++;
+                    rechazadas.add(cadena);
+                }
+            }
+            System.out.println("automata "+ a);
+            System.out.println("Casos con el mismo resultado: " + (5000-cantidadrechazados));
+            System.out.println("Casos con diferente resultado: " + cantidadrechazados);
+            System.out.println(rechazadas.toString().substring(1, rechazadas.toString().length()-1));
+        }
+        
     }
     
 }

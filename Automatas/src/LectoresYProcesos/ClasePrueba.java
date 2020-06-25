@@ -954,9 +954,9 @@ public class ClasePrueba {
                         }
                         break;
                     case 1:
-                        ClaseValidacion validacion = new ClaseValidacion(afn);
                         System.out.println("Validacion de AFN a AFD");
-                        validacion.validarAFNtoAFD(afn.getSigma());
+                        AFN afns[]={afn};
+                        ClaseValidacion.validarAFNtoAFD(afn.getSigma(), afns);
                         break;
                     case 2:
                         System.out.println("Automata AFN: ");
@@ -1232,9 +1232,9 @@ public class ClasePrueba {
                         //return Lectura.CrearAutomata;
                         break;
                     case 1:
-                        ClaseValidacion validacion = new ClaseValidacion(afnl, afn);
                         System.out.println("Validacion de AFNL a AFN");
-                        validacion.validarAFNLambdaToAFN(afnl.getSigma());
+                        AFNL afns[]={afnl};
+                        ClaseValidacion.validarAFNLambdaToAFN(afnl.getSigma(), afns);
                         break;
                     case 2:
                         System.out.println("Automata AFNL: ");
@@ -1431,11 +1431,9 @@ public class ClasePrueba {
                         }
                         break;
                     case 1:
-                        ClaseValidacion validacion = new ClaseValidacion(afnl, afn);
-                        System.out.println("Validacion de AFNL a AFN");
-                        validacion.validarAFNLambdaToAFN(afnl.getSigma());
-                        System.out.println("Validacion de AFN a AFD");
-                        validacion.validarAFNtoAFD(afn.getSigma());
+                        System.out.println("Validacion de AFNL a AFD");
+                        AFNL afns[]={afnl};
+                        ClaseValidacion.validarAFNLtoAFD(afnl.getSigma(), afns);
                         break;
                     case 2:
                         System.out.println("Automata AFNL: ");
