@@ -254,7 +254,7 @@ public class ClasePrueba {
                                                 System.out.println("La cadena: " + cadena + " no es aceptada");
                                             }
                                             if (fss == 2) {
-                                                Windows2 cin = new Windows2(getExpresion(), afd, afd.prosCaden(cadena));
+                                                Windows2 cin = new Windows2(getExpresion(), afd, afd.porsWhitProsCaden(cadena));
                                                 cin.Simulat();
                                             }
                                             tres = false;
@@ -1556,7 +1556,7 @@ public class ClasePrueba {
                                                 System.out.println("La cadena: " + cadena + " no es aceptada");
                                             }
                                             if (fss == 2) {
-                                                Windows2 cin = new Windows2(getExpresion(), afd, afd.prosCaden(cadena));
+                                                Windows2 cin = new Windows2(getExpresion(), afd, afd.porsWhitProsCaden(cadena));
                                                 cin.Simulat();
                                             }
                                             tres = false;
@@ -1784,7 +1784,7 @@ public class ClasePrueba {
                                                 System.out.println("La cadena: " + cadena + " no es aceptada por el AFD original");
                                             }
                                             if (fss == 2) {
-                                                Windows2 cin = new Windows2(getExpresion(), afd, afd.prosCaden(cadena));
+                                                Windows2 cin = new Windows2(getExpresion(), afd, afd.porsWhitProsCaden(cadena));
                                                 cin.Simulat();
                                             }
 
@@ -1972,7 +1972,7 @@ public class ClasePrueba {
                                                     System.out.println("La cadena: " + cadena + " no es aceptada por el AFD original");
                                                 }
                                                 if (fss == 2) {
-                                                    Windows2 cin = new Windows2("Procesamiento del producto (" + operacion + ") : ", afd, afd.prosCaden(cadena));
+                                                    Windows2 cin = new Windows2("Procesamiento del producto (" + operacion + ") : ", afd, afd.porsWhitProsCaden(cadena));
                                                     cin.Simulat();
                                                 }
 

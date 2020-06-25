@@ -251,14 +251,16 @@ public class AFD {
         System.out.println(fin.pasos()+fin.EsAceptada());
         return fin.EsAceptada();
     }
-    
+    public ProcesamientoCadenaAFD porsWhitProsCaden(String word){
+        return prosCaden(word);
+    }
     /**
      * evalua una palabra y retorna su procesamiento en cadena
      * @param word 
      * @return procesamiento dado a la cadena de su camino y su resultado de aceptacion
      * @see ProcesamientoCadenaAFD
      */
-    public ProcesamientoCadenaAFD prosCaden(String word){
+    private ProcesamientoCadenaAFD prosCaden(String word){
         return Finish(Delta(word));
     }
     

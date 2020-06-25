@@ -2,6 +2,7 @@ package AutomatasFinitos;
 
 import LectoresYProcesos.InteraccionesAutomas;
 import Herramientas.Transition;
+import Herramientas.TransitionAFPD;
 import LectoresYProcesos.InteraccionesAutomas.Lecto;
 import ProcesamientoCadenas.ProcesamientoCadenaAFD;
 import java.util.ArrayList;
@@ -41,7 +42,9 @@ public class AFPD extends AFD{
         String W0 = null;
         ArrayList<String> G = null;
         ArrayList<Character> T=null;
-        Transition Deltos = null;
+        
+        TransitionAFPD Deltos = null;
+        
         
         Scanner sca = new Scanner(new File(nombreArchivo));
         while(sca.hasNextLine()){
@@ -68,7 +71,7 @@ public class AFPD extends AFD{
                     lec = Lecto.estadoFin;
                     G = new ArrayList<>();
                     break;
-                case "":    
+                case "alphabetP":    
                     if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
                     if(W==null) throw new Error("primero debe iniciarse los estados");
                     if(W0==null) throw new Error("primero debe dar el estado inicial");
@@ -83,7 +86,7 @@ public class AFPD extends AFD{
                     if(G==null) throw new Error("primero debe dar los estados finales");
                     if(T==null) throw new Error("primero debe dar el alphabeto de la pila");
                     lec = Lecto.transicion;
-                    Deltos = new Transition();
+                    Deltos = new TransitionAFPD();
                     break;
                 default:
                     switch(lec){
@@ -131,16 +134,20 @@ public class AFPD extends AFD{
                             String estado1 = origin[0];
                             if(!W.contains(estado1))throw new Error("el estado del que se parte debe pertenecer a los estados del automata");
                             String[] origin2 = origin[1].split(">");
-                            String alpfa = origin2[0];
+                            String intro = origin2[0];
                             
                             //if(pilaT!='$') if(!T.contains(pilaT))throw new Error("el caracter de Tope de la pila no pertenece al alfabeto de la pila");
-                            String[] partIn = alpfa.split(";");
-                            Character pilaT = partIn[0].charAt(0);
-                            if(pilaT!='$') if(!T.contains(pilaT))throw new Error("el caracter de Tope de la pila no pertenece al alfabeto de la pila");
-                            
-                            String estado2 = origin2[1];
-                            if(!W.contains(estado2))throw new Error("el estado de llegada debe pertenecer a los estados del automata");
-                            Deltos.add(alpfa.charAt(0), estado1, estado2);
+                            String[] partIn = intro.split(",");
+                            Character alph = partIn[0].charAt(0);
+                            if(!alpha.contains(alph))throw new Error("el caracter  no pertenece al alfabeto del automata");
+                            String pila = partIn[1];
+                            Character pilT = pila.charAt(0);
+                            if(!T.contains(pilT)&&pilT!='$')throw new Error("el caracter de tope de pila  no pertenece al alfabeto de la pila");
+                            Character pilN = pila.charAt(2);
+                            if(!T.contains(pilN)&&pilN!='$')throw new Error("el caracter a agregar a la pila no pertenece al alfabeto de la pila");
+                            String go = origin2[1];
+                            if(!W.contains(go))throw new Error("el estado de llegada debe pertenecer a los estados del automata");
+                            Deltos.add(alph, estado1,pilT, go,pilN);
                             break;
                         default:
                             break;
@@ -184,6 +191,7 @@ public class AFPD extends AFD{
      */
     
     
+    @Override
     public boolean procesarCadena(char[] word){
         return procesarCadena(Arrays.toString(word));
     }
@@ -193,6 +201,7 @@ public class AFPD extends AFD{
      * @param word cadena de caracteres a evaluar
      * @return la aceptacion del lenguaje
      */
+    @Override
     public boolean procesarCadenaConDetalles(char[] word){
         return procesarCadenaConDetalles(Arrays.toString(word));
     }
@@ -301,5 +310,9 @@ public class AFPD extends AFD{
     private ProcesamientoCadenaAFD Finish(ProcesamientoCadenaAFD q) {
         q.setEsAceptada(F.contains(q.getlastPaso()));
         return q;
+    }
+
+    private ProcesamientoCadenaAFD prosCaden(String listaCadena) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }
