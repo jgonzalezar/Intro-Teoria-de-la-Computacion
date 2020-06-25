@@ -30,14 +30,14 @@ public class WindowsS extends JFrame{
     public WindowsS(String tittle, String Table[][],String[] Q){
         super("tittle");
         JTable sd  =new JTable(Table, Q);
-        sd.setBounds(10,10,200,200);
+        sd.setBounds(10,10,400,400);
         hey=true;
         initFrame();
         getContentPane().add(sd);
     }
     
     private void initFrame(){
-        setSize(250, 250);
+        setSize(420, 420);
         setVisible(true);
         setResizable(false);
         setLocationRelativeTo(null);
