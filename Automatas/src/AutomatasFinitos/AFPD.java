@@ -1,16 +1,19 @@
 package AutomatasFinitos;
 
+import Herramientas.ParPila;
 import LectoresYProcesos.InteraccionesAutomas;
 import Herramientas.Transition;
 import Herramientas.TransitionAFPD;
 import LectoresYProcesos.InteraccionesAutomas.Lecto;
 import ProcesamientoCadenas.ProcesamientoCadenaAFD;
+import ProcesamientoCadenas.ProcesamientoCadenaAFPD;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.PrintWriter;
+import java.util.EmptyStackException;
 import java.util.Scanner;
 import java.util.HashSet;
 import java.util.Set;
@@ -213,7 +216,7 @@ public class AFPD extends AFD{
      */
     @Override
     public boolean procesarCadenaConDetalles(String word){
-        ProcesamientoCadenaAFD fin =prosCaden(word);
+        ProcesamientoCadenaAFPD fin =prosCaden(word);
         System.out.println(fin.pasos()+fin.EsAceptada());
         return fin.EsAceptada();
     }
@@ -243,7 +246,7 @@ public class AFPD extends AFD{
             fichero1 = new FileWriter(nombre);
             pw1 = new PrintWriter(fichero1);
             for (int i = 0; i < listaCadenas.length; i++){
-                ProcesamientoCadenaAFD res = prosCaden(listaCadenas[i]);
+                ProcesamientoCadenaAFPD res = prosCaden(listaCadenas[i]);
                 String pas =res.pasos();
                 String res2= listaCadenas[i]+"\t"+pas+"\t"+res.EsAceptada();
                 pw1.println(res2);
@@ -270,9 +273,9 @@ public class AFPD extends AFD{
      * @see ProcesamientoCadenaAFD
      */
     
-    private ProcesamientoCadenaAFD Delta(String word) {
-        ProcesamientoCadenaAFD f = new ProcesamientoCadenaAFD(word);
-        f.add(Q.get(q0));
+    private ProcesamientoCadenaAFPD Delta(String word) {
+        ProcesamientoCadenaAFPD f = new ProcesamientoCadenaAFPD(word);
+        f.add(Q.get(q0),'$');
         if(word==null||word.length()==0){   
             f.setEsAceptada(F.contains(q0));
             f.setCadena(word);
@@ -281,7 +284,7 @@ public class AFPD extends AFD{
         if(word.length()==1){
             return Delta(f,word.charAt(0));
         }
-        ProcesamientoCadenaAFD det = Delta(word.substring(0, word.length()-1));
+        ProcesamientoCadenaAFPD det = Delta(word.substring(0, word.length()-1));
         det.setCadena(word);
         return Delta(det,word.charAt(word.length()-1));
     }
@@ -294,9 +297,12 @@ public class AFPD extends AFD{
      * @see ProcesamientoCadenaAFD
      */
     
-    private ProcesamientoCadenaAFD Delta(ProcesamientoCadenaAFD i, char u) {
-        String tas = Delta.cambio(u,i.getlastPaso());
-        i.add(tas);
+    private ProcesamientoCadenaAFPD Delta(ProcesamientoCadenaAFPD i, char u) {
+        ParPila tas = Delta.cambio(u,i.getlastPaso(),i.getTopPila());
+        if(tas==null){
+            return i;
+        }
+        i.add(tas.getEstado(),tas.getPila());
         return i;
     }
     
@@ -307,12 +313,16 @@ public class AFPD extends AFD{
      * @see ProcesamientoCadenaAFD
      */
 
-    private ProcesamientoCadenaAFD Finish(ProcesamientoCadenaAFD q) {
-        q.setEsAceptada(F.contains(q.getlastPaso()));
+    private ProcesamientoCadenaAFPD Finish(ProcesamientoCadenaAFPD q) {
+        try{
+            q.getTopPila();
+        }catch(EmptyStackException e){
+            q.setEsAceptada(F.contains(q.getlastPaso()));
+        }
         return q;
     }
 
-    private ProcesamientoCadenaAFD prosCaden(String listaCadena) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    private ProcesamientoCadenaAFPD prosCaden(String listaCadena) {
+        return Finish(Delta(listaCadena));
     }
 }
