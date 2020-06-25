@@ -8,6 +8,7 @@ package LectoresYProcesos;
 import AutomatasFinitos.AFD;
 import AutomatasFinitos.AFN;
 import AutomatasFinitos.AFNL;
+import AutomatasFinitos.AFPD;
 import static LectoresYProcesos.InteraccionesAutomas.*;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
@@ -50,6 +51,7 @@ public class ClasePrueba {
         return exe;
     }
 
+    
     /**
      * enum lectura del main para saber si esta creando un automata o realizando
      * otras acciones
@@ -84,6 +86,9 @@ public class ClasePrueba {
                         String message = "";
                         boolean fals = false;
                         switch (tp) {
+                            case AFPD:
+                                message = "Ha seleccionado un Automata finito determinista con pila que representa la expresion " + expresion;
+                                break;
                             case AFD:
                                 message = "Ha seleccionado un Automata finito determinista que representa la expresion " + expresion;
                                 String[] options1 = {"Procesar cadenas", "Simplificar el Automata", "Calcular el complemento", "Realizar el Producto Cartesiano\n con otro automata"};
@@ -174,6 +179,9 @@ public class ClasePrueba {
                             break;
                         case AFDproducto:
                             lec = probarProductoCartesiano();
+                            break;
+                        case AFPD:
+                            lec = probarAFPD();
                             break;
                     }
                     break;
@@ -2029,4 +2037,114 @@ public class ClasePrueba {
 
     }
 
+    private static Lectura probarAFPD() {
+        try {
+            AFPD afpd = new AFPD(url);
+            while (true) {
+                /*String[] options1 = {"mostrar visual del automata", "simular cadenas de forma visual", "procesar Cadenas", "Salir"};
+                int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
+                switch (f) {
+                    case 0://tostring
+                        Windows1 visual = new Windows1(getExpresion(), afd);
+                        visual.Simulat();
+                        break;
+                    case 1://visual forzado
+
+                        Windows3 visuals = new Windows3(getExpresion(), afd);
+                        visuals.Simulat();
+                        break;
+                    case 2:*/
+                        int i = JOptionPane.showConfirmDialog(null, "Desea ingresar más de una cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                        switch (i) {
+                            case JOptionPane.YES_OPTION:
+                                System.out.println("yes");
+                                boolean dos = true;
+                                do {
+                                    try {
+                                        procsVariasCadenas(afpd);
+                                        dos = false;
+                                    } catch (NullPointerException e) {
+                                        dos = false;
+                                    }
+
+                                } while (dos);
+                                break;
+
+                            case JOptionPane.NO_OPTION:
+                                System.out.println("no");
+                                boolean tres = true;
+                                do {
+                                    try {
+                                        System.out.println("uno");
+                                        String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
+                                        System.out.println("uno");
+                                        ArrayList<Character> error = afpd.ponerCadena(cadena);
+                                        System.out.println("uno");
+                                        if (error.size() > 0) {
+                                            System.out.println("cadena recibidassss");
+                                            String errors = "";
+                                            errors = error.stream().map((character) -> character + " ").reduce(errors, String::concat);
+                                            JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
+                                        } else {
+                                            boolean set;
+                                            System.out.println("cadena recibida");
+                                            String[] optionss = {"dar resultado solamente", "imprimir en consola el proceso y el resultado", "imprimirn en consola y evaluar en una ventana"};
+                                            int fss = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Seleccione", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionss, "Salir");
+                                            switch (fss) {
+                                                case 0:
+                                                    set = afpd.procesarCadena(cadena);
+                                                    break;
+                                                case 1:
+
+                                                case 2:
+                                                    set = afpd.procesarCadenaConDetalles(cadena);
+                                                    break;
+                                                default:
+                                                    set = afpd.procesarCadena(cadena);
+                                                    break;
+                                            }
+
+                                            if (set) {
+                                                System.out.println("La cadena: " + cadena + " es aceptada");
+                                            } else {
+                                                System.out.println("La cadena: " + cadena + " no es aceptada");
+                                            }
+                                            /*if (fss == 2) {
+                                                Windows2 cin = new Windows2(getExpresion(), afpd, afpd.porsWhitProsCaden(cadena));
+                                                cin.Simulat();
+                                            }*/
+                                            tres = false;
+                                        }
+                                    } catch (NullPointerException e) {
+                                        tres = false;
+                                    }
+
+                                } while (tres);
+
+                                break;
+
+                            default:
+                                System.out.println("ddd");
+                                //una
+                                break;
+                        }
+                       /* break;
+                }*/
+                pause();
+                String[] options = {"Evaluar otra cadena", "Cambiar De Automata", "Salir"};
+                int fs = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Seleccione", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
+                if (fs == 2 || fs == JOptionPane.CLOSED_OPTION) {
+                    return Lectura.salir;
+                } else if (fs == 1) {
+                    return Lectura.CrearAutomata;
+                }
+            }
+        } catch (Error e) {
+            System.err.print(e.getMessage()+"dddddd");
+            return Lectura.CrearAutomata;
+        } catch (FileNotFoundException e) {
+            System.err.print(e.getMessage());
+            return Lectura.CrearAutomata;
+        }
+    }
 }

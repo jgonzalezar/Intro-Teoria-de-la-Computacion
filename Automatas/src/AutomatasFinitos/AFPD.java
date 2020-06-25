@@ -1,11 +1,8 @@
 package AutomatasFinitos;
 
 import Herramientas.ParPila;
-import LectoresYProcesos.InteraccionesAutomas;
-import Herramientas.Transition;
 import Herramientas.TransitionAFPD;
 import LectoresYProcesos.InteraccionesAutomas.Lecto;
-import ProcesamientoCadenas.ProcesamientoCadenaAFD;
 import ProcesamientoCadenas.ProcesamientoCadenaAFPD;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -15,9 +12,6 @@ import java.io.FileWriter;
 import java.io.PrintWriter;
 import java.util.EmptyStackException;
 import java.util.Scanner;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.Stack;
 
 
 /**
@@ -74,7 +68,7 @@ public class AFPD extends AFD{
                     lec = Lecto.estadoFin;
                     G = new ArrayList<>();
                     break;
-                case "alphabetP":    
+                case "#alphabetP":    
                     if(alpha==null) throw new Error("primero debe iniciarse el alfabeto");
                     if(W==null) throw new Error("primero debe iniciarse los estados");
                     if(W0==null) throw new Error("primero debe dar el estado inicial");
@@ -111,11 +105,11 @@ public class AFPD extends AFD{
                             W.add(lin);
                             break;
                         case estadoinicial:
-                            if(!W.contains(lin))throw new Error("el estado debe pertenecer a los estados del automata");
+                            if(!W.contains(lin))throw new Error("el estado inicial debe pertenecer a los estados del automata");
                             W0=lin;
                             break;
                         case estadoFin:
-                            if(!W.contains(lin))throw new Error("el estado debe pertenecer a los estados del automata");
+                            if(!W.contains(lin))throw new Error("el estado de acceptacion debe pertenecer a los estados del automata"+lin);
                             G.add(lin);
                             break;
                         case pilaAlphabeto:

@@ -218,6 +218,8 @@ public class InteraccionesAutomas {
          * hallar el producto del automata con otro automata
          */
         AFDproducto,
+        
+        AFPD,
     }
     
     /**
@@ -228,6 +230,7 @@ public class InteraccionesAutomas {
     public static Type CheckType(String url){
         if(url.endsWith("DFA")||url.endsWith("dfa"))return Type.AFD;
         if(url.endsWith("NFA")||url.endsWith("nfa"))return Type.AFN;
+        if(url.endsWith("AFPD")||url.endsWith("afpd"))return Type.AFPD;
         if(url.endsWith("NFE")||url.endsWith("NFe")||url.endsWith("nfe"))return Type.AFNL;
         return lineCheck(url);
     }
@@ -236,8 +239,10 @@ public class InteraccionesAutomas {
         try {
             Scanner sca = new Scanner(new File(url));
             String s =sca.next();
+            s=s.toLowerCase();
             if(s.equals("#!dfa"))return Type.AFD;
             if(s.equals("#!nfa"))return Type.AFN;
+            if(s.equals("#!fpda"))return Type.AFN;
             if(s.equals("#!nfae"))return Type.AFNL;
         } catch (FileNotFoundException ex) {
             System.err.print("El archivo dado no existe");
