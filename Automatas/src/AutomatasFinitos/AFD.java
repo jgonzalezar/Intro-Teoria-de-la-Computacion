@@ -15,6 +15,7 @@ import java.util.Collections;
 import java.util.Scanner;
 import java.util.HashSet;
 import java.util.Set;
+import javax.swing.JOptionPane;
 import visuall.WindowsS;
 
 
@@ -248,7 +249,9 @@ public class AFD {
      */
     public boolean procesarCadenaConDetalles(String word){
         ProcesamientoCadenaAFD fin =prosCaden(word);
-        System.out.println(fin.pasos()+fin.EsAceptada());
+        String list = fin.pasos()+fin.EsAceptada();
+        System.out.println(list);
+        JOptionPane.showMessageDialog(null, "el camino resultante y la aceptacion de la cadena es\n"+list, "Cadenas Dadas", JOptionPane.INFORMATION_MESSAGE);
         return fin.EsAceptada();
     }
     public ProcesamientoCadenaAFD porsWhitProsCaden(String word){
@@ -275,6 +278,7 @@ public class AFD {
         PrintWriter pw1;
         try
         {
+            String list="";
             File nombre = new File(nombreArchivo);
             if(!nombre.exists())nombre.createNewFile();
             fichero1 = new FileWriter(nombre);
@@ -284,8 +288,13 @@ public class AFD {
                 String pas =res.pasos();
                 String res2 = listaCadena + "\t" + pas + "\t" + res.EsAceptada();
                 pw1.println(res2);
-                if(imprimirPantalla) System.out.println(res2);
+                if(imprimirPantalla){
+                    System.out.println(res2);
+                    list+=res2+"\n";
+                }
             }
+            if(imprimirPantalla)
+                JOptionPane.showMessageDialog(null, "Los caminos realizados son: \n" + list, "Cadenas Dadas", JOptionPane.INFORMATION_MESSAGE);
 
         } catch (IOException e) {
         } finally {          
