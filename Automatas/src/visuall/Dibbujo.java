@@ -8,6 +8,7 @@ package visuall;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
+import javax.swing.JComboBox;
 
 /**
  * la clase Dibbujo extiende de un canvas para representar un dibujo grafico de un automata finito determinista

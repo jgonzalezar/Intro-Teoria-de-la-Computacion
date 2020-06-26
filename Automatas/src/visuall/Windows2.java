@@ -6,13 +6,17 @@
 package visuall;
 
 import AutomatasFinitos.AFD;
+import AutomatasFinitos.AFNL;
+import LectoresYProcesos.ClasePrueba;
 import ProcesamientoCadenas.ProcesamientoCadenaAFD;
 import java.awt.Button;
 import java.awt.Color;
 import java.awt.Label;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.util.ArrayList;
+import javax.swing.JFileChooser;
 
 /**
  * la clase Windows2 genera una ventana del estilo windows con la variacion de que permite visualizar el camino tomado por la cadena procesada
@@ -140,6 +144,5 @@ public class Windows2 extends Windows{
         //label.setFont(new Font("Serif", Font.PLAIN, 12));
 
     }
-    
 }
 
