@@ -134,7 +134,10 @@ public class ProcesamientoCadenaAFPD  {
     }
     
     public Character getTopPila() {
-        return pila.peek();
+        if(!pila.empty()){
+            return pila.peek();
+        }
+        return '$';
     }
     
 }

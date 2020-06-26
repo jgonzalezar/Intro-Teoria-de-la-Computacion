@@ -2071,15 +2071,12 @@ public class ClasePrueba {
                                 break;
 
                             case JOptionPane.NO_OPTION:
-                                System.out.println("no");
                                 boolean tres = true;
                                 do {
                                     try {
-                                        System.out.println("uno");
+                                        
                                         String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
-                                        System.out.println("uno");
                                         ArrayList<Character> error = afpd.ponerCadena(cadena);
-                                        System.out.println("uno");
                                         if (error.size() > 0) {
                                             System.out.println("cadena recibidassss");
                                             String errors = "";

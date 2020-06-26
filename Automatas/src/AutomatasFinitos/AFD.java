@@ -433,20 +433,14 @@ public class AFD {
      */
     public ArrayList<Character> ponerCadena(String cadena){
         ArrayList<Character> asd = new ArrayList<>();
-        System.out.println("int");
-        try{
-            for (int i = 0; i < cadena.length(); i++) {
-                boolean d = false;
-                for(int j=0;j<Sigma.length();j++) {
-                    if(Sigma.get(j)==cadena.charAt(i)) d=true;
-                }
-                System.out.println("ints");
-                if(!d) asd.add(cadena.charAt(i));
+        for (int i = 0; i < cadena.length(); i++) {
+            boolean d = false;
+            for(int j=0;j<Sigma.length();j++) {
+                if(Sigma.get(j)==cadena.charAt(i)) d=true;
             }
-        }catch(Exception e){
-            System.out.println(e.getCause());
+            if(!d) asd.add(cadena.charAt(i));
         }
-        System.out.println("hey");
+       
         Set<Character> hashSet = new HashSet<>(asd);
         asd.clear();
         asd.addAll(hashSet);

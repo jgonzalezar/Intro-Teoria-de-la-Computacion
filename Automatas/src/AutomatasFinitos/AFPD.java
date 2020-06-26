@@ -157,7 +157,7 @@ public class AFPD extends AFD{
         for (int i = 0; i < alpha.size(); i++) {
             ad[i]=alpha.get(i);
         }
-       // this.Sigma = ad;
+        this.Sigma = new Alfabeto(ad);
         this.Q = W;
         this.q0 = Q.indexOf(W0);
         this.F = new ArrayList<>();
@@ -292,11 +292,14 @@ public class AFPD extends AFD{
      */
     
     private ProcesamientoCadenaAFPD Delta(ProcesamientoCadenaAFPD i, char u) {
+        System.out.println("   "+ u+ " "+i.getlastPaso()+" "+i.getTopPila());
         ParPila tas = Delta.cambio(u,i.getlastPaso(),i.getTopPila());
         if(tas==null){
+            System.out.println("null");
             return i;
         }
         i.add(tas.getEstado(),tas.getPila());
+        System.out.println("add");
         return i;
     }
     
@@ -308,11 +311,8 @@ public class AFPD extends AFD{
      */
 
     private ProcesamientoCadenaAFPD Finish(ProcesamientoCadenaAFPD q) {
-        try{
-            q.getTopPila();
-        }catch(EmptyStackException e){
-            q.setEsAceptada(F.contains(q.getlastPaso()));
-        }
+        q.setEsAceptada(F.contains(Q.indexOf(q.getlastPaso()))&&q.getTopPila()=='$');
+        
         return q;
     }
 

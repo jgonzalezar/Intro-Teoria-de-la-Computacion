@@ -88,7 +88,11 @@ public class TransitionAFPD implements Transitions{
 
     @Override
     public ParPila cambio(Character Alphabeto, String Inest, Character InPila) {
-        return  transicion.get(Inest).get(Alphabeto).equals(InPila);
+        ParPila uno = transicion.get(Inest).get(Alphabeto).equals(InPila);
+        if(uno!=null){
+            return uno;
+        }
+        return  transicion.get(Inest).get(Alphabeto).equals('$');
     }
 
     @Override
