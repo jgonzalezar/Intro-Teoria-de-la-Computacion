@@ -24,6 +24,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import static java.lang.Integer.parseInt;
+import javax.swing.JOptionPane;
 
 /**
  * Esta clase es el automata finito no determinista con transiciones lambda en
@@ -258,6 +259,7 @@ public class AFNL extends AFN {
         lambdaC = Clausura.stream().map((integer) -> Q.get(integer) + ",").map((cadena) -> cadena).reduce(lambdaC, String::concat);
 
         lambdaC = lambdaC.substring(0, lambdaC.length() - 1) + "}.";
+        JOptionPane.showMessageDialog(null, "La lambda clausura del estado: \n" + Q.get(estado) + " es: "+ lambdaC, "Lambda clausura 1 estado", JOptionPane.INFORMATION_MESSAGE);
         System.out.println(lambdaC);
 
         return Clausura;
@@ -296,20 +298,27 @@ public class AFNL extends AFN {
      * clausura.
      */
     public void ImprimirlambdaClausura_variosEstado(ArrayList<Integer> estados) {
-
+        String lclausura = "";
         ArrayList<Integer> Clausura = lambdaClausura_variosEstado(estados);
-        System.out.print("lambda clausura de los estados {");
+        lclausura = "Lambda clausura de los estados {";
+        //System.out.print("lambda clausura de los estados {");
 
-        estados.forEach((s) -> {
-            System.out.print(" " + Q.get(s) + " ");
-        });
-        System.out.print("} es : ");
+        for (int i = 0; i < estados.size(); i++) {
+            lclausura += " " + Q.get(i) + " ";
+            //System.out.print(" " + Q.get(i) + " ");
+        }
+        
+        lclausura += "} es : {";
+        //System.out.print("} es : ");
 
-        System.out.print(" {");
-        Clausura.forEach((s) -> {
-            System.out.print(" " + Q.get(s) + " ");
-        });
-        System.out.println("}");
+        //System.out.print(" {");
+        for (int i = 0; i < Clausura.size(); i++) {
+            lclausura += " " + Q.get(i) + " ";
+            //System.out.print(" " + Q.get(i) + " ");
+        }
+        lclausura += "} \n";
+        JOptionPane.showMessageDialog(null, lclausura, "Lambda clausura varios estados", JOptionPane.INFORMATION_MESSAGE);
+        System.out.println(lclausura);
 
     }
 
@@ -328,7 +337,6 @@ public class AFNL extends AFN {
         switch (computacion) {
             case 0:
                 lista = procesada.getListaProcesamientosAceptacion();
-
                 break;
             case 1:
                 lista = procesada.getListaProcesamientosRechazados();
@@ -397,6 +405,7 @@ public class AFNL extends AFN {
     @Override
     public boolean procesarCadenaConDetalles(String word) {
         ProcesamientoCadenaAFNLambda fin = procesarCadenad(word);
+        JOptionPane.showMessageDialog(null, "El camino recorrido por la cadena es: \n" + fin.imprimirCamino(), "Procesamiento de la cadena con detalles", JOptionPane.INFORMATION_MESSAGE);
         System.out.println(fin.imprimirCamino());
         return fin.isEsAceptada();
     }
@@ -794,6 +803,7 @@ public class AFNL extends AFN {
         }
 
         output = output.substring(0, output.length() - 1) + "}.";
+        JOptionPane.showMessageDialog(null, "Las transiciones para pasar de AFNL a AFN son: \n" + output, "Transformación de AFNL a AFN", JOptionPane.INFORMATION_MESSAGE);
         System.out.println(output);
         int[] rta = new int[lclauMul.size()];
         for (int i = 0; i < lclauMul.size(); i++) {
