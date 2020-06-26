@@ -176,7 +176,9 @@ public class Dibbujo extends Canvas {
      * @param used caracter por el cual se realiza el movimiento
      */
     public void setData(String nextState,boolean Fin,int tp, char used){
-        if(nextState.equals(actP))return;
+        if(nextState == null)nextState = "∅";
+        if(nextState.equals(actP) && tp == 0)return;
+        
         switch (tp) {
             case 0:
                 ani=anim.white;

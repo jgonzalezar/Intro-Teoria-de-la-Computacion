@@ -377,7 +377,7 @@ public class AFNL extends AFN {
      *
      * @param cadena cadena a evaluar.
      */
-    private ProcesamientoCadenaAFNLambda procesarCadenad(String cadena) {
+    public ProcesamientoCadenaAFNLambda procesarCadenad(String cadena) {
         RespuestaMult rta = caminosPosibles(cadena);
         return procesamiento(cadena, rta);
     }
