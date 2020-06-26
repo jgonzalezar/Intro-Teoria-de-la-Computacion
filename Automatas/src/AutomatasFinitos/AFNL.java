@@ -464,18 +464,36 @@ public class AFNL extends AFN {
     public String saltoDeEstados(String cadena, char caracter, int estadoActual, Integer estadoSiguiente) {
         ArrayList<Integer> alQueVa = this.Delta.getMove(estadoActual, caracter);
         String camino = "[" + Q.get(estadoActual) + ", " + cadena + "] -> ";
-
+        ArrayList<Integer> conLambda = this.Delta.getMove(estadoActual, '$');
         if (alQueVa == null) {
             if (estadoSiguiente == null) {
                 return camino;
             } else {
-                return "";
+                if(conLambda==null){
+                    return "";
+                }else{
+                    try {
+
+                        for (int i = 0; i < conLambda.size(); i++) {
+                            if (conLambda.get(i) == estadoActual) {
+
+                            } else {
+                                String estadosLambda = saltoDeEstados(cadena, caracter, conLambda.get(i), estadoSiguiente);
+                                if (!estadosLambda.isEmpty()) {
+                                    return camino + estadosLambda;
+                                }
+                            }
+                        }
+                    } catch (Exception e) {
+
+                    }
+                }
             }
         }
 
-        if (!alQueVa.contains(estadoSiguiente)) {
+        if(!alQueVa.contains(estadoSiguiente)) {
             try {
-                ArrayList<Integer> conLambda = this.Delta.getMove(estadoActual, '$');
+                
                 for (int i = 0; i < conLambda.size(); i++) {
                     if (conLambda.get(i) == estadoActual) {
 
@@ -516,7 +534,6 @@ public class AFNL extends AFN {
                     Integer estadoActual = caminoespecifico.get(j);
                     char charActual = cadena.charAt(j);
                     Integer siguiente = caminoespecifico.get(j + 1);
-
                     if (estadoActual == null) {
                         throw new NullPointerException();
                     }
