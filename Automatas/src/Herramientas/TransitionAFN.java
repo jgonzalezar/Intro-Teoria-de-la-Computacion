@@ -28,7 +28,7 @@ public class TransitionAFN implements Transitions {
     public TransitionAFN(int Q) {
         this.transicion = new ArrayList<>();
         this.transformacion = new ArrayList<>();
-        while (this.transicion.size() < Q) {
+        while (this.transicion.size() <= Q) {
             this.transicion.add(new ArrayList<>());
         }
     }
