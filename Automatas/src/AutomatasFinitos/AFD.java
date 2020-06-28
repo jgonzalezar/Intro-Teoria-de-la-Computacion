@@ -565,7 +565,7 @@ public class AFD {
      */
     @Override
     public String toString() {
-        String automat="!dfa\n";
+        String automat="#!dfa\n";
         automat+=Sigma.toString();
         automat+="#states\n";
         automat = Q.stream().map((string) -> string+"\n").reduce(automat, String::concat);

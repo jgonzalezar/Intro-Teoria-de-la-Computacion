@@ -873,7 +873,7 @@ public class AFNL extends AFN {
     
     @Override
     public String toString(){
-        String cadena="!nfe\n";
+        String cadena="#!nfe\n";
         cadena+=Sigma.toString();
                 
         cadena+="#states\n";

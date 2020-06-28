@@ -371,4 +371,12 @@ public class MT extends AFD {
     private ProcesamientoCadenaTM prosCaden(String listaCadena) {
         return Finish(Delta(listaCadena));
     }
+
+    @Override
+    public String toString() {
+        String cadena = "#!"
+        return super.toString(); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
 }

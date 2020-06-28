@@ -791,7 +791,7 @@ public class AFN extends AFD{
      */
     @Override
     public String toString(){
-        String cadenas="!nfa\n";
+        String cadenas="#!nfa\n";
         cadenas+=Sigma.toString();
         cadenas+="#states\n";
         for (int i=0;i<Q.size();i++) {
