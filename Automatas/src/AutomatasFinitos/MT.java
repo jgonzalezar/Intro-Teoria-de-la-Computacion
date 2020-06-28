@@ -374,8 +374,46 @@ public class MT extends AFD {
 
     @Override
     public String toString() {
-        String cadena = "#!"
-        return super.toString(); //To change body of generated methods, choose Tools | Templates.
+        String cadena = "#!mt";
+        cadena +=super.toString(); //To change body of generated methods, choose Tools | Templates.
+        cadena+="#alphabetC\n";
+        char ini= Gamma[0];
+        char fin= Gamma[0];
+        int ac = 1;
+        while(ac<Gamma.length){
+            if(fin+1==Gamma[ac]){
+                fin =Gamma[ac];
+            }else{
+                if(fin!=ini){
+                    cadena+=ini+"-"+fin+"\n";
+                }else{
+                    cadena+=fin+"\n";
+                    fin=ini=Gamma[ac];
+                }
+            }
+            ac++;
+        }
+        if(fin!=ini){
+            cadena+=ini+"-"+fin+"\n";
+        }else{
+            cadena+=fin+"\n";   
+        }
+        cadena+="#blancS\n";
+        cadena+=Blanc+"\n";
+        
+        cadena+="#transitions\n";
+        for (int i = 0; i < Q.size(); i++) {
+            for (int j = 0; j < Gamma.length; j++) {
+                String line = Q.get(i)+":"+Gamma[j]+"|";
+                ParPila e = Delta.cambio(Gamma[j], Q.get(i),' ');
+                if(e!=null){
+                    line+=e.getPila()+e.getEstado();
+                    cadena+=line;
+                }
+            }
+        }
+        
+        return cadena;
     }
     
     

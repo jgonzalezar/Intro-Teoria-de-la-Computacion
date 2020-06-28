@@ -319,4 +319,50 @@ public class AFPD extends AFD{
     private ProcesamientoCadenaAFPD prosCaden(String listaCadena) {
         return Finish(Delta(listaCadena));
     }
+
+    @Override
+    public String toString() {
+        String cadena = "#!fpda";
+        cadena += super.toString();
+        cadena += "#alphabetP\n";
+        char ini= Gamma[0];
+        char fin= Gamma[0];
+        int ac = 1;
+        while(ac<Gamma.length){
+            if(fin+1==Gamma[ac]){
+                fin =Gamma[ac];
+            }else{
+                if(fin!=ini){
+                    cadena+=ini+"-"+fin+"\n";
+                }else{
+                    cadena+=fin+"\n";
+                    fin=ini=Gamma[ac];
+                }
+            }
+            ac++;
+        }
+        if(fin!=ini){
+            cadena+=ini+"-"+fin+"\n";
+        }else{
+            cadena+=fin+"\n";   
+        }
+        
+        cadena+="#transitions\n";
+        for (int i = 0; i < Q.size(); i++) {
+            for (int k = 0; k < Sigma.length(); k++) {
+                for (int j = 0; j < Gamma.length; j++) {
+                    String line = Q.get(i)+":"+Sigma.get(k)+","+Gamma[j]+"|";
+                    ParPila e = Delta.cambio(Sigma.get(k), Q.get(i),Gamma[j]);
+                    if(e!=null){
+                        line+=e.getPila()+">"+e.getEstado();
+                        cadena+=line;
+                    }
+                }
+            }
+        }
+        
+        return cadena;
+    }
+    
+    
 }
