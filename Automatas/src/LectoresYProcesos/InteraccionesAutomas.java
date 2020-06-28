@@ -172,6 +172,8 @@ public class InteraccionesAutomas {
          */
         pilaAlphabeto,
         
+        blanc,
+        
         /**
          * se esta leyendo la trancision del automata
          */
@@ -220,6 +222,7 @@ public class InteraccionesAutomas {
         AFDproducto,
         
         AFPD,
+        MT,
     }
     
     /**
@@ -231,6 +234,7 @@ public class InteraccionesAutomas {
         if(url.endsWith("DFA")||url.endsWith("dfa"))return Type.AFD;
         if(url.endsWith("NFA")||url.endsWith("nfa"))return Type.AFN;
         if(url.endsWith("AFPD")||url.endsWith("afpd"))return Type.AFPD;
+        if(url.endsWith("MT")||url.endsWith("mt"))return Type.MT;
         if(url.endsWith("NFE")||url.endsWith("NFe")||url.endsWith("nfe"))return Type.AFNL;
         return lineCheck(url);
     }
@@ -242,7 +246,9 @@ public class InteraccionesAutomas {
             s=s.toLowerCase();
             if(s.equals("#!dfa"))return Type.AFD;
             if(s.equals("#!nfa"))return Type.AFN;
+            if(s.equals("#!mt"))return Type.MT;
             if(s.equals("#!fpda"))return Type.AFN;
+            if(s.equals("#!nfae"))return Type.AFNL;
             if(s.equals("#!nfae"))return Type.AFNL;
         } catch (FileNotFoundException ex) {
             System.err.print("El archivo dado no existe");
