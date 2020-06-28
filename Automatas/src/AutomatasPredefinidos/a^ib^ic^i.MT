@@ -33,3 +33,6 @@ q3:b|b->q3
 q3:Y|Y->q3
 q3:Z|Z->q3
 q3:X|X+>q0
+q4:Y|Y+>q4
+q4:Z|Z+>q4
+q4:B|B+>q5

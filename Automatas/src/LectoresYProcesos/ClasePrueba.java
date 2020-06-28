@@ -2247,7 +2247,7 @@ public class ClasePrueba {
                 }
             }
         } catch (Error e) {
-            System.err.print(e.getMessage()+"dddddd");
+            System.err.print(e.getMessage());
             return Lectura.CrearAutomata;
         } catch (FileNotFoundException e) {
             System.err.print(e.getMessage());

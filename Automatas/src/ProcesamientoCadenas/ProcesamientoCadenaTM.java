@@ -15,6 +15,7 @@ public class ProcesamientoCadenaTM  {
     private boolean esAceptada;
     private final ArrayList<String> listaEstadoSimboloDeProcesamiento;
     private ArrayList<String> lista;
+    private ArrayList<Integer> listas;
     private int ind;
 
     /**
@@ -26,7 +27,9 @@ public class ProcesamientoCadenaTM  {
     
     public ProcesamientoCadenaTM(String cadena,String paso1,Character blnc) {
         esAceptada = false;
+        int d = 0;
         if(cadena.charAt(0)!= blnc){
+            d++;
             cadena = blnc+cadena;
         }
         if(cadena.charAt(cadena.length()-1)!=blnc){
@@ -36,7 +39,10 @@ public class ProcesamientoCadenaTM  {
         listaEstadoSimboloDeProcesamiento = new ArrayList<>();
         listaEstadoSimboloDeProcesamiento.add(paso1);
         lista= new ArrayList<>();
-        ind=0;
+        lista.add(cadena);
+        listas= new ArrayList<>();
+        listas.add(d);
+        ind=d;
     }
     
     /**
@@ -112,6 +118,7 @@ public class ProcesamientoCadenaTM  {
                 ind--;
                 break;                
         }
+        listas.add(ind);
     }
     
     /**
@@ -120,13 +127,13 @@ public class ProcesamientoCadenaTM  {
      */
     
     public String pasos(){
-        return pasos(cadena,listaEstadoSimboloDeProcesamiento,lista,0);
+        return pasos(cadena,listaEstadoSimboloDeProcesamiento,lista,listas,0);
     }
     
-    public static String pasos(String Cadena, ArrayList<String> estados,ArrayList<String> pila,int i){
+    public static String pasos(String Cadena, ArrayList<String> estados,ArrayList<String> pila,ArrayList<Integer> pilas,int i){
         String s ="";
         try{
-            s += "["+estados.get(i)+", "+pila.get(i)+"]-> "+ pasos(Cadena, estados,pila,i+1);
+            s += "["+estados.get(i)+", "+pila.get(i)+"]-> "+ pilas.get(i)+"]-> "+pasos(Cadena, estados,pila,pilas,i+1);
         }catch(NullPointerException | IndexOutOfBoundsException e){
             return s;
         }
@@ -137,5 +144,7 @@ public class ProcesamientoCadenaTM  {
     public ParPila getlastPaso() {
         return new ParPila(cadena.charAt(ind),listaEstadoSimboloDeProcesamiento.get(listaEstadoSimboloDeProcesamiento.size()-1));
     }
-    
+    public String gatLastSta(){
+        return listaEstadoSimboloDeProcesamiento.get(listaEstadoSimboloDeProcesamiento.size()-1);
+    }
 }

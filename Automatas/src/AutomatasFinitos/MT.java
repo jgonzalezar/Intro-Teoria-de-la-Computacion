@@ -16,6 +16,7 @@ import java.util.EmptyStackException;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
+import java.util.regex.Pattern;
 
 /**
  * Esta clase es el automata finito determinista en este automata se pueden
@@ -102,7 +103,7 @@ public class MT extends AFD {
                         throw new Error("primero debe dar los estados finales");
                     }
                     if (T == null) {
-                        throw new Error("primero debe dar el alphabeto de la pila");
+                        throw new Error("primero debe dar el alphabeto de la cinta");
                     }
                     if (bl == null) {
                         throw new Error("primero debe dar el simbolo \"blanco\"");
@@ -160,17 +161,17 @@ public class MT extends AFD {
                             if (!W.contains(estado1)) {
                                 throw new Error("el estado del que se parte debe pertenecer a la lista de estados");
                             }
-                            String[] origin2 = origin[1].split("|");
+                            String[] origin2 = origin[1].split(Pattern.quote("|"));
                             String intro = origin2[0];
-
                             //if(pilaT!='$') if(!T.contains(pilaT))throw new Error("el caracter de Tope de la pila no pertenece al alfabeto de la pila");
                             Character alph = intro.charAt(0);
                             if (!T.contains(alph)) {
                                 throw new Error("el caracter  no pertenece al alfabeto de cinta");
                             }
+                            
                             Character pilN = origin2[1].charAt(0);
                             if (!T.contains(pilN)) {
-                                throw new Error("el caracter a agregar a la pila no pertenece al alfabeto de la pila");
+                                throw new Error("el caracter a leer no pertenece al alfabeto de la cinta "+pilN);
                             }
                             String go = origin2[1].substring(1);
                             if (!W.contains(go.substring(2))) {
@@ -362,7 +363,7 @@ public class MT extends AFD {
      * @see ProcesamientoCadenaAFD
      */
     private ProcesamientoCadenaTM Finish(ProcesamientoCadenaTM q) {
-        q.setEsAceptada(F.contains(Q.indexOf(q.getlastPaso().getEstado())));
+        q.setEsAceptada(F.contains(Q.indexOf(q.gatLastSta())));
 
         return q;
     }
