@@ -3,13 +3,12 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/visuall/Windows2AFNL.java</file>
             <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/MT.java</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/LectoresYProcesos/ClasePrueba.java</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/trioPila.java</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/ProcesamientoCadenas/ProcesamientoCadenaTM.java</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/LectoresYProcesos/InteraccionesAutomas.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFD.java</file>
             <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasPredefinidos/a%5Enb%5En.AFPD</file>
-            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasPredefinidos/a%5Eib%5Eic%5Ei.MT</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasFinitos/AFPD.java</file>
+            <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/Herramientas/TransitionAFPD.java</file>
         </group>
     </open-files>
 </project-private>
