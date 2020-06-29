@@ -16,6 +16,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
 import javax.swing.ComboBoxEditor;
 import javax.swing.JComboBox;
 import javax.swing.JFileChooser;
@@ -222,17 +223,20 @@ public class Windows2AFNL extends WindowsAFNL{
                     String camino = move.getListaProcesamientosAceptacion().get(combo.getSelectedIndex());
                     int l = camino.lastIndexOf("->");
                     caminos = camino.substring(0,l-1).split("->");
-                    
+                    next.setEnabled(false);
                     blueLabel.get(0).setText(caminos[0]);
                     blueLabel.get(0).setForeground(Color.red);
                     blueLabel.get(0).setBounds(230, 150, 100, 30);
                     getContentPane().add(blueLabel.get(0));
-                    if(move.getCadena().length()>0){
+                    if(move.getCadena().length()>1){
                         blueLabel.get(1).setText(caminos[1]);
                         blueLabel.get(1).setForeground(Color.black);
                         getContentPane().add(blueLabel.get(1));
+                        trans.setEnabled(true);
+                    }else{
+                        trans.setEnabled(false);
                     }
-                    if(move.getCadena().length()>0){
+                    if(move.getCadena().length()>2){
                         blueLabel.get(2).setText(caminos[2]);
                         blueLabel.get(2).setForeground(Color.black);
                         getContentPane().add(blueLabel.get(2));
@@ -294,23 +298,34 @@ public class Windows2AFNL extends WindowsAFNL{
         cadds.setForeground(Color.BLACK);
         cadds.setBounds(330,100,100,30);
         cadds.setEnabled(true);
+        System.out.println(Arrays.toString(caminos));
         getContentPane().add(cadds);
         blueLabel = new ArrayList<>();
         blueLabel.add(new Label(caminos[0]));
         blueLabel.get(0).setForeground(Color.red);
         blueLabel.get(0).setBounds(230, 150, 100, 30);
         getContentPane().add(blueLabel.get(0));
-        if(cad.length()>0){
+        if(cad.length()>1){
             blueLabel.add(new Label(caminos[1]));
+            blueLabel.get(1).setForeground(Color.BLACK);
+            blueLabel.get(1).setBounds(330, 150, 100, 30);
+            getContentPane().add(blueLabel.get(1));
+        }else{
+            blueLabel.add(new Label(" "));
             blueLabel.get(1).setForeground(Color.BLACK);
             blueLabel.get(1).setBounds(330, 150, 100, 30);
             getContentPane().add(blueLabel.get(1));
         }
         
-        if(cad.length()>1){
+        if(cad.length()>2){
             blueLabel.add(new Label(caminos[2]));
             blueLabel.get(2).setForeground(Color.BLACK);
             blueLabel.get(2).setBounds(430, 150, 100, 30);
+            getContentPane().add(blueLabel.get(2));
+        }else{
+            blueLabel.add(new Label(" "));
+            blueLabel.get(2).setForeground(Color.BLACK);
+            blueLabel.get(2).setBounds(330, 150, 100, 30);
             getContentPane().add(blueLabel.get(2));
         }
         //label = new JLabel("Aguirre, der Zorn Gottes");
