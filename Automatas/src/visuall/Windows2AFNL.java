@@ -133,7 +133,7 @@ public class Windows2AFNL extends WindowsAFNL{
         aceptados.setBounds(480, 10, 100, 30);
         getContentPane().add(aceptados);
         ac=move.getListaProcesamientosAceptacion().isEmpty();
-        aceptados.setEnabled(false);
+        
         
         Button rechazados = new Button("Rechazados");
         rechazados.setBounds(480, 40, 100, 30);
@@ -150,6 +150,7 @@ public class Windows2AFNL extends WindowsAFNL{
         JComboBox combo = new JComboBox<>();
         //JComboBox combo;
         combo.setBounds(480, 100, 100, 30);
+        
         getContentPane().add(combo);
         lec = false;
         aceptados.addActionListener(new ActionListener() {
@@ -167,6 +168,20 @@ public class Windows2AFNL extends WindowsAFNL{
                 combo.setSelectedIndex(0);
             }
         });
+        if(!ac){
+            for (int i = 0; i < move.getListaProcesamientosAceptacion().size(); i++) {
+                combo.addItem(i+1);
+            }
+        }else if(!re){
+            for (int i = 0; i < move.getListaProcesamientosRechazados().size(); i++) {
+                combo.addItem(i+1);
+            }
+        }else if(!ab){
+            for (int i = 0; i < move.getListaProcesamientosAbortados().size(); i++) {
+                combo.addItem(i+1);
+            }
+        }
+        aceptados.setEnabled(false);
         rechazados.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
