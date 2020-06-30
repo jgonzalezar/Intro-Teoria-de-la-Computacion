@@ -45,9 +45,9 @@ public class ClaseValidacion {
     }
     /**
      * metodo que valida por medio de la comparacion de cadenas aleatorias de un alfabeto sobre el AFN y su tranformacion
-     * @param sigma alfabeto a utilizar
+     * @param listaDeAFNs
      */
-    public static void validarAFNtoAFD(Alfabeto sigma,AFN listaDeAFNs[]){
+    public static void validarAFNtoAFD(AFN listaDeAFNs[]){
         int a=0;
         for (AFN listaDeAFN : listaDeAFNs) {
             a++;
@@ -68,7 +68,7 @@ public class ClaseValidacion {
         }
         
     }
-    public static void validarAFNLtoAFD(Alfabeto sigma,AFNL listaDeAFNs[]){
+    public static void validarAFNLtoAFD(AFNL listaDeAFNs[]){
         int a=0;
         for (AFNL listaDeAFN : listaDeAFNs) {
             a++;

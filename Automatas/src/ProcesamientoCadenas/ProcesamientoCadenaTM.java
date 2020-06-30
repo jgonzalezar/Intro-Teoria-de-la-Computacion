@@ -147,4 +147,7 @@ public class ProcesamientoCadenaTM  {
     public String gatLastSta(){
         return listaEstadoSimboloDeProcesamiento.get(listaEstadoSimboloDeProcesamiento.size()-1);
     }
+    public String getLastCadena(){
+        return cadena.substring(ind);
+    }
 }
