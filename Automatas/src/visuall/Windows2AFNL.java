@@ -44,7 +44,6 @@ public class Windows2AFNL extends WindowsAFNL{
         Camino=0;
         initScrool();
         initButtons();
-     
     }
 
     private void initButtons() {
@@ -65,10 +64,10 @@ public class Windows2AFNL extends WindowsAFNL{
                     if(Camino==0){
                         blueLabel.get(Camino).setForeground(Color.BLACK);
                         blueLabel.get(1).setForeground(Color.RED);
-                    }else if(Camino==caminos.length-1){
+                    }else if(Camino==caminos.length-2){
                         blueLabel.get(1).setForeground(Color.BLACK);
                         blueLabel.get(2).setForeground(Color.RED);
-                       // trans.setEnabled(false);
+                        trans.setEnabled(false);
                     }else{
                         blueLabel.get(0).setText(caminos[Camino]);
                         blueLabel.get(1).setText(caminos[Camino+1]);
@@ -84,8 +83,10 @@ public class Windows2AFNL extends WindowsAFNL{
                         camb = nameAnt.split(",")[1].charAt(1);
                     }    
                     name = name.split(",")[0].substring(1);
+                    if(name.equals("null")){
+                        ChangeEstado(name,camb,false,1);
+                    }
                     ChangeEstado(name,camb,aff.getF().contains(aff.getQ().indexOf(name)),1);
-                    if(Camino==move.getCadena().length())trans.setEnabled(false);
                 }
                 
                 
@@ -216,73 +217,43 @@ public class Windows2AFNL extends WindowsAFNL{
         combo.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                Camino=0;
                 if(!lec)return;
+                String camino;
+                ChangeEstado(aff.GetQ()[aff.getQ0()], '0', aff.getF().contains(aff.getQ0()), 0);
                 if(!aceptados.isEnabled()){
-                    int num = combo.getSelectedIndex();
-                    System.out.println(num);
-                    String camino = move.getListaProcesamientosAceptacion().get(combo.getSelectedIndex());
-                    int l = camino.lastIndexOf("->");
-                    caminos = camino.substring(0,l-1).split("->");
-                    next.setEnabled(false);
-                    blueLabel.get(0).setText(caminos[0]);
-                    blueLabel.get(0).setForeground(Color.red);
-                    blueLabel.get(0).setBounds(230, 150, 100, 30);
-                    getContentPane().add(blueLabel.get(0));
-                    if(move.getCadena().length()>1){
-                        blueLabel.get(1).setText(caminos[1]);
-                        blueLabel.get(1).setForeground(Color.black);
-                        getContentPane().add(blueLabel.get(1));
-                        trans.setEnabled(true);
-                    }else{
-                        trans.setEnabled(false);
-                    }
-                    if(move.getCadena().length()>2){
-                        blueLabel.get(2).setText(caminos[2]);
-                        blueLabel.get(2).setForeground(Color.black);
-                        getContentPane().add(blueLabel.get(2));
-                    }
+                    camino = move.getListaProcesamientosAceptacion().get(combo.getSelectedIndex());
                 }else if(!rechazados.isEnabled()){
-                    int num = combo.getSelectedIndex();
-                    System.out.println(num);
-                    String camino = move.getListaProcesamientosRechazados().get(combo.getSelectedIndex());
-                    int l = camino.lastIndexOf("->");
-                    caminos = camino.substring(0,l-1).split("->");
-                    
-                    blueLabel.get(0).setText(caminos[0]);
-                    blueLabel.get(0).setForeground(Color.red);
-                    blueLabel.get(0).setBounds(230, 150, 100, 30);
-                    getContentPane().add(blueLabel.get(0));
-                    if(move.getCadena().length()>0){
-                        blueLabel.get(1).setText(caminos[1]);
-                        blueLabel.get(1).setForeground(Color.black);
-                        getContentPane().add(blueLabel.get(1));
-                    }
-                    if(move.getCadena().length()>0){
-                        blueLabel.get(2).setText(caminos[2]);
-                        blueLabel.get(2).setForeground(Color.black);
-                        getContentPane().add(blueLabel.get(2));
-                    }
+                    camino = move.getListaProcesamientosRechazados().get(combo.getSelectedIndex());
                 }else{
-                    int num = combo.getSelectedIndex();
-                    System.out.println(num);
-                    String camino = move.getListaProcesamientosAbortados().get(combo.getSelectedIndex());
-                    int l = camino.lastIndexOf("->");
-                    caminos = camino.substring(0,l-1).split("->");
-                    
-                    blueLabel.get(0).setText(caminos[0]);
-                    blueLabel.get(0).setForeground(Color.red);
-                    blueLabel.get(0).setBounds(230, 150, 100, 30);
-                    getContentPane().add(blueLabel.get(0));
-                    if(move.getCadena().length()>0){
-                        blueLabel.get(1).setText(caminos[1]);
-                        blueLabel.get(1).setForeground(Color.black);
-                        getContentPane().add(blueLabel.get(1));
-                    }
-                    if(move.getCadena().length()>0){
-                        blueLabel.get(2).setText(caminos[2]);
-                        blueLabel.get(2).setForeground(Color.black);
-                        getContentPane().add(blueLabel.get(2));
-                    }
+                    camino = move.getListaProcesamientosAbortados().get(combo.getSelectedIndex());
+                    int ab = camino.lastIndexOf("]");
+                    camino = camino.substring(0, ab+1) + " -> [null, ]";
+                }
+                int len = camino.lastIndexOf("]");
+                caminos = camino.trim().substring(0,len+1).split(" -> ");
+                next.setEnabled(false);
+                blueLabel.get(0).setText(caminos[0]);
+                blueLabel.get(0).setForeground(Color.red);
+                blueLabel.get(0).setBounds(230, 150, 100, 30);
+                getContentPane().add(blueLabel.get(0));
+                if(caminos.length>1){
+                    blueLabel.get(1).setText(caminos[1]);
+                    blueLabel.get(1).setForeground(Color.black);
+                    getContentPane().add(blueLabel.get(1));
+                    trans.setEnabled(true);
+                }else{
+                    blueLabel.get(1).setText(" ");
+                    blueLabel.get(1).setForeground(Color.BLACK);
+                    trans.setEnabled(false);
+                }
+                if(caminos.length>2){
+                    blueLabel.get(2).setText(caminos[2]);
+                    blueLabel.get(2).setForeground(Color.black);
+                    getContentPane().add(blueLabel.get(2));
+                }else{
+                     blueLabel.get(2).setText(" ");
+                    blueLabel.get(2).setForeground(Color.BLACK);
                 }
             }
         });
@@ -290,22 +261,21 @@ public class Windows2AFNL extends WindowsAFNL{
 
     private void initScrool() {
         String camino = move.imprimirCamino();
-        int l = camino.lastIndexOf("->");
-        caminos = camino.substring(0,l-1).split("->");
+        int len = camino.lastIndexOf("]");
+        caminos = camino.trim().substring(0,len+1).split(" -> ");
         String cad = move.getCadena();
         
         cadds=new Label(move.getCadena());
         cadds.setForeground(Color.BLACK);
         cadds.setBounds(330,100,100,30);
         cadds.setEnabled(true);
-        System.out.println(Arrays.toString(caminos));
         getContentPane().add(cadds);
         blueLabel = new ArrayList<>();
         blueLabel.add(new Label(caminos[0]));
         blueLabel.get(0).setForeground(Color.red);
         blueLabel.get(0).setBounds(230, 150, 100, 30);
         getContentPane().add(blueLabel.get(0));
-        if(cad.length()>1){
+        if(caminos.length>1){
             blueLabel.add(new Label(caminos[1]));
             blueLabel.get(1).setForeground(Color.BLACK);
             blueLabel.get(1).setBounds(330, 150, 100, 30);
@@ -317,7 +287,7 @@ public class Windows2AFNL extends WindowsAFNL{
             getContentPane().add(blueLabel.get(1));
         }
         
-        if(cad.length()>2){
+        if(caminos.length>2){
             blueLabel.add(new Label(caminos[2]));
             blueLabel.get(2).setForeground(Color.BLACK);
             blueLabel.get(2).setBounds(430, 150, 100, 30);

@@ -7,6 +7,7 @@ package LectoresYProcesos;
 
 import AutomatasFinitos.*;
 import static LectoresYProcesos.InteraccionesAutomas.*;
+import ProcesamientoCadenas.ProcesamientoCadenaAFNLambda;
 import java.awt.HeadlessException;
 import java.awt.Toolkit;
 import java.awt.datatransfer.Clipboard;
@@ -630,8 +631,18 @@ public class ClasePrueba {
                                                             String dirArch = fileComputaciones.getSelectedFile().getAbsolutePath();
                                                             int respuesta = afnl.computarTodosLosProcesamientos(cadena, dirArch);
                                                             System.out.println("En total, hubo " + respuesta + " procesamientos");
-                                                            tres = false;
-                                                        }
+                                                            int k = JOptionPane.showConfirmDialog(null, "¿Desea simular todas las computaciones visualmente?", "Todas las computaciones", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                                                            switch (k) {
+                                                                case JOptionPane.YES_OPTION:
+                                                                    ProcesamientoCadenaAFNLambda proc = afnl.procesarCadenad(cadena);
+                                                                    Windows2AFNL nes = new Windows2AFNL("AFNL",afnl,proc);
+                                                                    nes.Simulat();
+                                                                    break;
+                                                                    
+                                                            }
+                                                                    
+                                                                    tres = false;
+                                                            }
                                                     } catch (NullPointerException e) {
                                                         tres = false;
                                                     }
