@@ -984,6 +984,14 @@ public class ClasePrueba {
                         System.out.println(afn.toString());
                         System.out.println("\nAutomata AFD: ");
                         System.out.println(afd.toString());
+                        switch (JOptionPane.showConfirmDialog(null, "Desea guardar el nuevo automata en el portapapeles?", "guardado de automatas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE)) {
+                            case JOptionPane.YES_OPTION:
+                                StringSelection stringSelection = new StringSelection(afd.toString());
+                                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                                clipboard.setContents(stringSelection, null);
+                                System.out.println("\nautomata simplificado copiado al portapapeles");
+                                break;
+                        }
                         break;
                     default:
                         break;
@@ -1262,6 +1270,14 @@ public class ClasePrueba {
                         System.out.println(afnl.toString());
                         System.out.println("\nAutomata AFN: ");
                         System.out.println(afn.toString());
+                        switch (JOptionPane.showConfirmDialog(null, "Desea guardar el nuevo automata en el portapapeles?", "Guardado de simplificacion", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE)) {
+                            case JOptionPane.YES_OPTION:
+                                StringSelection stringSelection = new StringSelection(afn.toString());
+                                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                                clipboard.setContents(stringSelection, null);
+                                System.out.println("\n Automata simplificado copiado al portapapeles");
+                                break;
+                        }
                         break;
                     default:
                         break;
@@ -1463,6 +1479,14 @@ public class ClasePrueba {
                         System.out.println(afn.toString());
                         System.out.println("\nAutomata AFD: ");
                         System.out.println(afd.toString());
+                        switch (JOptionPane.showConfirmDialog(null, "Desea guardar el nuevo automata en el portapapeles?", "Guardado de simplificacion", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE)) {
+                            case JOptionPane.YES_OPTION:
+                                StringSelection stringSelection = new StringSelection(afd.toString());
+                                Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+                                clipboard.setContents(stringSelection, null);
+                                System.out.println("\n Automata simplificado copiado al portapapeles");
+                                break;
+                        }
                         break;
                     default:
                         break;
