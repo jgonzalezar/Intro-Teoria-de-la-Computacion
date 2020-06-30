@@ -15,9 +15,9 @@ q5
 #alphabetC
 a-c
 X-Z
-B
+ƀ
 #blancS
-B
+ƀ
 #transitions
 q0:Y|Y+>q4
 q0:B|B+>q5
