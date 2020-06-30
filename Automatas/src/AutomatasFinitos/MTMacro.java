@@ -1,10 +1,8 @@
 package AutomatasFinitos;
 
 import Herramientas.ParPila;
-import Herramientas.TransitionAFPD;
 import Herramientas.TransitionTM;
 import LectoresYProcesos.InteraccionesAutomas.Lecto;
-import ProcesamientoCadenas.ProcesamientoCadenaAFPD;
 import ProcesamientoCadenas.ProcesamientoCadenaTM;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,7 +10,6 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.PrintWriter;
-import java.util.EmptyStackException;
 import java.util.HashSet;
 import java.util.Scanner;
 import java.util.Set;
@@ -27,16 +24,9 @@ import java.util.regex.Pattern;
  * @author equipo los Javas
  * @version 1.2
  */
-public class MT extends AFD {
+public class MTMacro extends MT {
 
-    protected char[] Gamma;
-    protected char Blanc;
-
-    public MT() {
-    }
-
-    
-    
+   
     /**
      * Constructor Inicializa los atributos a partir del archivo de texto.
      *
@@ -45,7 +35,7 @@ public class MT extends AFD {
      * @throws java.io.FileNotFoundException en caso de que el archivo no sea
      * encontrado por el scanner
      */
-    public MT(String nombreArchivo) throws Error, FileNotFoundException {
+    public MTMacro(String nombreArchivo) throws Error, FileNotFoundException {
         Lecto lec = Lecto.inicio;
         ArrayList<Character> alpha = null;
         ArrayList<String> W = null;
@@ -236,9 +226,8 @@ public class MT extends AFD {
      * @return la aceptacion del lenguaje
      */
 
-    @Override
-    public boolean procesarCadena(String word) {
-        return prosCaden(word).EsAceptada();
+    public String procesarCadenad(String word) {
+        return prosCaden(word).getLastCadena();
     }
 
     /**
@@ -248,9 +237,8 @@ public class MT extends AFD {
      * @return la aceptacion del lenguaje
      */
 
-    @Override
-    public boolean procesarCadena(char[] word) {
-        return procesarCadena(Arrays.toString(word));
+    public String procesarCadenad(char[] word) {
+        return procesarCadenad(Arrays.toString(word));
     }
 
     /**
@@ -260,9 +248,9 @@ public class MT extends AFD {
      * @param word cadena de caracteres a evaluar
      * @return la aceptacion del lenguaje
      */
-    @Override
-    public boolean procesarCadenaConDetalles(char[] word) {
-        return procesarCadenaConDetalles(Arrays.toString(word));
+    
+    public String procesarCadenadConDetalles(char[] word) {
+        return procesarCadenadConDetalles(Arrays.toString(word));
     }
 
     /**
@@ -272,11 +260,10 @@ public class MT extends AFD {
      * @param word palabra a evaluar
      * @return la cadena es o no aceptada
      */
-    @Override
-    public boolean procesarCadenaConDetalles(String word) {
+    public String procesarCadenadConDetalles(String word) {
         ProcesamientoCadenaTM fin = prosCaden(word);
         System.out.println(fin.pasos() + fin.EsAceptada());
-        return fin.EsAceptada();
+        return fin.getLastCadena();
     }
 
     /**
@@ -311,7 +298,7 @@ public class MT extends AFD {
             for (int i = 0; i < listaCadenas.length; i++) {
                 ProcesamientoCadenaTM res = prosCaden(listaCadenas[i]);
                 String pas = res.pasos();
-                String res2 = listaCadenas[i] + "\t" + pas + "\t" + res.EsAceptada();
+                String res2 = listaCadenas[i] + "\t" + pas + "\t" + res.getLastCadena();
                 pw1.println(res2);
                 if (imprimirPantalla) {
                     System.out.println(res2);

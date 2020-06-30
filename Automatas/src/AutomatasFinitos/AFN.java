@@ -600,7 +600,8 @@ public class AFN extends AFD{
         }
         
         System.out.println("\nTabla con las transiciones de la transformación AFN a AFD");
-        printTableAFNtoAFD(automataDeterminista, detAcceptance, newStates);
+        printTableAFNtoAFD(automataDeterminista);
+        printStateEquivalence(newStates);
         
         ArrayList<String> newQ = new ArrayList<>();
         Transition newDelta = new Transition();
@@ -672,16 +673,16 @@ public class AFN extends AFD{
 	for(int i=0;i<newStates.size();i++) {
             System.out.print(statesName+newStates.get(i).getFinalState()+": ");
             auxArray = stringToValues(newStates.get(i).getSymbol());
-            for(int j=0;j<auxArray.size();j++) {
-		System.out.print(statesName+auxArray.get(j)+" ");
+            System.out.print("{");
+            for(int j=0;j<auxArray.size()-1;j++) {
+		System.out.print(statesName+auxArray.get(j)+",");
             }
-            System.out.println();
+            System.out.println(statesName+auxArray.get(auxArray.size()-1)+"}");
         }
 	System.out.println();
     }
     
-    private void printTableAFNtoAFD(ArrayList<ArrayList<Tuple>> automataDeterminista, ArrayList<Integer> detAcceptance,ArrayList<Tuple> newStates) {
-	String[] States;
+    private void printTableAFNtoAFD(ArrayList<ArrayList<Tuple>> automataDeterminista) {
         String res = "Δ";
         boolean hasFinal;
         for(int i=0;i<Sigma.length();i++){
@@ -689,33 +690,13 @@ public class AFN extends AFD{
         }
         res+="\n";
 	for(int i=0;i<automataDeterminista.size();i++) {
-            //if(Q.contains(statesName+i)){
-                res+=statesName+i + "\t";
-            /*}else if(!"".equals(search(i,newStates))){
-                States = search(i,newStates).split(" ");
-                res+="{"+statesName+States[0];
-                for(int j=1;j<States.length-1;j++){
-                    res+=","+statesName+States[j];
-                }
-                res+=","+statesName+States[States.length-1]+"}\t";
-            }else{
-                continue;
-            }*/
+            res+=statesName+i + "\t";
             
             for(int j=0;j<Sigma.length();j++){
                 hasFinal = true;
                 for(int k=0;k<automataDeterminista.get(i).size();k++){
                     if(automataDeterminista.get(i).get(k).getSymbol().charAt(0) == Sigma.get(j)){
-                        //if(Q.contains(statesName+automataDeterminista.get(i).get(k).getFinalState())){
-                            res+=statesName + automataDeterminista.get(i).get(k).getFinalState();
-                        /*}else{
-                            States = search(automataDeterminista.get(i).get(k).getFinalState(),newStates).split(" ");
-                            res+="{"+statesName+States[0];
-                            for(int l=1;l<States.length-1;l++){
-                                res+=","+statesName+States[l];
-                            }
-                            res+=","+statesName+States[States.length-1]+"}";
-                        }*/
+                        res+=statesName + automataDeterminista.get(i).get(k).getFinalState();
                         hasFinal = false;
                         break;
                     }
@@ -791,7 +772,7 @@ public class AFN extends AFD{
      */
     @Override
     public String toString(){
-        String cadenas="!nfa\n";
+        String cadenas="#!nfa\n";
         cadenas+=Sigma.toString();
         cadenas+="#states\n";
         for (int i=0;i<Q.size();i++) {

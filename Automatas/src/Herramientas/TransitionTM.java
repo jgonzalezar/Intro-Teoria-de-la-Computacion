@@ -12,14 +12,14 @@ import java.util.HashMap;
  *  La clase Transition sirve para simular transiciones de  automatas tipo AFD
  *  posee un hashmap para cada simbolo del alphabeto que guarda las transiciones de cada estado a siguiente estado 
  */
-public class TransitionAFPD implements Transitions{
-    HashMap<String,HashMap<Character,trioPila>> transicion;
+public class TransitionTM implements Transitions{
+    HashMap<String,HashMap<Character,ParPila>> transicion;
 
     /**
      * crea el hash para guardar las transiciones 
      */
     
-    public TransitionAFPD() {
+    public TransitionTM() {
         transicion = new HashMap<>();
     }
     
@@ -83,16 +83,12 @@ public class TransitionAFPD implements Transitions{
             transicion.put(Inest, new HashMap<>());
         }
         
-        transicion.get(Inest).put(Alphabeto, new trioPila(InPila, new ParPila(ToPila, estadoSig)));
+        transicion.get(Inest).put(Alphabeto,new ParPila(ToPila, estadoSig));
     }
 
     @Override
     public ParPila cambio(Character Alphabeto, String Inest, Character InPila) {
-        ParPila uno = transicion.get(Inest).get(Alphabeto).equals(InPila);
-        if(uno!=null){
-            return uno;
-        }
-        return  transicion.get(Inest).get(Alphabeto).equals('$');
+        return transicion.get(Inest).get(Alphabeto);
     }
 
     @Override
@@ -104,7 +100,6 @@ public class TransitionAFPD implements Transitions{
     public String toString() {
         return "";
     }
- 
     
-    
+     
 }
