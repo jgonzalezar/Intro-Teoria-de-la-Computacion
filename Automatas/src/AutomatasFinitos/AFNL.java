@@ -41,6 +41,10 @@ public class AFNL extends AFN {
      */
     private final char lambda = '$';
 
+    public AFNL() {
+    }
+
+    
     /**
      * Constructor, inicializa los atributos.
      *
