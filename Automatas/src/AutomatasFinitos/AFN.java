@@ -645,6 +645,7 @@ public class AFN extends AFD{
         }
         
         AFD newDet = new AFD(Sigma, newQ, q0, detAcceptance, newDelta);
+        System.out.println(newDet.toString());
         newDet.eliminarEstadosInaccesibles();
         return newDet;
     }

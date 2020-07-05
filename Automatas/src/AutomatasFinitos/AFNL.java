@@ -778,7 +778,10 @@ public class AFNL extends AFN {
         Set<Integer> hashSet = new HashSet<>(aceptacion);
         aceptacion.clear();
         aceptacion.addAll(hashSet);
-        return new AFN(Sigma, newQ, q0, aceptacion, delta);
+        AFN asd = new AFN(Sigma, newQ, q0, aceptacion, delta);
+        System.out.println(newQ.toString());
+        System.out.println(asd.toString());
+        return asd;
     }
 
     public int[] trancisiones(int estado, char simb) {
@@ -904,12 +907,14 @@ public class AFNL extends AFN {
                     }
                 }
             }
-        }for(int m=0;m<Q.size();m++) {
+        }
+        for(int m=0;m<Q.size();m++) {
             if(  Delta.getMove(m, '$')!=null){
+                ArrayList<Integer> asd = Delta.getMove(m,'$');
                 cadena+=Q.get(m)+":"+"$"+">";
-                for(int k=0;k<Delta.getMove(m,'$').size();k++){
-                    cadena+=Q.get(Delta.getMove(m,'$').get(k));
-                    if(k<Delta.getMove(m, '$').size()-1){
+                for(int k=0;k<asd.size();k++){
+                    cadena+=Q.get(asd.get(k));
+                    if(k<asd.size()-1){
                         cadena+=";"; 
                     }else{
                         cadena+="\n";  
