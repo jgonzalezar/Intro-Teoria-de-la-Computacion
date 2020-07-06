@@ -60,7 +60,6 @@ public class KLENtoAFNL extends AFNL{
         asd.clear();
         asd.addAll(reset);
         for (String asd1 : asd) {
-            System.out.println(asd1);
             String[] separos = asd1.split(":");
             String estado1=separos[0];
             String[] sep = separos[1].split(">");
@@ -70,7 +69,6 @@ public class KLENtoAFNL extends AFNL{
             for (int i = 0; i < dos.length; i++) {
                 hey[i]=Q.indexOf(dos[i]);
             }
-            System.out.println(estado1+":"+caracter+">"+Arrays.toString(dos));
             tras.add(caracter, Q.indexOf(estado1), hey);
         }
         
@@ -91,11 +89,38 @@ public class KLENtoAFNL extends AFNL{
         int cer = word.indexOf(")");
         int cont = 0;
         if(pare==0){
-            for (int i = pare+1; i < cer; i++) {
+            int asd = cer;
+            for (int i = pare+1; i < word.length(); i++) {
                 if(word.charAt(i)=='('){
                     cont++;
                 }
+                if(word.charAt(i)==')'){
+                    if(cont==0){
+                        asd=i;
+                    }else{
+                        cont--;
+                    }
+                }
             }
+            char ex;
+            if(asd+1==word.length()){
+                ex=' ';
+            }else{
+                ex=word.charAt(asd+1);
+            }
+            char next2=' ';
+            if(asd+2<word.length()){
+                next2=word.charAt(asd+2);
+            }
+            int dos=asd+1;
+            if(ex=='*'||ex=='+'&&next2=='U'){
+                
+            }
+            String uno = word.substring(1,asd);
+            String dod = word.substring(asd+1);
+            HashMap<String,ArrayList<String>> cad1= evalu(uno);
+            HashMap<String,ArrayList<String>> cad2=evalu(dod);
+            
         }else if(uni==-1||pare==-1){
             if(uni==-1&&pare==-1){
                 for (int i = 0; i < word.length(); i++) {
@@ -162,7 +187,63 @@ public class KLENtoAFNL extends AFNL{
                 cad.get("final").add(asdd);
                 
             }else if(uni==-1){
+                String uno = word.substring(0,pare);
+                String dod = word.substring(pare);
+                HashMap<String,ArrayList<String>> cad1= evalu(uno);
+                HashMap<String,ArrayList<String>> cad2=evalu(dod);
+                cad.get("Sigma").addAll(cad1.get("Sigma"));
+                cad.get("Sigma").addAll(cad2.get("Sigma"));
+                Set<String> reset = new HashSet<>(cad.get("Sigma"));
+                cad.get("Sigma").clear();
+                cad.get("Sigma").addAll(reset);
+                cad1.get("States").forEach((string) -> {
+                    cad.get("States").add("1"+string);
+                });
+                cad2.get("States").forEach((string) -> {
+                    cad.get("States").add("2"+string);
+                });
+                reset = new HashSet<>(cad.get("States"));
+                cad.get("States").clear();
+                cad.get("States").addAll(reset);
+                cad.get("States").add("U0");
                 
+                cad.get("ini").add("U0");
+                
+                cad1.get("final").forEach((string) -> {
+                    cad.get("Separations").add("1"+string+":$>"+cad2.get("ini").get(0));
+                });
+                cad2.get("final").forEach((string) -> {
+                    cad.get("final").add("2"+string);
+                });
+                reset = new HashSet<>(cad.get("final"));
+                cad.get("final").clear();
+                cad.get("final").addAll(reset);
+                
+                cad.get("Separations").add("U0:$>"+"1"+cad1.get("ini").get(0));
+                for (String asd1 : cad1.get("Separations")) {
+                    String[] separos = asd1.split(":");
+                    String estado1 = separos[0];
+                    String[] sep = separos[1].split(">");
+                    char caracter = sep[0].charAt(0);
+                    String[] dos = sep[1].split(";");
+                    String ddd="";
+                    for (String aDo : dos) {
+                        ddd+="1"+aDo+";";
+                    }
+                    cad.get("Separations").add("1"+estado1+":"+caracter+">"+ddd.substring(0, ddd.length()-1));
+                }
+                for (String asd1 : cad2.get("Separations")) {
+                    String[] separos = asd1.split(":");
+                    String estado1 = separos[0];
+                    String[] sep = separos[1].split(">");
+                    char caracter = sep[0].charAt(0);
+                    String[] dos = sep[1].split(";");
+                    String ddd="";
+                    for (String aDo : dos) {
+                        ddd+="2"+aDo+";";
+                    }
+                    cad.get("Separations").add("2"+estado1+":"+caracter+">"+ddd.substring(0, ddd.length()-1));
+                }
             }else if(pare==-1){
                 String uno = word.substring(0,uni);
                 String dod = word.substring(uni+1);
@@ -233,11 +314,12 @@ public class KLENtoAFNL extends AFNL{
     }
     
     public static void main(String[] args) {
-        AFNL sss  = new KLENtoAFNL("ab*Ua");
+        AFNL sss  = new KLENtoAFNL("ab*aUcUa");
         //AFD s = sss.AFN_LambdaToAFD();
         
         
         System.out.println(sss.procesarCadena("a"));
+        System.out.println(sss.procesarCadena("c"));
         System.out.println(sss.procesarCadena("aa"));
         System.out.println(sss.procesarCadena("abbba"));
         
