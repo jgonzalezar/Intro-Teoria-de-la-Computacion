@@ -380,9 +380,28 @@ public class AFNL extends AFN {
      * acceder a esta informacion.
      *
      * @param cadena cadena a evaluar.
+     * @return 
      */
     public ProcesamientoCadenaAFNLambda procesarCadenad(String cadena) {
         RespuestaMult rta = caminosPosibles(cadena);
+        ArrayList<Integer> finals = rta.getFinals();
+        for (int i = 0; i < finals.size(); i++) {
+            ArrayList<Integer> StepsToAdd = new ArrayList<>();
+            try {
+                ArrayList<Integer> CaminosLambda = lambdaClausura_unEstado(finals.get(i));
+                StepsToAdd.addAll(CaminosLambda);
+            } catch (Exception e) {
+                StepsToAdd.add(null);
+            }
+            Set<Integer> hashSet = new HashSet<>(StepsToAdd);
+            StepsToAdd.clear();
+            StepsToAdd.addAll(hashSet);
+            
+            
+            rta.addRutas(i, StepsToAdd);
+        }
+        
+        
         return procesamiento(cadena, rta);
     }
 

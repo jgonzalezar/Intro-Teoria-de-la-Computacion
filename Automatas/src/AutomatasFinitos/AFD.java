@@ -572,7 +572,9 @@ public class AFD {
         automat+="#initial\n";
         automat+=Q.get(q0)+"\n";
         automat+="#accepting\n";
-        automat = F.stream().map((integer) -> Q.get(integer)+"\n").reduce(automat, String::concat);
+        automat = F.stream().map((integer) -> {
+            return Q.get(integer)+"\n";
+        }).reduce(automat, String::concat);
         automat+=Delta.toString();
         return automat;
     }
