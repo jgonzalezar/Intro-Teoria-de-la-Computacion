@@ -977,7 +977,7 @@ public class ClasePrueba {
                     case 1:
                         System.out.println("Validacion de AFN a AFD");
                         AFN afns[]={afn};
-                        ClaseValidacion.validarAFNtoAFD( afns);
+                        ClaseValidacion.validarAFNtoAFD(afns);
                         break;
                     case 2:
                         System.out.println("Automata AFN: ");

@@ -28,12 +28,9 @@ import java.util.Scanner;
 
 public class AFN extends AFD{
     
-    private int cont, numberIndex;
     private String cadena;
     private Integer[] print;
     private ProcesamientoCadenaAFN respuesta;
-    private ArrayList<Integer> usefulStates;
-    private String statesName;
     
     
     /**
@@ -51,25 +48,10 @@ public class AFN extends AFD{
      * @param Delta Transiciones
      */
     public AFN(Alfabeto Sigma, ArrayList<String> Q, Integer q0, ArrayList<Integer> F, Transitions Delta) {
-        int maxState=0;
-        numberIndex=0;
-        for(int i=0;i<Q.get(q0).length();i++){
-            if(isInteger(Q.get(q0).substring(i))){
-                numberIndex=i;
-                break;
-            }
-        }
-        this.statesName = Q.get(q0).substring(0,numberIndex);
-        for(int i=0;i<Q.size();i++)
-            maxState=Math.max(maxState,parseInt(Q.get(i).substring(numberIndex)));
-        
         this.Sigma = Sigma;
         this.Q = Q;
-        this.q0 = parseInt(Q.get(q0).substring(numberIndex));
-        this.F = new ArrayList<>();
-        for(int i=0;i<F.size();i++)
-            this.F.add(parseInt(Q.get(F.get(i)).substring(numberIndex)));
-        
+        this.q0 = q0;
+        this.F = F;
         this.Delta = Delta;
         this.estadosInaccesibles=new ArrayList<>();
         this.estadosLimbo=new ArrayList<>();
@@ -84,31 +66,15 @@ public class AFN extends AFD{
      * @param Delta Transiciones
      */
     public AFN(char[] Sigma, ArrayList<String> Q, String q0, ArrayList<String> F, ArrayList<Tuple> Delta) {
-        int maxState=0;
-        numberIndex=0;
-        for(int i=0;i<q0.length();i++){
-            if(isInteger(q0.substring(i))){
-                numberIndex=i;
-                break;
-            }
-        }
-        this.statesName = q0.substring(0,numberIndex);
-        for(int i=0;i<Q.size();i++)
-            maxState=Math.max(maxState,parseInt(Q.get(i).substring(numberIndex)));
-        
         this.Sigma = new Alfabeto(Sigma);
         this.Q = Q;
-        this.q0 = parseInt(q0.substring(numberIndex));
+        this.q0 = this.Q.indexOf(q0);
         this.F = new ArrayList<>();
         for(int i=0;i<F.size();i++)
-            this.F.add(parseInt(F.get(i).substring(numberIndex)));
+            this.F.add(this.Q.indexOf(F.get(i)));
         
-        this.Delta = new TransitionAFN(maxState);
+        this.Delta = new TransitionAFN(Q.size());
         for(int i=0;i<Delta.size();i++) {
-            if(Delta.get(i).getFinalState()>maxState || Delta.get(i).getInitialState()>maxState){
-                System.out.println("El número de estados ingresados no concuerda");
-                return;
-            }
             this.Delta.add(Delta.get(i).getInitialState(), Delta.get(i).getSymbol(), Delta.get(i).getFinalState());
         }
         this.estadosInaccesibles=new ArrayList<>();
@@ -128,8 +94,6 @@ public class AFN extends AFD{
         String q00 = null;
         ArrayList<String> ff = null;
         ArrayList<Tuple> dDelta = null;
-        int maxState=0;
-        numberIndex=0;
         
         try {
             Scanner sca = new Scanner(new File(nombreArchivo));
@@ -182,15 +146,6 @@ public class AFN extends AFD{
                                 break;
                             case estados:
                                 qq.add(lin);
-                                if(numberIndex==0){
-                                    for(int i=0;i<lin.length();i++){
-                                        if(isInteger(lin.substring(i))){
-                                            numberIndex=i;
-                                            break;
-                                        }
-                                    }
-                                }
-                                maxState=Math.max(maxState,parseInt(lin.substring(numberIndex)));
                                 break;
                             case estadoinicial:
                                 if(!qq.contains(lin))throw new Error("el estado debe pertenecer a los estados del automata");
@@ -211,7 +166,7 @@ public class AFN extends AFD{
                                 for(int i=0;i<origin3.length;i++){
                                     String estado2 = origin3[i];
                                     if(!qq.contains(estado2))throw new Error("el estado de llegada debe pertenecer a los estados del automata");
-                                    dDelta.add(new Tuple(alpfa.substring(0), parseInt(estado1.substring(numberIndex)), parseInt(estado2.substring(numberIndex))));
+                                    dDelta.add(new Tuple(alpfa.substring(0), qq.indexOf(estado1), qq.indexOf(estado2)));
                                 }
                                 break;
                             default:
@@ -227,20 +182,15 @@ public class AFN extends AFD{
         for (int i = 0; i < alpha.size(); i++) {
             ad[i]=alpha.get(i);
         }
-        this.statesName = q00.substring(0,numberIndex);
         this.Sigma = new Alfabeto(ad);
         this.Q = qq;
-        this.q0 = parseInt(q00.substring(numberIndex));
+        this.q0 = this.Q.indexOf(q00);
         this.F = new ArrayList<>();
         for(int i=0;i<ff.size();i++)
-            this.F.add(parseInt(ff.get(i).substring(numberIndex)));
+            this.F.add(this.Q.indexOf(ff.get(i)));
         
-        this.Delta = new TransitionAFN(maxState);
+        this.Delta = new TransitionAFN(qq.size());
         for(int i=0;i<dDelta.size();i++) {
-            if(dDelta.get(i).getFinalState()>maxState || dDelta.get(i).getInitialState()>maxState){
-                System.out.println("El número de estados ingresados no concuerda");
-                return;
-            }
             this.Delta.add(dDelta.get(i).getInitialState(),dDelta.get(i).getSymbol(),dDelta.get(i).getFinalState());
         }
         this.estadosInaccesibles=new ArrayList<>();
@@ -254,7 +204,7 @@ public class AFN extends AFD{
      */
     @Override
     public boolean procesarCadena(String cadena){
-        respuesta = new ProcesamientoCadenaAFN(cadena,statesName+Integer.toString(q0),statesName);
+        respuesta = new ProcesamientoCadenaAFN(cadena,q0,Q);
         if(cadena.length()==0) {
             if(this.F.contains(q0)) {
                 respuesta.addAceptado(q0);
@@ -276,11 +226,10 @@ public class AFN extends AFD{
      */
     @Override
     public boolean procesarCadenaConDetalles(String cadena){
-        respuesta = new ProcesamientoCadenaAFN(cadena,statesName+Integer.toString(q0),statesName);
+        respuesta = new ProcesamientoCadenaAFN(cadena,q0,Q);
         this.cadena=cadena;
         this.print = new Integer[cadena.length()];
         if(cadena.length()==0) {
-            //System.out.print("[q"+q0+",$] ");
             if(this.F.contains(q0)) {
 		respuesta.addAceptado(q0);
             }else{
@@ -313,7 +262,7 @@ public class AFN extends AFD{
         {
             this.cadena=cadena;
             this.print = new Integer[cadena.length()];
-            respuesta = new ProcesamientoCadenaAFN(cadena,statesName+Integer.toString(q0),statesName);
+            respuesta = new ProcesamientoCadenaAFN(cadena,q0,Q);
             if(cadena.length()==0){
                 if(this.F.contains(q0)){
                     respuesta.addAceptado(q0);
@@ -394,23 +343,23 @@ public class AFN extends AFD{
 
     private int computarTodosLosProcesamientos(int state, int letter){
 	boolean pass=true;
-	ArrayList<Tuple> automataState = this.Delta.get(state);
+	ArrayList<Tuple> automataState = Delta.get(state);
         
 	for(int i=0; i<automataState.size();i++) {
             if(automataState.get(i).getSymbol().equals(this.cadena.substring(letter,letter+1))) {
 		state = automataState.get(i).getFinalState();
-		this.print[letter]=state;
+		print[letter]=state;
                 pass=false;
 		if(letter<cadena.length()-1) {
                     state = computarTodosLosProcesamientos(state,letter+1);
 		}if(letter==cadena.length()-1){
-                    if(this.F.contains(state)) {
-                        for(int j=0;j<this.cadena.length();j++) {
-                            respuesta.addAceptado(this.print[j]);
+                    if(F.contains(state)) {
+                        for(int j=0;j<cadena.length();j++) {
+                            respuesta.addAceptado(print[j]);
                         }
                     }else {
-                        for(int j=0;j<this.cadena.length();j++) {
-                            respuesta.addRechazado(this.print[j]);
+                        for(int j=0;j<cadena.length();j++) {
+                            respuesta.addRechazado(print[j]);
                         }
                     }
 		}
@@ -418,7 +367,7 @@ public class AFN extends AFD{
 	}
 	if(pass) {
             for(int j=0;j<letter;j++) {
-                respuesta.addAbortado(this.print[j]);
+                respuesta.addAbortado(print[j]);
             }
             respuesta.addAbortado(-1);
 	}
@@ -444,7 +393,7 @@ public class AFN extends AFD{
             for (String listaCadena : listaCadenas) {
                 this.cadena = listaCadena;
                 this.print = new Integer[cadena.length()];
-                respuesta = new ProcesamientoCadenaAFN(cadena,statesName+Integer.toString(q0),statesName);
+                respuesta = new ProcesamientoCadenaAFN(cadena,q0,Q);
                 if (listaCadena.length() == 0) {
                     if(this.F.contains(q0)){
                         respuesta.addAceptado(q0);
@@ -492,11 +441,10 @@ public class AFN extends AFD{
 	ArrayList<Integer> states = new ArrayList<>(), detAcceptance = new ArrayList<>();
 	ArrayList<Tuple> newStates = new ArrayList<>(), deterministicStates;
         ArrayList<ArrayList<Tuple>> automataDeterminista = new ArrayList<>();
-	int numberNewState=this.Delta.size(), conts=0;
-        usefulStates = new ArrayList<>();
+	int numberNewState=Delta.size();
         
-        for(int i=0;i<this.F.size();i++) {
-            detAcceptance.add(this.F.get(i));
+        for(int i=0;i<F.size();i++) {
+            detAcceptance.add(F.get(i));
 	}
 	
         for(int i=0;i<this.Delta.size();i++) {
@@ -546,7 +494,7 @@ public class AFN extends AFD{
                 for(int j=0;j<combinationOf.size();j++){
                     for(int k=0;k<automataDeterminista.get(combinationOf.get(j)).size();k++){
 			if(automataDeterminista.get(combinationOf.get(j)).get(k).getSymbol().equals(String.valueOf(Sigma.get(l)))) {
-                            if(automataDeterminista.get(combinationOf.get(j)).get(k).getFinalState()<this.Delta.size()) {
+                            if(automataDeterminista.get(combinationOf.get(j)).get(k).getFinalState()<Delta.size()) {
 				states.add(automataDeterminista.get(combinationOf.get(j)).get(k).getFinalState());
                             }else{
 				ArrayList<Integer> aux = stringToValues(search(automataDeterminista.get(combinationOf.get(j)).get(k).getFinalState(), newStates));
@@ -600,53 +548,84 @@ public class AFN extends AFD{
         }
         
         System.out.println("\nTabla con las transiciones de la transformación AFN a AFD");
-        printTableAFNtoAFD(automataDeterminista);
-        printStateEquivalence(newStates);
+        printTableAFNtoAFD(automataDeterminista, newStates);
+        //printStateEquivalence(newStates);
         
         ArrayList<String> newQ = new ArrayList<>();
         Transition newDelta = new Transition();
         boolean hasFinalState;
+        String conjEstadosInicial, conjEstadosFinal;
+        ArrayList<Integer> indices;
+        
         for(int i=0;i<automataDeterminista.size();i++) {
-            if(Q.contains(statesName+i)){
-                newQ.add(statesName+i);
+            if(i<Q.size()){
+                newQ.add(Q.get(i));
                 for(int j=0;j<Sigma.length();j++){
                     hasFinalState = true;
                     for(int k=0;k<automataDeterminista.get(i).size();k++){
                         if(Sigma.get(j)==automataDeterminista.get(i).get(k).getSymbol().charAt(0)){
-                            newDelta.add(Sigma.get(j), statesName+i, statesName+automataDeterminista.get(i).get(k).getFinalState());
+                            if(automataDeterminista.get(i).get(k).getFinalState()<Q.size()){
+                                newDelta.add(Sigma.get(j), Q.get(i), Q.get(automataDeterminista.get(i).get(k).getFinalState()));
+                            }else{
+                                indices = stringToValues(search(automataDeterminista.get(i).get(k).getFinalState(),newStates));
+                                conjEstadosFinal = "{";
+                                for(int l=0;l<indices.size()-1;l++){
+                                    conjEstadosFinal += Q.get(indices.get(l))+",";
+                                }
+                                conjEstadosFinal += Q.get(indices.get(indices.size()-1)) + "}";
+                                newDelta.add(Sigma.get(j), Q.get(i), conjEstadosFinal);
+                            }
                             hasFinalState = false;
                             break;
                         }
                     }
                     if(hasFinalState){
-                        newDelta.add(Sigma.get(j), statesName+i, statesName+numberNewState);
+                        newDelta.add(Sigma.get(j), Q.get(i), "L");
                     }
                 }
             }else if(!"".equals(search(i,newStates))){
-                newQ.add(statesName+i);
+                
+                indices = stringToValues(search(i,newStates));
+                conjEstadosInicial = "{";
+                for(int k=0;k<indices.size()-1;k++){
+                    conjEstadosInicial += Q.get(indices.get(k))+",";
+                }
+                conjEstadosInicial += Q.get(indices.get(indices.size()-1)) + "}";
+                newQ.add(conjEstadosInicial);
+                
                 for(int j=0;j<Sigma.length();j++){
                     hasFinalState = true;
                     for(int k=0;k<automataDeterminista.get(i).size();k++){
                         if(Sigma.get(j)==automataDeterminista.get(i).get(k).getSymbol().charAt(0)){
-                            newDelta.add(Sigma.get(j), statesName+i, statesName+automataDeterminista.get(i).get(k).getFinalState());
+                            if(automataDeterminista.get(i).get(k).getFinalState()<Q.size()){
+                                newDelta.add(Sigma.get(j), conjEstadosInicial, Q.get(automataDeterminista.get(i).get(k).getFinalState()));
+                            }else{
+                                indices = stringToValues(search(automataDeterminista.get(i).get(k).getFinalState(),newStates));
+                                conjEstadosFinal = "{";
+                                for(int l=0;l<indices.size()-1;l++){
+                                    conjEstadosFinal += Q.get(indices.get(l))+",";
+                                }
+                                conjEstadosFinal += Q.get(indices.get(indices.size()-1)) + "}";
+                                newDelta.add(Sigma.get(j), conjEstadosInicial, conjEstadosFinal);
+                            }
                             hasFinalState = false;
                             break;
                         }
                     }
                     if(hasFinalState){
-                        newDelta.add(Sigma.get(j), statesName+i, statesName+numberNewState);
+                        newDelta.add(Sigma.get(j), conjEstadosInicial, "L");
                     }
                 }
             }
         }
-        newQ.add(statesName+numberNewState);
-        for(int i=0;i<Sigma.length();i++){
-            newDelta.add(Sigma.get(i), statesName+numberNewState, statesName+numberNewState);
-        }
+        newQ.add("L");
         
+        for(int i=0;i<Sigma.length();i++){
+            newDelta.add(Sigma.get(i), "L", "L");
+        }
         AFD newDet = new AFD(Sigma, newQ, q0, detAcceptance, newDelta);
-        System.out.println(newDet.toString());
         newDet.eliminarEstadosInaccesibles();
+        System.out.println(newDet);
         return newDet;
     }
     
@@ -672,32 +651,55 @@ public class AFN extends AFD{
 	ArrayList<Integer> auxArray;
 	System.out.println("Los estados añadidos representan los conjuntos de estados:");
 	for(int i=0;i<newStates.size();i++) {
-            System.out.print(statesName+newStates.get(i).getFinalState()+": ");
+            System.out.print("Q"+newStates.get(i).getFinalState()+": ");//-------------------------------------------------//
             auxArray = stringToValues(newStates.get(i).getSymbol());
             System.out.print("{");
             for(int j=0;j<auxArray.size()-1;j++) {
-		System.out.print(statesName+auxArray.get(j)+",");
+		System.out.print(Q.get(auxArray.get(j))+",");
             }
-            System.out.println(statesName+auxArray.get(auxArray.size()-1)+"}");
+            System.out.println(Q.get(auxArray.get(auxArray.size()-1))+"}");
         }
 	System.out.println();
     }
     
-    private void printTableAFNtoAFD(ArrayList<ArrayList<Tuple>> automataDeterminista) {
+    private void printTableAFNtoAFD(ArrayList<ArrayList<Tuple>> automataDeterminista, ArrayList<Tuple> newStates) {
         String res = "Δ";
         boolean hasFinal;
+        String conjEstadosInicial, conjEstadosFinal;
+        ArrayList<Integer> indices;
+        
         for(int i=0;i<Sigma.length();i++){
             res+="\t"+Sigma.get(i);
         }
         res+="\n";
 	for(int i=0;i<automataDeterminista.size();i++) {
-            res+=statesName+i + "\t";
+            if(i>=Q.size()){
+                indices = stringToValues(search(i,newStates));
+                conjEstadosFinal = "{";
+                for(int l=0;l<indices.size()-1;l++){
+                    conjEstadosFinal += Q.get(indices.get(l))+",";
+                }
+                conjEstadosFinal += Q.get(indices.get(indices.size()-1)) + "}";
+                res+=conjEstadosFinal + "\t";
+            }else{
+                res+=Q.get(i) + "\t";
+            }
             
             for(int j=0;j<Sigma.length();j++){
                 hasFinal = true;
                 for(int k=0;k<automataDeterminista.get(i).size();k++){
                     if(automataDeterminista.get(i).get(k).getSymbol().charAt(0) == Sigma.get(j)){
-                        res+=statesName + automataDeterminista.get(i).get(k).getFinalState();
+                        if(automataDeterminista.get(i).get(k).getFinalState()>=Q.size()){
+                            indices = stringToValues(search(automataDeterminista.get(i).get(k).getFinalState(),newStates));
+                            conjEstadosFinal = "{";
+                            for(int l=0;l<indices.size()-1;l++){
+                                conjEstadosFinal += Q.get(indices.get(l))+",";
+                            }
+                            conjEstadosFinal += Q.get(indices.get(indices.size()-1)) + "}";
+                            res+=conjEstadosFinal;
+                        }else{
+                            res+=Q.get(automataDeterminista.get(i).get(k).getFinalState());
+                        }
                         hasFinal = false;
                         break;
                     }
@@ -717,7 +719,7 @@ public class AFN extends AFD{
      */
     @Override
     public void hallarEstadosInaccesibles(){
-        estadosInaccesibles.add(statesName+q0);
+        estadosInaccesibles.add(Q.get(q0));
         identificarEstadosAccesibles(q0);
         ArrayList<String> estadosAccesibles = new ArrayList<>(estadosInaccesibles);
         estadosInaccesibles.clear();
@@ -732,8 +734,8 @@ public class AFN extends AFD{
         Integer Stadogo;
         for(int i=0;i<Delta.get(State).size();i++){
             Stadogo = Delta.get(State).get(i).getFinalState();
-            if(State!=Stadogo && !estadosInaccesibles.contains(statesName+Stadogo)){
-                estadosInaccesibles.add(statesName+Stadogo);
+            if(State!=Stadogo && !estadosInaccesibles.contains(Q.get(Stadogo))){
+                estadosInaccesibles.add(Q.get(Stadogo));
                 identificarEstadosAccesibles(Stadogo);
             }
         }
@@ -779,22 +781,21 @@ public class AFN extends AFD{
         for (int i=0;i<Q.size();i++) {
             cadenas+=Q.get(i)+"\n";
         }
-        cadenas+="#initial\n"+statesName+q0+"\n"+"#accepting\n";
+        cadenas+="#initial\n"+Q.get(q0)+"\n"+"#accepting\n";
         for (int i=0;i<F.size();i++) {
-            cadenas+=statesName+F.get(i)+"\n";
+            cadenas+=Q.get(F.get(i))+"\n";
         }
         cadenas += "#transitions\n";
         boolean aux;
         for(int i=0;i<Q.size();i++) {
-            int value = parseInt(Q.get(i).substring(numberIndex));
             for(int j=0;j<Sigma.length();j++){
                 aux = true;
-                for(int k=0;k<Delta.get(value).size(); k++) {
-                    if(aux && Delta.get(value).get(k).getSymbol().charAt(0) == Sigma.get(j)){
-                        cadenas+=statesName+value+":"+Sigma.get(j)+">"+statesName+Delta.get(i).get(k).getFinalState();
+                for(int k=0;k<Delta.get(i).size(); k++) {
+                    if(aux && Delta.get(i).get(k).getSymbol().charAt(0) == Sigma.get(j)){
+                        cadenas+=Q.get(i)+":"+Sigma.get(j)+">"+Q.get(Delta.get(i).get(k).getFinalState());
                         aux = false;
-                    }else if(Delta.get(value).get(k).getSymbol().charAt(0) == Sigma.get(j)){
-                        cadenas+=";"+statesName+Delta.get(i).get(k).getFinalState();
+                    }else if(Delta.get(i).get(k).getSymbol().charAt(0) == Sigma.get(j)){
+                        cadenas+=";"+Q.get(Delta.get(i).get(k).getFinalState());
                     }
                 }
                 if(!aux){
