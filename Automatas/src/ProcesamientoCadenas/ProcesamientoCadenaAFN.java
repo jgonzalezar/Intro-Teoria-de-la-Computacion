@@ -14,7 +14,7 @@ public class ProcesamientoCadenaAFN {
     /**
      * El atributo q0 se utiliza para saber cual es el estado inicial del procesamiento.
      */
-    public String q0;
+    public Integer q0;
     /**
      * El atributo aceptado es un tipo de dato que guarda todos los procesamientos aceptados de una cadena.
      */
@@ -28,21 +28,21 @@ public class ProcesamientoCadenaAFN {
      */    
     public ArrayList<Integer> abortado;
     
-    private final String statesName;
+    private final ArrayList<String> Q;
     
     /**
      * Constructor, inicializa los atributos.
      * @param cadena Cadena a la cual se le realizará el procesamiento en el automata
      * @param q0 Estado desde el cual se incial el procesamiento de la cadena
-     * @param statesName nombre sub de los estados
+     * @param Q nombres de los estados del AFN
      */
-    public ProcesamientoCadenaAFN(String cadena, String q0, String statesName) {
+    public ProcesamientoCadenaAFN(String cadena, Integer q0, ArrayList<String> Q) {
         this.cadena = cadena;
         this.q0=q0;
+        this.Q = Q;
         aceptado = new ArrayList<>();
         rechazado = new ArrayList<>();
         abortado = new ArrayList<>();
-        this.statesName = statesName;
     }
     
     /**
@@ -80,15 +80,15 @@ public class ProcesamientoCadenaAFN {
             if(aceptado.isEmpty()){
                 return accepted;
             }
-            accepted.add("["+q0+", ]");
+            accepted.add("["+Q.get(q0)+", ]");
             return accepted;
         }
         for(int i=0;i<aceptado.size()/cadena.length();i++){
-            s="["+q0+","+cadena+"]";
+            s="["+Q.get(q0)+","+cadena+"]";
             for(int j=0;j<cadena.length()-1;j++){
-                s += " -> ["+statesName+aceptado.get(j+i*cadena.length())+","+cadena.substring(j+1)+"]";
+                s += " -> ["+Q.get(aceptado.get(j+i*cadena.length()))+","+cadena.substring(j+1)+"]";
             }
-            s += " -> ["+statesName+aceptado.get(cadena.length()-1+i*cadena.length())+", ]";
+            s += " -> ["+Q.get(aceptado.get(cadena.length()-1+i*cadena.length()))+", ]";
             accepted.add(s);
         }
         return accepted;
@@ -105,15 +105,15 @@ public class ProcesamientoCadenaAFN {
             if(rechazado.isEmpty()){
                 return rejected;
             }
-            rejected.add("["+q0+", ]");
+            rejected.add("["+Q.get(q0)+", ]");
             return rejected;
         }
         for(int i=0;i<rechazado.size()/cadena.length();i++){
-            s="["+q0+","+cadena+"]";
+            s="["+Q.get(q0)+","+cadena+"]";
             for(int j=0;j<cadena.length()-1;j++){
-                s += " -> ["+statesName+rechazado.get(j+i*cadena.length())+","+cadena.substring(j+1)+"]";
+                s += " -> ["+Q.get(rechazado.get(j+i*cadena.length()))+","+cadena.substring(j+1)+"]";
             }
-            s += " -> ["+statesName+rechazado.get(cadena.length()-1+i*cadena.length())+", ]";
+            s += " -> ["+Q.get(rechazado.get(cadena.length()-1+i*cadena.length()))+", ]";
             rejected.add(s);
         }
         return rejected;
@@ -125,15 +125,15 @@ public class ProcesamientoCadenaAFN {
      */
     public ArrayList<String> getAborted(){
         ArrayList<String> aborted = new ArrayList<>();
-        String s="["+q0+","+cadena+"]";
+        String s="["+Q.get(q0)+","+cadena+"]";
         int cont=0;
         for(int i=0;i<abortado.size();i++){
             if(abortado.get(i)==-1){
                 aborted.add(s);
-                s="["+q0+","+cadena+"]";
+                s="["+Q.get(q0)+","+cadena+"]";
                 cont=0;
             }else{
-                s += " -> ["+statesName+abortado.get(i)+","+cadena.substring(cont+1)+"]";
+                s += " -> ["+Q.get(abortado.get(i))+","+cadena.substring(cont+1)+"]";
                 cont++;
             }
         }

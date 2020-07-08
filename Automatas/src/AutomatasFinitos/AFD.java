@@ -338,6 +338,7 @@ public class AFD {
      * Funcion que busca y elimina los estados inaccesibles del automata
      */
     public void eliminarEstadosInaccesibles(){
+        String estadoInicial = Q.get(q0);
         hallarEstadosInaccesibles();
         for(int i=0;i<estadosInaccesibles.size();i++){
             for(int j=0;j<F.size();j++){
@@ -350,8 +351,8 @@ public class AFD {
             }
             Delta.remove(estadosInaccesibles.get(i));
             Q.remove(estadosInaccesibles.get(i));
-            
         }
+        q0 = Q.indexOf(estadoInicial);
     }
     
     /**
