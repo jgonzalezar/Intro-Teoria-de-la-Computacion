@@ -133,28 +133,34 @@ public class Windows2AFNL extends WindowsAFNL{
         boolean ac,re,ab;
         Button aceptados = new Button("Aceptados");
         aceptados.setBounds(480, 10, 100, 30);
-        getContentPane().add(aceptados);
         ac=move.getListaProcesamientosAceptacion().isEmpty();
-        
+        if(ac){
+            aceptados.setEnabled(false);
+        }else{
+            getContentPane().add(aceptados);
+        }
         
         Button rechazados = new Button("Rechazados");
         rechazados.setBounds(480, 40, 100, 30);
-        getContentPane().add(rechazados);
         re=move.getListaProcesamientosRechazados().isEmpty();
-        if(re)rechazados.setEnabled(false);
+        
         
         Button abortados = new Button("Abortados");
         abortados.setBounds(480, 70, 100, 30);
         getContentPane().add(abortados);
-        ab=move.getListaProcesamientosAceptacion().isEmpty();
-        if(ab)aceptados.setEnabled(false);
+        ab=move.getListaProcesamientosAbortados().isEmpty();
+        if(ab){
+            abortados.setEnabled(false);
+        }else{
+            getContentPane().add(abortados);
+        }
         
         JComboBox combo = new JComboBox<>();
         //JComboBox combo;
         combo.setBounds(480, 100, 100, 30);
         
         getContentPane().add(combo);
-        lec = false;
+        lec = true;
         aceptados.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -162,8 +168,8 @@ public class Windows2AFNL extends WindowsAFNL{
                 combo.removeAllItems();
                 lec=true;
                 aceptados.setEnabled(false);
-                if(!rechazados.isEnabled()&&!re)rechazados.setEnabled(true);
-                if(!abortados.isEnabled()&&!ab)abortados.setEnabled(true);
+                if(!rechazados.isEnabled())rechazados.setEnabled(true);
+                if(!abortados.isEnabled())abortados.setEnabled(true);
                 for (int i = 0; i < move.getListaProcesamientosAceptacion().size(); i++) {
                     combo.addItem(i+1);
                 }
@@ -174,16 +180,22 @@ public class Windows2AFNL extends WindowsAFNL{
             for (int i = 0; i < move.getListaProcesamientosAceptacion().size(); i++) {
                 combo.addItem(i+1);
             }
+            aceptados.setForeground(Color.ORANGE);
         }else if(!re){
             for (int i = 0; i < move.getListaProcesamientosRechazados().size(); i++) {
                 combo.addItem(i+1);
             }
+            aceptados.setForeground(Color.ORANGE);
+            rechazados.setEnabled(false);
         }else if(!ab){
             for (int i = 0; i < move.getListaProcesamientosAbortados().size(); i++) {
                 combo.addItem(i+1);
             }
+            aceptados.setForeground(Color.ORANGE);
+            abortados.setEnabled(false);
+            rechazados.setEnabled(false);
         }
-        aceptados.setEnabled(false);
+        //aceptados.setEnabled(false);
         rechazados.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -221,15 +233,16 @@ public class Windows2AFNL extends WindowsAFNL{
                 if(!lec)return;
                 String camino;
                 ChangeEstado(aff.GetQ()[aff.getQ0()], '0', aff.getF().contains(aff.getQ0()), 0);
-                if(!aceptados.isEnabled()){
+                if(!aceptados.isEnabled() && getContentPane().isAncestorOf(aceptados)){
                     camino = move.getListaProcesamientosAceptacion().get(combo.getSelectedIndex());
-                }else if(!rechazados.isEnabled()){
+                }else if(!rechazados.isEnabled() && getContentPane().isAncestorOf(rechazados)){
                     camino = move.getListaProcesamientosRechazados().get(combo.getSelectedIndex());
                 }else{
                     camino = move.getListaProcesamientosAbortados().get(combo.getSelectedIndex());
                     int ab = camino.lastIndexOf("]");
                     camino = camino.substring(0, ab+1) + " -> [null, ]";
                 }
+                
                 int len = camino.lastIndexOf("]");
                 caminos = camino.trim().substring(0,len+1).split(" -> ");
                 next.setEnabled(false);
@@ -257,6 +270,7 @@ public class Windows2AFNL extends WindowsAFNL{
                 }
             }
         });
+        combo.setSelectedIndex(0);
     }
 
     private void initScrool() {
