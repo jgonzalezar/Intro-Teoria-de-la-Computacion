@@ -22,6 +22,7 @@ public class ProcesamientoCadenaTM  {
      * Constructor del procesamiento donde guarda alguna cadena inicial eh crea un nuevo objeto para el resto de variables
      * @param cadena cadena a guardar en el procesamiento
      * @param paso1
+     * @param blnc
      */
     
     

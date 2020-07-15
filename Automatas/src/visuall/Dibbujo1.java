@@ -4,26 +4,26 @@
  * and open the template in the editor.
  */
 package visuall;
-
+import AutomatasFinitos.*;
+import Herramientas.Transitions;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * la clase Dibbujo extiende de un canvas para representar un dibujo grafico de un automata finito determinista
  * @author fanat
  */
-public class Dibbujo extends Canvas {
-    private final String Ini;
-    private String actP;
-    private String actN;
-    private boolean fiP;
-    private boolean fiN;
-    private boolean comeP;
-    private boolean comeN;
-    private int ye=0;
-    private char next;
+public class Dibbujo1 extends Canvas {
+    private final AFD afd;
+    private String estadoP;
+    private String estadoN;
     private anim ani;
+    private int ye;
+    private int x;
+    private int y;
 
     private enum anim{
         estatic,moveto,white,backto
@@ -31,18 +31,20 @@ public class Dibbujo extends Canvas {
     
     /**
      * constructor de la calse Dibujo 
-     * @param firstState nombre del estado inicial
-     * @param iniFin el estado inicial es aceptado
+     * @param ff
      */
     
-    public Dibbujo(String firstState,boolean iniFin) {
-        actP=actN=Ini = firstState;
-        fiP=fiN=iniFin;
-        comeP=comeN=false;
-        next=' ';
-        ani =anim.estatic;
-        init();
+    public Dibbujo1(AFD ff) {
+        afd=ff;
+        ani = anim.estatic;
+        int qs = afd.getQ().size();
         
+        x=qs*100+150*(qs-1)+20;
+        y=((qs-1)*100)*2;
+        if(x<600)x=600;
+        if(y<300)y=300;
+        setBounds(0,0,x, y);
+        init();
     }
     
     /**
@@ -55,9 +57,9 @@ public class Dibbujo extends Canvas {
         g.setColor(Color.BLACK);
         switch(ani){
             case estatic:
-                drawState(100,true,g);
+                drawAFD(g);
                 break;
-            case moveto:
+            /*case moveto:
                 if(ye<220){
                     drawState(100-ye,true,g);
                     drawState(320-ye,false,g); 
@@ -92,7 +94,7 @@ public class Dibbujo extends Canvas {
                     comeP=comeN;
                     
                 }
-                break;
+                break;*/
             default:
                 throw new AssertionError(ani.name());
 }
@@ -102,30 +104,35 @@ public class Dibbujo extends Canvas {
     private void init() {
         setBackground(Color.WHITE);
     }
-    private void drawState(int x,boolean P,Graphics g){
-        String data;
-        boolean fina;
-        boolean come;
-        if(P){
-            data=actP;
-            fina=fiP;
-            come=comeP;
-        }else{
-            data=actN;
-            fina=fiN;
-            come=comeN;       
+    
+    private void drawAFD(Graphics g) {
+        ArrayList<String> qq = afd.getQ();
+        Transitions de = afd.getDelta();
+        Alfabeto alf = afd.getSigma();
+        drawFle(20+250*afd.getQ0(), y/2, g, 6);
+        for (int i = 0; i < qq.size(); i++) {
+            String name= qq.get(i);
+            drawState(i*250+20+50,name,afd.getF().contains(i),g);
+            HashMap<String,ArrayList<Character>> trans = new HashMap();
+            for (int j = 0; j < alf.length() ; j++) {
+                ArrayList<Integer> asd = new ArrayList<>();
+                if(afd instanceof AFNL){
+                    
+                }else if(afd instanceof AFN){
+                    
+                }else{
+                    
+                }
+            }
         }
-        if(fina){
-            drawCircle(x, 100, 50, g);
+        
+    }
+    private void drawState(int x,String Name,boolean fid,Graphics g){
+        if(fid){
+            drawCircle(x, y/2, 40, g);
         }
-        drawCircle(x, 100, 60, g);
-        if(data.equals(Ini)){
-            drawFle(x,40,g,2);
-        }
-        drawName(x, 100, data, g);
-        if(come){
-            drawFle(x-60,100,g,4);
-        }
+        drawCircle(x, y/2, 50, g);
+        drawName(x, y/2, Name, g);        
     }
     
     private void drawCircle(int x,int y, int r,Graphics g){
@@ -143,22 +150,22 @@ public class Dibbujo extends Canvas {
     private void drawFle(int x, int y, Graphics g,int direc) {
         switch(direc){
             case 2:
-                g.drawLine(x, y-40, x, y);
+                g.drawLine(x, y-20, x, y);
                 g.drawLine(x-10, y-10, x, y);
                 g.drawLine(x+10, y-10, x, y);
                 break;
             case 8:
-                g.drawLine(x, y+40, x, y);
+                g.drawLine(x, y+20, x, y);
                 g.drawLine(x-10, y+10, x, y);
                 g.drawLine(x+10, y+10, x, y);
                 break;
-            case 4:
-                g.drawLine(x-40, y, x, y);
+            case 6:
+                g.drawLine(x-20, y, x, y);
                 g.drawLine(x-10, y+10, x, y);
                 g.drawLine(x-10, y-10, x, y);
                 break;
-            case 6:
-                g.drawLine(x+40, y, x, y);
+            case 4:
+                g.drawLine(x+20, y, x, y);
                 g.drawLine(x+10, y+10, x, y);
                 g.drawLine(x+10, y-10, x, y);
                 break;
@@ -174,7 +181,7 @@ public class Dibbujo extends Canvas {
      * @param tp el desplazamiento sera instantaneo o tiene direccion
      * @param used caracter por el cual se realiza el movimiento
      */
-    public void setData(String nextState,boolean Fin,int tp, char used){
+    /*public void setData(String nextState,boolean Fin,int tp, char used){
         if(nextState == null)nextState = "∅";
         if(nextState.equals(actP) && tp == 0)return;
         
@@ -201,7 +208,7 @@ public class Dibbujo extends Canvas {
                 comeN=false;
                 break;
         }
-    }
+    }*/
     
     /**
      * la animacion esta en un estado estatico
@@ -210,23 +217,5 @@ public class Dibbujo extends Canvas {
  
     public boolean isStatic(){
         return ani==anim.estatic;
-    }
-    
-    /**
-     * consigue el nombre del estado previo
-     * @return 
-     */
-
-    public String getActP() {
-        return actP;
-    }
-
-    /**
-     * returna si el estado previo es aceptado
-     * @return 
-     */
-    
-    public boolean isFiP() {
-        return fiP;
     }
 }
