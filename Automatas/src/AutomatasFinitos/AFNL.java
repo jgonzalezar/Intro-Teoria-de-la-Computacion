@@ -45,7 +45,7 @@ public class AFNL extends AFN {
     }
 
     
-    /**
+    /**impri
      * Constructor, inicializa los atributos.
      *
      * @param E Alfabeto
@@ -308,16 +308,15 @@ public class AFNL extends AFN {
         //System.out.print("lambda clausura de los estados {");
 
         for (int i = 0; i < estados.size(); i++) {
-            lclausura += " " + Q.get(i) + " ";
+            lclausura += " " + Q.get(estados.get(i)) + " ";
             //System.out.print(" " + Q.get(i) + " ");
         }
         
         lclausura += "} es : {";
         //System.out.print("} es : ");
-
         //System.out.print(" {");
-        for (int i = 0; i < Clausura.size(); i++) {
-            lclausura += " " + Q.get(i) + " ";
+        for (Integer Clausura1 : Clausura) {
+            lclausura += " " + Q.get(Clausura1) + " ";
             //System.out.print(" " + Q.get(i) + " ");
         }
         lclausura += "} \n";
