@@ -130,7 +130,7 @@ public class Windows3 extends Windows{
         copyCam.setBounds(220,190,150, 30);
         copyCam.addActionListener((ActionEvent e) -> {
             if(!vent.isStatic())return;
-            ProcesamientoCadenaAFD move = new ProcesamientoCadenaAFD(cadds.getText());
+            ProcesamientoCadenaAFD move = new ProcesamientoCadenaAFD(cadds.getText().substring(1));
             blueLabel.get(1);
             avance.forEach((string) -> {
                 move.add(string);
