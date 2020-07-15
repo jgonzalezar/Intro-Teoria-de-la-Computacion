@@ -89,6 +89,10 @@ public class ProcesamientoCadenaAFPD  {
         this.esAceptada = esAceptada;
     }
     
+    public boolean sameStates(){
+        return cadena.length()==listaEstadoSimboloDeProcesamiento.size();
+    }
+    
     /**
      * añade un estado a la lista de estados procesados
      * @param paso nuevo estado agregado
