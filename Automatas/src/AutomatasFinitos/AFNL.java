@@ -41,6 +41,10 @@ public class AFNL extends AFN {
      */
     private final char lambda = '$';
 
+    public AFNL() {
+    }
+
+    
     /**
      * Constructor, inicializa los atributos.
      *
@@ -376,9 +380,28 @@ public class AFNL extends AFN {
      * acceder a esta informacion.
      *
      * @param cadena cadena a evaluar.
+     * @return 
      */
     public ProcesamientoCadenaAFNLambda procesarCadenad(String cadena) {
         RespuestaMult rta = caminosPosibles(cadena);
+        ArrayList<Integer> finals = rta.getFinals();
+        for (int i = 0; i < finals.size(); i++) {
+            ArrayList<Integer> StepsToAdd = new ArrayList<>();
+            try {
+                ArrayList<Integer> CaminosLambda = lambdaClausura_unEstado(finals.get(i));
+                StepsToAdd.addAll(CaminosLambda);
+            } catch (Exception e) {
+                StepsToAdd.add(null);
+            }
+            Set<Integer> hashSet = new HashSet<>(StepsToAdd);
+            StepsToAdd.clear();
+            StepsToAdd.addAll(hashSet);
+            
+            
+            rta.addRutas(i, StepsToAdd);
+        }
+        
+        
         return procesamiento(cadena, rta);
     }
 
@@ -744,8 +767,6 @@ public class AFNL extends AFN {
 
     public AFN AFN_LambdaToAFN() {
         ArrayList<Integer> aceptacion = new ArrayList<>();
-        ArrayList<String> newQ = new ArrayList<>();
-        int index = 0;
         TransitionAFN delta = new TransitionAFN(this.Q.size());
 
         for (int i = 0; i < Q.size(); i++) {
@@ -756,25 +777,19 @@ public class AFNL extends AFN {
                 }
             }
         }
-
-        for(int i=0;i<Q.get(0).length();i++){
-            if(isInteger(Q.get(0).substring(i))){
-                index=i;
-                break;
-            }
-        }
         
         for (int i = 0; i < Q.size(); i++) {
             for (int j = 0; j < Sigma.length(); j++) {
                 delta.add(Sigma.get(j), i, trancisiones(i, Sigma.get(j)));
             }
-            newQ.add(Q.get(i).substring(0,index)+i);
         }
 
         Set<Integer> hashSet = new HashSet<>(aceptacion);
         aceptacion.clear();
         aceptacion.addAll(hashSet);
-        return new AFN(Sigma, newQ, q0, aceptacion, delta);
+        AFN asd = new AFN(Sigma, Q, q0, aceptacion, delta);
+        System.out.println(asd.toString());
+        return asd;
     }
 
     public int[] trancisiones(int estado, char simb) {
@@ -900,12 +915,14 @@ public class AFNL extends AFN {
                     }
                 }
             }
-        }for(int m=0;m<Q.size();m++) {
+        }
+        for(int m=0;m<Q.size();m++) {
             if(  Delta.getMove(m, '$')!=null){
+                ArrayList<Integer> asd = Delta.getMove(m,'$');
                 cadena+=Q.get(m)+":"+"$"+">";
-                for(int k=0;k<Delta.getMove(m,'$').size();k++){
-                    cadena+=Q.get(Delta.getMove(m,'$').get(k));
-                    if(k<Delta.getMove(m, '$').size()-1){
+                for(int k=0;k<asd.size();k++){
+                    cadena+=Q.get(asd.get(k));
+                    if(k<asd.size()-1){
                         cadena+=";"; 
                     }else{
                         cadena+="\n";  
