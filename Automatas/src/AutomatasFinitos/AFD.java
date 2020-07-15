@@ -495,7 +495,7 @@ public class AFD {
             String line="";
             Table2[i][i]=qs[i]=Q.get(i);
             for (int j = 0; j < i; j++) {
-                if(Table[j][i]){
+                if(!Table[j][i]){
                     Table2[i][j]="X";
                     line+="X";
                 }else{
