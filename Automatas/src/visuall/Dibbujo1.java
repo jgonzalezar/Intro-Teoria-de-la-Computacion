@@ -15,6 +15,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JPanel;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
@@ -24,7 +25,7 @@ import javax.swing.SwingConstants;
  *
  * @author fanat
  */
-public class Dibbujo1 extends Canvas implements Scrollable {
+public class Dibbujo1 extends JPanel implements Scrollable {
 
     private final AFD afd;
     private String estadoP;
@@ -152,15 +153,15 @@ public class Dibbujo1 extends Canvas implements Scrollable {
                 if (afd instanceof AFNL) {
                     asd = de.getMove(i, alf.get(j));
                 } else if (afd instanceof AFN) {
-
                 } else {
-                    asd.add(qq.indexOf(de.cambio(alf.get(j), qq.get(i))));
+                    String go = de.cambio(alf.get(j), qq.get(i));
+                    asd.add(qq.indexOf(go));
                 }
                 for (int k = 0; k < asd.size(); k++) {
-                    if (ssss.get(qq.get(k)) == null) {
-                        ssss.put(qq.get(k), new ArrayList<>());
+                    if (ssss.get(qq.get(asd.get(k))) == null) {
+                        ssss.put(qq.get(asd.get(k)), new ArrayList<>());
                     }
-                    ssss.get(qq.get(k)).add(alf.get(j));
+                    ssss.get(qq.get(asd.get(k))).add(alf.get(j));
                 }
             }
 
@@ -183,13 +184,13 @@ public class Dibbujo1 extends Canvas implements Scrollable {
 
                 } else {
                     int xa, ya, large, alto, ang1, ang2;
-                    large = 75 + 100 * dif;
-                    alto = 75 + 100 * dif;
-                    ang1=30;
-                    ang2=60;
+                    large = 250 * dif;
+                    alto = 75 * dif;
+                    ang1=0;
+                    ang2=0;
                     if (ee > i) {
                         xa = i * 250 + 20 + 50;
-                        alto = 75 + 100 * dif;
+                        
                         ya = y / 2 - 50 - alto;
                     } else {
                         xa = ee * 250 + 20 + 50;
