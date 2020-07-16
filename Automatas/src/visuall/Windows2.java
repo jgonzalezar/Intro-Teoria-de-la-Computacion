@@ -47,12 +47,12 @@ public class Windows2 extends Windows{
     private void initButtons() {
         Button next= new Button("previo");
         next.setEnabled(false);
-        next.setBounds(220, 10, 100, 40);
+        next.setBounds(620, 10, 100, 40);
         
         getContentPane().add(next);
         
         Button trans= new Button("siguiente");
-        trans.setBounds(330, 10, 100, 40);
+        trans.setBounds(730, 10, 100, 40);
         trans.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
