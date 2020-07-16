@@ -47,6 +47,13 @@ public class Windows extends JFrame{
         vent = new Dibbujo1(aff);
         //vent.setBounds(10,10,200, 200);
         getContentPane().add(vent);
+        /*vent = new Dibbujo(aff.getQ().get(aff.getQ0()),aff.getF().contains(aff.getQ0()));
+        vent.setBounds(10,10,500, 500);
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setScrollPosition(490, 10);
+                //setEnabled(true);
+        scrollPane.setBounds(10,10, 100, 100);
+        getContentPane().add(scrollPane.add(vent));*/
     }
     /**
      * variacion del metodo dispose para ayufar con el ciclo
