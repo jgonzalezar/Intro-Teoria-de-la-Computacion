@@ -40,7 +40,8 @@ public class Dibbujo1 extends Canvas {
         afd=ff;
         ani = anim.estatic;
         int qs = afd.getQ().size();
-        
+        trans=0;
+        estadoP=estadoN=afd.getQ().get(afd.getQ0());
         x=qs*100+150*(qs-1)+20;
         y=((qs-1)*100)*2;
         if(x<600)x=600;
@@ -70,6 +71,7 @@ public class Dibbujo1 extends Canvas {
                     ye=0;
                     ani=anim.estatic;
                     estadoP=estadoN;
+                    trans=0;
                 }
                 break;
             case white:
@@ -84,6 +86,7 @@ public class Dibbujo1 extends Canvas {
                     ye=0;
                     ani=anim.estatic;
                     estadoP=estadoN;
+                    trans=0;
                 }
                 break;
             default:
@@ -103,6 +106,39 @@ public class Dibbujo1 extends Canvas {
         Alfabeto alf = afd.getSigma();
         drawFle(20+250*afd.getQ0(), y/2, g, 6);
         for (int i = 0; i < qq.size(); i++) {
+            switch (trans) {
+                case 0:
+                    if(qq.get(i).equals(estadoP)){
+                        g.setColor(Color.BLUE);
+                        g.fillOval(i*250+20, y/2-50, 100, 100);
+                        g.setColor(Color.BLACK);
+                    }
+                    break;
+                case -1:
+                    if(qq.get(i).equals(estadoP)){
+                        g.setColor(Color.BLUE);
+                        g.fillOval(i*250+20, y/2-50, 100, 100);
+                        g.setColor(Color.BLACK);
+                    }else if(qq.get(i).equals(estadoN)){
+                        g.setColor(Color.ORANGE);
+                        g.fillOval(i*250+20, y/2-50, 100, 100);
+                        g.setColor(Color.BLACK);
+                    }
+                    break;
+                case 1:
+                    if(qq.get(i).equals(estadoP)){
+                        g.setColor(Color.BLUE);
+                        g.fillOval(i*250+20, y/2-50, 100, 100);
+                        g.setColor(Color.BLACK);
+                    }else if(qq.get(i).equals(estadoN)){
+                        g.setColor(Color.ORANGE);
+                        g.fillOval(i*250+20, y/2-50, 100, 100);
+                        g.setColor(Color.BLACK);
+                    }
+                    break;
+                default:
+                    break;
+            }
             String name= qq.get(i);
             drawState(i*250+20+50,name,afd.getF().contains(i),g);
             HashMap<String,ArrayList<Character>> trans = new HashMap();
@@ -133,8 +169,14 @@ public class Dibbujo1 extends Canvas {
                 }else{
                     
                 }
-                
-                g.drawArc(i*250+20+50, y, WIDTH, HEIGHT, tam, tam);
+                if(this.trans!=0){
+                    if(qq.get(i).equals(estadoP)&&key.equals(estadoN)&&this.trans==1){
+                        
+                    }else if(qq.get(i).equals(estadoN)&&key.equals(estadoP)&&this.trans==-1){
+                        
+                    }
+                }
+                //g.drawArc(i*250+20+50, y, WIDTH, HEIGHT, tam, tam);
                 
                 
             }
