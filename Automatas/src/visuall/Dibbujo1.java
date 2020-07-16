@@ -159,7 +159,9 @@ public class Dibbujo1 extends JComponent implements Scrollable {
             for (int j = 0; j < alf.length(); j++) {
                 ArrayList<Integer> asd = new ArrayList<>();
                 if (afd instanceof AFNL) {
-                    asd = de.getMove(i, alf.get(j));
+                    ArrayList<Integer> ass =de.getMove(i, alf.get(j));
+                    if(ass!=null)asd = ass;
+                    
                 } else if (afd instanceof AFN) {
                 } else {
                     String go = de.cambio(alf.get(j), qq.get(i));
@@ -171,13 +173,10 @@ public class Dibbujo1 extends JComponent implements Scrollable {
                     }
                     ssss.get(qq.get(asd.get(k))).add(alf.get(j));
                 }
-            }
-
-            System.out.println(ssss.toString());
+            }            
             for (Map.Entry<String, ArrayList<Character>> entry : ssss.entrySet()) {
                 String key = entry.getKey();
                 ArrayList<Character> value = entry.getValue();
-                System.out.println(qq.get(i)+" "+key+" "+value.toString());
                 String text = value.toString().substring(1, value.toString().length() - 1);
                 int ee = qq.indexOf(key);
                 int dif = Math.abs(ee - i);
@@ -200,13 +199,16 @@ public class Dibbujo1 extends JComponent implements Scrollable {
                         xa = i * 250 + 20 + 50;
                         
                         ya = y / 2 - 50 - alto;
+                        drawName(xa+large/2, ya-10, text, g);
                     } else {
                         xa = ee * 250 + 20 + 50;
                         ya = y / 2 + 50;
+                        drawName(xa+large/2, ya+alto+5, text, g);
                     }
                     
                     g.drawArc(xa, ya, large, alto, ang1, ang2);
                     g.drawRect(xa, ya,large, alto);
+                    
                 }
 
                 g.setColor(Color.BLACK);
