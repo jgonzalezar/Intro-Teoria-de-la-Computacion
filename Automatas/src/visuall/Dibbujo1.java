@@ -11,6 +11,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * la clase Dibbujo extiende de un canvas para representar un dibujo grafico de un automata finito determinista
@@ -21,6 +22,7 @@ public class Dibbujo1 extends Canvas {
     private String estadoP;
     private String estadoN;
     private anim ani;
+    private int trans;
     private int ye;
     private int x;
     private int y;
@@ -43,7 +45,7 @@ public class Dibbujo1 extends Canvas {
         y=((qs-1)*100)*2;
         if(x<600)x=600;
         if(y<300)y=300;
-        setBounds(0,0,x, y);
+        
         init();
     }
     
@@ -59,42 +61,31 @@ public class Dibbujo1 extends Canvas {
             case estatic:
                 drawAFD(g);
                 break;
-            /*case moveto:
-                if(ye<220){
-                    drawState(100-ye,true,g);
-                    drawState(320-ye,false,g); 
-                    g.drawLine(160-ye, 100, 220-ye, 100);
-                    g.drawString(next+"", 200-ye, 100);
+            case moveto:
+                if(ye==0){
+                    drawAFD(g);
+                }else if(ye<220){
                     ye+=5;
                 }else{
                     ye=0;
                     ani=anim.estatic;
-                    actP=actN;
-                    fiP=fiN;
-                    comeP=comeN;
-                    
+                    estadoP=estadoN;
                 }
                 break;
             case white:
-                g.clearRect(0, 0, 200, 200);
-                ani=anim.estatic;
+                drawAFD(g);
                 break;
             case backto:
-                if(ye<220){
-                    drawState(-120+ye,false,g);
-                    drawState(100+ye,true,g); 
-                    g.drawLine(-60+ye, 100,ye, 100);
-                    g.drawString(next+"", -20+ye, 100);
+                if(ye==0){
+                    drawAFD(g);
+                }if(ye<220){
                     ye+=5;
                 }else{
                     ye=0;
                     ani=anim.estatic;
-                    actP=actN;
-                    fiP=fiN;
-                    comeP=comeN;
-                    
+                    estadoP=estadoN;
                 }
-                break;*/
+                break;
             default:
                 throw new AssertionError(ani.name());
 }
@@ -103,6 +94,7 @@ public class Dibbujo1 extends Canvas {
 
     private void init() {
         setBackground(Color.WHITE);
+        setBounds(0,0,x, y);
     }
     
     private void drawAFD(Graphics g) {
@@ -117,14 +109,37 @@ public class Dibbujo1 extends Canvas {
             for (int j = 0; j < alf.length() ; j++) {
                 ArrayList<Integer> asd = new ArrayList<>();
                 if(afd instanceof AFNL){
-                    
+                    asd = de.getMove(i, alf.get(j));
                 }else if(afd instanceof AFN){
+                    
+                }else{
+                    asd.add(qq.indexOf(de.cambio(alf.get(j), qq.get(i))));
+                }
+                for (int k = 0; k < asd.size(); k++) {
+                    if(trans.get(qq.get(k))==null){
+                        trans.put(qq.get(k), new ArrayList<>());
+                    }
+                    trans.get(qq.get(k)).add(alf.get(j));
+                }
+            }
+            
+            for (Map.Entry<String, ArrayList<Character>> entry : trans.entrySet()) {
+                String key = entry.getKey();
+                ArrayList<Character> value = entry.getValue();
+                String text = value.toString().substring(1, value.toString().length()-1);
+                int ee = qq.indexOf(key);
+                if(ee>i){
                     
                 }else{
                     
                 }
+                
+                g.drawArc(i*250+20+50, y, WIDTH, HEIGHT, tam, tam);
+                
+                
             }
         }
+        
         
     }
     private void drawState(int x,String Name,boolean fid,Graphics g){
