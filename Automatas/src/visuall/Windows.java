@@ -6,9 +6,9 @@
 package visuall;
 
 import AutomatasFinitos.AFD;
-import java.awt.ScrollPane;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 /**
@@ -48,7 +48,11 @@ public class Windows extends JFrame{
     private void initCanvas(){
         vent = new Dibbujo1(aff);
         //vent.setBounds(10,10,200, 200);
-        getContentPane().add(vent);
+        
+        JScrollPane jScrollPane = new JScrollPane();
+        
+        jScrollPane.getViewport().setView(vent);
+        jScrollPane.setBounds(10,10, 200, 250);
         /*vent = new Dibbujo(aff.getQ().get(aff.getQ0()),aff.getF().contains(aff.getQ0()));
         vent.setBounds(10,10,500, 500);
         ScrollPane scrollPane = new ScrollPane();
@@ -56,6 +60,7 @@ public class Windows extends JFrame{
                 //setEnabled(true);
         scrollPane.setBounds(10,10, 100, 100);
         getContentPane().add(scrollPane.add(vent));*/
+        getContentPane().add(jScrollPane);
     }
     /**
      * variacion del metodo dispose para ayufar con el ciclo
