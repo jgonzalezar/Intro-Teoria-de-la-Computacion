@@ -15,6 +15,7 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import javax.swing.JComponent;
 import javax.swing.Scrollable;
 import javax.swing.SwingConstants;
 
@@ -24,7 +25,7 @@ import javax.swing.SwingConstants;
  *
  * @author fanat
  */
-public class Dibbujo1 extends Canvas implements Scrollable {
+public class Dibbujo1 extends JComponent implements Scrollable {
 
     private final AFD afd;
     private String estadoP;
@@ -70,6 +71,7 @@ public class Dibbujo1 extends Canvas implements Scrollable {
      * @param ff
      */
     public Dibbujo1(AFD ff) {
+        super();
         afd = ff;
         ani = anim.estatic;
         int qs = afd.getQ().size();
@@ -137,7 +139,13 @@ public class Dibbujo1 extends Canvas implements Scrollable {
         setBackground(Color.WHITE);
         setBounds(0, 0, x, y);
     }
-
+    
+    @Override
+    public Dimension getPreferredSize()
+    {
+        return new Dimension(this.getSize().width,this.getSize().height);
+    }
+    
     private void drawAFD(Graphics g) {
         ArrayList<String> qq = afd.getQ();
         Transitions de = afd.getDelta();
