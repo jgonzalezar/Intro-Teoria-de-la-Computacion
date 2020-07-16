@@ -37,7 +37,7 @@ public class Windows extends JFrame{
     }
     
     private void initFrame(){
-        setSize(800, 700);
+        setSize(1000, 700);
         setVisible(true);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -48,18 +48,9 @@ public class Windows extends JFrame{
     private void initCanvas(){
         vent = new Dibbujo1(aff);
         //vent.setBounds(10,10,200, 200);
-        
         JScrollPane jScrollPane = new JScrollPane();
-        
         jScrollPane.getViewport().setView(vent);
-        jScrollPane.setBounds(10,10, 200, 250);
-        /*vent = new Dibbujo(aff.getQ().get(aff.getQ0()),aff.getF().contains(aff.getQ0()));
-        vent.setBounds(10,10,500, 500);
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setScrollPosition(490, 10);
-                //setEnabled(true);
-        scrollPane.setBounds(10,10, 100, 100);
-        getContentPane().add(scrollPane.add(vent));*/
+        jScrollPane.setBounds(10,10, 600, 300);
         getContentPane().add(jScrollPane);
     }
     /**

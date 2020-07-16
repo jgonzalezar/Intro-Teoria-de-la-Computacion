@@ -49,12 +49,12 @@ public class Windows2AFNL extends WindowsAFNL{
     private void initButtons() {
         Button next= new Button("previo");
         next.setEnabled(false);
-        next.setBounds(210, 10, 100, 40);
+        next.setBounds(610, 10, 100, 40);
         
         getContentPane().add(next);
         
         Button trans= new Button("siguiente");
-        trans.setBounds(310, 10, 100, 40);
+        trans.setBounds(710, 10, 100, 40);
         trans.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -132,7 +132,7 @@ public class Windows2AFNL extends WindowsAFNL{
         
         boolean ac,re,ab;
         Button aceptados = new Button("Aceptados");
-        aceptados.setBounds(480, 10, 100, 30);
+        aceptados.setBounds(880, 10, 100, 30);
         ac=move.getListaProcesamientosAceptacion().isEmpty();
         if(ac){
             aceptados.setEnabled(false);
@@ -141,12 +141,12 @@ public class Windows2AFNL extends WindowsAFNL{
         }
         
         Button rechazados = new Button("Rechazados");
-        rechazados.setBounds(480, 40, 100, 30);
+        rechazados.setBounds(880, 40, 100, 30);
         re=move.getListaProcesamientosRechazados().isEmpty();
         
         
         Button abortados = new Button("Abortados");
-        abortados.setBounds(480, 70, 100, 30);
+        abortados.setBounds(880, 70, 100, 30);
         getContentPane().add(abortados);
         ab=move.getListaProcesamientosAbortados().isEmpty();
         if(ab){
@@ -157,7 +157,7 @@ public class Windows2AFNL extends WindowsAFNL{
         
         JComboBox combo = new JComboBox<>();
         //JComboBox combo;
-        combo.setBounds(480, 100, 100, 30);
+        combo.setBounds(880, 100, 100, 30);
         
         getContentPane().add(combo);
         lec = true;
@@ -180,18 +180,15 @@ public class Windows2AFNL extends WindowsAFNL{
             for (int i = 0; i < move.getListaProcesamientosAceptacion().size(); i++) {
                 combo.addItem(i+1);
             }
-            aceptados.setForeground(Color.ORANGE);
         }else if(!re){
             for (int i = 0; i < move.getListaProcesamientosRechazados().size(); i++) {
                 combo.addItem(i+1);
             }
-            aceptados.setForeground(Color.ORANGE);
             rechazados.setEnabled(false);
         }else if(!ab){
             for (int i = 0; i < move.getListaProcesamientosAbortados().size(); i++) {
                 combo.addItem(i+1);
             }
-            aceptados.setForeground(Color.ORANGE);
             abortados.setEnabled(false);
             rechazados.setEnabled(false);
         }
