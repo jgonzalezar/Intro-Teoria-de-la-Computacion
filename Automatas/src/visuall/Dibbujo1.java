@@ -193,21 +193,23 @@ public class Dibbujo1 extends JComponent implements Scrollable {
                     int xa, ya, large, alto, ang1, ang2;
                     large = 250 * dif;
                     alto = 75 * dif;
-                    ang1=0;
-                    ang2=0;
                     if (ee > i) {
                         xa = i * 250 + 20 + 50;
                         
-                        ya = y / 2 - 50 - alto;
+                        ya = y / 2 - 20 - alto;
                         drawName(xa+large/2, ya-10, text, g);
+                        ang1=0;
+                        ang2=180;
                     } else {
                         xa = ee * 250 + 20 + 50;
-                        ya = y / 2 + 50;
+                        ya = y / 2 + 20;
                         drawName(xa+large/2, ya+alto+5, text, g);
+                        ang1=185;
+                        ang2=340;
                     }
                     
                     g.drawArc(xa, ya, large, alto, ang1, ang2);
-                    g.drawRect(xa, ya,large, alto);
+                    //g.drawRect(xa, ya,large, alto);
                     
                 }
 
@@ -217,6 +219,10 @@ public class Dibbujo1 extends JComponent implements Scrollable {
                 case 0:
                     if (qq.get(i).equals(estadoP)) {
                         g.setColor(Color.CYAN);
+                        g.fillOval(i * 250 + 20, y / 2 - 50, 100, 100);
+                        g.setColor(Color.BLACK);
+                    }else{
+                        g.setColor(Color.WHITE);
                         g.fillOval(i * 250 + 20, y / 2 - 50, 100, 100);
                         g.setColor(Color.BLACK);
                     }
@@ -230,6 +236,10 @@ public class Dibbujo1 extends JComponent implements Scrollable {
                         g.setColor(Color.ORANGE);
                         g.fillOval(i * 250 + 20, y / 2 - 50, 100, 100);
                         g.setColor(Color.BLACK);
+                    }else{
+                        g.setColor(Color.WHITE);
+                        g.fillOval(i * 250 + 20, y / 2 - 50, 100, 100);
+                        g.setColor(Color.BLACK);
                     }
                     break;
                 case 1:
@@ -239,6 +249,10 @@ public class Dibbujo1 extends JComponent implements Scrollable {
                         g.setColor(Color.BLACK);
                     } else if (qq.get(i).equals(estadoN)) {
                         g.setColor(Color.ORANGE);
+                        g.fillOval(i * 250 + 20, y / 2 - 50, 100, 100);
+                        g.setColor(Color.BLACK);
+                    }else{
+                        g.setColor(Color.WHITE);
                         g.fillOval(i * 250 + 20, y / 2 - 50, 100, 100);
                         g.setColor(Color.BLACK);
                     }
