@@ -37,11 +37,7 @@ public class Windows extends JFrame{
     }
     
     private void initFrame(){
-<<<<<<< Updated upstream
         setSize(800, 700);
-=======
-        setSize(800, 600);
->>>>>>> Stashed changes
         setVisible(true);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -50,19 +46,16 @@ public class Windows extends JFrame{
     }
 
     private void initCanvas(){
-<<<<<<< Updated upstream
         vent = new Dibbujo1(aff);
         //vent.setBounds(10,10,200, 200);
         getContentPane().add(vent);
-=======
-        vent = new Dibbujo(aff.getQ().get(aff.getQ0()),aff.getF().contains(aff.getQ0()));
+        /*vent = new Dibbujo(aff.getQ().get(aff.getQ0()),aff.getF().contains(aff.getQ0()));
         vent.setBounds(10,10,500, 500);
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setScrollPosition(490, 10);
                 //setEnabled(true);
         scrollPane.setBounds(10,10, 100, 100);
-        getContentPane().add(scrollPane.add(vent));
->>>>>>> Stashed changes
+        getContentPane().add(scrollPane.add(vent));*/
     }
     /**
      * variacion del metodo dispose para ayufar con el ciclo
