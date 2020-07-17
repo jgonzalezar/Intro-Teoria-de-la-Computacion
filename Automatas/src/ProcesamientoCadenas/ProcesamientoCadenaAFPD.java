@@ -107,13 +107,12 @@ public class ProcesamientoCadenaAFPD  {
     
     public void setPila(String in){
         if(in.charAt(0) !='$'){
-            if(in.charAt(0)=='_')return;
             for (int i = 0; i < in.length(); i++) {
                 pila.add(in.charAt(i));
             }
             
         }else{
-            pila.pop();
+            if(!pila.isEmpty())pila.pop();
         }
     }
     
