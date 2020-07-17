@@ -143,7 +143,7 @@ public class ProcesamientoCadenaTM  {
     }
 
     public ParPila getlastPaso() {
-        return new ParPila(cadena.charAt(ind),listaEstadoSimboloDeProcesamiento.get(listaEstadoSimboloDeProcesamiento.size()-1));
+        return new ParPila(cadena.charAt(ind)+"",listaEstadoSimboloDeProcesamiento.get(listaEstadoSimboloDeProcesamiento.size()-1));
     }
     public String gatLastSta(){
         return listaEstadoSimboloDeProcesamiento.get(listaEstadoSimboloDeProcesamiento.size()-1);

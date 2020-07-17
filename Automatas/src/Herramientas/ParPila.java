@@ -10,10 +10,10 @@ package Herramientas;
  * @author fanat
  */
 public class ParPila {
-    private final Character pila;
+    private final String pila;
     private final String estado;
 
-    public ParPila(Character pila, String estado) {
+    public ParPila(String pila, String estado) {
         this.pila = pila;
         this.estado = estado;
     }
@@ -22,7 +22,7 @@ public class ParPila {
         return estado;
     }
 
-    public Character getPila() {
+    public String getPila() {
         return pila;
     }
     

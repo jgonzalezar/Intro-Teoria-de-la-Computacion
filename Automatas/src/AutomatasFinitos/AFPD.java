@@ -140,8 +140,11 @@ public class AFPD extends AFD{
                             String pila = partIn[1];
                             Character pilT = pila.charAt(0);
                             if(!T.contains(pilT)&&pilT!='$')throw new Error("el caracter de tope de pila  no pertenece al alfabeto de la pila");
-                            Character pilN = pila.charAt(2);
-                            if(!T.contains(pilN)&&pilN!='$')throw new Error("el caracter a agregar a la pila no pertenece al alfabeto de la pila");
+                            String pilN = pila.substring(2);
+                            for (int i = 0; i < pilN.length(); i++) {
+                                if(!T.contains(pilN.charAt(i))&&pilN.charAt(i)!='$')throw new Error("el caracter a agregar a la pila no pertenece al alfabeto de la pila");
+                            }
+                            
                             String go = origin2[1];
                             if(!W.contains(go))throw new Error("el estado de llegada debe pertenecer a los estados del automata");
                             Deltos.add(alph, estado1,pilT, go,pilN);
@@ -297,7 +300,11 @@ public class AFPD extends AFD{
             i.setEsAceptada(false);
             return i;
         }
-        i.add(tas.getEstado(),tas.getPila());
+        String as = tas.getPila();
+        for (int j = 0; j < as.length(); j++) {
+            i.add(tas.getEstado(),as.charAt(j));
+        }
+        
         return i;
     }
     

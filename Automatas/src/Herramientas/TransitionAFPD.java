@@ -78,7 +78,7 @@ public class TransitionAFPD implements Transitions{
     }
 
     @Override
-    public void add(Character Alphabeto, String Inest, Character InPila, String estadoSig, Character ToPila) {
+    public void add(Character Alphabeto, String Inest, Character InPila, String estadoSig, String ToPila) {
         if(transicion.get(Inest)==null){
             transicion.put(Inest, new HashMap<>());
         }
@@ -103,6 +103,11 @@ public class TransitionAFPD implements Transitions{
     @Override
     public String toString() {
         return "";
+    }
+
+    @Override
+    public void add(Character Alphabeto, String Inest, Character InPila, String estadoSig, Character ToPila) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
  
     

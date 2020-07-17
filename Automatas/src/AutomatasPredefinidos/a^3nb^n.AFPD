@@ -12,6 +12,6 @@ q1
 #alphabetP
 A
 #transitions
-q0:a,$|A>q0
+q0:a,$|AAA>q0
 q0:b,A|$>q1
 q1:b,A|$>q1

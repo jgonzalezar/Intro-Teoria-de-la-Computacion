@@ -83,7 +83,7 @@ public class TransitionTM implements Transitions{
             transicion.put(Inest, new HashMap<>());
         }
         
-        transicion.get(Inest).put(Alphabeto,new ParPila(ToPila, estadoSig));
+        transicion.get(Inest).put(Alphabeto,new ParPila(ToPila+"", estadoSig));
     }
 
     @Override
@@ -99,6 +99,11 @@ public class TransitionTM implements Transitions{
     @Override
     public String toString() {
         return "";
+    }
+
+    @Override
+    public void add(Character Alphabeto, String Inest, Character InPila, String estadoSig, String ToPila) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
      
