@@ -29,7 +29,7 @@ public abstract interface Transitions {
     
 
     public int size();
-
+    public void add(Character Alphabeto, String Inest, Character InPila, String estadoSig, String ToPila);
     /**
      * Realiza la trancision de un estado segun el caracter recibido
      * @param Alphabeto caracter que marca el donde de la transicion

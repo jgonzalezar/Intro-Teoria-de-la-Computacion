@@ -36,7 +36,7 @@ public class Windows1 extends Windows{
 
     private void initButtons() {
         Button next= new Button("Ir a:");
-        next.setBounds(220, 10, 75, 30);
+        next.setBounds(620, 10, 75, 30);
         next.addActionListener((ActionEvent e) -> {
             if(vent.isStatic()){
                 ChangeEstado(estad.getSelectedItem().toString(),'a',aff.getF().contains(estad.getSelectedIndex()),0);
@@ -45,7 +45,7 @@ public class Windows1 extends Windows{
         getContentPane().add(next);
         
         Button trans= new Button("Procesar:");
-        trans.setBounds(220, 50, 75, 30);
+        trans.setBounds(620, 50, 75, 30);
         trans.addActionListener((ActionEvent e) -> {
             if(vent.isStatic()){
                 char camb=alpha.getSelectedItem().toString().charAt(0);
@@ -72,7 +72,7 @@ public class Windows1 extends Windows{
                 //display.setText(e.getItem().toString());
             }
         });*/
-        estad.setBounds(330,10,110,30);
+        estad.setBounds(730,10,110,30);
         getContentPane().add(estad);
         
     }
@@ -84,7 +84,7 @@ public class Windows1 extends Windows{
         }
         
         alpha = new JComboBox<>(afl);
-        alpha.setBounds(330,50,110,30);
+        alpha.setBounds(730,50,110,30);
         getContentPane().add(alpha);
         
     }

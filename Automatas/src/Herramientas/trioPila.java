@@ -18,8 +18,9 @@ public class trioPila {
         this.duo=duo;
     }
 
-    public ParPila equals(Character pila){
-        if(this.pila.equals(pila)||pila=='$')return duo;
+    public ParPila equals(Character pila){        
+        if(this.pila=='$')return duo;
+        if(this.pila.equals(pila))return duo;
         return null;
         
     }

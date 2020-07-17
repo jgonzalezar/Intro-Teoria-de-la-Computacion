@@ -45,7 +45,7 @@ public class AFNL extends AFN {
     }
 
     
-    /**
+    /**impri
      * Constructor, inicializa los atributos.
      *
      * @param E Alfabeto
@@ -305,25 +305,18 @@ public class AFNL extends AFN {
         String lclausura = "";
         ArrayList<Integer> Clausura = lambdaClausura_variosEstado(estados);
         lclausura = "Lambda clausura de los estados {";
-        //System.out.print("lambda clausura de los estados {");
 
         for (int i = 0; i < estados.size(); i++) {
-            lclausura += " " + Q.get(i) + " ";
-            //System.out.print(" " + Q.get(i) + " ");
+            lclausura += " " + Q.get(estados.get(i)) + " ";
         }
         
         lclausura += "} es : {";
-        //System.out.print("} es : ");
-
-        //System.out.print(" {");
         for (int i = 0; i < Clausura.size(); i++) {
-            lclausura += " " + Q.get(i) + " ";
-            //System.out.print(" " + Q.get(i) + " ");
+            lclausura += " " + Q.get(Clausura.get(i)) + " ";
         }
         lclausura += "} \n";
         JOptionPane.showMessageDialog(null, lclausura, "Lambda clausura varios estados", JOptionPane.INFORMATION_MESSAGE);
         System.out.println(lclausura);
-
     }
 
     /**

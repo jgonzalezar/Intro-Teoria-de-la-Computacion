@@ -453,6 +453,7 @@ public class AFD {
      * @return AFD simplificado con el método visto en clase 
      */
     public AFD simplificar(){
+        eliminarEstadosInaccesibles();
         int tam=Q.size();
         boolean Table[][] = new boolean[tam][tam];
         boolean change=false;
@@ -495,7 +496,7 @@ public class AFD {
             String line="";
             Table2[i][i]=qs[i]=Q.get(i);
             for (int j = 0; j < i; j++) {
-                if(Table[j][i]){
+                if(!Table[j][i]){
                     Table2[i][j]="X";
                     line+="X";
                 }else{
@@ -557,7 +558,9 @@ public class AFD {
             }
             
         });
-        return new AFD(Sigma, Q2, q02, F2, Delta2);
+        AFD af= new AFD(Sigma, Q2, q02, F2, Delta2);
+        af.eliminarEstadosInaccesibles();
+        return af;
     }
 
     /**

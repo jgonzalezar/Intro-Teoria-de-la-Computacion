@@ -8,6 +8,8 @@ package visuall;
 import AutomatasFinitos.AFD;
 
 import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 
 /**
  *la clase Windows extiende JFrame y crea una ventana que realiza un dibujo especifico para visualizar un automata
@@ -15,7 +17,7 @@ import javax.swing.JFrame;
  */
 public class Windows extends JFrame{
     static boolean hey;
-    protected Dibbujo vent;
+    protected Dibbujo1 vent;
     protected int time;
     protected AFD aff;
 
@@ -35,7 +37,7 @@ public class Windows extends JFrame{
     }
     
     private void initFrame(){
-        setSize(600, 250);
+        setSize(1000, 700);
         setVisible(true);
         setResizable(false);
         setLocationRelativeTo(null);
@@ -44,9 +46,12 @@ public class Windows extends JFrame{
     }
 
     private void initCanvas(){
-        vent = new Dibbujo(aff.getQ().get(aff.getQ0()),aff.getF().contains(aff.getQ0()));
-        vent.setBounds(10,10,200, 200);
-        getContentPane().add(vent);
+        vent = new Dibbujo1(aff);
+        //vent.setBounds(10,10,200, 200);
+        JScrollPane jScrollPane = new JScrollPane();
+        jScrollPane.getViewport().setView(vent);
+        jScrollPane.setBounds(10,10, 600, 300);
+        getContentPane().add(jScrollPane);
     }
     /**
      * variacion del metodo dispose para ayufar con el ciclo

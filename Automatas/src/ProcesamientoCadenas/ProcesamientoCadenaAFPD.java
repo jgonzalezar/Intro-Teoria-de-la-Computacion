@@ -89,21 +89,28 @@ public class ProcesamientoCadenaAFPD  {
         this.esAceptada = esAceptada;
     }
     
+    public boolean sameStates(){
+        return cadena.length()+1==listaEstadoSimboloDeProcesamiento.size();
+    }
+    
     /**
      * añade un estado a la lista de estados procesados
      * @param paso nuevo estado agregado
      * @param out
      * @param in
      */
-    public void add(String paso,Character in){
+    public void add(String paso,String in){
         listaEstadoSimboloDeProcesamiento.add(paso);
         setPila(in);
         lista.add(pila.toString());
     }
     
-    public void setPila(Character in){
-        if(in !='$'){
-            pila.add(in);
+    public void setPila(String in){
+        if(in.charAt(0) !='$'){
+            for (int i = 0; i < in.length(); i++) {
+                pila.add(in.charAt(i));
+            }
+            
         }else{
             if(!pila.isEmpty())pila.pop();
         }
