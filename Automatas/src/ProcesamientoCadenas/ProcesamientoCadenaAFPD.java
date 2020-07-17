@@ -90,7 +90,7 @@ public class ProcesamientoCadenaAFPD  {
     }
     
     public boolean sameStates(){
-        return cadena.length()==listaEstadoSimboloDeProcesamiento.size();
+        return cadena.length()+1==listaEstadoSimboloDeProcesamiento.size();
     }
     
     /**
@@ -99,17 +99,21 @@ public class ProcesamientoCadenaAFPD  {
      * @param out
      * @param in
      */
-    public void add(String paso,Character in){
+    public void add(String paso,String in){
         listaEstadoSimboloDeProcesamiento.add(paso);
         setPila(in);
         lista.add(pila.toString());
     }
     
-    public void setPila(Character in){
-        if(in !='$'){
-            pila.add(in);
+    public void setPila(String in){
+        if(in.charAt(0) !='$'){
+            if(in.charAt(0)=='_')return;
+            for (int i = 0; i < in.length(); i++) {
+                pila.add(in.charAt(i));
+            }
+            
         }else{
-            if(!pila.isEmpty())pila.pop();
+            pila.pop();
         }
     }
     

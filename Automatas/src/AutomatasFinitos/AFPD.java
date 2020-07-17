@@ -144,7 +144,7 @@ public class AFPD extends AFD{
                             for (int i = 0; i < pilN.length(); i++) {
                                 if(!T.contains(pilN.charAt(i))&&pilN.charAt(i)!='$')throw new Error("el caracter a agregar a la pila no pertenece al alfabeto de la pila");
                             }
-                            
+                           
                             String go = origin2[1];
                             if(!W.contains(go))throw new Error("el estado de llegada debe pertenecer a los estados del automata");
                             Deltos.add(alph, estado1,pilT, go,pilN);
@@ -272,7 +272,7 @@ public class AFPD extends AFD{
     
     private ProcesamientoCadenaAFPD Delta(String word) {
         ProcesamientoCadenaAFPD f = new ProcesamientoCadenaAFPD(word);
-        f.add(Q.get(q0),'$');
+        f.add(Q.get(q0),"_");
         if(word==null||word.length()==0){   
             f.setEsAceptada(F.contains(q0));
             f.setCadena(word);
@@ -295,14 +295,16 @@ public class AFPD extends AFD{
      */
     
     private ProcesamientoCadenaAFPD Delta(ProcesamientoCadenaAFPD i, char u) {
+        if(i.EsAceptada())return i;
         ParPila tas = Delta.cambio(u,i.getlastPaso(),i.getTopPila());
         if(tas==null){
             i.setEsAceptada(false);
             return i;
         }
-        String as = tas.getPila();
-        for (int j = 0; j < as.length(); j++) {
-            i.add(tas.getEstado(),as.charAt(j));
+        try{
+            i.add(tas.getEstado(),tas.getPila());
+        }catch(EmptyStackException e){
+            i.setEsAceptada(true);
         }
         
         return i;
@@ -316,7 +318,12 @@ public class AFPD extends AFD{
      */
 
     private ProcesamientoCadenaAFPD Finish(ProcesamientoCadenaAFPD q) {
-        q.setEsAceptada(F.contains(Q.indexOf(q.getlastPaso()))&&q.getTopPila()=='$'&&q.sameStates());
+        if(q.EsAceptada()){
+            q.setEsAceptada(false);
+        }else{
+            q.setEsAceptada(F.contains(Q.indexOf(q.getlastPaso()))&&q.getTopPila()=='$');
+        }
+        
         
         return q;
     }
