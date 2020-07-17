@@ -14,7 +14,9 @@ import java.awt.Graphics;
 import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import javax.swing.JPanel;
 import javax.swing.JComponent;
 import javax.swing.Scrollable;
@@ -44,12 +46,12 @@ public class Dibbujo1 extends JComponent implements Scrollable {
 
     @Override
     public int getScrollableUnitIncrement(Rectangle visibleRect, int orientation, int direction) {
-        return (orientation==SwingConstants.VERTICAL) ? visibleRect.height/10 : visibleRect.width/10;
+        return (orientation == SwingConstants.VERTICAL) ? visibleRect.height / 10 : visibleRect.width / 10;
     }
 
     @Override
     public int getScrollableBlockIncrement(Rectangle visibleRect, int orientation, int direction) {
-        return  (orientation==SwingConstants.VERTICAL) ? visibleRect.height/10 : visibleRect.width/10;
+        return (orientation == SwingConstants.VERTICAL) ? visibleRect.height / 10 : visibleRect.width / 10;
     }
 
     @Override
@@ -60,6 +62,14 @@ public class Dibbujo1 extends JComponent implements Scrollable {
     @Override
     public boolean getScrollableTracksViewportHeight() {
         return false;
+    }
+
+    public String getActP() {
+        return estadoP;
+    }
+
+    public boolean isFiP() {
+        return afd.getF().contains(afd.getQ().indexOf(estadoP));
     }
 
     private enum anim {
@@ -77,8 +87,9 @@ public class Dibbujo1 extends JComponent implements Scrollable {
         ani = anim.estatic;
         int qs = afd.getQ().size();
         trans = 0;
+        ye=0;
         estadoP = estadoN = afd.getQ().get(afd.getQ0());
-        x = qs * 100 + 150 * (qs - 1) + 20;
+        x = qs * 100 + 150 * (qs - 1) + 80;
         y = ((qs - 1) * 100) * 2 + 100;
         if (x < 600) {
             x = 600;
@@ -103,31 +114,31 @@ public class Dibbujo1 extends JComponent implements Scrollable {
                 drawAFD(g);
                 break;
             case moveto:
-                if (ye == 0) {
+                if (ye < 150) {
                     drawAFD(g);
-                } else if (ye < 220) {
                     ye += 5;
                 } else {
                     ye = 0;
                     ani = anim.estatic;
                     estadoP = estadoN;
                     trans = 0;
+                    drawAFD(g);
                 }
                 break;
             case white:
                 drawAFD(g);
                 break;
             case backto:
-                if (ye == 0) {
+                if (ye < 150) {
                     drawAFD(g);
-                }
-                if (ye < 220) {
                     ye += 5;
                 } else {
                     ye = 0;
                     ani = anim.estatic;
                     estadoP = estadoN;
+                    
                     trans = 0;
+                    drawAFD(g);
                 }
                 break;
             default:
@@ -140,43 +151,54 @@ public class Dibbujo1 extends JComponent implements Scrollable {
         setBackground(Color.WHITE);
         setBounds(0, 0, x, y);
     }
-    
+
     @Override
-    public Dimension getPreferredSize()
-    {
-        return new Dimension(this.getSize().width,this.getSize().height);
+    public Dimension getPreferredSize() {
+        return new Dimension(this.getSize().width, this.getSize().height);
     }
-    
+
     private void drawAFD(Graphics g) {
         ArrayList<String> qq = afd.getQ();
         Transitions de = afd.getDelta();
-        Alfabeto alf = afd.getSigma();
+        char[] alf = afd.getSigma().getSimbolos();
         drawFle(20 + 250 * afd.getQ0(), y / 2, g, 6);
         for (int i = 0; i < qq.size(); i++) {
             String name = qq.get(i);
-
+            if (afd instanceof AFNL) {
+                char[] affs = new char[alf.length + 1];
+                System.arraycopy(alf, 0, affs, 0, alf.length);
+                affs[alf.length] = '$';
+                alf = affs;
+            }
             HashMap<String, ArrayList<Character>> ssss = new HashMap();
-            for (int j = 0; j < alf.length(); j++) {
+            for (int j = 0; j < alf.length; j++) {
                 ArrayList<Integer> asd = new ArrayList<>();
                 if (afd instanceof AFNL) {
-                    ArrayList<Integer> ass =de.getMove(i, alf.get(j));
-                    if(ass!=null)asd = ass;
-                    
+                    ArrayList<Integer> ass = de.getMove(i, alf[j]);
+                    if (ass != null) {
+                        asd = ass;
+                    }
+
                 } else if (afd instanceof AFN) {
                 } else {
-                    String go = de.cambio(alf.get(j), qq.get(i));
+                    String go = de.cambio(alf[j], qq.get(i));
                     asd.add(qq.indexOf(go));
                 }
+
                 for (int k = 0; k < asd.size(); k++) {
                     if (ssss.get(qq.get(asd.get(k))) == null) {
                         ssss.put(qq.get(asd.get(k)), new ArrayList<>());
                     }
-                    ssss.get(qq.get(asd.get(k))).add(alf.get(j));
+                    ssss.get(qq.get(asd.get(k))).add(alf[j]);
                 }
-            }            
+            }
             for (Map.Entry<String, ArrayList<Character>> entry : ssss.entrySet()) {
                 String key = entry.getKey();
                 ArrayList<Character> value = entry.getValue();
+                Set<Character> asds = new HashSet<>(value);
+                value.clear();
+                value.addAll(asds);
+
                 String text = value.toString().substring(1, value.toString().length() - 1);
                 int ee = qq.indexOf(key);
                 int dif = Math.abs(ee - i);
@@ -187,32 +209,42 @@ public class Dibbujo1 extends JComponent implements Scrollable {
                         g.setColor(Color.BLUE);
                     }
                 }
-                if (dif == 0) {
-
-                } else {
-                    int xa, ya, large, alto, ang1, ang2;
-                    large = 250 * dif;
-                    alto = 75 * dif;
-                    if (ee > i) {
-                        xa = i * 250 + 20 + 50;
-                        
-                        ya = y / 2 - 20 - alto;
-                        drawName(xa+large/2, ya-10, text, g);
-                        ang1=0;
-                        ang2=180;
+                int xa, ya, large, alto, ang1, ang2;
+                if (!value.contains('$') || dif != 0) {
+                    if (dif == 0) {
+                        xa = i * 250 + 20 + 80;
+                        ya = y / 2 - 30;
+                        alto = large = 60;
+                        ang1 = 175;
+                        ang2 = -300;
+                        g.drawLine(xa + 14, ya + 56, xa + 24, ya + 54);
+                        g.drawLine(xa + 14, ya + 56, xa + 14, ya + 66);
+                        drawName(xa + large + 10, y / 2, text, g);
                     } else {
-                        xa = ee * 250 + 20 + 50;
-                        ya = y / 2 + 20;
-                        drawName(xa+large/2, ya+alto+5, text, g);
-                        ang1=185;
-                        ang2=340;
-                    }
-                    
-                    g.drawArc(xa, ya, large, alto, ang1, ang2);
-                    //g.drawRect(xa, ya,large, alto);
-                    
-                }
 
+                        large = 245 * dif;
+                        alto = 100 * dif;
+                        if (ee > i) {
+                            xa = i * 250 + 20 + 50;
+                            ya = y / 2 - 50 - alto / 2;
+                            drawName(xa + large / 2, ya - 10, text, g);
+                            g.drawLine(xa + large, ya + alto / 2, xa + large + 7, ya + alto / 2 - 10);
+                            g.drawLine(xa + large, ya + alto / 2, xa + large - 13, ya + alto / 2 - 10);
+                            ang1 = 0;
+                            ang2 = 180;
+                        } else {
+                            xa = ee * 250 + 20 + 50;
+                            ya = y / 2 + 50-alto/2;
+                            drawName(xa + large / 2, ya + alto + 5, text, g);
+                            g.drawLine(xa , ya +alto/2, xa +13, ya + alto/2+10);
+                            g.drawLine(xa , ya +alto/2, xa -7, ya + alto/2+10);
+                            ang1 = 0;
+                            ang2 = -180;
+                        }
+                        //g.drawRect(xa, ya,large, alto);
+                    }
+                    g.drawArc(xa, ya, large, alto, ang1, ang2);
+                }
                 g.setColor(Color.BLACK);
             }
             switch (trans) {
@@ -221,7 +253,7 @@ public class Dibbujo1 extends JComponent implements Scrollable {
                         g.setColor(Color.CYAN);
                         g.fillOval(i * 250 + 20, y / 2 - 50, 100, 100);
                         g.setColor(Color.BLACK);
-                    }else{
+                    } else {
                         g.setColor(Color.WHITE);
                         g.fillOval(i * 250 + 20, y / 2 - 50, 100, 100);
                         g.setColor(Color.BLACK);
@@ -236,7 +268,7 @@ public class Dibbujo1 extends JComponent implements Scrollable {
                         g.setColor(Color.ORANGE);
                         g.fillOval(i * 250 + 20, y / 2 - 50, 100, 100);
                         g.setColor(Color.BLACK);
-                    }else{
+                    } else {
                         g.setColor(Color.WHITE);
                         g.fillOval(i * 250 + 20, y / 2 - 50, 100, 100);
                         g.setColor(Color.BLACK);
@@ -251,7 +283,7 @@ public class Dibbujo1 extends JComponent implements Scrollable {
                         g.setColor(Color.ORANGE);
                         g.fillOval(i * 250 + 20, y / 2 - 50, 100, 100);
                         g.setColor(Color.BLACK);
-                    }else{
+                    } else {
                         g.setColor(Color.WHITE);
                         g.fillOval(i * 250 + 20, y / 2 - 50, 100, 100);
                         g.setColor(Color.BLACK);
@@ -320,34 +352,27 @@ public class Dibbujo1 extends JComponent implements Scrollable {
      * @param tp el desplazamiento sera instantaneo o tiene direccion
      * @param used caracter por el cual se realiza el movimiento
      */
-    /*public void setData(String nextState,boolean Fin,int tp, char used){
+    public void setData(String nextState,boolean Fin,int tp, char used){
         if(nextState == null)nextState = "∅";
-        if(nextState.equals(actP) && tp == 0)return;
+        if(nextState.equals(estadoP) && tp == 0)return;
         
         switch (tp) {
             case 0:
                 ani=anim.white;
-                actP=nextState;
-                fiP=Fin;
-                comeP=false;
+                estadoP=nextState;
                 break;
             case 1:
                 ani=anim.moveto;
-                actN=nextState;
-                fiN=Fin;
-                next=used;
-                comeN=true;
+                estadoN=nextState;
+                trans=tp;
                 break;
             case -1:
                 ani=anim.backto;
-                actN=nextState;
-                fiN=Fin;
-                next=used;
-                comeP=true;
-                comeN=false;
+                estadoN=nextState;
+                trans=tp;
                 break;
         }
-    }*/
+    }
     /**
      * la animacion esta en un estado estatico
      *
