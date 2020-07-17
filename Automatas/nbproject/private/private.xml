@@ -3,6 +3,7 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+<<<<<<< Updated upstream
             <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/visuall/Windows2.java</file>
             <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/ProcesamientoCadenas/ProcesamientoCadenaAFPD.java</file>
             <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/AutomatasPredefinidos/a'(abUba)'b+.NFe</file>
@@ -14,6 +15,15 @@
             <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/visuall/Dibbujo.java</file>
             <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/visuall/Dibbujo1.java</file>
             <file>file:/C:/Users/fanat/Documents/GitHub/Intro-Teoria-de-la-Computacion/Automatas/src/visuall/Windows1.java</file>
+=======
+            <file>file:/C:/Users/Juan%20Andres%20Gonzalez/Documents/La%20Nacho/Intro%20T%20Computacion/Intro-Teoria-de-la-Computacion/Automatas/src/LectoresYProcesos/ClasePrueba.java</file>
+            <file>file:/C:/Users/Juan%20Andres%20Gonzalez/Documents/La%20Nacho/Intro%20T%20Computacion/Intro-Teoria-de-la-Computacion/Automatas/src/visuall/Windows2.java</file>
+            <file>file:/C:/Users/Juan%20Andres%20Gonzalez/Documents/La%20Nacho/Intro%20T%20Computacion/Intro-Teoria-de-la-Computacion/Automatas/src/visuall/WindowsAFNL.java</file>
+            <file>file:/C:/Users/Juan%20Andres%20Gonzalez/Documents/La%20Nacho/Intro%20T%20Computacion/Intro-Teoria-de-la-Computacion/Automatas/src/visuall/Windows1.java</file>
+            <file>file:/C:/Users/Juan%20Andres%20Gonzalez/Documents/La%20Nacho/Intro%20T%20Computacion/Intro-Teoria-de-la-Computacion/Automatas/src/visuall/Windows.java</file>
+            <file>file:/C:/Users/Juan%20Andres%20Gonzalez/Documents/La%20Nacho/Intro%20T%20Computacion/Intro-Teoria-de-la-Computacion/Automatas/src/visuall/Dibbujo1.java</file>
+            <file>file:/C:/Users/Juan%20Andres%20Gonzalez/Documents/La%20Nacho/Intro%20T%20Computacion/Intro-Teoria-de-la-Computacion/Automatas/src/visuall/Windows2AFNL.java</file>
+>>>>>>> Stashed changes
         </group>
     </open-files>
 </project-private>
