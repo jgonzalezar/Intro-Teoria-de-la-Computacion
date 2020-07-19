@@ -307,9 +307,19 @@ public class AFPD extends AFD{
     private ProcesamientoCadenaAFPD Delta(ProcesamientoCadenaAFPD i, char u) {
         if(i.EsAceptada())return i;
         trioPila tas = Delta.cambios(u,i.getlastPaso(),i.getTopPila());
-        if(tas==null){
-            i.setEsAceptada(true);
-            return i;
+        while(tas==null){
+            trioPila dostas= Delta.cambios('$', i.getlastPaso(),i.getTopPila());
+            if(dostas==null){
+                i.setEsAceptada(true);
+                return i;
+            }
+            try{
+                i.add(dostas.getDuo().getEstado(),dostas.getDuo().getPila(),dostas.getPila());
+            }catch(Exception e){
+                i.setEsAceptada(true);
+                return i;
+            }
+            tas = Delta.cambios(u,i.getlastPaso(),i.getTopPila());
         }
         try{
             i.add(tas.getDuo().getEstado(),tas.getDuo().getPila(),tas.getPila());
