@@ -17,6 +17,7 @@ public class ProcesamientoCadenaTM  {
     private ArrayList<String> lista;
     private ArrayList<Integer> listas;
     private int ind;
+    
 
     /**
      * Constructor del procesamiento donde guarda alguna cadena inicial eh crea un nuevo objeto para el resto de variables
@@ -97,13 +98,13 @@ public class ProcesamientoCadenaTM  {
      * @param dir
      * @param in
      */
-    public void add(String paso,Character in,String dir){
+    public void add(String paso,Character in,String dir,Character Bln){
         listaEstadoSimboloDeProcesamiento.add(paso);
-        setCad(in,dir);
+        setCad(in,dir,Bln);
         lista.add(cadena);
     }
     
-    private void setCad(Character in,String dir){
+    private void setCad(Character in,String dir,Character Bln){
         if(cadena.charAt(ind)!=in){
             if(ind==cadena.length()-1){
                 cadena=cadena.substring(0, ind)+in;
@@ -114,9 +115,18 @@ public class ProcesamientoCadenaTM  {
         switch(dir){
             case "+":
                 ind++;
+                
+                if(ind==cadena.length()){
+                    cadena=cadena+Bln;
+                }
                 break;
             case "-":
                 ind--;
+                
+                if(ind==-1){
+                    cadena=Bln+cadena;
+                    ind++;
+                }
                 break;                
         }
         listas.add(ind);

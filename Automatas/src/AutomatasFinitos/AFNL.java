@@ -44,9 +44,8 @@ public class AFNL extends AFN {
     public AFNL() {
     }
 
-    
-    /**impri
-     * Constructor, inicializa los atributos.
+    /**
+     * impri Constructor, inicializa los atributos.
      *
      * @param E Alfabeto
      * @param Q Conjunto de estados
@@ -263,7 +262,7 @@ public class AFNL extends AFN {
         lambdaC = Clausura.stream().map((integer) -> Q.get(integer) + ",").map((cadena) -> cadena).reduce(lambdaC, String::concat);
 
         lambdaC = lambdaC.substring(0, lambdaC.length() - 1) + "}.";
-        JOptionPane.showMessageDialog(null, "La lambda clausura del estado: \n" + Q.get(estado) + " es: "+ lambdaC, "Lambda clausura 1 estado", JOptionPane.INFORMATION_MESSAGE);
+        JOptionPane.showMessageDialog(null, "La lambda clausura del estado: \n" + Q.get(estado) + " es: " + lambdaC, "Lambda clausura 1 estado", JOptionPane.INFORMATION_MESSAGE);
         System.out.println(lambdaC);
 
         return Clausura;
@@ -309,7 +308,7 @@ public class AFNL extends AFN {
         for (int i = 0; i < estados.size(); i++) {
             lclausura += " " + Q.get(estados.get(i)) + " ";
         }
-        
+
         lclausura += "} es : {";
         for (int i = 0; i < Clausura.size(); i++) {
             lclausura += " " + Q.get(Clausura.get(i)) + " ";
@@ -373,7 +372,7 @@ public class AFNL extends AFN {
      * acceder a esta informacion.
      *
      * @param cadena cadena a evaluar.
-     * @return 
+     * @return
      */
     public ProcesamientoCadenaAFNLambda procesarCadenad(String cadena) {
         RespuestaMult rta = caminosPosibles(cadena);
@@ -389,12 +388,10 @@ public class AFNL extends AFN {
             Set<Integer> hashSet = new HashSet<>(StepsToAdd);
             StepsToAdd.clear();
             StepsToAdd.addAll(hashSet);
-            
-            
+
             rta.addRutas(i, StepsToAdd);
         }
-        
-        
+
         return procesamiento(cadena, rta);
     }
 
@@ -485,9 +482,9 @@ public class AFNL extends AFN {
             if (estadoSiguiente == null) {
                 return camino;
             } else {
-                if(conLambda==null){
+                if (conLambda == null) {
                     return "";
-                }else{
+                } else {
                     try {
 
                         for (int i = 0; i < conLambda.size(); i++) {
@@ -507,9 +504,9 @@ public class AFNL extends AFN {
             }
         }
 
-        if(!alQueVa.contains(estadoSiguiente)) {
+        if (!alQueVa.contains(estadoSiguiente)) {
             try {
-                
+
                 for (int i = 0; i < conLambda.size(); i++) {
                     if (conLambda.get(i) == estadoActual) {
 
@@ -770,7 +767,7 @@ public class AFNL extends AFN {
                 }
             }
         }
-        
+
         for (int i = 0; i < Q.size(); i++) {
             for (int j = 0; j < Sigma.length(); j++) {
                 delta.add(Sigma.get(j), i, trancisiones(i, Sigma.get(j)));
@@ -836,12 +833,12 @@ public class AFNL extends AFN {
         }
         return rta;
     }
-    
-    private boolean isInteger(String cadena){
-        try{
+
+    private boolean isInteger(String cadena) {
+        try {
             Integer.parseInt(cadena);
             return true;
-        }catch(NumberFormatException e){
+        } catch (NumberFormatException e) {
             return false;
         }
     }
@@ -878,59 +875,56 @@ public class AFNL extends AFN {
             }
         }
     }
-    
+
     @Override
-    public String toString(){
-        String cadena="#!nfe\n";
-        cadena+=Sigma.toString();
-                
-        cadena+="#states\n";
-        for (int i=0;i<Q.size();i++) {
-            cadena+=Q.get(i)+"\n";
+    public String toString() {
+        String cadena = "#!nfe\n";
+        cadena += Sigma.toString();
+
+        cadena += "#states\n";
+        for (int i = 0; i < Q.size(); i++) {
+            cadena += Q.get(i) + "\n";
         }
-        cadena+="#initial\n"+Q.get(this.q0)+"\n"+"#accepting\n";
-        for (int i=0;i<F.size();i++) {
-            cadena+=Q.get(F.get(i))+"\n";
+        System.out.println(Q.size());
+        cadena += "#initial\n" + Q.get(this.q0) + "\n" + "#accepting\n";
+        for (int i = 0; i < F.size(); i++) {
+            cadena += Q.get(F.get(i)) + "\n";
         }
-        if(this.Delta!=null){
-        cadena += "#transitions\n";
-        for (int i=0;i<Q.size();i++) {
-            for(int j=0;j< this.Sigma.length();j++){
-                if(Delta.getMove(i, Sigma.get(j))!=null){
-                    cadena+=Q.get(i)+":"+Sigma.get(j)+">";
-                    for (int k=0;k<Delta.getMove(i, Sigma.get(j)).size();k++){
-                        cadena+=Q.get(Delta.getMove(i, Sigma.get(j)).get(k));
-                        if(k<Delta.getMove(i, Sigma.get(j)).size()-1){
-                           cadena+=";"; 
-                        }else{
-                           cadena+="\n";  
+        if (this.Delta != null) {
+            cadena += "#transitions\n";
+            for (int i = 0; i < Q.size(); i++) {
+                for (int j = 0; j < this.Sigma.length(); j++) {
+                    if (Delta.getMove(i, Sigma.get(j)) != null) {
+                        cadena += Q.get(i) + ":" + Sigma.get(j) + ">";
+                        for (int k = 0; k < Delta.getMove(i, Sigma.get(j)).size(); k++) {
+                            cadena += Q.get(Delta.getMove(i, Sigma.get(j)).get(k));
+                            if (k < Delta.getMove(i, Sigma.get(j)).size() - 1) {
+                                cadena += ";";
+                            } else {
+                                cadena += "\n";
+                            }
                         }
                     }
                 }
             }
-        }
-        for(int m=0;m<Q.size();m++) {
-            if(  Delta.getMove(m, '$')!=null){
-                ArrayList<Integer> asd = Delta.getMove(m,'$');
-                cadena+=Q.get(m)+":"+"$"+">";
-                for(int k=0;k<asd.size();k++){
-                    cadena+=Q.get(asd.get(k));
-                    if(k<asd.size()-1){
-                        cadena+=";"; 
-                    }else{
-                        cadena+="\n";  
+            for (int m = 0; m < Q.size(); m++) {
+                if (Delta.getMove(m, '$') != null) {
+                    ArrayList<Integer> asd = Delta.getMove(m, '$');
+                    System.out.println(asd.toString());
+                    cadena += Q.get(m) + ":" + "$" + ">";
+                    for (int k = 0; k < asd.size(); k++) {
+                        cadena += Q.get(asd.get(k));
+                        if (k < asd.size() - 1) {
+                            cadena += ";";
+                        } else {
+                            cadena += "\n";
+                        }
                     }
-                }      
+                }
             }
+
         }
-       
+        return cadena;
     }
-     return cadena;
-    }
-    
-    
-    
+
 }
-
-
-    

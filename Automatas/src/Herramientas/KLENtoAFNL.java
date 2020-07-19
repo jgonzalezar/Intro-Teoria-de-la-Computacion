@@ -33,6 +33,7 @@ public class KLENtoAFNL extends AFNL {
         }
 
         Sigma = new Alfabeto(sigmas);
+        System.out.println(Sigma.toString());
         asd = result.get("States");
         reset = new HashSet<>(asd);
         asd.clear();
@@ -40,6 +41,8 @@ public class KLENtoAFNL extends AFNL {
 
         Q = new ArrayList<>();
         Q.addAll(asd);
+        System.out.println("estates");
+        System.out.println(Q.toString());
 
         asd = result.get("final");
         reset = new HashSet<>(asd);
@@ -47,18 +50,22 @@ public class KLENtoAFNL extends AFNL {
         asd.addAll(reset);
 
         q0 = Q.indexOf(result.get("ini").get(0));
-
+            
+        System.out.println("uno");
+        System.out.println(q0);
         ArrayList<Integer> asds = new ArrayList<>();
         for (int i = 0; i < asd.size(); i++) {
             asds.add(Q.indexOf(asd.get(i)));
         }
         F = asds;
-
+        System.out.println("acep");
+        System.out.println(F.toString());
         TransitionAFNL tras = new TransitionAFNL(Q.size());
         asd = result.get("Separations");
         reset = new HashSet<>(asd);
         asd.clear();
         asd.addAll(reset);
+        System.out.println("Separat");
         for (String asd1 : asd) {
             String[] separos = asd1.split(":");
             String estado1 = separos[0];
@@ -69,7 +76,7 @@ public class KLENtoAFNL extends AFNL {
             for (int i = 0; i < dos.length; i++) {
                 hey[i] = Q.indexOf(dos[i]);
             }
-            System.out.println(caracter + " " + estado1 + " " + Arrays.toString(hey));
+            System.out.println(caracter + " " + estado1 + " " + Arrays.toString(hey)+"/"+Arrays.toString(dos));
             tras.add(caracter, Q.indexOf(estado1), hey);
         }
 
@@ -176,10 +183,7 @@ public class KLENtoAFNL extends AFNL {
                     break;
             }
 
-            System.out.println(cad.get("final").toString());
-            System.out.println(cad.get("Separations").toString());
             if (dos == word.length()) {
-                System.out.println("dd");
                 dod = "";
                 if (ex == 'U' || ((ex == '*' || ex == '+') && next2 == 'U')) {
                     throw new Error("La union no se puede realizar con solo un elemento");
@@ -190,7 +194,6 @@ public class KLENtoAFNL extends AFNL {
             } else {
                 dod = word.substring(dos);
             }
-            System.out.println(dod + "dod");
             HashMap<String, ArrayList<String>> cad2 = evalu(dod);
 
             switch (ex) {
@@ -235,7 +238,6 @@ public class KLENtoAFNL extends AFNL {
                         resetss = new HashSet<>(cad.get("final"));
                         cad.get("final").clear();
                         cad.get("final").addAll(resetss);
-                        System.out.println(cad.get("Separations").toString());
                         for (String asd1 : cad2.get("Separations")) {
                             String[] separos = asd1.split(":");
                             String estado1 = separos[0];
@@ -252,7 +254,6 @@ public class KLENtoAFNL extends AFNL {
                     }
 
                 case 'U':
-                    System.out.println(ex + " " + next2);
                     cad.get("Sigma").addAll(cad2.get("Sigma"));
                     Set<String> reset2 = new HashSet<>(cad.get("Sigma"));
                     cad.get("Sigma").clear();
@@ -315,7 +316,6 @@ public class KLENtoAFNL extends AFNL {
                     resetss = new HashSet<>(cad.get("final"));
                     cad.get("final").clear();
                     cad.get("final").addAll(resetss);
-                    System.out.println(cad.get("Separations").toString());
                     for (String asd1 : cad2.get("Separations")) {
                         String[] separos = asd1.split(":");
                         String estado1 = separos[0];
@@ -331,7 +331,6 @@ public class KLENtoAFNL extends AFNL {
                     break;
             }
 
-            System.out.println(cad.get("Separations").toString());
 
         } else if (uni == -1 || pare == -1) {
             if (uni == -1 && pare == -1) {
@@ -422,7 +421,7 @@ public class KLENtoAFNL extends AFNL {
                 cad.get("ini").add("C0");
 
                 cad1.get("final").forEach((string) -> {
-                    cad.get("Separations").add("1" + string + ":$>" + cad2.get("ini").get(0));
+                    cad.get("Separations").add("1" + string + ":$>" + "2"+cad2.get("ini").get(0));
                 });
                 cad2.get("final").forEach((string) -> {
                     cad.get("final").add("2" + string);
@@ -597,7 +596,7 @@ public class KLENtoAFNL extends AFNL {
             cad.get("ini").add("C0");
 
             cad1.get("final").forEach((string) -> {
-                cad.get("Separations").add("1" + string + ":$>" + cad2.get("ini").get(0));
+                cad.get("Separations").add("1" + string + ":$>" +"2"+ cad2.get("ini").get(0));
             });
             cad2.get("final").forEach((string) -> {
                 cad.get("final").add("2" + string);
@@ -638,15 +637,13 @@ public class KLENtoAFNL extends AFNL {
     }
 
     public static void main(String[] args) {
-        AFNL sss = new KLENtoAFNL("a(ab*)*");
-
-        sss.ImprimirlambdaClausura_unEstado(0);
+        AFNL sss = new KLENtoAFNL("a(ab*)+U$");
         System.out.println(sss.toString());
         System.out.println("sss");
-        System.out.println(sss.procesarCadenaConDetalles("ac"));
-        System.out.println(sss.procesarCadenaConDetalles("c"));
-        System.out.println(sss.procesarCadenaConDetalles("aac"));
-        System.out.println(sss.procesarCadenaConDetalles("abbc"));
+        System.out.println(sss.procesarCadenaConDetalles("a"));
+        System.out.println(sss.procesarCadenaConDetalles(""));
+        System.out.println(sss.procesarCadenaConDetalles("aa"));
+        System.out.println(sss.procesarCadenaConDetalles("aabb"));
 
     }
 }

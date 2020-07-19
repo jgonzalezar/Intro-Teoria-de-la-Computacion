@@ -337,8 +337,8 @@ public class MTMacro extends MT {
         try{
             while(true){
                 ParPila hey = f.getlastPaso();
-                hey= Delta.cambio(hey.getPila(), hey.getEstado(), ' ');
-                f.add(hey.getEstado().substring(2), hey.getPila(), hey.getEstado().substring(0, 1));
+                hey= Delta.cambio(hey.getPila().charAt(0), hey.getEstado(), ' ');
+                f.add(hey.getEstado().substring(2), hey.getPila().charAt(0), hey.getEstado().substring(0, 1),Blanc);
             }
         }catch(NullPointerException | IndexOutOfBoundsException e){
             return f;
