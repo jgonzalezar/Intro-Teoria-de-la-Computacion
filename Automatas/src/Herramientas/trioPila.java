@@ -23,4 +23,13 @@ public class trioPila {
         if(this.pila.equals(pila))return duo;
         return null;
     }
+
+    public ParPila getDuo() {
+        return duo;
+    }
+
+    public Character getPila() {
+        return pila;
+    }
+    
 }

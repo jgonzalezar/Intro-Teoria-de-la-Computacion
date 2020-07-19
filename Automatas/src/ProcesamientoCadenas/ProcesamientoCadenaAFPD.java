@@ -97,15 +97,23 @@ public class ProcesamientoCadenaAFPD  {
      * añade un estado a la lista de estados procesados
      * @param paso nuevo estado agregado
      * @param out
+     * @param Remove
      * @param in
      */
-    public void add(String paso,String in){
+    public void add(String paso,String in,char Remove) throws Exception{
         listaEstadoSimboloDeProcesamiento.add(paso);
-        setPila(in);
+        setPila(in,Remove);
         lista.add(pila.toString());
     }
     
-    public void setPila(String in){
+    public void setPila(String in,char Remove) throws Exception{
+        if(Remove!='$'){
+            if(pila.peek()==Remove){
+                pila.pop();
+            }else{
+                throw new Exception();
+            }
+        }
         if(in.charAt(0) !='$'){
             for (int i = 0; i < in.length(); i++) {
                 pila.add(in.charAt(i));
