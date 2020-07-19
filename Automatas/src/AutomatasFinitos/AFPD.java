@@ -3,6 +3,7 @@ package AutomatasFinitos;
 import Herramientas.ParPila;
 import Herramientas.TransitionAFPD;
 import Herramientas.Transitions;
+import Herramientas.trioPila;
 import LectoresYProcesos.InteraccionesAutomas.Lecto;
 import ProcesamientoCadenas.ProcesamientoCadenaAFPD;
 import java.util.ArrayList;
@@ -300,7 +301,7 @@ public class AFPD extends AFD{
     
     private ProcesamientoCadenaAFPD Delta(ProcesamientoCadenaAFPD i, char u) {
         if(i.EsAceptada())return i;
-        ParPila tas = Delta.cambio(u,i.getlastPaso(),i.getTopPila());
+        trioPila tas = Delta.cambio(u,i.getlastPaso(),i.getTopPila());
         if(tas==null){
             i.setEsAceptada(true);
             return i;

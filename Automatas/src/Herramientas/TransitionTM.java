@@ -105,6 +105,11 @@ public class TransitionTM implements Transitions{
     public void add(Character Alphabeto, String Inest, Character InPila, String estadoSig, String ToPila) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    @Override
+    public trioPila cambios(Character Alphabeto, String Inest, Character InPila) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
      
 }
