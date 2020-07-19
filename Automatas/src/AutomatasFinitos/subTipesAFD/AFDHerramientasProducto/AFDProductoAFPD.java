@@ -30,37 +30,39 @@ public class AFDProductoAFPD extends AFPD{
             }
         Sigma = Sigma1;
         //Genera Q
-        ArrayList<String> Q1 = afd.getQ();
-        ArrayList<String> Q2 = afpd.getQ();
+        ArrayList<String> QAFD = afd.getQ();
+        ArrayList<String> QAFPD = afpd.getQ();
         Q = new ArrayList<>();
-        for (int i = 0; i < Q1.size(); i++) 
-          for (int j = 0; j < Q2.size(); j++) 
-            Q.add("("+Q1.get(i)+","+Q2.get(j)+")");
-        q0 = Q.indexOf("("+Q1.get(0)+","+Q2.get(0)+")");
+        for (int i = 0; i < QAFPD.size(); i++) 
+          for (int j = 0; j < QAFD.size(); j++) 
+            Q.add("("+QAFPD.get(i)+","+QAFD.get(j)+")");
+        q0 = Q.indexOf("("+QAFPD.get(afd.getQ0())+","+QAFD.get(afpd.getQ0())+")");
         //Genera F
         ArrayList<Integer> F1 = afd.getF();
         ArrayList<Integer> F2 = afpd.getF();
         F = new ArrayList<>();
-        for (int i = 0; i < Q1.size(); i++) 
-          for (int j = 0; j < Q2.size(); j++)
+        for (int i = 0; i < QAFPD.size(); i++) 
+          for (int j = 0; j < QAFD.size(); j++)
               if (F1.contains(i) && F2.contains(j))
-                  F.add(i*Q2.size()+j);
+                  F.add(i*QAFD.size()+j);
         //----Gamma----
         Gamma = afpd.getGamma();
         //Genera Delta
         Transitions DeltaAFD = afd.getDelta();
         Transitions DeltaAFPD = afpd.getDelta();
         Delta = new Transition();
-        for (String estadosq1 : Q1)
-          for (String estadosq2 : Q2)
+        for (String estadosq1 : QAFPD)
+          for (String estadosq2 : QAFD)
             for (int k = 0; k < Sigma.length(); k++)
             {
                 char a = Sigma.get(k);
                 String preDelta = "("+estadosq1+","+estadosq2+")";
-                String postDelta = "("+DeltaAFD.cambio(a, estadosq1)+","+DeltaAFPD.cambio(a, estadosq2)+")";
+                String postDelta = "("+DeltaAFPD.cambio(a, estadosq1)+","+DeltaAFD.cambio(a, estadosq2)+")";
                 Delta.add(a, preDelta, postDelta);
             }
-        
+        if (){
+            
+        }
     }
     
 }
