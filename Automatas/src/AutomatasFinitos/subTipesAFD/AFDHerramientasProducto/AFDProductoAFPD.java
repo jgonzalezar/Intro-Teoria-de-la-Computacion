@@ -16,7 +16,9 @@ import java.util.ArrayList;
  *
  * @author brandon
  */
-public class AFDProductoAFPD extends AFD{
+public class AFDProductoAFPD extends AFPD{
+    
+    
 
     public AFDProductoAFPD(AFD afd, AFPD afpd) {
         
@@ -35,6 +37,8 @@ public class AFDProductoAFPD extends AFD{
           for (int j = 0; j < Q2.size(); j++) 
             Q.add("("+Q1.get(i)+","+Q2.get(j)+")");
         q0 = Q.indexOf("("+Q1.get(0)+","+Q2.get(0)+")");
+        //----Gamma----
+        Gamma = afpd.getGamma();
         //Genera Delta
         Transitions Delta1 = afd.getDelta();
         Transitions Delta2 = afpd.getDelta();

@@ -2,6 +2,7 @@ package AutomatasFinitos;
 
 import Herramientas.ParPila;
 import Herramientas.TransitionAFPD;
+import Herramientas.Transitions;
 import LectoresYProcesos.InteraccionesAutomas.Lecto;
 import ProcesamientoCadenas.ProcesamientoCadenaAFPD;
 import java.util.ArrayList;
@@ -22,7 +23,10 @@ import java.util.Scanner;
  * @version 1.2
  */
 public class AFPD extends AFD{
-    private char[] Gamma;
+    public char[] Gamma;
+
+    public AFPD() {
+    }
     
     
     
@@ -376,5 +380,27 @@ public class AFPD extends AFD{
         return cadena;
     }
     
+    public Alfabeto getSigma() {
+        return Sigma;
+    }
+
+    public ArrayList<String> getQ() {
+        return Q;
+    }
+
+    public Integer getQ0() {
+        return q0;
+    }
+
+    public ArrayList<Integer> getF() {
+        return F;
+    }
+
+    public Transitions getDelta() {
+        return Delta;
+    }
     
+    public char[] getGamma() {
+        return Gamma;
+    }
 }
