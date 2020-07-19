@@ -37,11 +37,19 @@ public class AFDProductoAFPD extends AFPD{
           for (int j = 0; j < Q2.size(); j++) 
             Q.add("("+Q1.get(i)+","+Q2.get(j)+")");
         q0 = Q.indexOf("("+Q1.get(0)+","+Q2.get(0)+")");
+        //Genera F
+        ArrayList<Integer> F1 = afd.getF();
+        ArrayList<Integer> F2 = afpd.getF();
+        F = new ArrayList<>();
+        for (int i = 0; i < Q1.size(); i++) 
+          for (int j = 0; j < Q2.size(); j++)
+              if (F1.contains(i) && F2.contains(j))
+                  F.add(i*Q2.size()+j);
         //----Gamma----
         Gamma = afpd.getGamma();
         //Genera Delta
-        Transitions Delta1 = afd.getDelta();
-        Transitions Delta2 = afpd.getDelta();
+        Transitions DeltaAFD = afd.getDelta();
+        Transitions DeltaAFPD = afpd.getDelta();
         Delta = new Transition();
         for (String estadosq1 : Q1)
           for (String estadosq2 : Q2)
@@ -49,7 +57,7 @@ public class AFDProductoAFPD extends AFPD{
             {
                 char a = Sigma.get(k);
                 String preDelta = "("+estadosq1+","+estadosq2+")";
-                String postDelta = "("+Delta1.cambio(a, estadosq1)+","+Delta2.cambio(a, estadosq2)+")";
+                String postDelta = "("+DeltaAFD.cambio(a, estadosq1)+","+DeltaAFPD.cambio(a, estadosq2)+")";
                 Delta.add(a, preDelta, postDelta);
             }
         
