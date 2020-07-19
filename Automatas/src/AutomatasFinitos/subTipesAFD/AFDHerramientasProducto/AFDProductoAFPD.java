@@ -9,7 +9,9 @@ import AutomatasFinitos.AFD;
 import AutomatasFinitos.AFPD;
 import AutomatasFinitos.Alfabeto;
 import Herramientas.Transition;
+import Herramientas.TransitionAFPD;
 import Herramientas.Transitions;
+import Herramientas.trioPila;
 import java.util.ArrayList;
 
 /**
@@ -50,18 +52,27 @@ public class AFDProductoAFPD extends AFPD{
         //Genera Delta
         Transitions DeltaAFD = afd.getDelta();
         Transitions DeltaAFPD = afpd.getDelta();
-        Delta = new Transition();
-        for (String estadosq1 : QAFPD)
-          for (String estadosq2 : QAFD)
+        Delta = new TransitionAFPD();
+        for (String estadosq1 : QAFPD){
+          trioPila trio = DeltaAFPD.cambios('$', estadosq1, '$');
+          for (String estadosq2 : QAFD){
+            if (trio!=null){
+                for (String estadosq3 : QAFD)
+                Delta.add('$', "("+estadosq1+","+estadosq2+")", trio.getPila(), "("+trio.getDuo().getEstado()+","+estadosq3+")", trio.getDuo().getPila());
+            }
+            
             for (int k = 0; k < Sigma.length(); k++)
             {
                 char a = Sigma.get(k);
                 String preDelta = "("+estadosq1+","+estadosq2+")";
-                String postDelta = "("+DeltaAFPD.cambio(a, estadosq1)+","+DeltaAFD.cambio(a, estadosq2)+")";
-                Delta.add(a, preDelta, postDelta);
+                trioPila trioAFPD;
+                trioAFPD = DeltaAFPD.cambios(a, preDelta, a);
+                if(trioAFPD!=null){
+                String postDelta = "("+trioAFPD.getDuo().getEstado()+","+DeltaAFD.cambio(a, estadosq2)+")";
+                Delta.add(a, preDelta, a, postDelta, trioAFPD.getDuo().getPila());
+                }
             }
-        if (){
-            
+          }
         }
     }
     

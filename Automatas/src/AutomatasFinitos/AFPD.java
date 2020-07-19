@@ -396,26 +396,6 @@ public class AFPD extends AFD{
         return cadena;
     }
     
-    public Alfabeto getSigma() {
-        return Sigma;
-    }
-
-    public ArrayList<String> getQ() {
-        return Q;
-    }
-
-    public Integer getQ0() {
-        return q0;
-    }
-
-    public ArrayList<Integer> getF() {
-        return F;
-    }
-
-    public Transitions getDelta() {
-        return Delta;
-    }
-    
     public char[] getGamma() {
         return Gamma;
     }
