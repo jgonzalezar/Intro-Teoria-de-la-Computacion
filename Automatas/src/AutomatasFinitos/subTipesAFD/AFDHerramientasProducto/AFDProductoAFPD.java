@@ -66,7 +66,7 @@ public class AFDProductoAFPD extends AFPD{
                 char a = Sigma.get(k);
                 String preDelta = "("+estadosq1+","+estadosq2+")";
                 trioPila trioAFPD;
-                trioAFPD = DeltaAFPD.cambios(a, preDelta, a);
+                trioAFPD = DeltaAFPD.cambios(a, estadosq1, a);
                 if(trioAFPD!=null){
                 String postDelta = "("+trioAFPD.getDuo().getEstado()+","+DeltaAFD.cambio(a, estadosq2)+")";
                 Delta.add(a, preDelta, a, postDelta, trioAFPD.getDuo().getPila());
