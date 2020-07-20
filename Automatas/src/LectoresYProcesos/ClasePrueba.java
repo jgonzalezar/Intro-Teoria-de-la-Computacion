@@ -2337,7 +2337,6 @@ public class ClasePrueba {
                             return Lectura.CrearAutomata;
                         }
                     }
-                    break;
                 }
                 case AFPD: {
                     //AFPD First
@@ -2382,7 +2381,6 @@ public class ClasePrueba {
                             return Lectura.CrearAutomata;
                         }
                     }
-                    break;
                 }
                 default:
                     throw new Error("El autómata ingresado debe ser un AFD");
@@ -2396,6 +2394,6 @@ public class ClasePrueba {
 
             return Lectura.CrearAutomata;
         }
-
+        
     }
 }
