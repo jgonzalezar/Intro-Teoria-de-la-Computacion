@@ -12,8 +12,10 @@ import AutomatasFinitos.subTipesAFD.AFDHerramientasProducto.AFDProductoDSim;
 import AutomatasFinitos.subTipesAFD.AFDHerramientasProducto.AFDProductoO;
 import AutomatasFinitos.subTipesAFD.AFDHerramientasProducto.AFDProductoY;
 import AutomatasFinitos.subTipesAFD.AFDSimplificacion;
+import AutomatasFinitos.subTipesAFD.AFDHerramientasProducto.AFDProductoAFPD;
 import AutomatasFinitos.AFN;
 import AutomatasFinitos.AFNL;
+import AutomatasFinitos.AFPD;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Scanner;
@@ -130,6 +132,10 @@ public class InteraccionesAutomas {
             default: 
                 throw new AssertionError(operacion);
         }
+    }
+    
+    public static AFPD hallarProductoAFDAFPD(AFD afd, AFPD afpd){
+        return new AFDProductoAFPD(afd, afpd);
     }
     
     /**
