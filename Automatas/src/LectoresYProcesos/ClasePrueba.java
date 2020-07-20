@@ -85,10 +85,20 @@ public class ClasePrueba {
                         switch (tp) {
                             case AFPD:
                                 message = "Ha seleccionado un Automata finito determinista con pila que representa la expresion " + expresion;
+                                String[] optionsAFPD = {"Procesar cadenas", "Producto cartesiano con un AFD"};
+                                int meow = JOptionPane.showOptionDialog(null, message + "\n Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionsAFPD, "Procesar cadenas");
+                                switch (meow) {
+                                    case 1:
+                                        tp = InteraccionesAutomas.Type.AFDProductoAFPD;
+                                        break;
+                                    case JOptionPane.CLOSED_OPTION:
+                                        fals = true;
+                                        break;
+                                }
                                 break;
                             case AFD:
                                 message = "Ha seleccionado un Automata finito determinista que representa la expresion " + expresion;
-                                String[] options1 = {"Procesar cadenas", "Simplificar el Automata", "Calcular el complemento", "Realizar el Producto Cartesiano\n con otro automata"};
+                                String[] options1 = {"Procesar cadenas", "Simplificar el Automata", "Calcular el complemento", "Producto Cartesiano\n con un otro autómata"};
                                 int f = JOptionPane.showOptionDialog(null, message + "\n Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Procesar cadenas");
                                 switch (f) {
                                     case 1:
@@ -98,7 +108,18 @@ public class ClasePrueba {
                                         tp = InteraccionesAutomas.Type.AFDcomplement;
                                         break;
                                     case 3:
-                                        tp = InteraccionesAutomas.Type.AFDproducto;
+                                        String[] optionspil = {"Producto con un AFD", "Producto con un autómata de pila"};
+                                        int test = JOptionPane.showOptionDialog(null, message + "\n Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionspil, "Producto con un AFD");
+                                        switch (test) {
+                                            case 0:
+                                                tp = InteraccionesAutomas.Type.AFDproducto;
+                                                break;
+                                            case 1:
+                                                tp = InteraccionesAutomas.Type.AFDProductoAFPD;
+                                            case JOptionPane.CLOSED_OPTION:
+                                                fals = true;
+                                                break;
+                                        }
                                         break;
                                     case JOptionPane.CLOSED_OPTION:
                                         fals = true;
@@ -179,6 +200,9 @@ public class ClasePrueba {
                             break;
                         case AFPD:
                             lec = probarAFPD();
+                            break;
+                        case AFDProductoAFPD:
+                            lec = probarAFDProductoAFPD();
                             break;
                         case MT:
                             lec = probarTM();
@@ -2289,7 +2313,7 @@ public class ClasePrueba {
         }
     }
 
-    private static Lectura probarAFPDProductoAFD() {
+    private static Lectura probarAFDProductoAFPD() {
         try {
             AFD afd;
             AFPD afpd;
@@ -2315,7 +2339,78 @@ public class ClasePrueba {
                             afpd = new AFPD(urlAFPD);
                             AFPD producto = hallarProductoAFDAFPD(afd, afpd);
                             //Procesamiento
+                            int i = JOptionPane.showConfirmDialog(null, "Desea ingresar más de una cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                            switch (i) {
+                                case JOptionPane.YES_OPTION:
+                                    System.out.println("yes");
+                                    boolean dos = true;
+                                    do {
+                                        try {
+                                            procsVariasCadenas(afpd);
+                                            dos = false;
+                                        } catch (NullPointerException e) {
+                                            dos = false;
+                                        }
 
+                                    } while (dos);
+                                    break;
+
+                                case JOptionPane.NO_OPTION:
+                                    boolean tres = true;
+                                    do {
+                                        try {
+
+                                            String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
+                                            ArrayList<Character> error = afpd.ponerCadena(cadena);
+                                            if (error.size() > 0) {
+                                                System.out.println("cadena recibidassss");
+                                                String errors = "";
+                                                errors = error.stream().map((character) -> character + " ").reduce(errors, String::concat);
+                                                JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
+                                            } else {
+                                                boolean set;
+                                                System.out.println("cadena recibida");
+                                                String[] optionss = {"dar resultado solamente", "imprimir en consola el proceso y el resultado", "imprimirn en consola y evaluar en una ventana"};
+                                                int fss = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Seleccione", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionss, "Salir");
+                                                switch (fss) {
+                                                    case 0:
+                                                        set = afpd.procesarCadena(cadena);
+                                                        break;
+                                                    case 1:
+
+                                                    case 2:
+                                                        set = afpd.procesarCadenaConDetalles(cadena);
+                                                        break;
+                                                    default:
+                                                        set = afpd.procesarCadena(cadena);
+                                                        break;
+                                                }
+
+                                                if (set) {
+                                                    System.out.println("La cadena: " + cadena + " es aceptada");
+                                                } else {
+                                                    System.out.println("La cadena: " + cadena + " no es aceptada");
+                                                }
+                                                /*if (fss == 2) {
+                                                Windows2 cin = new Windows2(getExpresion(), afpd, afpd.porsWhitProsCaden(cadena));
+                                                cin.Simulat();
+                                            }*/
+                                                tres = false;
+                                            }
+                                        } catch (NullPointerException e) {
+                                            tres = false;
+                                        }
+
+                                    } while (tres);
+
+                                    break;
+
+                                default:
+                                    System.out.println("ddd");
+                                    //una
+                                    break;
+                            }
+                            //End proccess
                             String[] options = {"mantener Automata", "Cambiar De Automata", "Salir"};
                             int fs = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Seleccione", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
                             if (fs == 2 || fs == JOptionPane.CLOSED_OPTION) {
@@ -2337,6 +2432,7 @@ public class ClasePrueba {
                             return Lectura.CrearAutomata;
                         }
                     }
+                    //I erased "break;" here
                 }
                 case AFPD: {
                     //AFPD First
@@ -2359,7 +2455,78 @@ public class ClasePrueba {
                             afd = new AFD(urlAFD);
                             AFPD producto = hallarProductoAFDAFPD(afd, afpd);
                             //Procesamiento
+                            int i = JOptionPane.showConfirmDialog(null, "Desea ingresar más de una cadena?", "Recepcion de cadenas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE);
+                            switch (i) {
+                                case JOptionPane.YES_OPTION:
+                                    System.out.println("yes");
+                                    boolean dos = true;
+                                    do {
+                                        try {
+                                            procsVariasCadenas(afpd);
+                                            dos = false;
+                                        } catch (NullPointerException e) {
+                                            dos = false;
+                                        }
 
+                                    } while (dos);
+                                    break;
+
+                                case JOptionPane.NO_OPTION:
+                                    boolean tres = true;
+                                    do {
+                                        try {
+
+                                            String cadena = JOptionPane.showInputDialog(null, "Ingrese la cadena a evaluar", "");
+                                            ArrayList<Character> error = afpd.ponerCadena(cadena);
+                                            if (error.size() > 0) {
+                                                System.out.println("cadena recibidassss");
+                                                String errors = "";
+                                                errors = error.stream().map((character) -> character + " ").reduce(errors, String::concat);
+                                                JOptionPane.showMessageDialog(null, "La cadena posee caracteres que no pertenecen al alfabeto: \n" + errors, "Error en Cadena", JOptionPane.ERROR_MESSAGE);
+                                            } else {
+                                                boolean set;
+                                                System.out.println("cadena recibida");
+                                                String[] optionss = {"dar resultado solamente", "imprimir en consola el proceso y el resultado", "imprimirn en consola y evaluar en una ventana"};
+                                                int fss = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Seleccione", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, optionss, "Salir");
+                                                switch (fss) {
+                                                    case 0:
+                                                        set = afpd.procesarCadena(cadena);
+                                                        break;
+                                                    case 1:
+
+                                                    case 2:
+                                                        set = afpd.procesarCadenaConDetalles(cadena);
+                                                        break;
+                                                    default:
+                                                        set = afpd.procesarCadena(cadena);
+                                                        break;
+                                                }
+
+                                                if (set) {
+                                                    System.out.println("La cadena: " + cadena + " es aceptada");
+                                                } else {
+                                                    System.out.println("La cadena: " + cadena + " no es aceptada");
+                                                }
+                                                /*if (fss == 2) {
+                                                Windows2 cin = new Windows2(getExpresion(), afpd, afpd.porsWhitProsCaden(cadena));
+                                                cin.Simulat();
+                                            }*/
+                                                tres = false;
+                                            }
+                                        } catch (NullPointerException e) {
+                                            tres = false;
+                                        }
+
+                                    } while (tres);
+
+                                    break;
+
+                                default:
+                                    System.out.println("ddd");
+                                    //una
+                                    break;
+                            }
+                            //End Proccess
                             String[] options = {"mantener Automata", "Cambiar De Automata", "Salir"};
                             int fs = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Seleccione", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options, "Salir");
                             if (fs == 2 || fs == JOptionPane.CLOSED_OPTION) {
@@ -2381,6 +2548,7 @@ public class ClasePrueba {
                             return Lectura.CrearAutomata;
                         }
                     }
+                    //I erased "break;" here
                 }
                 default:
                     throw new Error("El autómata ingresado debe ser un AFD");

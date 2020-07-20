@@ -229,6 +229,7 @@ public class InteraccionesAutomas {
         
         AFPD,
         MT,
+        AFDProductoAFPD,
     }
     
     /**
