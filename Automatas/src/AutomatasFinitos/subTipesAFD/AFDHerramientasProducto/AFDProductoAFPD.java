@@ -24,13 +24,13 @@ public class AFDProductoAFPD extends AFPD{
 
     public AFDProductoAFPD(AFD afd, AFPD afpd) {
         
-        Alfabeto Sigma1 = afd.getSigma();
-        Alfabeto Sigma2 = afpd.getSigma();
-        if (!(Sigma1.toString().equals(Sigma2.toString())))
+        Alfabeto SigmaAFD = afd.getSigma();
+        Alfabeto SigmaAFPD = afpd.getSigma();
+        if (!(SigmaAFD.toString().equals(SigmaAFPD.toString())))
             {
                 throw new Error("Los alfabetos deben ser iguales para poder realizar el producto cartesiano de los autómatas.");
             }
-        Sigma = Sigma1;
+        Sigma = SigmaAFD;
         //Genera Q
         ArrayList<String> QAFD = afd.getQ();
         ArrayList<String> QAFPD = afpd.getQ();
@@ -40,12 +40,12 @@ public class AFDProductoAFPD extends AFPD{
             Q.add("("+QAFPD.get(i)+","+QAFD.get(j)+")");
         q0 = Q.indexOf("("+QAFPD.get(afd.getQ0())+","+QAFD.get(afpd.getQ0())+")");
         //Genera F
-        ArrayList<Integer> F1 = afd.getF();
-        ArrayList<Integer> F2 = afpd.getF();
+        ArrayList<Integer> FAFD = afd.getF();
+        ArrayList<Integer> FAFPD = afpd.getF();
         F = new ArrayList<>();
         for (int i = 0; i < QAFPD.size(); i++) 
           for (int j = 0; j < QAFD.size(); j++)
-              if (F1.contains(i) && F2.contains(j))
+              if (FAFD.contains(i) && FAFPD.contains(j))
                   F.add(i*QAFD.size()+j);
         //----Gamma----
         Gamma = afpd.getGamma();

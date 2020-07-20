@@ -39,7 +39,7 @@ public class AFDProducto extends AFD
         for (int i = 0; i < Q1.size(); i++) 
           for (int j = 0; j < Q2.size(); j++) 
             Q.add("("+Q1.get(i)+","+Q2.get(j)+")");
-        q0 = Q.indexOf("("+Q1.get(0)+","+Q2.get(0)+")");
+        q0 = Q.indexOf("("+Q1.get(afd1.getQ0())+","+Q2.get(afd2.getQ0())+")");
         //Genera Delta
         Transitions Delta1 = afd1.getDelta();
         Transitions Delta2 = afd2.getDelta();
