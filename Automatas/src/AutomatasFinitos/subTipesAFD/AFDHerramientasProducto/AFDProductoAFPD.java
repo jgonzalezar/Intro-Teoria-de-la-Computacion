@@ -18,62 +18,64 @@ import java.util.ArrayList;
  *
  * @author brandon
  */
-public class AFDProductoAFPD extends AFPD{
-    
-    
+public class AFDProductoAFPD extends AFPD {
 
     public AFDProductoAFPD(AFD afd, AFPD afpd) {
-        
-        Alfabeto SigmaAFD = afd.getSigma();
-        Alfabeto SigmaAFPD = afpd.getSigma();
-        if (!(SigmaAFD.toString().equals(SigmaAFPD.toString())))
-            {
-                throw new Error("Los alfabetos deben ser iguales para poder realizar el producto cartesiano de los autómatas.");
-            }
-        Sigma = SigmaAFD;
+
+        Alfabeto afdSigma = afd.getSigma();
+        Alfabeto afpdSigma = afpd.getSigma();
+        if (!(afdSigma.toString().equals(afpdSigma.toString()))) {
+            throw new Error("Los alfabetos deben ser iguales para poder realizar el producto cartesiano de los autómatas.");
+        }
+        Sigma = afdSigma;
         //Genera Q
-        ArrayList<String> QAFD = afd.getQ();
-        ArrayList<String> QAFPD = afpd.getQ();
+        ArrayList<String> afdQ = afd.getQ();
+        ArrayList<String> afpdQ = afpd.getQ();
         Q = new ArrayList<>();
-        for (int i = 0; i < QAFPD.size(); i++) 
-          for (int j = 0; j < QAFD.size(); j++) 
-            Q.add("("+QAFPD.get(i)+","+QAFD.get(j)+")");
-        q0 = Q.indexOf("("+QAFPD.get(afd.getQ0())+","+QAFD.get(afpd.getQ0())+")");
+        for (int i = 0; i < afpdQ.size(); i++) {
+            for (int j = 0; j < afdQ.size(); j++) {
+                Q.add("(" + afpdQ.get(i) + "," + afdQ.get(j) + ")");
+            }
+        }
+        q0 = Q.indexOf("(" + afpdQ.get(afd.getQ0()) + "," + afdQ.get(afpd.getQ0()) + ")");
         //Genera F
-        ArrayList<Integer> FAFD = afd.getF();
-        ArrayList<Integer> FAFPD = afpd.getF();
+        ArrayList<Integer> afdF = afd.getF();
+        ArrayList<Integer> afpdF = afpd.getF();
         F = new ArrayList<>();
-        for (int i = 0; i < QAFPD.size(); i++) 
-          for (int j = 0; j < QAFD.size(); j++)
-              if (FAFD.contains(i) && FAFPD.contains(j))
-                  F.add(i*QAFD.size()+j);
+        for (int i = 0; i < afpdQ.size(); i++) {
+            for (int j = 0; j < afdQ.size(); j++) {
+                if (afdF.contains(i) && afpdF.contains(j)) {
+                    F.add(i * afdQ.size() + j);
+                }
+            }
+        }
         //----Gamma----
         Gamma = afpd.getGamma();
         //Genera Delta
-        Transitions DeltaAFD = afd.getDelta();
-        Transitions DeltaAFPD = afpd.getDelta();
+        Transitions afdDelta = afd.getDelta();
+        Transitions afpdDelta = afpd.getDelta();
         Delta = new TransitionAFPD();
-        for (String estadosq1 : QAFPD){
-          trioPila trio = DeltaAFPD.cambios('$', estadosq1, '$');
-          for (String estadosq2 : QAFD){
-            if (trio!=null){
-                for (String estadosq3 : QAFD)
-                Delta.add('$', "("+estadosq1+","+estadosq2+")", trio.getPila(), "("+trio.getDuo().getEstado()+","+estadosq3+")", trio.getDuo().getPila());
-            }
-            
-            for (int k = 0; k < Sigma.length(); k++)
-            {
-                char a = Sigma.get(k);
-                String preDelta = "("+estadosq1+","+estadosq2+")";
-                trioPila trioAFPD;
-                trioAFPD = DeltaAFPD.cambios(a, estadosq1, a);
-                if(trioAFPD!=null){
-                String postDelta = "("+trioAFPD.getDuo().getEstado()+","+DeltaAFD.cambio(a, estadosq2)+")";
-                Delta.add(a, preDelta, a, postDelta, trioAFPD.getDuo().getPila());
+        for (String afpdStates : afpdQ) {
+            trioPila trio = afpdDelta.cambios('$', afpdStates, '$');
+            for (String afdStates1 : afdQ) {
+                if (trio != null) {
+                    for (String afdStates2 : afdQ) {
+                        Delta.add('$', "(" + afpdStates + "," + afdStates1 + ")", trio.getPila(), "(" + trio.getDuo().getEstado() + "," + afdStates2 + ")", trio.getDuo().getPila());
+                    }
+                }
+
+                for (int k = 0; k < Sigma.length(); k++) {
+                    char a = Sigma.get(k);
+                    String preDelta = "(" + afpdStates + "," + afdStates1 + ")";
+                    trioPila trioAFPD;
+                    trioAFPD = afpdDelta.cambios(a, estadosq1, a);
+                    if (trioAFPD != null) {
+                        String postDelta = "(" + trioAFPD.getDuo().getEstado() + "," + afdDelta.cambio(a, afdStates1) + ")";
+                        Delta.add(a, preDelta, a, postDelta, trioAFPD.getDuo().getPila());
+                    }
                 }
             }
-          }
         }
     }
-    
+
 }
