@@ -19,9 +19,9 @@ import java.util.Stack;
  *
  * @author fanat
  */
-public class KLENtoAFNL extends AFNL {
+public class KLEENToAFNL extends AFNL {
 
-    public KLENtoAFNL(String lenguaje) {
+    public KLEENToAFNL(String lenguaje) {
         HashMap<String, ArrayList<String>> result = evalu(lenguaje);
         ArrayList<String> asd = result.get("Sigma");
 
@@ -596,7 +596,7 @@ public class KLENtoAFNL extends AFNL {
     }
 
     public static void main(String[] args) {
-        AFNL sss = new KLENtoAFNL("a(ab*)+U$");
+        AFNL sss = new KLEENToAFNL("a(ab*)+U$");
         System.out.println(sss.toString());
         System.out.println("sss");
         System.out.println(sss.procesarCadenaConDetalles("a"));
