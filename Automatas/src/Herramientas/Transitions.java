@@ -22,6 +22,7 @@ public abstract interface Transitions {
     
     public ParPila cambio(Character Alphabeto, String Inest,Character InPila);
     
+    public trioPila cambios(Character Alphabeto, String Inest, Character InPila);
     /**
      * cantidad de caracteres en el alfabeto
      * @return tamaño de las transiciones

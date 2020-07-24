@@ -602,5 +602,11 @@ public class AFD {
     public Transitions getDelta() {
         return Delta;
     }
+
+    public ArrayList<String> getEstadosLimbo() {
+        return estadosLimbo;
+    }
+    
+    
     
 }

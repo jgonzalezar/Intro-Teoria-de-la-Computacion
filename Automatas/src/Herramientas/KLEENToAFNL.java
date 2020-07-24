@@ -13,14 +13,15 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.Stack;
 
 /**
  *
  * @author fanat
  */
-public class KLENtoAFNL extends AFNL {
+public class KLEENToAFNL extends AFNL {
 
-    public KLENtoAFNL(String lenguaje) {
+    public KLEENToAFNL(String lenguaje) {
         HashMap<String, ArrayList<String>> result = evalu(lenguaje);
         ArrayList<String> asd = result.get("Sigma");
 
@@ -33,6 +34,7 @@ public class KLENtoAFNL extends AFNL {
         }
 
         Sigma = new Alfabeto(sigmas);
+        System.out.println(Sigma.toString());
         asd = result.get("States");
         reset = new HashSet<>(asd);
         asd.clear();
@@ -40,6 +42,8 @@ public class KLENtoAFNL extends AFNL {
 
         Q = new ArrayList<>();
         Q.addAll(asd);
+        System.out.println("estates");
+        System.out.println(Q.toString());
 
         asd = result.get("final");
         reset = new HashSet<>(asd);
@@ -48,17 +52,21 @@ public class KLENtoAFNL extends AFNL {
 
         q0 = Q.indexOf(result.get("ini").get(0));
 
+        System.out.println("uno");
+        System.out.println(q0);
         ArrayList<Integer> asds = new ArrayList<>();
         for (int i = 0; i < asd.size(); i++) {
             asds.add(Q.indexOf(asd.get(i)));
         }
         F = asds;
-
+        System.out.println("acep");
+        System.out.println(F.toString());
         TransitionAFNL tras = new TransitionAFNL(Q.size());
         asd = result.get("Separations");
         reset = new HashSet<>(asd);
         asd.clear();
         asd.addAll(reset);
+        System.out.println("Separat");
         for (String asd1 : asd) {
             String[] separos = asd1.split(":");
             String estado1 = separos[0];
@@ -69,7 +77,7 @@ public class KLENtoAFNL extends AFNL {
             for (int i = 0; i < dos.length; i++) {
                 hey[i] = Q.indexOf(dos[i]);
             }
-            System.out.println(caracter + " " + estado1 + " " + Arrays.toString(hey));
+            System.out.println(caracter + " " + estado1 + " " + Arrays.toString(hey) + "/" + Arrays.toString(dos));
             tras.add(caracter, Q.indexOf(estado1), hey);
         }
 
@@ -176,10 +184,7 @@ public class KLENtoAFNL extends AFNL {
                     break;
             }
 
-            System.out.println(cad.get("final").toString());
-            System.out.println(cad.get("Separations").toString());
             if (dos == word.length()) {
-                System.out.println("dd");
                 dod = "";
                 if (ex == 'U' || ((ex == '*' || ex == '+') && next2 == 'U')) {
                     throw new Error("La union no se puede realizar con solo un elemento");
@@ -190,7 +195,6 @@ public class KLENtoAFNL extends AFNL {
             } else {
                 dod = word.substring(dos);
             }
-            System.out.println(dod + "dod");
             HashMap<String, ArrayList<String>> cad2 = evalu(dod);
 
             switch (ex) {
@@ -235,7 +239,6 @@ public class KLENtoAFNL extends AFNL {
                         resetss = new HashSet<>(cad.get("final"));
                         cad.get("final").clear();
                         cad.get("final").addAll(resetss);
-                        System.out.println(cad.get("Separations").toString());
                         for (String asd1 : cad2.get("Separations")) {
                             String[] separos = asd1.split(":");
                             String estado1 = separos[0];
@@ -252,7 +255,6 @@ public class KLENtoAFNL extends AFNL {
                     }
 
                 case 'U':
-                    System.out.println(ex + " " + next2);
                     cad.get("Sigma").addAll(cad2.get("Sigma"));
                     Set<String> reset2 = new HashSet<>(cad.get("Sigma"));
                     cad.get("Sigma").clear();
@@ -315,7 +317,6 @@ public class KLENtoAFNL extends AFNL {
                     resetss = new HashSet<>(cad.get("final"));
                     cad.get("final").clear();
                     cad.get("final").addAll(resetss);
-                    System.out.println(cad.get("Separations").toString());
                     for (String asd1 : cad2.get("Separations")) {
                         String[] separos = asd1.split(":");
                         String estado1 = separos[0];
@@ -330,8 +331,6 @@ public class KLENtoAFNL extends AFNL {
                     }
                     break;
             }
-
-            System.out.println(cad.get("Separations").toString());
 
         } else if (uni == -1 || pare == -1) {
             if (uni == -1 && pare == -1) {
@@ -422,7 +421,7 @@ public class KLENtoAFNL extends AFNL {
                 cad.get("ini").add("C0");
 
                 cad1.get("final").forEach((string) -> {
-                    cad.get("Separations").add("1" + string + ":$>" + cad2.get("ini").get(0));
+                    cad.get("Separations").add("1" + string + ":$>" + "2" + cad2.get("ini").get(0));
                 });
                 cad2.get("final").forEach((string) -> {
                     cad.get("final").add("2" + string);
@@ -515,122 +514,81 @@ public class KLENtoAFNL extends AFNL {
                     cad.get("Separations").add("2" + estado1 + ":" + caracter + ">" + ddd.substring(0, ddd.length() - 1));
                 }
             }
-        } else if (uni < pare) {
-            String uno = word.substring(0, uni);
-            String dod = word.substring(uni + 1);
-            HashMap<String, ArrayList<String>> cad1 = evalu(uno);
-            HashMap<String, ArrayList<String>> cad2 = evalu(dod);
-            cad.get("Sigma").addAll(cad1.get("Sigma"));
-            cad.get("Sigma").addAll(cad2.get("Sigma"));
-            Set<String> reset = new HashSet<>(cad.get("Sigma"));
-            cad.get("Sigma").clear();
-            cad.get("Sigma").addAll(reset);
-            cad1.get("States").forEach((string) -> {
-                cad.get("States").add("1" + string);
-            });
-            cad2.get("States").forEach((string) -> {
-                cad.get("States").add("2" + string);
-            });
-            reset = new HashSet<>(cad.get("States"));
-            cad.get("States").clear();
-            cad.get("States").addAll(reset);
-            cad.get("States").add("U0");
-
-            cad.get("ini").add("U0");
-
-            cad1.get("final").forEach((string) -> {
-                cad.get("final").add("1" + string);
-            });
-            cad2.get("final").forEach((string) -> {
-                cad.get("final").add("2" + string);
-            });
-            reset = new HashSet<>(cad.get("final"));
-            cad.get("final").clear();
-            cad.get("final").addAll(reset);
-
-            cad.get("Separations").add("U0:$>" + "1" + cad1.get("ini").get(0) + ";2" + cad2.get("ini").get(0));
-            for (String asd1 : cad1.get("Separations")) {
-                String[] separos = asd1.split(":");
-                String estado1 = separos[0];
-                String[] sep = separos[1].split(">");
-                char caracter = sep[0].charAt(0);
-                String[] dos = sep[1].split(";");
-                String ddd = "";
-                for (String aDo : dos) {
-                    ddd += "1" + aDo + ";";
-                }
-                cad.get("Separations").add("1" + estado1 + ":" + caracter + ">" + ddd.substring(0, ddd.length() - 1));
-            }
-            for (String asd1 : cad2.get("Separations")) {
-                String[] separos = asd1.split(":");
-                String estado1 = separos[0];
-                String[] sep = separos[1].split(">");
-                char caracter = sep[0].charAt(0);
-                String[] dos = sep[1].split(";");
-                String ddd = "";
-                for (String aDo : dos) {
-                    ddd += "2" + aDo + ";";
-                }
-                cad.get("Separations").add("2" + estado1 + ":" + caracter + ">" + ddd.substring(0, ddd.length() - 1));
-            }
         } else {
-            String uno = word.substring(0, pare);
-            String dod = word.substring(pare);
-            HashMap<String, ArrayList<String>> cad1 = evalu(uno);
-            HashMap<String, ArrayList<String>> cad2 = evalu(dod);
-            cad.get("Sigma").addAll(cad1.get("Sigma"));
-            cad.get("Sigma").addAll(cad2.get("Sigma"));
+            ArrayList<String> cadenas = new ArrayList<>();
+            ArrayList<Integer> unionns = new ArrayList<>();
+            Stack<Integer> pares = new Stack<>();
+            for (int i = 0; i < word.length(); i++) {
+                if (word.charAt(i) == 'U' && pares.isEmpty()) {
+                    unionns.add(i);
+                }
+                if (word.charAt(i) == '(') {
+                    pares.push(i);
+                } else if (word.charAt(i) == ')') {
+                    pares.pop();
+                }
+
+            }
+            String word2 = word;
+            for (Integer unionn : unionns) {
+                if (word.length() - 1 == unionn) {
+                    evalu("U");
+                }
+                String cad1 = word2.substring(0, unionn);
+                String cad2 = word2.substring(unionn + 1);
+                word2 = cad2;
+                cadenas.add(cad1);
+
+            }
+            cadenas.add(word2);
+            ArrayList<String> inis = new ArrayList<>();
+
+            for (int i = 0; i < cadenas.size(); i++) {
+                HashMap<String, ArrayList<String>> cad1 = evalu(cadenas.get(i));
+                inis.add(i + cad1.get("ini").get(0));
+                cad.get("Sigma").addAll(cad1.get("Sigma"));
+                for (String string : cad1.get("States")) {
+                    cad.get("States").add(i + string);
+                }
+
+                for (String string : cad1.get("final")) {
+                    cad.get("final").add(i + string);
+                }
+
+                for (String asd1 : cad1.get("Separations")) {
+                    String[] separos = asd1.split(":");
+                    String estado1 = separos[0];
+                    String[] sep = separos[1].split(">");
+                    char caracter = sep[0].charAt(0);
+                    String[] dos = sep[1].split(";");
+                    String ddd = "";
+                    for (String aDo : dos) {
+                        ddd += i + aDo + ";";
+                    }
+                    cad.get("Separations").add(i + estado1 + ":" + caracter + ">" + ddd.substring(0, ddd.length() - 1));
+                }
+
+            }
             Set<String> reset = new HashSet<>(cad.get("Sigma"));
             cad.get("Sigma").clear();
             cad.get("Sigma").addAll(reset);
-            cad1.get("States").forEach((string) -> {
-                cad.get("States").add("1" + string);
-            });
-            cad2.get("States").forEach((string) -> {
-                cad.get("States").add("2" + string);
-            });
+
             reset = new HashSet<>(cad.get("States"));
             cad.get("States").clear();
             cad.get("States").addAll(reset);
-            cad.get("States").add("C0");
-
-            cad.get("ini").add("C0");
-
-            cad1.get("final").forEach((string) -> {
-                cad.get("Separations").add("1" + string + ":$>" + cad2.get("ini").get(0));
-            });
-            cad2.get("final").forEach((string) -> {
-                cad.get("final").add("2" + string);
-            });
+            cad.get("States").add("Ui");
+            
+            String hey ="";
+            
+            for (String ini : inis) {
+                hey+=ini+";";
+            }
+            cad.get("ini").clear();
+            cad.get("ini").add("Ui");
+            cad.get("Separations").add("Ui:$>" + hey);
             reset = new HashSet<>(cad.get("final"));
             cad.get("final").clear();
-            cad.get("final").addAll(reset);
-
-            cad.get("Separations").add("C0:$>" + "1" + cad1.get("ini").get(0));
-            for (String asd1 : cad1.get("Separations")) {
-                String[] separos = asd1.split(":");
-                String estado1 = separos[0];
-                String[] sep = separos[1].split(">");
-                char caracter = sep[0].charAt(0);
-                String[] dos = sep[1].split(";");
-                String ddd = "";
-                for (String aDo : dos) {
-                    ddd += "1" + aDo + ";";
-                }
-                cad.get("Separations").add("1" + estado1 + ":" + caracter + ">" + ddd.substring(0, ddd.length() - 1));
-            }
-            for (String asd1 : cad2.get("Separations")) {
-                String[] separos = asd1.split(":");
-                String estado1 = separos[0];
-                String[] sep = separos[1].split(">");
-                char caracter = sep[0].charAt(0);
-                String[] dos = sep[1].split(";");
-                String ddd = "";
-                for (String aDo : dos) {
-                    ddd += "2" + aDo + ";";
-                }
-                cad.get("Separations").add("2" + estado1 + ":" + caracter + ">" + ddd.substring(0, ddd.length() - 1));
-            }
+            cad.get("final").addAll(reset);            
         }
 
         cad.get("Sigma").remove("$");
@@ -638,15 +596,13 @@ public class KLENtoAFNL extends AFNL {
     }
 
     public static void main(String[] args) {
-        AFNL sss = new KLENtoAFNL("a(ab*)*");
-
-        sss.ImprimirlambdaClausura_unEstado(0);
+        AFNL sss = new KLEENToAFNL("a(ab*)+U$");
         System.out.println(sss.toString());
         System.out.println("sss");
-        System.out.println(sss.procesarCadenaConDetalles("ac"));
-        System.out.println(sss.procesarCadenaConDetalles("c"));
-        System.out.println(sss.procesarCadenaConDetalles("aac"));
-        System.out.println(sss.procesarCadenaConDetalles("abbc"));
+        System.out.println(sss.procesarCadenaConDetalles("a"));
+        System.out.println(sss.procesarCadenaConDetalles(""));
+        System.out.println(sss.procesarCadenaConDetalles("aa"));
+        System.out.println(sss.procesarCadenaConDetalles("aabb"));
 
     }
 }

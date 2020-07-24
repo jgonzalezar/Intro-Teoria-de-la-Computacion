@@ -2,6 +2,8 @@ package AutomatasFinitos;
 
 import Herramientas.ParPila;
 import Herramientas.TransitionAFPD;
+import Herramientas.Transitions;
+import Herramientas.trioPila;
 import LectoresYProcesos.InteraccionesAutomas.Lecto;
 import ProcesamientoCadenas.ProcesamientoCadenaAFPD;
 import java.util.ArrayList;
@@ -22,7 +24,10 @@ import java.util.Scanner;
  * @version 1.2
  */
 public class AFPD extends AFD{
-    private char[] Gamma;
+    public char[] Gamma;
+
+    public AFPD() {
+    }
     
     
     
@@ -272,7 +277,12 @@ public class AFPD extends AFD{
     
     private ProcesamientoCadenaAFPD Delta(String word) {
         ProcesamientoCadenaAFPD f = new ProcesamientoCadenaAFPD(word);
-        f.add(Q.get(q0),"$");
+        try{
+            f.add(Q.get(q0),"$",'$');
+        }catch(Exception e){
+            
+        }
+        
         if(word==null||word.length()==0){   
             f.setEsAceptada(F.contains(q0));
             f.setCadena(word);
@@ -296,14 +306,24 @@ public class AFPD extends AFD{
     
     private ProcesamientoCadenaAFPD Delta(ProcesamientoCadenaAFPD i, char u) {
         if(i.EsAceptada())return i;
-        ParPila tas = Delta.cambio(u,i.getlastPaso(),i.getTopPila());
-        if(tas==null){
-            i.setEsAceptada(true);
-            return i;
+        trioPila tas = Delta.cambios(u,i.getlastPaso(),i.getTopPila());
+        while(tas==null){
+            trioPila dostas= Delta.cambios('$', i.getlastPaso(),i.getTopPila());
+            if(dostas==null){
+                i.setEsAceptada(true);
+                return i;
+            }
+            try{
+                i.add(dostas.getDuo().getEstado(),dostas.getDuo().getPila(),dostas.getPila());
+            }catch(Exception e){
+                i.setEsAceptada(true);
+                return i;
+            }
+            tas = Delta.cambios(u,i.getlastPaso(),i.getTopPila());
         }
         try{
-            i.add(tas.getEstado(),tas.getPila());
-        }catch(EmptyStackException e){
+            i.add(tas.getDuo().getEstado(),tas.getDuo().getPila(),tas.getPila());
+        }catch(Exception e){
             i.setEsAceptada(true);
         }
         
@@ -376,5 +396,7 @@ public class AFPD extends AFD{
         return cadena;
     }
     
-    
+    public char[] getGamma() {
+        return Gamma;
+    }
 }
