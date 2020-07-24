@@ -90,7 +90,7 @@ public class AFDtoKleen {
                             for (String dos : Q) {
                                 if (asd.get(dos) != null) {
                                     if(table.get(string).get(dos)==null){
-                                        table.get(string).put(dos, asd.get(dos));
+                                        table.get(string).put(dos, dd+asd.get(dos));
                                     }
                                 }
                             }
