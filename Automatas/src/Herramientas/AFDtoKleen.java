@@ -79,6 +79,15 @@ public class AFDtoKleen {
                             table.get(Q.get(i)).replace(string, ss + dd);
                         }
                     }
+                    if ( table.get(Q.get(i)).get("") != null) {
+                        String dd = table.get(Q.get(i)).get("");
+                        if("$".equals(dd)){
+                            table.get(Q.get(i)).replace("", ss);
+                        }else{
+                            table.get(Q.get(i)).replace("", ss + dd);
+                        }
+                        
+                    }
                     table.get(Q.get(i)).remove(Q.get(i));
                 }
                 HashMap<String, String> asd = table.get(Q.get(i));
@@ -97,10 +106,7 @@ public class AFDtoKleen {
                         }
                     }
                 }
-                if (table.get(Q.get(i - 1)).get(Q.get(i)) != null) {
-
-                }
-                String hey = table.get(Q.get(i - 1)).get(Q.get(i));
+                
                 table.remove(Q.get(i));
             }
 
