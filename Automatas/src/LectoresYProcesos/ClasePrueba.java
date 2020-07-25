@@ -6,6 +6,8 @@
 package LectoresYProcesos;
 
 import AutomatasFinitos.*;
+import Herramientas.AFDtoKleen;
+import Herramientas.KLEENToAFNL;
 import static LectoresYProcesos.InteraccionesAutomas.*;
 import ProcesamientoCadenas.ProcesamientoCadenaAFNLambda;
 import java.awt.HeadlessException;
@@ -47,6 +49,28 @@ public class ClasePrueba {
         }
         exe = exe.replace('\'', '*');
         return exe;
+    }
+
+    private static Lectura Kleen1() {
+        String cadena = JOptionPane.showInputDialog(null, "Ingrese la expresion a crear", "");
+        String[] options1 = {"crear un AFNL", "crear un AFN", "crear un AFD", "Salir"};
+                int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
+                switch (f) {
+                    case JOptionPane.CLOSED_OPTION:
+                        return Lectura.CrearAutomata;
+                    case 0:
+                        AFNL  afnl = new KLEENToAFNL(cadena);
+                        System.out.println(afnl.toString());
+                    case 1:
+                        AFNL  afnla = new KLEENToAFNL(cadena);
+                        System.out.println(afnla.AFN_LambdaToAFN().toString());
+                    case 2:
+                        AFD  afnlas = new KLEENToAFNL(cadena).AFN_LambdaToAFD();
+                        System.out.println(afnlas.toString());
+                    default:
+                        return Lectura.salir;
+                }
+        
     }
 
     /**
@@ -163,9 +187,14 @@ public class ClasePrueba {
                         }
 
                     } catch (HeadlessException | NullPointerException e) {
-                        if (JOptionPane.showConfirmDialog(null, "No ha ingresado ningún automata. ¿Desea salir? Y/N", "Error", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0) {
+                        if (JOptionPane.showConfirmDialog(null, "Desea Ingresar una expresion para generar su automata Y/N", "Kleen", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == JOptionPane.YES_OPTION) {
+                            lec= Kleen1();
+                        }else{
+                         if (JOptionPane.showConfirmDialog(null, "No ha ingresado ningún automata. ¿Desea salir? Y/N", "Error", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE) == 0) {
                             lec = Lectura.salir;
+                        }   
                         }
+                        
                     }
                     pause();
                     break;
@@ -1003,9 +1032,9 @@ public class ClasePrueba {
                         ClaseValidacion.validarAFNtoAFD(afns);
                         break;
                     case 2:
-                        System.out.println("Automata AFN: ");
+                        System.out.println("Automata AFN "+ new AFDtoKleen(afn)+ ": ");
                         System.out.println(afn.toString());
-                        System.out.println("\nAutomata AFD: ");
+                        System.out.println("\nAutomata AFD"+ new AFDtoKleen(afd)+ ": ");
                         System.out.println(afd.toString());
                         switch (JOptionPane.showConfirmDialog(null, "Desea guardar el nuevo automata en el portapapeles?", "guardado de automatas", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE)) {
                             case JOptionPane.YES_OPTION:
@@ -1289,9 +1318,9 @@ public class ClasePrueba {
                         ClaseValidacion.validarAFNLambdaToAFN(afnl.getSigma(), afns);
                         break;
                     case 2:
-                        System.out.println("Automata AFNL: ");
+                        System.out.println("Automata AFNL"+ new AFDtoKleen(afnl)+ ": ");
                         System.out.println(afnl.toString());
-                        System.out.println("\nAutomata AFN: ");
+                        System.out.println("\nAutomata AFN"+ new AFDtoKleen(afn)+ ": ");
                         System.out.println(afn.toString());
                         switch (JOptionPane.showConfirmDialog(null, "Desea guardar el nuevo automata en el portapapeles?", "Guardado de simplificacion", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE)) {
                             case JOptionPane.YES_OPTION:
@@ -1496,11 +1525,11 @@ public class ClasePrueba {
                         ClaseValidacion.validarAFNLtoAFD(afns);
                         break;
                     case 2:
-                        System.out.println("Automata AFNL: ");
+                        System.out.println("Automata AFNL"+ new AFDtoKleen(afnl)+ ": ");
                         System.out.println(afnl.toString());
-                        System.out.println("\nAutomata AFN: ");
+                        System.out.println("\nAutomata AFN"+ new AFDtoKleen(afn)+ ": ");
                         System.out.println(afn.toString());
-                        System.out.println("\nAutomata AFD: ");
+                        System.out.println("\nAutomata AFD"+ new AFDtoKleen(afd)+ ": ");
                         System.out.println(afd.toString());
                         switch (JOptionPane.showConfirmDialog(null, "Desea guardar el nuevo automata en el portapapeles?", "Guardado de simplificacion", JOptionPane.YES_NO_CANCEL_OPTION, JOptionPane.QUESTION_MESSAGE)) {
                             case JOptionPane.YES_OPTION:
@@ -1542,9 +1571,9 @@ public class ClasePrueba {
                 int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
                 switch (f) {
                     case 0://tostring
-                        System.out.println("AFD original:");
+                        System.out.println("AFD original"+ new AFDtoKleen(afd)+ ":");
                         System.out.println(afd.toString());
-                        System.out.println("AFD simplificado");
+                        System.out.println("AFD simplificado"+ new AFDtoKleen(simpl));
                         String d = simpl.toString();
                         System.out.println(d);
                         pause();
@@ -1751,9 +1780,9 @@ public class ClasePrueba {
                 int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
                 switch (f) {
                     case 0://tostring
-                        System.out.println("AFD original:");
+                        System.out.println("AFD original"+ new AFDtoKleen(afd)+ ":");
                         System.out.println(afd.toString());
-                        System.out.println("AFD complemento");
+                        System.out.println("AFD complemento"+ new AFDtoKleen(compl)+ "");
                         String d = compl.toString();
                         System.out.println(d);
                         pause();
@@ -1927,11 +1956,11 @@ public class ClasePrueba {
                     int f = JOptionPane.showOptionDialog(null, "Indique la proxima accion a realizar", "Bienvenido, escoja una opción", JOptionPane.DEFAULT_OPTION, JOptionPane.PLAIN_MESSAGE, null, options1, "Salir");
                     switch (f) {
                         case 0://tostring
-                            System.out.println("Primer AFD:");
+                            System.out.println("Primer AFD"+ new AFDtoKleen(afd1)+ ":");
                             System.out.println(afd1.toString());
-                            System.out.println("Segundo AFD:");
+                            System.out.println("Segundo AFD"+ new AFDtoKleen(afd2)+ ":");
                             System.out.println(afd2.toString());
-                            System.out.println("Producto de los AFD ingresados");
+                            System.out.println("Producto de los AFD ingresados"+ new AFDtoKleen(afd)+ "");
                             String d = afd.toString();
                             System.out.println(d);
                             pause();
