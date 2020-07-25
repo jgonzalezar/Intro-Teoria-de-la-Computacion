@@ -6,6 +6,8 @@
 package Herramientas;
 
 import AutomatasFinitos.AFD;
+import AutomatasFinitos.AFN;
+import AutomatasFinitos.AFNL;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -18,6 +20,11 @@ public class AFDtoKleen {
     String expresion;
 
     public AFDtoKleen(AFD afd) {
+        if(afd instanceof AFNL){
+            afd= ((AFNL) afd).AFN_LambdaToAFD();
+        }else if(afd instanceof AFN){
+            afd=((AFN) afd).AFNtoAFD();
+        }
         HashMap<String, HashMap<String, String>> table = new HashMap<>();
         ArrayList<String> Q = new ArrayList<>();
         afd.eliminarEstadosInaccesibles();
