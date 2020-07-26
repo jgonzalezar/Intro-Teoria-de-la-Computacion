@@ -61,16 +61,19 @@ public class ClasePrueba {
                     case 0:
                         AFNL  afnl = new KLEENToAFNL(cadena);
                         System.out.println(afnl.toString());
+                        break;
                     case 1:
                         AFNL  afnla = new KLEENToAFNL(cadena);
                         System.out.println(afnla.AFN_LambdaToAFN().toString());
+                        break;
                     case 2:
                         AFD  afnlas = new KLEENToAFNL(cadena).AFN_LambdaToAFD();
                         System.out.println(afnlas.toString());
+                        break;
                     default:
                         return Lectura.salir;
                 }
-        
+        return Lectura.CrearAutomata;
     }
 
     /**
